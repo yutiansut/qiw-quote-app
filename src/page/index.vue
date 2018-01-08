@@ -1,22 +1,25 @@
 <template>
-	<div class="index">
+	<div id="index">
 		<TabBar></TabBar>
-		<header>
-			<div class="tab">
-				<template v-for="(v, index) in tabList">
-					<span :class="{current: selectNum == index}">{{v}}</span>
-				</template>
-			</div>
-			<i class="icon icon_search"></i>
-		</header>
-		<nav>
-			<span class="current">商品</span>
-			<span>股指期货</span>
-			<span>外汇</span>
-			<span>LME金属</span>
-			<span>债券期货</span>
-			<span>ETF</span>
-		</nav>
+		<div class="main">
+			<header>
+				<div class="tab">
+					<template v-for="(v, index) in tabList">
+						<span :class="{current: selectNum == index}">{{v}}</span>
+					</template>
+				</div>
+				<i class="icon icon_search"></i>
+			</header>
+			<nav>
+				<span class="current">商品</span>
+				<span>股指期货</span>
+				<span>外汇</span>
+				<span>LME金属</span>
+				<span>债券期货</span>
+				<span>ETF</span>
+			</nav>
+		</div>
+		
 		
 	</div>
 </template>
@@ -47,8 +50,10 @@
 		left: 0;
 		width: $w;
 		height: 1rem;
+		overflow: hidden;
 		background: $bg;
 		border-bottom: 0.01rem solid $black;
+		margin: auto;
 		.tab{
 			width: 2rem;
 			height: 0.6rem;
@@ -71,18 +76,19 @@
 			height: 0.4rem;
 			background: url(../assets/images/search.png) no-repeat center center;
 			background-size: 100% 100%;
-			position: fixed;
+			position: absolute;
 			top: 0.3rem;
 			right: 0.3rem;
 		}
 	}
 	nav{
 		position: fixed;
-		top: 1rem;
+		top: 1.01rem;
 		left: 0;
 		width: $w;
 		height: 0.8rem;
 		line-height: 0.8rem;
+		background: $bg;
 		border-bottom: 0.01rem solid $black;
 		
 	}
