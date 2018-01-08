@@ -4,6 +4,8 @@ import index from '../page/index.vue'
 import account from "../page/account.vue"
 import information from "../page/information.vue"
 import mockTrading from "../page/mockTrading.vue"
+import login from "../page/login.vue"
+import regisiter from "../page/regisiter.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -22,5 +24,11 @@ export default new Router({
 	},{
 		path:'/mockTrading',
 		component:mockTrading
+	},{
+		path:'/login',
+		component:login
+	},{
+		path:'/regisiter',
+		component:regisiter
 	}]
 })
