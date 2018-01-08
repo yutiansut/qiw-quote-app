@@ -6,6 +6,7 @@ import information from "../page/information.vue"
 import mockTrading from "../page/mockTrading.vue"
 import login from "../page/login.vue"
 import regisiter from "../page/regisiter.vue"
+import wechatRegisiter from "../page/wechatRegisiter.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -30,5 +31,8 @@ export default new Router({
 	},{
 		path:'/regisiter',
 		component:regisiter
+	},{
+		path:'/wechatRegisiter',
+		component:wechatRegisiter
 	}]
 })
