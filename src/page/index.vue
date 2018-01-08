@@ -1,24 +1,22 @@
 <template>
 	<div id="index">
 		<TabBar></TabBar>
-		<div class="main">
-			<header>
-				<div class="tab">
-					<template v-for="(v, index) in tabList">
-						<span :class="{current: selectNum == index}">{{v}}</span>
-					</template>
-				</div>
-				<i class="icon icon_search"></i>
-			</header>
-			<nav>
-				<span class="current">商品</span>
-				<span>股指期货</span>
-				<span>外汇</span>
-				<span>LME金属</span>
-				<span>债券期货</span>
-				<span>ETF</span>
-			</nav>
-		</div>
+		<header>
+			<div class="tab">
+				<template v-for="(v, index) in tabList">
+					<span :class="{current: selectNum == index}">{{v}}</span>
+				</template>
+			</div>
+			<i class="icon icon_search"></i>
+		</header>
+		<nav>
+			<span class="current">商品</span>
+			<span>股指期货</span>
+			<span>外汇</span>
+			<span>LME金属</span>
+			<span>债券期货</span>
+			<span>ETF</span>
+		</nav>
 		
 		
 	</div>
