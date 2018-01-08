@@ -19,7 +19,8 @@
 </script>
 
 <style scoped lang="scss">
-h1{
-  font-weight: normal;
-}
+	@import "../assets/css/common.scss";
+	h1{
+	  font-weight: normal;
+	}
 </style>

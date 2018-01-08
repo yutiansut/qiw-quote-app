@@ -1,36 +1,34 @@
 /*  
  * @description: 公用css 
  * @author: name  
- * @update: 2017-10-11 
+ * @update: 2018-01-08 
  */
 
 /*****颜色*****/
-$black: #242633;
-$yellow: #ffd400;
+$bg: #242933;   //整个背景
+$fontBlue: #a3b1cc;  //蓝色字体
+$lightBlue:#363d4d;   //浅蓝色
+$titleBlue: #2d3340;  //蓝色标题背景
+$black: #12141a;   //下划线
+$blue: #00a1f2;    
 $red: #ff4c4c;
-$green: #3dcc85;
+$orange: #ff5533;
+$yellow: #ffd400;
 $white: #ffffff;
-$deepblue: #292c3b;
-$blue: #2d3040;
-$lightblue: #a3aacc;
-$highLight: #474c66;
-$bottom_color: #36394d;
+$green: #12b362;
 
 /*****字体*****/
-$fs12: 12px;
-$fs14: 14px;
-$fs16: 16px;
-$fs18: 18px;
-$fs20: 20px;
-$fs24: 24px;
-$fs28: 28px;
-$fs56: 56px;
+$fs24: 0.24rem;
+$fs28: 0.28rem;
 
 /*****字体*****/
 $yh: "\5FAE\8F6F\96C5\9ED1"; /*微软雅黑*/
 $st: "\5B8B\4F53"; /*宋体*/
 $ht: "\9ED1\4F53"; /*黑体*/
 $arial: Arial;
+
+/*****宽度*****/
+$w: 7.5rem;
 
 /*****排版*****/
 .clear{
@@ -43,68 +41,13 @@ $arial: Arial;
     float: right;
 }
 
-table{
-    width: 100%;
-    tr{
-        background: $blue;
-        cursor: pointer;
-        &:nth-child(even){
-            background: $deepblue;
-        }
-        &:hover, &.current{
-            background: $highLight;
-        }
-    }
-    td{
-        text-align: left;
-    }
-    .red, .ifont.red{
-        color: $red !important;
-    }
-    .green, .ifont.green{
-        color: $green !important;
-    }
-}
-
+/*****按钮*****/
 .icon{
     display: inline-block;
     overflow: hidden;
 }
 
-/*****按钮*****/
-.btn{
-    display: inline-block;
-    border-radius: 4px;
-    color: $black;
-    border: none;
-    font-size: $fs16;
-    cursor: pointer;
-    &.yellow{
-        background: $yellow;
-    }
-    &.blue{
-        background: $lightblue;
-    }
-}
-/*注册登录input框1为黄色2为蓝色*/
-input{
-    border: none;
-    background: none;
-    outline: none;
-}
-input:-webkit-autofill { 
-    -webkit-box-shadow: 0 0 0px 1000px transparent inset;
-}
-/*input[type=text]:focus, input[type=password]:focus, textarea:focus {
-      -webkit-box-shadow: 0 0 0 1000px transparent inset; 
-} */
-.input_1 {
-    background-color: $blue;
-    border-radius: 5px;
-    text-align: center;
-    margin-top: 30px;
-}
-/*遮罩*/
+/*****遮罩*****/
 .bg{
     position: fixed;
     top: 0;
@@ -115,3 +58,4 @@ input:-webkit-autofill {
     background: #000;
     opacity: 0.5;
 }
+
