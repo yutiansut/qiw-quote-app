@@ -10,13 +10,16 @@
 	}
 </script>
 
-<style>
+<style lang="scss" scoped>
+	@import "./assets/css/common.scss";
 	#app {
-		font-family: 'Avenir', Helvetica, Arial, sans-serif;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		text-align: center;
-		color: #2c3e50;
-		margin-top: 60px;
+		max-width: 7.5rem;
+		width: 7.5rem;
+		height: auto;
+		overflow: hidden;
+		margin: auto;
+		position: relative;
 	}
 </style>
