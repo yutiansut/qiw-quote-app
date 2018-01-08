@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import index from '../page/index.vue'
+import stockFutures from "../page/quote/stockFutures.vue"
 import account from "../page/account.vue"
 import information from "../page/information.vue"
 import mockTrading from "../page/mockTrading.vue"
@@ -17,22 +18,25 @@ export default new Router({
 		path: '/',
 		component: index
 	},{
-		path:'/account',
-		component:account
+		path: '/account',
+		component: account
 	},{
-		path:'/information',
-		component:information
+		path: '/information',
+		component: information
 	},{
-		path:'/mockTrading',
-		component:mockTrading
+		path: '/mockTrading',
+		component: mockTrading
 	},{
-		path:'/login',
-		component:login
+		path: '/stockFutures',
+		component: stockFutures
 	},{
-		path:'/regisiter',
-		component:regisiter
+		path: '/login',
+		component: login
 	},{
-		path:'/wechatRegisiter',
-		component:wechatRegisiter
+		path: '/regisiter',
+		component: regisiter
+	},{ 
+		path: '/wechatRegisiter',
+		component: wechatRegisiter
 	}]
 })
