@@ -19,6 +19,7 @@
 		width: 7.5rem;
 		height: auto;
 		overflow: hidden;
+		background: $bg;
 		margin: auto;
 		position: relative;
 	}
