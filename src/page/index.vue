@@ -1,18 +1,20 @@
 <template>
   <div class="index">
-    <h1>{{ msg }}</h1>
-    123
+   <TabBar></TabBar>
   </div>
 </template>
 
 <script>
-export default {
+	import TabBar from "../components/TabBar.vue"
+ export default {
   name: 'index',
+  components:{TabBar},
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
-  }
+  },
+  
 }
 </script>
 
