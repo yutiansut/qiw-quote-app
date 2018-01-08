@@ -7,6 +7,8 @@ import mockTrading from "../page/mockTrading.vue"
 import login from "../page/login.vue"
 import regisiter from "../page/regisiter.vue"
 import wechatRegisiter from "../page/wechatRegisiter.vue"
+import forgetPassword from "../page/forgetPassword.vue"
+import resetPassword from "../page/resetPassword.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -34,5 +36,11 @@ export default new Router({
 	},{
 		path:'/wechatRegisiter',
 		component:wechatRegisiter
+	},{
+		path:'/forgetPassword',
+		component:forgetPassword
+	},{
+		path:'/resetPassword',
+		component:resetPassword
 	}]
 })
