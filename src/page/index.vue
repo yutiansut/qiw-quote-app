@@ -1,6 +1,16 @@
 <template>
 	<div class="index">
 		<TabBar></TabBar>
+		<header>
+			<div class="tab">
+				<template v-for="(v, index) in tabList">
+					<span>{{v}}</span>
+				</template>
+			</div>
+			<i class="icon icon_search"></i>
+		</header>
+		
+		
 	</div>
 </template>
 
@@ -12,8 +22,8 @@
 			TabBar
 		},
 		data(){
-			return {
-				msg: 'Welcome to Your Vue.js App'
+			return{
+				tabList: ['自选', '市场'],
 			}
 		},
 	}
@@ -21,4 +31,15 @@
 
 <style scoped lang="scss">
 	@import "../assets/css/common.scss";
+	header{
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: $w;
+		height: 1rem;
+		background: $bg;
+	}
+	.tab{
+		
+	}
 </style>

@@ -20,7 +20,6 @@
 		height: auto;
 		overflow: hidden;
 		background: $bg;
-		margin: auto;
 		position: relative;
 	}
 </style>
