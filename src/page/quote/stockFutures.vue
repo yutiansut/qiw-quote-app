@@ -34,6 +34,10 @@
 				<span class="red">+0.05%&nbsp;&nbsp;+0.69</span>
 			</div>
 		</div>
+		<div class="title">
+			<i></i>
+			<span>亚太</span>
+		</div>
 		<div class="list">
 			<ul>
 				<li>
@@ -76,7 +80,7 @@
 </template>
 
 <script>
-	import TabBar from "../components/TabBar.vue"
+	import TabBar from "../../components/TabBar.vue"
 	export default {
 		name: 'index',
 		components: {
@@ -94,7 +98,7 @@
 </script>
 
 <style scoped lang="scss">
-	@import "../assets/css/common.scss";
+	@import "../../assets/css/common.scss";
 	header{
 		position: fixed;
 		top: 0;
@@ -127,7 +131,7 @@
 		.icon_search{
 			width: 0.4rem;
 			height: 0.4rem;
-			background: url(../assets/images/search.png) no-repeat center center;
+			background: url(../../assets/images/search.png) no-repeat center center;
 			background-size: 100% 100%;
 			position: absolute;
 			top: 0.3rem;
@@ -199,19 +203,34 @@
 						margin: 0 0 0 0.1rem;
 						line-height: 0.5rem;
 						&.up{
-							background: url(../assets/images/arrow_up.png) no-repeat center top;
+							background: url(../../assets/images/arrow_up.png) no-repeat center top;
 						}
 						&.down{
-							background: url(../assets/images/arrow_down.png) no-repeat center bottom;
+							background: url(../../assets/images/arrow_down.png) no-repeat center bottom;
 						}
 					}
 				}
 			}
 		}
 	}
+	.title{
+		width: 7.5rem;
+		height: 0.8rem;
+		overflow: hidden;
+		margin-top: 3.42rem;
+		border-bottom: 0.01rem solid $black;
+		i{
+			display: inline-block;
+			width: 0.2rem;
+			height: 0.2rem;
+			overflow: hidden;
+			background: #00a1f2;
+			margin: 0.3rem 0.05rem 0 0;
+		}
+	}
 	.list{
 		width: 7.5rem;
-		margin-top: 3.42rem;
+		/*margin-top: 4.22rem;*/
 		li{
 			height: 0.96rem;
 			line-height: 0.96rem;
@@ -252,7 +271,7 @@
 				.icon_switch{
 					width: 0.2rem;
 					height: 0.24rem;
-					background: url(../assets/images/switch.png) no-repeat center center;
+					background: url(../../assets/images/switch.png) no-repeat center center;
 					background-size: 0.18rem 0.24rem;
 					margin-left: 0.05rem;
 					margin-top: 0.1rem;
