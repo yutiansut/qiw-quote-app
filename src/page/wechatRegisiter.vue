@@ -8,6 +8,15 @@
 		    	<mt-button style="font-size: 0.16rem;color: #9ba8c2;">客服</mt-button>
 		 	</router-link>
 		</mt-header>
+		<div id="wechatInfo">
+			<ul>
+				<li><span></span></li>
+				<li>
+					<p>亲爱的&nbsp;<span>杨威利</span></p>
+					<p>为了您的账户安全，请您关联您的手机号，下次可直接登录。</p>
+				</li>
+			</ul>
+		</div>
 		<div id="container">
 			<ul>
 				<li>
@@ -27,23 +36,16 @@
 					<div id="eye">
 					</div>
 				</li>
-			</ul>	
-			<mt-button class="btn">注册</mt-button>
+			</ul>
+			<mt-button class="btn">立即绑定并注册</mt-button>
 			<a @click="">已有账户？立即登录>></a>
-			<div id="wechat">
-				<i></i>
-			</div>
-			<div id="to">
-				<p>注册即代表阅读并同意<a>《指数天下用户协议》</a></p>
-			</div>
-			
 		</div>
 	</div>
 </template>
 
 <script>
 	export default{
-		name:'regisiter',
+		name:"wechatRegisiter",
 		data(){
 			return{
 				
@@ -69,14 +71,53 @@
 		height: 0.32rem;
 		background-size: 100% 100%;
 	}
-	#container{
+	#wechatInfo{
 		width: 100%;
 		margin-top: 0.8rem;
 		display: flex;
 		flex-direction: column;
 		border-top: 1px solid #12141a;
 		text-align: center;
-		padding: 0.5rem 0.3rem 0rem 0.3rem;
+		padding: 0rem 0.3rem 0rem 0.3rem;
+		height: 1.75rem;
+		border-bottom: 1px solid #12141a;
+		ul{
+			display: flex;
+			justify-content: flex-end;
+			li{
+				&:nth-child(1){
+					span{
+						background: url(../assets/images/wechat_head.png);
+						width: 0.8rem;
+						height: 0.8rem;
+						display: block;
+						background-size: 100% 100%;
+						margin-top: 0.3rem;
+					}
+				}
+				&:nth-child(2){
+					padding-left: 0.26rem;
+					display: flex;
+					flex-direction: column;
+					text-align: left;
+					margin-top: 0.4rem;
+					p{
+						margin-top: 0.1rem;
+					}
+					span{
+						color: white;
+						font-size: 0.28rem;
+					}
+				}
+			}
+		}
+	}
+	#container{
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		text-align: center;
+		padding: 0rem 0.3rem 0rem 0.3rem;
 		li{
 			height: 1.2rem;
 			position: relative;
@@ -137,7 +178,6 @@
 			height: 0.24rem;
 			top: 0.5rem;
 			right: 0;
-			border-left: 1px solid #9ba8c2;
 			color: $white;
 		}
 		#eye{
@@ -157,34 +197,10 @@
 			color: $white;
 			border: none;
 		}
-		#wechat{
-			width: 100%;
-			margin-top: 1.9rem;
-			i{
-				background:url(../assets/images/wechat_02.png);
-				display: inline-block;
-				width:0.88rem;
-				height: 0.88rem;
-				background-size: 100% 100%;
-				
-			}
-		}
 		a{
 			text-align: center;
 			color: $white;
 			margin-top: 0.8rem;
 		}
-		#to{
-			width: 100%;
-			position: fixed;
-			bottom: 0.3rem;
-			p{
-				text-align:center;
-				a{
-					color: $white;
-				}
-			}
-		}
-		
 	}
 </style>

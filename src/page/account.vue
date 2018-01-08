@@ -4,7 +4,7 @@
 			<router-link to="regisiter">
 				<button>注册</button>
 			</router-link>
-			<router-link to="regisiter">
+			<router-link to="login">
 				<button>登录</button>
 			</router-link>
 		</div>
@@ -28,7 +28,9 @@
 </script>
 
 <style>
-
+	
+#account{
+}
 #container{
 	
 }

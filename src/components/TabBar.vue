@@ -54,7 +54,7 @@
 	}
 </script>
 
-<style>
+<style scoped lang="scss">
 	@import "../assets/css/common.scss";
 	#tabbar{
 		width:7.5rem;
