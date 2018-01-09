@@ -129,12 +129,12 @@
 			}
 		}
 		.icon_search{
-			width: 0.4rem;
-			height: 0.4rem;
-			background: url(../../assets/images/search.png) no-repeat center center;
-			background-size: 100% 100%;
+			width: 0.6rem;
+			height: 1rem;
+			background: url(../../assets/images/search.png) no-repeat right 0.3rem;
+			background-size: 0.4rem 0.4rem;
 			position: absolute;
-			top: 0.3rem;
+			top: 0;
 			right: 0.3rem;
 		}
 	}

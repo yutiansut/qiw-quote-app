@@ -10,12 +10,14 @@
 			<i class="icon icon_search"></i>
 		</header>
 		<nav>
-			<span class="current">商品</span>
-			<span>股指期货</span>
-			<span>外汇</span>
-			<span>LME金属</span>
-			<span>债券期货</span>
-			<span>ETF</span>
+			<div class="nav_box">
+				<span class="current">商品</span>
+				<span>股指期货</span>
+				<span>外汇</span>
+				<span>LME金属</span>
+				<span>债券期货</span>
+				<span>ETF</span>
+			</div>
 		</nav>
 		<div class="recommend">
 			<div class="col">
@@ -125,12 +127,12 @@
 			}
 		}
 		.icon_search{
-			width: 0.4rem;
-			height: 0.4rem;
-			background: url(../assets/images/search.png) no-repeat center center;
-			background-size: 100% 100%;
+			width: 0.6rem;
+			height: 1rem;
+			background: url(../assets/images/search.png) no-repeat right 0.3rem;
+			background-size: 0.4rem 0.4rem;
 			position: absolute;
-			top: 0.3rem;
+			top: 0;
 			right: 0.3rem;
 		}
 	}
@@ -145,8 +147,8 @@
 		padding: 0 0.3rem;
 		span{
 			display: inline-block;
-			height: 0.75rem;
-			line-height: 0.75rem;
+			height: 0.74rem;
+			line-height: 0.74rem;
 			border-bottom: 0.04rem solid $bg;
 			font-size: $fs28;
 			margin-left: 0.3rem;
@@ -172,7 +174,8 @@
 			height: 1.6rem;
 			border-right: 0.01rem solid $black;
 			span{
-				display: block;
+				display: inline-block;
+				width: 2.5rem;
 				text-align: center;
 				font-size: $fs32;
 				&.name{
@@ -190,14 +193,15 @@
 					padding-top: 0;
 				}
 				&:nth-child(2){
+					height: 0.6rem;
 					line-height: 0.6rem;
 					.icon_arrow{
-						width: 0.2rem;
-						height: 0.2rem;
-						padding-top: 0.1rem;
-						background-size: 0.12rem 0.18rem;
-						margin: 0 0 0 0.1rem;
-						line-height: 0.5rem;
+						display: inline-block;
+						width: 0.13rem;
+						height: 0.27rem;
+						background: url(../../dist/static/img/arrow_up.png) no-repeat center center;
+						background-size: 100% 100%;
+						margin-left: 0.1rem;
 						&.up{
 							background: url(../assets/images/arrow_up.png) no-repeat center top;
 						}

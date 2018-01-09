@@ -8,6 +8,7 @@
 				</template>
 			</div>
 			<i class="icon icon_search"></i>
+			<i class="icon icon_set"></i>
 		</header>
 		<nav>
 			<span class="current">商品</span>
@@ -17,27 +18,6 @@
 			<span>债券期货</span>
 			<span>ETF</span>
 		</nav>
-		<div class="recommend">
-			<div class="col">
-				<span class="name">美原油</span>
-				<span class="red">52.49<i class="icon icon_arrow up"></i></span>
-				<span class="red">+0.05%&nbsp;&nbsp;+0.69</span>
-			</div>
-			<div class="col">
-				<span class="name">美黄金</span>
-				<span class="green">52.49<i class="icon icon_arrow down"></i></span>
-				<span class="green">+0.05%&nbsp;&nbsp;+0.69</span>
-			</div>
-			<div class="col">
-				<span class="name">美铜</span>
-				<span class="red">1036.49<i class="icon icon_arrow up"></i></span>
-				<span class="red">+0.05%&nbsp;&nbsp;+0.69</span>
-			</div>
-		</div>
-		<div class="title">
-			<i></i>
-			<span>亚太</span>
-		</div>
 		<div class="list">
 			<ul>
 				<li>
@@ -88,7 +68,7 @@
 		},
 		data(){
 			return{
-				selectNum: 1,
+				selectNum: 0,
 				tabList: ['自选', '市场'],
 				selectTypeNum: 0,
 				TypeList: [],
@@ -129,12 +109,21 @@
 			}
 		}
 		.icon_search{
-			width: 0.4rem;
-			height: 0.4rem;
-			background: url(../../assets/images/search.png) no-repeat center center;
-			background-size: 100% 100%;
+			width: 0.6rem;
+			height: 1rem;
+			background: url(../../assets/images/set.png) no-repeat right 0.3rem;
+			background-size: 0.4rem 0.4rem;
 			position: absolute;
-			top: 0.3rem;
+			top: 0;
+			right: 0.3rem;
+		}
+		.icon_set{
+			width: 0.6rem;
+			height: 1rem;
+			background: url(../../assets/images/search.png) no-repeat right 0.3rem;
+			background-size: 0.4rem 0.4rem;
+			position: absolute;
+			top: 0;
 			right: 0.3rem;
 		}
 	}
@@ -163,74 +152,9 @@
 			}
 		}
 	}
-	.recommend{
-		position: fixed;
-		top: 1.82rem;
-		left: 0;
-		width: 7.5rem;
-		height: 1.6rem;
-		border-bottom: 0.01rem solid $black;
-		.col{
-			float: left;
-			width: 2.5rem;
-			height: 1.6rem;
-			border-right: 0.01rem solid $black;
-			span{
-				display: block;
-				text-align: center;
-				font-size: $fs32;
-				&.name{
-					color: $white;
-					margin-top: 0.25rem;
-				}
-				&:last-child{
-					font-size: 0.2rem;
-				}
-				&.red{
-					color: $red;
-				}
-				&.green{
-					color: $green;
-					padding-top: 0;
-				}
-				&:nth-child(2){
-					line-height: 0.6rem;
-					.icon_arrow{
-						width: 0.2rem;
-						height: 0.2rem;
-						padding-top: 0.1rem;
-						background-size: 0.12rem 0.18rem;
-						margin: 0 0 0 0.1rem;
-						line-height: 0.5rem;
-						&.up{
-							background: url(../../assets/images/arrow_up.png) no-repeat center top;
-						}
-						&.down{
-							background: url(../../assets/images/arrow_down.png) no-repeat center bottom;
-						}
-					}
-				}
-			}
-		}
-	}
-	.title{
-		width: 7.5rem;
-		height: 0.8rem;
-		overflow: hidden;
-		margin-top: 3.42rem;
-		border-bottom: 0.01rem solid $black;
-		i{
-			display: inline-block;
-			width: 0.2rem;
-			height: 0.2rem;
-			overflow: hidden;
-			background: #00a1f2;
-			margin: 0.3rem 0.05rem 0 0;
-		}
-	}
 	.list{
 		width: 7.5rem;
-		/*margin-top: 4.22rem;*/
+		margin-top: 1.82rem;
 		li{
 			height: 0.96rem;
 			line-height: 0.96rem;
