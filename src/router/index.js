@@ -4,6 +4,7 @@ import index from '../page/index.vue'
 import stockFutures from "../page/quote/stockFutures.vue"
 import optionalList from "../page/quote/optionalList.vue"
 import optionalBox from "../page/quote/optionalBox.vue"
+import noLogin from "../page/quote/noLogin.vue"
 
 
 
@@ -42,6 +43,9 @@ export default new Router({
 	},{
 		path: '/optionalBox',
 		component: optionalBox
+	},{
+		path: '/noLogin',
+		component: noLogin
 	},{
 		path:'/login',
 		component:login
