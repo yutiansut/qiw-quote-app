@@ -194,19 +194,19 @@
 					padding-top: 0;
 				}
 				&:nth-child(2){
+					height: 0.6rem;
 					line-height: 0.6rem;
 					.icon_arrow{
-						width: 0.2rem;
-						height: 0.2rem;
-						padding-top: 0.1rem;
-						background-size: 0.12rem 0.18rem;
-						margin: 0 0 0 0.1rem;
-						line-height: 0.5rem;
+						width: 0.13rem;
+						height: 0.27rem;
+						margin: 0.1rem 0 0 0.1rem;
 						&.up{
-							background: url(../../assets/images/arrow_up.png) no-repeat center top;
+							background: url(../../assets/images/arrow_up.png) no-repeat center center;
+							background-size: 0.13rem 0.27rem;
 						}
 						&.down{
-							background: url(../../assets/images/arrow_down.png) no-repeat center bottom;
+							background: url(../../assets/images/arrow_down.png) no-repeat center center;
+							background-size: 0.13rem 0.27rem;
 						}
 					}
 				}
