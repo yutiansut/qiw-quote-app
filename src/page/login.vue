@@ -5,7 +5,7 @@
 		    	<i id="back"></i>
 		  	</router-link>
 		    <router-link to="/account" slot="right">
-		    	<mt-button style="font-size: 0.16rem;color: #9ba8c2;">客服</mt-button>
+		    	<mt-button style="font-size: 0.24rem;color: #9ba8c2;">客服</mt-button>
 		 	</router-link>
 		</mt-header>
 		<div id="container">

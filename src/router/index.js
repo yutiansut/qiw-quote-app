@@ -5,10 +5,6 @@ import stockFutures from "../page/quote/stockFutures.vue"
 import optionalList from "../page/quote/optionalList.vue"
 import optionalBox from "../page/quote/optionalBox.vue"
 import noLogin from "../page/quote/noLogin.vue"
-import optionalManage from "../page/quote/optionalManage.vue"
-
-
-
 import account from "../page/account.vue"
 import information from "../page/information.vue"
 import mockTrading from "../page/mockTrading.vue"
@@ -17,6 +13,13 @@ import regisiter from "../page/regisiter.vue"
 import wechatRegisiter from "../page/wechatRegisiter.vue"
 import forgetPassword from "../page/forgetPassword.vue"
 import resetPassword from "../page/resetPassword.vue"
+import personalSet from "../page/account/personalSet.vue"
+import resetLoginPassword from "../page/account/resetLoginPassword.vue"
+import resetPhone from "../page/account/resetPhone.vue"
+import moneyDetails from"../page/account/moneyDetails.vue"
+import realName from"../page/account/realName.vue"
+import feedBack from"../page/account/feedBack.vue"
+import help from"../page/account/help.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -48,9 +51,6 @@ export default new Router({
 		path: '/noLogin',
 		component: noLogin
 	},{
-		path: '/optionalManage',
-		component: optionalManage
-	},{
 		path:'/login',
 		component:login
 	},{
@@ -65,5 +65,27 @@ export default new Router({
 	},{
 		path:'/resetPassword',
 		component:resetPassword
-	}]
+	},{
+		path:'/personalSet',
+		component:personalSet
+	},{
+		path:'/resetLoginPassword',
+		component:resetLoginPassword
+	},{
+		path:'/resetPhone',
+		component:resetPhone
+	},{
+		path:'/moneyDetails',
+		component:moneyDetails
+	},{
+		path:'/realName',
+		component:realName
+	},{
+		path:'/feedBack',
+		component:feedBack
+	},{
+		path:'/help',
+		component:help
+	}
+	]
 })

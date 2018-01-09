@@ -7,7 +7,20 @@
 		</mt-header>
 		<div id="container">
 			<div id="loginIn" v-show="showLoginIn">
-				一登录
+				<ul>
+					<li>
+						<i></i>
+					</li>
+					<li>
+						<span>杨威利</span>
+						<p>158****4997</p>
+					</li>
+				</ul>
+				<ul>
+					<li>
+						<mt-button class="btn2">充值</mt-button>
+					</li>
+				</ul>
 			</div>
 			<div id="notLogin" v-show="showNotLogin">
 				<ul>
@@ -44,21 +57,21 @@
 						</li>
 					</ul>
 					<ul>
-						<li>
+						<li @click="toMoney">
 							<i></i>
 							<span>资金明细</span>
 						</li>
 					</ul>
 					<ul>
-						<li>
+						<li @click="toRealName">
 							<i></i>
 							<span>实名认证</span>
 						</li>
 					</ul>
 					<ul>
-						<li>
+						<li @click="tonext">
 							<i></i>
-							<span>我的融资</span>
+							<span>个人设置</span>
 						</li>
 					</ul>
 			</div>
@@ -85,7 +98,7 @@
 					</li>
 				</ul>
 				<ul>
-					<li>
+					<li @click="toFeedBack">
 						<i></i>
 						<span>意见反馈</span>
 					</li>
@@ -93,6 +106,7 @@
 			</div>
 		</div>
 		<TabBar></TabBar>
+		<router-view></router-view>
 	</div>
 </template>
 
@@ -105,8 +119,22 @@
 		},
 		data(){
 			return{
-				showLoginIn:false,
-				showNotLogin:true
+				showLoginIn:true,
+				showNotLogin:false
+			}
+		},
+		methods:{
+			tonext:function(){
+				this.$router.push({path:'/personalSet'});
+			},
+			toMoney:function(){
+				this.$router.push({path:'/moneyDetails'});
+			},
+			toRealName:function(){
+				this.$router.push({path:'/realName'});
+			},
+			toFeedBack:function(){
+				this.$router.push({path:'/feedBack'});
 			}
 		}
 	}
@@ -161,6 +189,56 @@
 								margin-left: 0.3rem;
 							}
 						}
+					}
+				}
+			}
+		}
+		#loginIn{
+			padding: 0 0.3rem;
+			height: 1.4rem;
+			border-bottom: 1px solid #12141a;
+			display: flex;
+			justify-content: space-between;
+			ul{
+				&:nth-child(1){
+					display: flex;
+					justify-content: space-between;
+					li{
+						i{
+							background: url(../assets/images/wechat_head.png);
+							width: 0.8rem;
+							height: 0.8rem;
+							display: block;
+							background-size: 100% 100%;
+							margin-top: 0.3rem;
+						}
+						&:nth-child(1){
+							
+						}
+						&:nth-child(2){
+							text-align: left;
+							margin-top: 0.4rem;
+							margin-left: 0.24rem;
+							span{
+								color: $white;
+								font-size: $fs32;
+							}
+							p{
+								margin-top: 0.16rem;
+							}
+						}
+					}
+				}
+				&:nth-child(2){
+					.btn2{
+						width: 1.14rem;
+						height: 0.6rem;
+						background-color: $yellow;
+						color: $black;
+						margin-top: 0.4rem;
+						border-radius: 0.1rem;
+						border: none;
+						font-size: 0.24rem;
 					}
 				}
 			}
