@@ -18,14 +18,16 @@
 					<input type="text" class="input1" placeholder="请输入18位身份证号码"/>
 				</li>
 			</ul>
-			<mt-button class="btn">确认</mt-button>
+			<btn className="bluelg" name="确认" class="btn"></btn>
 		</div>
 	</div>
 </template>
 
 <script>
+	import btn from "../../components/btn.vue"
 	export default{
 		name:"realName",
+		components:{btn},
 		data(){
 			return{
 				
@@ -92,11 +94,6 @@
 			}
 			.btn{
 				margin-top: 0.3rem;
-				width:100%;
-				height: 0.8rem;
-				background-color: $blue;
-				color: $white;
-				border: none;
 			}
 			.input1{
 				background-color: #1b1f26;
