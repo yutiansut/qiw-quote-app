@@ -11,12 +11,15 @@
 			<i class="icon icon_set"></i>
 		</header>
 		<nav>
-			<span class="current">商品</span>
-			<span>股指期货</span>
-			<span>外汇</span>
-			<span>LME金属</span>
-			<span>债券期货</span>
-			<span>ETF</span>
+			<div class="nav_box">
+				<span class="current">全部</span>
+				<span>商品</span>
+				<span>股指期货</span>
+				<span>外汇</span>
+				<span>LME金属</span>
+				<span>债券期货</span>
+				<span>ETF</span>
+			</div>
 		</nav>
 		<div class="list">
 			<ul>
@@ -55,7 +58,17 @@
 				</li>
 			</ul>
 		</div>
-		
+		<div class="add_optional">
+			<div class="box">
+				<i class="icon icon_add"></i>
+				<span>添加自选</span>
+			</div>
+		</div>
+		<div class="btn_box">
+			<i class="icon icon_rotate"></i>
+			<i class="icon icon_box"></i>
+			<i class="icon icon_optional"></i>
+		</div>
 	</div>
 </template>
 
@@ -111,7 +124,7 @@
 		.icon_search{
 			width: 0.6rem;
 			height: 1rem;
-			background: url(../../assets/images/set.png) no-repeat right 0.3rem;
+			background: url(../../assets/images/search.png) no-repeat right 0.3rem;
 			background-size: 0.4rem 0.4rem;
 			position: absolute;
 			top: 0;
@@ -120,11 +133,11 @@
 		.icon_set{
 			width: 0.6rem;
 			height: 1rem;
-			background: url(../../assets/images/search.png) no-repeat right 0.3rem;
+			background: url(../../assets/images/set.png) no-repeat left 0.3rem;
 			background-size: 0.4rem 0.4rem;
 			position: absolute;
 			top: 0;
-			right: 0.3rem;
+			right: 0.9rem;
 		}
 	}
 	nav{
@@ -136,6 +149,10 @@
 		background: $bg;
 		border-bottom: 0.01rem solid $black;
 		padding: 0 0.3rem;
+		overflow-x: scroll;
+		.nav_box{
+			width: 8.2rem;
+		}
 		span{
 			display: inline-block;
 			height: 0.75rem;
@@ -216,6 +233,48 @@
 			}
 		}
 	}
-	
+	.add_optional{
+		width: 7.5rem;
+		height: 1rem;
+		line-height: 1rem;
+		border-bottom: 0.01rem solid $black;
+		display: flex;
+		justify-content: center;
+		.icon_add{
+			float: left;
+			width: 0.4rem;
+			height: 0.4rem;
+			background: url(../../assets/images/add.png) no-repeat center center;
+			background-size: 100% 100%;
+			margin: 0.3rem 0.15rem 0 0;
+		}
+		span{
+			color: $white;
+		}
+	}
+	.btn_box{
+		width: 0.9rem;
+		height: 2.9rem;
+		position: fixed;
+		bottom: 1.3rem;
+		right: 0;
+		.icon{
+			width: 0.64rem;
+			height: 0.64rem;
+			margin-bottom: 0.2rem;
+			&.icon_rotate{
+				background: url(../../assets/images/rotate.png) no-repeat center center;
+				background-size: 100% 100%;
+			}
+			&.icon_box{
+				background: url(../../assets/images/box.png) no-repeat center center;
+				background-size: 100% 100%;
+			}
+			&.icon_optional{
+				background: url(../../assets/images/optional.png) no-repeat center center;
+				background-size: 100% 100%;
+			}
+		}
+	}
 	
 </style>
