@@ -92,7 +92,7 @@
 					</li>
 				</ul>
 				<ul>
-					<li>
+					<li @click="toHelp">
 						<i></i>
 						<span>帮助中心</span>
 					</li>
@@ -135,6 +135,9 @@
 			},
 			toFeedBack:function(){
 				this.$router.push({path:'/feedBack'});
+			},
+			toHelp:function(){
+				this.$router.push({path:'/help'});
 			}
 		}
 	}
