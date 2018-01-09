@@ -145,6 +145,9 @@
 		background: $bg;
 		border-bottom: 0.01rem solid $black;
 		padding: 0 0.3rem;
+		.nav_box{
+			width: 7.51rem;
+		}
 		span{
 			display: inline-block;
 			height: 0.74rem;
@@ -196,17 +199,16 @@
 					height: 0.6rem;
 					line-height: 0.6rem;
 					.icon_arrow{
-						display: inline-block;
 						width: 0.13rem;
 						height: 0.27rem;
-						background: url(../../dist/static/img/arrow_up.png) no-repeat center center;
-						background-size: 100% 100%;
-						margin-left: 0.1rem;
+						margin: 0.1rem 0 0 0.1rem;
 						&.up{
-							background: url(../assets/images/arrow_up.png) no-repeat center top;
+							background: url(../assets/images/arrow_up.png) no-repeat center center;
+							background-size: 0.13rem 0.27rem;
 						}
 						&.down{
-							background: url(../assets/images/arrow_down.png) no-repeat center bottom;
+							background: url(../assets/images/arrow_down.png) no-repeat center center;
+							background-size: 0.13rem 0.27rem;
 						}
 					}
 				}
