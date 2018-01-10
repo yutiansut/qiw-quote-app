@@ -30,6 +30,8 @@ import customerServices from"../page/account/customerServices.vue"
 import newsNotice from"../page/account/newsNotice.vue"
 import newsDetails from"../page/account/newsDetails.vue"
 import recharge from"../page/account/recharge.vue"
+import myFinance from"../page/account/myFinance/myFinance.vue"
+
 Vue.use(Router)
 
 export default new Router({
@@ -121,6 +123,9 @@ export default new Router({
 	},{
 		path:'/recharge',
 		component:recharge
+	},{
+		path:'/myFinance',
+		component:myFinance
 	}
 	]
 })
