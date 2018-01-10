@@ -74,7 +74,10 @@
 						<span class="fl">对比合约</span>
 					</div>
 					<div class="contrast_list">
-						<ul>
+						<div class="empty">
+							<p>无对比合约</p>
+						</div>
+						<!--<ul>
 							<li class="current">
 								<div class="name fl">
 									<span>纳斯达克</span>
@@ -120,7 +123,7 @@
 								<p>+0.03%</p>
 								<i class="icon icon_checked"></i>
 							</li>
-						</ul>
+						</ul>-->
 					</div>
 				</div>
 			</div>
@@ -234,9 +237,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="menu">
-			
-		</div>
 		<mt-tabbar v-model="selected" fixed class="menu">
 			<mt-tab-item class="col">  
 			    <img slot="icon" src="../../assets/images/mockTrading_02.png">  
@@ -327,7 +327,6 @@
 		}
 	}
 	.menu{
-		background: $bg;
 		.col{
 			background: $titleBlue;
 			border-top: 0.01rem solid $black;
@@ -418,6 +417,15 @@
 					}
 				}
 				.contrast_list{
+					.empty{
+						height: 3.16rem;
+						line-height: 3.16rem;
+						text-align: center;
+						color: #525866;
+						font-size: 0.36rem;
+						font-weight: bold;
+						border-bottom: 0.01rem solid $black;
+					}
 					li{
 						height: 0.63rem;
 						overflow: hidden;
