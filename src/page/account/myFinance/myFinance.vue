@@ -1,6 +1,6 @@
 <template>
 	<div id="myFinance">
-		<mt-header title="我的融资" fixed style="background-color:#242933;font-size: 0.32rem;height: 0.8rem;">
+		<mt-header title="我的融资" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem;border-bottom: 1px solid #12141a;line-height: 1rem;">
 		  	<router-link to="/account" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
@@ -46,8 +46,8 @@
 		name:"myFinance",
 		data(){
 			return{
-				exist:false,
-				none:true
+				exist:true,
+				none:false
 			}
 		}
 	}
@@ -69,7 +69,6 @@
 	#container{
 		width: 100%;
 		margin-top: 1rem;
-		border-top: 1px solid #12141a;
 		.state{
 			padding-right:0.3rem;
 			width: 100%;
