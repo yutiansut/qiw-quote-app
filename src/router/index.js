@@ -9,6 +9,7 @@ import optionalManage from "../page/quote/optionalManage.vue"
 import search from "../page/quote/search.vue"
 import quoteDetails from "../page/quote/quoteDetails.vue"
 import remind from "../page/quote/remind.vue"
+import tradeLogin from "../page/trade/tradeLogin.vue"
 
 
 
@@ -78,6 +79,9 @@ export default new Router({
 	},{
 		path: '/remind',
 		component: remind
+	},{
+		path: '/tradeLogin',
+		component: tradeLogin
 		
 		
 		
