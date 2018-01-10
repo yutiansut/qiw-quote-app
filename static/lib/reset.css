@@ -51,7 +51,7 @@ img{
 em, i{ 
 	font-style: normal;
 }
-div, p, ul, li, h1, h2, h3, h4, h5, h6, nav{
+div, p, ul, li, h1, h2, h3, h4, h5, h6, nav, ul, li, span, em{
 	box-sizing: border-box;
 }
 html{

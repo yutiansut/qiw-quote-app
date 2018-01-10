@@ -8,6 +8,7 @@ import noLogin from "../page/quote/noLogin.vue"
 import optionalManage from "../page/quote/optionalManage.vue"
 import search from "../page/quote/search.vue"
 import quoteDetails from "../page/quote/quoteDetails.vue"
+import remind from "../page/quote/remind.vue"
 
 
 
@@ -74,6 +75,9 @@ export default new Router({
 	},{
 		path: '/quoteDetails',
 		component: quoteDetails
+	},{
+		path: '/remind',
+		component: remind
 		
 		
 		
