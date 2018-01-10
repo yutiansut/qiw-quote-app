@@ -33,6 +33,14 @@ input, button, select, textarea {
  input:-webkit-autofill {
 	-webkit-box-shadow: 0 0 0px 1000px white inset; /*利用阴影来填充掉input自动填充色*/
 }
+button{
+	border: none;
+	outline: none;
+}
+input{
+	background: none;
+	border: none;
+}
 img{ 
 	display: inline-block; 
 	max-width: 100%; 

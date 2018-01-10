@@ -59,9 +59,6 @@
 <style scoped lang="scss">
 	@import "../assets/css/common.scss";
 	.btn{
-		padding: 0;
-		border: none;
-		outline: none;
     	height: 0.88rem;
     	line-height: 0.88rem;
     	overflow: hidden;
@@ -69,6 +66,7 @@
     	color: $white;
     	font-size: $fs32;
     	text-align: center;
+    	padding: 0;
     	&.bluelg{
     		width: 6.9rem;
     		background: $blue;

@@ -5,6 +5,10 @@ import stockFutures from "../page/quote/stockFutures.vue"
 import optionalList from "../page/quote/optionalList.vue"
 import optionalBox from "../page/quote/optionalBox.vue"
 import noLogin from "../page/quote/noLogin.vue"
+import optionalManage from "../page/quote/optionalManage.vue"
+
+
+
 import account from "../page/account.vue"
 import information from "../page/information.vue"
 import mockTrading from "../page/mockTrading.vue"
@@ -50,6 +54,9 @@ export default new Router({
 	},{
 		path: '/noLogin',
 		component: noLogin
+	},{
+		path: '/optionalManage',
+		component: optionalManage
 	},{
 		path:'/login',
 		component:login

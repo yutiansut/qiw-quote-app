@@ -8,6 +8,56 @@
 		    	<mt-button class="done">完成</mt-button>
 		 	</router-link>
 		</mt-header>
+		<div class="main">
+			<div class="search_box">
+				<div class="search">
+					<i class="icon icon_search"></i>
+					<input type="text" placeholder="搜索并添加合约" />
+				</div>
+			</div>
+			<div class="list">
+				<ul class="title">
+					<li>
+						<i class="icon icon_check"></i>
+						<div class="name">名称</div>
+						<div class="price">现价</div>
+						<div class="drag">拖动</div>
+					</li>
+				</ul>
+				<ul class="cont">
+					<li>
+						<i class="icon icon_check"></i>
+						<!--<i class="icon icon_checked"></i>-->
+						<div class="name">
+							<span>日经225</span>
+							<span>CNQ16</span>
+						</div>
+						<div class="price">
+							<span>72.5</span>
+							<span>10:30:21</span>
+						</div>
+						<div class="drag">
+							<i class="icon icon_"></i>
+						</div>
+					</li>
+					<li>
+						<!--<i class="icon icon_check"></i>-->
+						<i class="icon icon_checked"></i>
+						<div class="name">名称</div>
+						<div class="price">现价</div>
+						<div class="drag">拖动</div>
+					</li>
+					<li>
+						<i class="icon icon_check"></i>
+						<!--<i class="icon icon_checked"></i>-->
+						<div class="name">名称</div>
+						<div class="price">现价</div>
+						<div class="drag">拖动</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		
 	</div>
 </template>
 
@@ -34,8 +84,8 @@
 		padding: 0 0.3rem;
 		font-size: 0.36rem;
 		.done{
-			font-size: $fs24;
-			color: $fontBlue;
+			font-size: $fs28;
+			color: $fontBlueTitle;
 		}
 	}
 	.icon_back{
@@ -44,6 +94,94 @@
 		background: url(../../assets/images/back_icon.png) no-repeat center center;
 		background-size: 100% 100%;
 	}
+	.main{
+		margin-top: 1.01rem;
+		.search_box{
+			width: 7.5rem;
+			height: 0.96rem;
+			border-bottom: 0.01rem solid $black;
+			padding: 0.16rem 0.3rem;
+			.search{
+				width: 6.9rem;
+				height: 0.64rem;
+				background: #1b1f26;
+				border-radius: 0.1rem;
+				position: relative;
+				input{
+					width: 6.9rem;
+					height: 0.64rem;
+					line-height: 0.64rem;
+					padding: 0 0.1rem 0 0.85rem;
+					box-sizing: border-box;
+					color: $white;
+				}
+				.icon_search{
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 0.4rem;
+					height: 0.4rem;
+					background: url(../../assets/images/search.png) no-repeat center center;
+					background-size: 100% 100%;
+					margin: 0.12rem 0 0 0.3rem;
+				}
+			}
+		}
+		.list{
+			width: 7.5rem;
+			.title{
+				li{
+					height: 0.64rem;
+					line-height: 0.64rem;
+					background: $titleBlue;
+					.icon{
+						height: 0.64rem;
+						background: url(../../assets/images/check.png) no-repeat 0.3rem 0.36rem;
+						background-size: 0.24rem 0.24rem;
+						opacity: 0;
+					}
+					div{
+						color: $fontBlue;
+						font-size: $fs28;
+					}
+				}
+			}
+			li{
+				height: 0.96rem;
+				border-bottom: 0.01rem solid $black;
+				padding-right: 0.3rem;
+				.icon{
+					float: left;
+					width: 0.84rem;
+					height: 0.96rem;
+					&.icon_check{
+						background: url(../../assets/images/check.png) no-repeat 0.3rem 0.36rem;
+						background-size: 0.24rem 0.24rem;
+					}
+					&.icon_checked{
+						background: url(../../assets/images/checked.png) no-repeat 0.3rem 0.36rem;
+						background-size: 0.24rem 0.24rem;
+					}
+				}
+				div{
+					float: left;
+					text-align: right;
+					&:nth-child(2){
+						width: 3rem;
+						text-align: left;
+					}
+					&:nth-child(3){
+						width: 1.5rem;
+					}
+					&:nth-child(4){
+						float: right;
+						width: 1rem;
+					}
+				}
+			}
+		}
+	}
+	
 	
 	
 </style>
