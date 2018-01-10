@@ -2,7 +2,7 @@
 	<div id="account">
 		<mt-header title="我的" fixed style="background-color:#242933;font-size: 0.32rem;height: 0.8rem;">
 		    <router-link to="/customerServices" slot="right">
-		    	<mt-button style="font-size: 0.16rem;color: #9ba8c2;">客服</mt-button>
+		    	<mt-button style="font-size: 0.24rem;color: #9ba8c2;">客服</mt-button>
 		 	</router-link>
 		</mt-header>
 		<div id="container">
@@ -26,8 +26,8 @@
 				<ul>
 					<li><i></i></li>
 					<li>
-						<mt-button class="btn">注册</mt-button>
-						<mt-button class="btn1">登录</mt-button>
+						<mt-button class="btn" @click.native="toRegisiter">注册</mt-button>
+						<mt-button class="btn1" @click.native="toLogin">登录</mt-button>
 					</li>
 				</ul>
 			</div>
@@ -51,7 +51,7 @@
 			</div>
 			<div id="about_mine">
 					<ul>
-						<li>
+						<li @click="toMyFinance">
 							<i></i>
 							<span>我的融资</span>
 						</li>
@@ -118,11 +118,17 @@
 		},
 		data(){
 			return{
-				showLoginIn:true,
-				showNotLogin:false
+				showLoginIn:false,
+				showNotLogin:true
 			}
 		},
 		methods:{
+			toRegisiter:function(){
+				this.$router.push({path:'/regisiter'});
+			},
+			toLogin:function(){
+				this.$router.push({path:'/login'});
+			},
 			tonext:function(){
 				this.$router.push({path:'/personalSet'});
 			},
@@ -143,6 +149,9 @@
 			},
 			toRecharge:function(){
 				this.$router.push({path:'/recharge'});
+			},
+			toMyFinance:function(){
+				this.$router.push({path:'/myFinance'});	
 			}
 		}
 	}

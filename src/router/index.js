@@ -32,6 +32,9 @@ import newsNotice from"../page/account/newsNotice.vue"
 import newsDetails from"../page/account/newsDetails.vue"
 import recharge from"../page/account/recharge.vue"
 import myFinance from"../page/account/myFinance/myFinance.vue"
+import financeDetails from"../page/account/myFinance/financeDetails.vue"
+import schemeDetails from"../page/account/myFinance/schemeDetails.vue"
+import historyRecords from"../page/account/myFinance/historyRecords.vue"
 
 Vue.use(Router)
 
@@ -130,6 +133,18 @@ export default new Router({
 	},{
 		path:'/myFinance',
 		component:myFinance
+	},{
+		path:'/financeDetails',
+		component:financeDetails,
+		children:[
+			{
+				path:"/schemeDetails",
+				component:schemeDetails
+			},{
+				path:"/historyRecords",
+				component:historyRecords
+			}
+		]
 	}
 	]
 })
