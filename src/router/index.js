@@ -6,6 +6,7 @@ import optionalList from "../page/quote/optionalList.vue"
 import optionalBox from "../page/quote/optionalBox.vue"
 import noLogin from "../page/quote/noLogin.vue"
 import optionalManage from "../page/quote/optionalManage.vue"
+import search from "../page/quote/search.vue"
 
 
 
@@ -58,6 +59,13 @@ export default new Router({
 	},{
 		path: '/optionalManage',
 		component: optionalManage
+	},{
+		path: '/search',
+		component: search
+		
+		
+		
+		
 	},{
 		path:'/login',
 		component:login
