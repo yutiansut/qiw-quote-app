@@ -24,6 +24,7 @@ import moneyDetails from"../page/account/moneyDetails.vue"
 import realName from"../page/account/realName.vue"
 import feedBack from"../page/account/feedBack.vue"
 import help from"../page/account/help.vue"
+import customerServices from"../page/account/customerServices.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -93,6 +94,9 @@ export default new Router({
 	},{
 		path:'/help',
 		component:help
+	},{
+		path:'/customerServices',
+		component:customerServices
 	}
 	]
 })

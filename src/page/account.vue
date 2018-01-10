@@ -1,7 +1,7 @@
 <template>
 	<div id="account">
 		<mt-header title="我的" fixed style="background-color:#242933;font-size: 0.32rem;height: 0.8rem;">
-		    <router-link to="/account" slot="right">
+		    <router-link to="/customerServices" slot="right">
 		    	<mt-button style="font-size: 0.16rem;color: #9ba8c2;">客服</mt-button>
 		 	</router-link>
 		</mt-header>
