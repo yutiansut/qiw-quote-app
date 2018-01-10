@@ -18,7 +18,7 @@
 				</ul>
 				<ul>
 					<li>
-						<mt-button class="btn2">充值</mt-button>
+						<mt-button class="btn2" @click.native="toRecharge">充值</mt-button>
 					</li>
 				</ul>
 			</div>
@@ -80,7 +80,7 @@
 			</div>
 			<div id="others">
 				<ul>
-					<li>
+					<li @click="toNews">
 						<i></i>
 						<span>新闻公告</span>
 					</li>
@@ -106,7 +106,6 @@
 			</div>
 		</div>
 		<TabBar></TabBar>
-		<router-view></router-view>
 	</div>
 </template>
 
@@ -138,6 +137,12 @@
 			},
 			toHelp:function(){
 				this.$router.push({path:'/help'});
+			},
+			toNews:function(){
+				this.$router.push({path:'/newsNotice'});
+			},
+			toRecharge:function(){
+				this.$router.push({path:'/recharge'});
 			}
 		}
 	}
