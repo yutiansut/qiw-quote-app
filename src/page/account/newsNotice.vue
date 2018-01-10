@@ -52,7 +52,6 @@
 		background-size: 100% 100%;
 	}
 	#container{
-		position: relative;
 		color:$fontBlue ;
 		width: 100%;
 		margin-top: 1rem;
