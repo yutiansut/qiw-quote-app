@@ -280,7 +280,7 @@
 		height: 1rem;
 		border-bottom: 0.01rem solid $black;
 		padding: 0 0.3rem;
-		margin: auto;
+		box-sizing: border-box;
 		.icon_back{
 			width: 0.24rem;
 			height: 1rem;

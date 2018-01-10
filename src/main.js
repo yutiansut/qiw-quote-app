@@ -9,7 +9,7 @@ import 'babel-polyfill'
 Vue.prototype.$http = axios
 import Mint from 'mint-ui';
 Vue.use(Mint);
-import 'mint-ui/lib/style.css'; 
+import 'mint-ui/lib/style.css';
 
 Vue.config.productionTip = false
 

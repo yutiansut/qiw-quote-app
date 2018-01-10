@@ -1,5 +1,5 @@
 <template>
-	<div id="quoteDetails">
+	<div id="remind">
 		<header>
 			<i class="icon icon_back"></i>
 			<div class="title">
@@ -7,265 +7,128 @@
 					<span>美黄金</span>
 					<span>GC1702</span>
 				</div>
-				<i class="icon icon_triangle"></i>
 			</div>
-			<button>规则</button>
 		</header>
 		<div class="main">
-			<div class="details">
-				<div class="cont">
-					<p class="name"><span>美黄金</span>&nbsp;&nbsp;GC1702</p>
-					<p class="price red">1276.1</p>
-					<p class="change red">+2.1&nbsp;&nbsp;+0.29%</p>
-					<div class="row">
-						<div class="col">
-							<span>现手</span>
-							<span>54.91</span>
-						</div>
-						<div class="col">
-							<span>买价</span>
-							<span>54.91</span>
-						</div>
-						<div class="col">
-							<span>卖价</span>
-							<span>52.91</span>
-						</div>
+			<div class="title">
+				<div class="row">
+					<em class="red">1276.1</em>
+					<em class="red">+2.1</em>
+					<em class="red">+0.29%</em>
+				</div>
+				<div class="row">
+					<span>提醒方式</span>
+					<div class="reminda_ways fl">
+						<i class="icon icon_check"></i>
+						<span>通知提醒</span>
 					</div>
-					<div class="row">
-						<div class="col">
-							<span>买量</span>
-							<span>54.91</span>
-						</div>
-						<div class="col">
-							<span>卖量</span>
-							<span>54.91</span>
-						</div>
-						<div class="col">
-							<span>成交量</span>
-							<span>25880</span>
-						</div>
-						<div class="col">
-							<span>持仓量</span>
-							<span>158965</span>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col">
-							<span>开盘</span>
-							<span>54.91</span>
-						</div>
-						<div class="col">
-							<span>昨结</span>
-							<span>54.91</span>
-						</div>
-						<div class="col">
-							<span>最高价</span>
-							<span>25880</span>
-						</div>
-						<div class="col">
-							<span>最低价</span>
-							<span>158965</span>
-						</div>
+					<div class="reminda_ways fl">
+						<i class="icon icon_checked"></i>
+						<span>短信提醒</span>
 					</div>
 				</div>
-				<div class="contrast">
-					<div class="title">
-						<i class="icon icon_contrast fl"></i>
-						<span class="fl">对比合约</span>
-					</div>
-					<div class="contrast_list">
-						<div class="empty">
-							<p>无对比合约</p>
-						</div>
-						<!--<ul>
-							<li class="current">
-								<div class="name fl">
-									<span>纳斯达克</span>
-									<span>CNQ16</span>
-								</div>
-								<p>50.12</p>
-								<p>+0.03%</p>
-								<i class="icon icon_checked"></i>
-							</li>
-							<li>
-								<div class="name fl">
-									<span>纳斯达克</span>
-									<span>CNQ16</span>
-								</div>
-								<p>50.12</p>
-								<p>+0.03%</p>
-								<i class="icon icon_check"></i>
-							</li>
-							<li>
-								<div class="name fl">
-									<span>纳斯达克</span>
-									<span>CNQ16</span>
-								</div>
-								<p>50.12</p>
-								<p>+0.03%</p>
-								<i class="icon icon_check"></i>
-							</li>
-							<li>
-								<div class="name fl">
-									<span>纳斯达克</span>
-									<span>CNQ16</span>
-								</div>
-								<p>50.12</p>
-								<p>+0.03%</p>
-								<i class="icon icon_check"></i>
-							</li>
-							<li class="current">
-								<div class="name fl">
-									<span>纳斯达克</span>
-									<span>CNQ16</span>
-								</div>
-								<p>50.12</p>
-								<p>+0.03%</p>
-								<i class="icon icon_checked"></i>
-							</li>
-						</ul>-->
-					</div>
+				<div class="row">
+					<p>实时智能盯盘，免费短信预警，不再担心错过行情，价格波动实时短信提醒，现已免费提供。</p>
 				</div>
 			</div>
-			<div class="chart_box">
-				<div class="title">
-					<div class="title_box">
-						<span>闪电图</span>
-						<span class="current">分时</span>
-						<span>1分</span>
-						<span>5分</span>
-						<span>15分</span>
-						<span>30分</span>
-						<span>日K</span>
-						<span>周K</span>
+			<div class="cont">
+				<div class="row">
+					<span class="type">价格上涨到</span>
+					<input type="text" class="ipt_lg" />
+					<div class="switch">
+						<i class="icon icon_zero"></i>
 					</div>
 				</div>
-				<div class="cont">
-					<div class="chart fl">
-						
-					</div>
-					<div class="cont_right fl">
-						<div class="tab_title">
-							<span>五档</span>
-							<span class="current">明细</span>
-						</div>
-						<div class="tab_cont">
-							<div class="five_quote">
-								<h3>卖五档</h3>
-								<ul>
-									<li>
-										<span>卖五</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>卖四</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>卖三</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>卖二</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>卖一</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-								</ul>
-								<h3 class="border_top">买五档</h3>
-								<ul>
-									<li>
-										<span>买一</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>买二</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>买三</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>买四</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>买五</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-								</ul>
-							</div>
-							<!--<div class="trade_log">
-								<ul>
-									<li>
-										<span>15:16</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>15:16</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>15:16</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>15:16</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-								</ul>
-							</div>-->
-						</div>
+				<div class="row">
+					<span class="type">最近</span>
+					<input type="text" class="ipt_sm" />
+					<span>天最高价</span>
+					<b>--</b>
+				</div>
+				<div class="row">
+					<span class="type">价格下跌到</span>
+					<input type="text" class="ipt_lg" />
+					<div class="switch">
+						<i class="icon icon_zero"></i>
 					</div>
 				</div>
+				<div class="row">
+					<span class="type">最近</span>
+					<input type="text" class="ipt_sm" />
+					<span>天最低价</span>
+					<b>--</b>
+				</div>
+				<div class="row">
+					<span class="type">当日涨幅超过</span>
+					<input type="text" class="ipt_sm" />
+					<span>%</span>
+					<div class="switch">
+						<i class="icon icon_zero"></i>
+					</div>
+				</div>
+				<div class="row">
+					<span class="type">当日跌幅超过</span>
+					<input type="text" class="ipt_sm" />
+					<span>%</span>
+					<div class="switch">
+						<i class="icon icon_zero"></i>
+					</div>
+				</div>
+				<div class="row">
+					<span class="type">最新价高于</span>
+					<input type="text" class="ipt_sm" />
+					<div class="switch">
+						<i class="icon icon_zero"></i>
+					</div>
+				</div>
+				<div class="row">
+					<span class="type">最新价低于</span>
+					<input type="text" class="ipt_sm" />
+					<div class="switch">
+						<i class="icon icon_zero"></i>
+					</div>
+				</div>
+				<div class="row">
+					<span class="type">突破当日最高价</span>
+					<div class="switch">
+						<i class="icon icon_zero"></i>
+					</div>
+				</div>
+				<div class="row">
+					<span class="type">突破当日最低价</span>
+					<div class="switch">
+						<i class="icon icon_zero"></i>
+					</div>
+				</div>
+				<div class="row">
+					<span class="type">提醒频率</span>
+					<div class="fr">
+						<span>每日一次</span>
+						<i class="icon icon_arrow"></i>
+					</div>
+				</div>
+				<div class="row">
+					<p>价格提醒服务，依赖于网络，可能出现通知延迟状况，请保持网络通畅。</p>
+				</div>
+			</div>
+			<div class="btn_box">
+				<btn name="完成" className="bluelg"></btn>
 			</div>
 		</div>
-		<mt-tabbar v-model="selected" fixed class="menu">
-			<mt-tab-item class="col">  
-			    <img slot="icon" src="../../assets/images/mockTrading_02.png">  
-			    <span>模拟交易</span> 
-			</mt-tab-item> 
-      		<mt-tab-item class="col">  
-		        <img slot="icon" src="../../assets/images/remind.png">  
-		        <span>提醒</span>  
-		    </mt-tab-item> 
-      		<mt-tab-item class="col">  
-		        <img slot="icon" src="../../assets/images/add_optional.png">  
-		        <span>添加自选</span> 
-		    </mt-tab-item>
-      		<mt-tab-item class="col">  
-		        <img slot="icon" src="../../assets/images/position.png">  
-		         <span>持仓</span> 
-	      	</mt-tab-item> 
-		</mt-tabbar> 
 	</div>
 </template>
 
 <script>
+	import btn from "../../components/btn.vue"
 	export default {
-		name: 'quoteDetails',
-		components: {},
+		name: 'remind',
+		components: {btn, },
 		data(){
 			return{
+				value: true,
 			}
 		},
+		
 	}
 </script>
 
@@ -278,9 +141,10 @@
 		display: flex;
 		width: 7.5rem;
 		height: 1rem;
+		background: $bg;
 		border-bottom: 0.01rem solid $black;
 		padding: 0 0.3rem;
-		margin: auto;
+		box-sizing: border-box;
 		.icon_back{
 			width: 0.24rem;
 			height: 1rem;
@@ -303,280 +167,127 @@
 					margin: 0.2rem 0 0.05rem 0;
 				}
 			}
-			.icon_triangle{
-				float: left;
-				width: 0.5rem;
-				height: 1rem;
-				background: url(../../assets/images/triangle.png) no-repeat 0.17rem 0.46rem;
-				background-size: 0.16rem 0.08rem;
-			}
-		}
-		button{
-			width: 0.7rem;
-			height: 0.4rem;
-			line-height: 0.4rem;
-			text-align: center;
-			background: $yellow;
-			font-size: 0.2rem;
-			color: $bg;
-			border-radius: 0.08rem;
-			padding: 0;
-			position: fixed;
-			top: 0.3rem;
-			right: 1.8rem;
-		}
-	}
-	.menu{
-		.col{
-			background: $titleBlue;
-			border-top: 0.01rem solid $black;
-			border-left: 0.01rem solid $black;
-			&:first-child{
-				border-left: none;
-			}
-			span{
-				color: $fontBlue;
-				
-			}
 		}
 	}
 	.main{
 		margin-top: 1.01rem;
-		.details{
+		.title{
 			width: 7.5rem;
-			height: 3.85rem;
-			background: #1b1f26;
-			border-bottom: 0.01rem solid $black;
-			.cont{
-				float: left;
-				width: 4.3rem;
-				height: 3.65rem;
-				background: $bg;
-				border-bottom: 0.01rem solid $black;
-				border-right: 0.01rem solid $black;
-				padding-left: 0.29rem;
-				.name{
-					height: 0.5rem;
-					line-height: 0.55rem;
-					span{
-						color: $white;
-					}
-				}
-				.price{
-					font-size: 0.64rem;
-					margin-bottom: 0.05rem;
-					&.red{
-						color: $red;
-					}
-					&.green{
-						color: $green;
-					}
-				}
-				.change{
-					font-size: $fs28;
-					margin-bottom: 0.2rem;
-					&.red{
-						color: $red;
-					}
-					&.green{
-						color: $green;
-					}
-				}
-				.row{
-					height: 0.4rem;
-					margin-bottom: 0.2rem;
-					.col{
-						float: left;
-						width: 1rem;
-						span{
-							display: block;
-							font-size: 0.2rem;
-							&:last-child{
-								margin-top: 0.05rem;
-								color: $white;
-							}
-						}
-					}
-				}
-			}
-			.contrast{
-				float: left;
-				width: 3.2rem;
-				height: 3.65rem;
-				background: $bg;
-				.title{
-					height: 0.49rem;
-					line-height: 0.49rem;
-					background: $lightBlue;
-					.icon_contrast{
-						width: 0.24rem;
-						height: 0.16rem;
-						background: url(../../assets/images/contrast.png) no-repeat center center;
-						background-size: 100% 100%;
-						margin: 0.17rem 0.1rem 0 0.1rem;
-					}
-				}
-				.contrast_list{
-					.empty{
-						height: 3.16rem;
-						line-height: 3.16rem;
-						text-align: center;
-						color: #525866;
-						font-size: 0.36rem;
-						font-weight: bold;
-						border-bottom: 0.01rem solid $black;
-					}
-					li{
-						height: 0.63rem;
-						overflow: hidden;
-						border-bottom: 0.01rem solid $black;
-						padding: 0 0.05rem;
-						&.current{
-							background: #1b1f26;
-						}
-						.name{
-							width: 1.2rem;
-							height: 0.63rem;
-							overflow: hidden;
-							span{
-								display: block;
-								font-size: 0.2rem;
-								&:first-child{
-									color: $white;
-									margin: 0.07rem 0 0.05rem 0;
-								}
-							}
-						}
-						p{
-							float: left;
-							width: 0.75rem;
-							line-height: 0.64rem;
-							font-size: 0.2rem;
-						}
-						.icon{
-							float: right;
-							width: 0.24rem;
-							height: 0.64rem;
-							margin-right: 0.05rem;
-							&.icon_check{
-								background: url(../../assets/images/check.png) no-repeat center 0.2rem;
-								background-size: 0.24rem 0.24rem;
-							}
-							&.icon_checked{
-								background: url(../../assets/images/checked.png) no-repeat center 0.2rem;
-								background-size: 0.24rem 0.24rem;
-							}
-						}
-					}
-				}
-			}
+			height: 3rem;
+			border-bottom: 0.15rem solid $black;
 		}
-		.chart_box{
-			width: 7.5rem;
-			height: 6.2rem;
-			.title{
-				height: 0.8rem;
-				padding: 0 0.3rem;
-				border-bottom: 0.01rem solid $black;
-				overflow-x: scroll;
-				.title_box{
-					width: 7.6rem;
+		.cont{
+			.type{
+				width: 2rem;
+			}
+			
+		}
+		.btn_box{
+			padding: 0.98rem 0.3rem 0.3rem 0.3rem;
+		}
+		.row{
+			height: 0.96rem;
+			border-bottom: 0.01rem solid $black;
+			padding: 0 0.3rem;
+			span{
+				float: left;
+				display: inline-block;
+				line-height: 0.96rem;
+				font-size: $fs28;
+			}
+			input{
+				float: left;
+				display: inline-block;
+				height: 0.64rem;
+				background: #1b1f26;
+				border-radius: 0.1rem;
+				margin: 0.16rem 0;
+				padding: 0 0.1rem;
+				color: $white;
+				&.ipt_lg{
+					width: 2rem;
 				}
-				span{
-					display: inline-block;
-					height: 0.74rem;
-					line-height: 0.74rem;
-					border-bottom: 0.04rem solid $bg;
-					font-size: $fs28;
-					margin-left: 0.3rem;
-					&:first-child{
-						margin: 0;
-					}
-					&.current{
-						border-color: $blue;
+				&.ipt_sm{
+					width: 1rem;
+					margin-right: 0.15rem;
+				}
+			}
+			em{
+				line-height: 0.96rem;
+				margin-right: 0.15rem;
+				&:first-child{
+					font-size: 0.48rem;
+					margin-right: 0.3rem;
+				}
+				&.red{
+					color: $red;
+				}
+				&.green{
+					color: $green;
+				}
+			}
+			b{
+				color: $white;
+				font-weight: bold;
+				line-height: 0.96rem;
+				margin-left: 0.05rem;
+			}
+			.icon_arrow{
+				width: 0.22rem;
+				height: 0.96rem;
+				background: url(../../assets/images/arrow.png) no-repeat right 0.38rem;
+				background-size: 0.12rem 0.2rem;
+			}
+			.switch{
+				float: right;
+				width: 0.96rem;
+				height: 0.48rem;
+				background: #1b1f26;
+				border-radius: 0.24rem;
+				border: 0.01rem solid $black;
+				margin: 0.24rem 0;
+				position: relative;
+				.icon_zero{
+					width: 0.4rem;
+					height: 0.4rem;
+					background: #525866;
+					border-radius: 100%;
+					position: absolute;
+					top: 0.04rem;
+					left: 0.04rem;
+				}
+				&.current{
+					.icon_zero{
+						left: 0.48rem;
+						background: $blue;
 					}
 				}
 			}
-			.cont{
-				height: 5.4rem;
-				border-bottom: 0.01rem solid $black;
-				.chart{
-					width: 5.7rem;
-					height: 5.4rem;
-					border-right: 0.01rem solid $black;
+			.reminda_ways{
+				float: right;
+				margin-left: 0.3rem;
+				span{
+					font-size: $fs24;
 				}
-				.cont_right{
-					width: 1.8rem;
-					height: 5.4rem;
-					.tab_title{
-						height: 0.8rem;
-						line-height: 0.8rem;
-						background: $titleBlue;
-						border-bottom: 0.01rem solid $black;
-						span{
-							float: left;
-							display: inline-block;
-							width: 50%;
-							text-align: center;
-							border-left: 0.01rem solid $black;
-							&.current{
-								color: $blue;
-							}
-							&:first-child{
-								border: none;
-							}
-						}
+				.icon{
+					float: left;
+					width: 0.24rem;
+					height: 0.96rem;
+					margin: 0 0.1rem 0 0;
+					&.icon_check{
+						background: url(../../assets/images/check.png) no-repeat center 0.36rem;
+						background-size: 0.24rem 0.24rem;
 					}
-					.tab_cont{
-						.five_quote{
-							h3{
-								height: 0.48rem;
-								line-height: 0.48rem;
-								background: $lightBlue;
-								padding: 0 0.1rem;
-								border-bottom: 0.01rem solid $black;
-								&.border_top{
-									border-top: 0.01rem solid $black;
-								}
-							}
-							li{
-								height: 0.36rem;
-								line-height: 0.36rem;
-								display: flex;
-								justify-content: space-around;
-								span{
-									font-size: 0.2rem;
-									&.red{
-										color: $red;
-									}
-									&.green{
-										color: $green;
-									}
-									&:last-child{
-										color: $white;
-									}
-								}
-							}
-						}
-						.trade_log{
-							li{
-								height: 0.36rem;
-								line-height: 0.36rem;
-								display: flex;
-								justify-content: space-around;
-								span{
-									font-size: 0.2rem;
-									&:nth-child(2){
-										color: $yellow;
-									}
-									&:nth-child(3){
-										color: $white;
-									}
-								}
-							}
-						}
+					&.icon_checked{
+						background: url(../../assets/images/checked.png) no-repeat center 0.36rem;
+						background-size: 0.24rem 0.24rem;
 					}
 				}
+			}
+			p{
+				line-height: 0.38rem;
+				color: $white;
+				margin-top: 0.1rem;
 			}
 		}
 	}
