@@ -26,6 +26,9 @@ import realName from"../page/account/realName.vue"
 import feedBack from"../page/account/feedBack.vue"
 import help from"../page/account/help.vue"
 import customerServices from"../page/account/customerServices.vue"
+import newsNotice from"../page/account/newsNotice.vue"
+import newsDetails from"../page/account/newsDetails.vue"
+import recharge from"../page/account/recharge.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -105,6 +108,15 @@ export default new Router({
 	},{
 		path:'/customerServices',
 		component:customerServices
+	},{
+		path:'/newsNotice',
+		component:newsNotice	
+	},{
+		path:'/newsDetails',
+		component:newsDetails
+	},{
+		path:'/recharge',
+		component:recharge
 	}
 	]
 })

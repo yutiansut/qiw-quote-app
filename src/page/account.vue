@@ -80,7 +80,7 @@
 			</div>
 			<div id="others">
 				<ul>
-					<li>
+					<li @click="toNews">
 						<i></i>
 						<span>新闻公告</span>
 					</li>
@@ -106,7 +106,6 @@
 			</div>
 		</div>
 		<TabBar></TabBar>
-		<router-view></router-view>
 	</div>
 </template>
 
@@ -138,6 +137,9 @@
 			},
 			toHelp:function(){
 				this.$router.push({path:'/help'});
+			},
+			toNews:function(){
+				this.$router.push({path:'/newsNotice'});
 			}
 		}
 	}
