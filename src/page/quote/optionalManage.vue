@@ -131,6 +131,7 @@
 				width: 6.9rem;
 				height: 0.64rem;
 				background: #1b1f26;
+				border: 0.01rem solid $black;
 				border-radius: 0.1rem;
 				position: relative;
 				input{
