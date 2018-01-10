@@ -1,6 +1,6 @@
 <template>
 	<div id="login">
-		<mt-header title="登录" fixed style="background-color:#242933;font-size: 0.32rem;height: 0.8rem;">
+		<mt-header title="登录" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem;">
 		  	<router-link to="/account" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
@@ -59,7 +59,7 @@
 	}
 	#container{
 		width: 100%;
-		margin-top: 0.8rem;
+		margin-top: 1rem;
 		display: flex;
 		flex-direction: column;
 		border-top: 1px solid #12141a;
@@ -103,9 +103,9 @@
 			text-indent: 1rem;
 			color: $white;
 			margin-top: 0.2rem;
-			&:hover{
+			/*&:hover{
 				border-color: $blue;
-			}
+			}*/
 		}
 		#eye{
 			position: absolute;
