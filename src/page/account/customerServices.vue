@@ -6,7 +6,7 @@
 		  	</router-link>
 		</mt-header>
 		<div id="container">
-			<mt-cell title="客服热线" class="cell" to="showaction">
+			<mt-cell title="客服热线" class="cell" @click.native="call">
 				<span>400-852-8008</span>
 				<img slot="icon" src="../../assets/images/account/phone.png" width="24" height="24">
 			</mt-cell>
@@ -35,8 +35,7 @@
 			sure:function(){
 				console.log("111111")
 			},
-			showaction:function(){
-				console.log("111111111")
+			call:function(){
 				this.sheetVisible=true
 			}
 		}
