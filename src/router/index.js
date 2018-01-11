@@ -11,6 +11,7 @@ import quoteDetails from "../page/quote/quoteDetails.vue"
 import remind from "../page/quote/remind.vue"
 import tradeLogin from "../page/trade/tradeLogin.vue"
 import trade from "../page/trade.vue"
+import hasLogin from "../page/trade/hasLogin.vue"
 
 
 import account from "../page/account.vue"
@@ -81,6 +82,9 @@ export default new Router({
 	},{
 		path: '/tradeLogin',
 		component: tradeLogin
+	},{
+		path: '/hasLogin',
+		component: hasLogin
 		
 		
 		
