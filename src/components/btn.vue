@@ -20,9 +20,6 @@
 					case 'bluemd':
 						return 'bluemd';
 						break;
-					case 'orangelg':
-						return 'orangelg';
-						break;
 					case 'orangemd':
 						return 'orangemd';
 						break;
