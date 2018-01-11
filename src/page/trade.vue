@@ -5,14 +5,14 @@
 			<h1>ID:10081</h1>
 			<i class="icon icon_menu"></i>
 		</header>
+		<div class="nav">
+			<ul>
+				<li class="current"><span>交易</span></li>
+				<li><span>持仓</span></li>
+				<li><span>资金明细</span></li>
+			</ul>
+		</div>
 		<div class="main">
-			<div class="nav">
-				<ul>
-					<li class="current"><span>交易</span></li>
-					<li><span>持仓</span></li>
-					<li><span>资金明细</span></li>
-				</ul>
-			</div>
 			<div class="cont">
 				<div class="total">
 					<div class="col">
@@ -109,30 +109,35 @@
 			right: 0;
 		}
 	}
-	.main{
-		margin-top: 1.01rem;
-		.nav{
-			width: 7.5rem;
-			height: 0.8rem;
-			border-bottom: 0.01rem solid $black;
-			li{
-				float: left;
-				width: 2.5rem;
-				text-align: center;
+	.nav{
+		width: 7.5rem;
+		height: 0.8rem;
+		border-bottom: 0.01rem solid $black;
+		background: $bg;
+		position: fixed;
+		top: 1.01rem;
+		left: 0;
+		li{
+			float: left;
+			width: 2.5rem;
+			text-align: center;
+			span{
+				display: inline-block;
+				height: 0.8rem;
+				line-height: 0.8rem;
+				font-size: $fs28;	
+			}
+			&.current{
 				span{
-					display: inline-block;
-					height: 0.8rem;
-					line-height: 0.8rem;
-					font-size: $fs28;	
-				}
-				&.current{
-					span{
-						color: $blue;
-						border-bottom: 0.05rem solid $blue;
-					}
+					color: $blue;
+					border-bottom: 0.05rem solid $blue;
 				}
 			}
 		}
+	}
+	.main{
+		margin-top: 1.81rem;
+		padding-bottom: 1rem;
 		.cont{
 			.total{
 				height: 0.95rem;
