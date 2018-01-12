@@ -4,7 +4,7 @@
 			<div class="search">
 				<i class="icon icon_search"></i>
 				<input type="text" placeholder="搜索合约代码/简称" />
-				<span>取消</span>
+				<span @touchstart="toIndex">取消</span>
 			</div>
 		</div>
 		<div class="main">
@@ -60,6 +60,11 @@
 				
 			}
 		},
+		methods: {
+			toIndex: function(){
+				this.$router.push({path: '/index'});
+			}
+		}
 	}
 </script>
 
