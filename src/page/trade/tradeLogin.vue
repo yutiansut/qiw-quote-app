@@ -26,6 +26,7 @@
 			<p><span>交易账号：</span>申请配资方案后系统会自动发放，用于实盘或者模拟盘交易的账号。可查询交易明细，结算后将会更换。</p>
 			<p><span>登录账号：</span>申请配资方案后系统会自动发放，用于实盘或者模拟盘交易的账号。可查询交易明细，结算后将会更换。</p>
 		</div>
+		<router-view></router-view>
 	</div>
 </template>
 
@@ -48,7 +49,7 @@
 				this.selectNum=index;
 				switch(index){
 					case 0:
-//						this.$router.push({path:"/tradeLogin/*"})
+						this.$router.push({path:"/tradeLogin/"})
 						break;
 					case 1:
 						this.$router.push({path:"/tradeLogin/tradeApply"});

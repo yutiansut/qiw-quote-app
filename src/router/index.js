@@ -85,8 +85,8 @@ export default new Router({
 		component: tradeLogin,
 		children:[
 			{
-				path:"/tradeLogin/*",
-				component:schemeDetails
+				path:"/tradeLogin",
+				component:tradeLogin
 			},{
 				path:"/tradeLogin/tradeApply",
 				component:tradeApply
