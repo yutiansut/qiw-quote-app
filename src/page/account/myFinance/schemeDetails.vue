@@ -40,7 +40,7 @@
 				<btn className="bluelg" name="申请终结方案"></btn>
 			</div>
 		</div>
-		<div class="end">
+		<div class="end" v-show="showEnd">
 			<div class="state">
 				<p>已结算</p>
 			</div>
@@ -77,7 +77,8 @@
 		components:{btn},
 		data(){
 			return{
-				showcp:false
+				showcp:true,
+				showEnd:false
 			}
 		}
 	}
@@ -156,6 +157,7 @@
 					&:nth-child(odd){
 						width: 50%;
 						float: left;
+						border-right: 1px solid #12141a;
 					}
 					&:nth-child(even){
 						width: 50%;

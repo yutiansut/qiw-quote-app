@@ -12,7 +12,7 @@ import remind from "../page/quote/remind.vue"
 import tradeLogin from "../page/trade/tradeLogin.vue"
 import trade from "../page/trade.vue"
 import hasLogin from "../page/trade/hasLogin.vue"
-
+import tradeApply from "../page/trade/tradeApply.vue"
 
 import account from "../page/account.vue"
 import information from "../page/information.vue"
@@ -36,6 +36,7 @@ import myFinance from"../page/account/myFinance/myFinance.vue"
 import financeDetails from"../page/account/myFinance/financeDetails.vue"
 import schemeDetails from"../page/account/myFinance/schemeDetails.vue"
 import historyRecords from"../page/account/myFinance/historyRecords.vue"
+import addMargin from"../page/account/myFinance/addMargin.vue"
 
 Vue.use(Router)
 
@@ -81,7 +82,16 @@ export default new Router({
 		component: remind
 	},{
 		path: '/tradeLogin',
-		component: tradeLogin
+		component: tradeLogin,
+		children:[
+			{
+				path:"/tradeLogin/*",
+				component:schemeDetails
+			},{
+				path:"/tradeLogin/tradeApply",
+				component:tradeApply
+			}
+		]
 	},{
 		path: '/hasLogin',
 		component: hasLogin
@@ -145,13 +155,16 @@ export default new Router({
 		component:financeDetails,
 		children:[
 			{
-				path:"/schemeDetails",
+				path:"/financeDetails/schemeDetails",
 				component:schemeDetails
 			},{
-				path:"/historyRecords",
+				path:"/financeDetails/historyRecords",
 				component:historyRecords
 			}
 		]
+	},{
+		path:'/addMargin',
+		component:addMargin,
 	}
 	]
 })
