@@ -3,12 +3,12 @@
 		<header>
 			<i class="icon icon_back"></i>
 			<div class="tab">
-				<template v-for="(v, index) in tabList">
-					<span :class="{current: selectNum == index}">{{v}}</span>
+				<template v-for="(v, index) in tabList" >
+					<span :class="{current: selectNum == index}" @click="switchover(index)">{{v}}</span>
 				</template>
 			</div>
 		</header>
-		<div class="main">
+		<div class="main" v-show="show">
 			<div class="fm">
 				<div class="row">
 					<span>交易账号</span>
@@ -40,8 +40,22 @@
 			return{
 				selectNum: 0,
 				tabList: ['配资交易登录', '配资交易申请'],
+				show:false
 			}
 		},
+		methods:{
+			switchover:function(index){
+				this.selectNum=index;
+				switch(index){
+					case 0:
+//						this.$router.push({path:"/tradeLogin/*"})
+						break;
+					case 1:
+						this.$router.push({path:"/tradeLogin/tradeApply"});
+						break;
+				}
+			}
+		}
 	}
 </script>
 

@@ -12,7 +12,7 @@ import remind from "../page/quote/remind.vue"
 import tradeLogin from "../page/trade/tradeLogin.vue"
 import trade from "../page/trade.vue"
 import hasLogin from "../page/trade/hasLogin.vue"
-
+import tradeApply from "../page/trade/tradeApply.vue"
 
 import account from "../page/account.vue"
 import information from "../page/information.vue"
@@ -82,7 +82,16 @@ export default new Router({
 		component: remind
 	},{
 		path: '/tradeLogin',
-		component: tradeLogin
+		component: tradeLogin,
+		children:[
+			{
+				path:"/tradeLogin/*",
+				component:schemeDetails
+			},{
+				path:"/tradeLogin/tradeApply",
+				component:tradeApply
+			}
+		]
 	},{
 		path: '/hasLogin',
 		component: hasLogin
