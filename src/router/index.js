@@ -13,6 +13,9 @@ import tradeLogin from "../page/trade/tradeLogin.vue"
 import trade from "../page/trade.vue"
 import hasLogin from "../page/trade/hasLogin.vue"
 import tradeApply from "../page/trade/tradeApply.vue"
+import applySuccess from "../page/trade/applySuccess.vue"
+
+
 
 import account from "../page/account.vue"
 import information from "../page/information.vue"
@@ -95,11 +98,14 @@ export default new Router({
 	},{
 		path: '/hasLogin',
 		component: hasLogin
-		
-		
-		
-		
 	},{
+		path: '/applySuccess',
+		component: applySuccess
+	}
+	
+	
+	
+	,{
 		path:'/login',
 		component:login
 	},{
