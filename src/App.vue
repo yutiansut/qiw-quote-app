@@ -5,8 +5,18 @@
 </template>
 
 <script>
+	import { mapMutations,mapActions } from 'vuex'
 	export default {
-		name: 'app'
+		name: 'app',
+		methods: {
+			...mapActions([
+				'initQuoteClient'
+			]),
+		},
+		mounted: function(){
+			//初始化行情
+//			this.initQuoteClient();
+		}
 	}
 </script>
 

@@ -2,30 +2,19 @@
 	<div id="market">
 		<nav>
 			<div class="nav_box">
-				<span class="current">商品</span>
-				<span>股指期货</span>
-				<span>外汇</span>
-				<span>LME金属</span>
-				<span>债券期货</span>
-				<span>ETF</span>
+				<template v-for="(v, index) in typeList">
+					<span :class="{current: currentNum == index}" @touchstart="clickEvent(index)">{{v.name}}</span>
+				</template>
 			</div>
 		</nav>
 		<div class="recommend">
-			<div class="col">
-				<span class="name">美原油</span>
-				<span class="red">52.49<i class="icon icon_arrow up"></i></span>
-				<span class="red">+0.05%&nbsp;&nbsp;+0.69</span>
-			</div>
-			<div class="col">
-				<span class="name">美黄金</span>
-				<span class="green">52.49<i class="icon icon_arrow down"></i></span>
-				<span class="green">+0.05%&nbsp;&nbsp;+0.69</span>
-			</div>
-			<div class="col">
-				<span class="name">美铜</span>
-				<span class="red">1036.49<i class="icon icon_arrow up"></i></span>
-				<span class="red">+0.05%&nbsp;&nbsp;+0.69</span>
-			</div>
+			<template v-for="(v, index) in recommendList">
+				<div class="col">
+					<span class="name">{{v.describe}}</span>
+					<span class="red">52.49<i class="icon icon_arrow up"></i></span>
+					<span class="red">+0.05%&nbsp;&nbsp;+0.69</span>
+				</div>
+			</template>
 		</div>
 		<div class="list">
 			<ul>
@@ -35,47 +24,125 @@
 					<span>成交量</span>
 					<span>涨跌幅<i class="icon icon_switch"></i></span>
 				</li>
-				<li>
-					<div class="name">
-						<em>小原油</em>
-						<em>QM1801</em>
-					</div>
-					<span class="red">50.15</span>
-					<span>1500</span>
-					<span class="red">+0.03%</span>
-				</li>
-				<li>
-					<div class="name">
-						<em>小原油</em>
-						<em>QM1801</em>
-					</div>
-					<span class="green">50.15</span>
-					<span>1500</span>
-					<span class="green">+0.03%</span>
-				</li>
-				<li>
-					<div class="name">
-						<em>小原油</em>
-						<em>QM1801</em>
-					</div>
-					<span class="red">50.15</span>
-					<span>1500</span>
-					<span class="red">+0.03%</span>
-				</li>
+				<template v-for="(v, index) in contList.list">
+					<li>
+						<div class="name">
+							<em>{{v.describe}}</em>
+							<em>{{v.commodityNo + v.contractNo}}</em>
+						</div>
+						<span class="red">50.15</span>
+						<span>1500</span>
+						<span class="red">+0.03%</span>
+					</li>
+				</template>
 			</ul>
 		</div>
 	</div>
 </template>
 
 <script>
+	import { mapMutations,mapActions } from 'vuex'
+	import pro from '../../assets/js/common.js'
 	export default {
 		name: 'market',
 		components: {},
 		data(){
 			return{
-				
+				currentNum: 0,
+				typeList: [],
+				contList: [],
+				recommendList: [],
+				goodsList: [],   //商品
+				goodsRecommendList: [],
+				stockList: [],   //股指期货
+				stockRecommendList: [],
+				foreignList: [],   //外汇
+				foreignRecommendList: [],
+				metalList: [],  //金属
+				metalRecommendList: [],
+				bondList: [],   //债券期货
+				bondRecommendList: [],
+				etfList: [],   //ETF
+				etfRecommendList: [],
 			}
 		},
+		methods: {
+			...mapActions([
+				'initQuoteClient'
+			]),
+			clickEvent: function(index){
+				this.currentNum = index;
+				switch(index){
+					case 0:
+						this.contList = this.goodsList;
+						this.recommendList = this.goodsRecommendList
+						break;
+					case 1:
+						this.contList = this.stockList;
+						this.recommendList = this.stockRecommendList
+						break;
+					case 2:
+						this.contList = this.foreignList;
+						this.recommendList = this.foreignRecommendList
+						break;
+					case 3:
+						this.contList = this.metalList;
+						this.recommendList = this.metalRecommendList
+						break;
+					case 4:
+						this.contList = this.bondList;
+						this.recommendList = this.bondRecommendList
+						break;
+					case 5:
+						this.contList = this.etfList;
+						this.recommendList = this.etfRecommendList
+						break;
+					default:
+						break;
+				}
+			},
+			getCommodityInfo: function(){
+				pro.fetch('post', '/quoteTrader/getCommodityInfo', '', '').then((res) => {
+					if(res.success == true && res.code == 1){
+						this.typeList = res.data;
+						this.goodsList = this.typeList[0];
+						this.goodsList.list.forEach((o, i) => {
+							if(o.isRecommend == 1) this.goodsRecommendList.push(o);
+						});
+						this.contList = this.goodsList;
+						this.recommendList = this.goodsRecommendList;
+						this.stockList = this.typeList[1];
+						this.stockList.list.forEach((o, i) => {
+							if(o.isRecommend == 1) this.stockRecommendList.push(o);
+						});
+						this.foreignList = this.typeList[2];
+						this.foreignList.list.forEach((o, i) => {
+							if(o.isRecommend == 1) this.foreignRecommendList.push(o);
+						});
+						this.metalList = this.typeList[3];
+						this.metalList.list.forEach((o, i) => {
+							if(o.isRecommend == 1) this.metalRecommendList.push(o);
+						});
+						this.bondList = this.typeList[4];
+						this.bondList.list.forEach((o, i) => {
+							if(o.isRecommend == 1) this.bondRecommendList.push(o);
+						});
+						this.etfList = this.typeList[5];
+						this.etfList.list.forEach((o, i) => {
+							if(o.isRecommend == 1) this.etfListRecommendList.push(o);
+						});
+						//初始化行情
+//						this.initQuoteClient();
+					}
+				}).catch((err) => {
+					
+				});
+			}
+		},
+		mounted: function(){
+			//获取合约类型
+			this.getCommodityInfo();
+		}
 	}
 </script>
 
@@ -95,9 +162,8 @@
 		}
 		span{
 			display: inline-block;
-			height: 0.74rem;
-			line-height: 0.74rem;
-			border-bottom: 0.04rem solid $bg;
+			height: 0.8rem;
+			line-height: 0.8rem;
 			font-size: $fs28;
 			margin-left: 0.3rem;
 			&:first-child{
@@ -105,7 +171,7 @@
 			}
 			&.current{
 				color: $blue;
-				border-color: $blue;
+				border-bottom: 0.05rem solid $blue;
 			}
 		}
 	}

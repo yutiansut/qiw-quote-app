@@ -7,7 +7,7 @@
 					<span :class="{current: currentNum == index}" @touchstart="tavEvent(index)">{{v}}</span>
 				</template>
 			</div>
-			<i class="icon icon_search"></i>
+			<i class="icon icon_search" @touchstart="toSearch"></i>
 		</header>
 		<div class="cont">
 			<components :is="currentView"></components>
@@ -16,11 +16,9 @@
 </template>
 
 <script>
-	import { mapMutations,mapActions } from 'vuex'
 	import TabBar from "../components/TabBar.vue"
 	import optionalList from "./quote/optionalList.vue"
 	import market from "./quote/market.vue"
-	import pro from '../assets/js/common.js'
 	import { Toast } from 'mint-ui';
 	export default {
 		name: 'index',
@@ -33,9 +31,6 @@
 			}
 		},
 		methods: {
-			...mapActions([
-				'initQuoteClient'
-			]),
 			tavEvent: function(index){
 				this.currentNum = index;
 				if(index == 0){
@@ -44,17 +39,12 @@
 					this.currentView = 'market';
 				}
 			},
+			toSearch: function(){
+				this.$router.push({path: '/search'});
+			},
 		},
 		mounted: function(){
 			
-//			pro.fetch('post', '/quoteTrader/getCommodityInfo', '', '').then((res) => {
-//				if(res.success == true && res.code == 1){
-//					console.log(1111);
-//					
-//				}
-//			}).catch((err) => {
-//				console.log(222);
-//			});
 		}
 	}
 </script>

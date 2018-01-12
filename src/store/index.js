@@ -38,7 +38,7 @@ var account = {
 var market = {
 	state: {
 		quoteConfig:{
-			url_real: "ws://192.168.0.213:9002",  //测试地址
+			url_real: "ws://192.168.0.232:9002",  //测试地址
 //			url_real: "ws://quote.vs.com:9002",   //正式地址
 			userName: "13677622344",
 			passWord: "a123456"
@@ -2062,9 +2062,10 @@ export default new Vuex.Store({
 		},
 		//初始化行情
 		initQuoteClient: function(context) {
+			console.log(1111111);
 			context.state.quoteSocket = new WebSocket(context.state.market.quoteConfig.url_real);
 			context.state.quoteSocket.onopen = function(evt) {
-//				console.log('open');
+				console.log('open');
 				context.state.quoteSocket.send('{"Method":"Login","Parameters":{"UserName":"'+context.state.market.quoteConfig.userName+'","PassWord":"'+context.state.market.quoteConfig.passWord+'"}}');
 			};
 			context.state.quoteSocket.onclose = function(evt) {
@@ -2087,6 +2088,7 @@ export default new Vuex.Store({
 				} else if(context.state.wsjsondata.Method == "OnRspQryCommodity") { // 行情服务器支持的品种
 					// 行情服务器支持的品种
 					context.state.market.markettemp = JSON.parse(evt.data).Parameters;
+					console.log(context.state.market.markettemp);
 					context.state.market.markettemp.forEach(function(e) {
 						var key = e.CommodityNo;
 						context.state.market.orderTemplist[key] = e;
@@ -2118,7 +2120,7 @@ export default new Vuex.Store({
 					context.state.market.quoteInitStep = true;
 					if(context.state.market.subscribeIndex == 1){
 						//初始化交易
-						context.dispatch('initTrade');
+//						context.dispatch('initTrade');
 					}
 					context.state.market.subscribeIndex++;
 				} else if(context.state.wsjsondata.Method == "OnRtnQuote") { // 最新行情
