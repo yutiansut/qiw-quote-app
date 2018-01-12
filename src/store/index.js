@@ -281,20 +281,20 @@ export default new Vuex.Store({
 		//test 测试环境，online 正式环境
 		environment: 'test',
 		//打包的时候，值为 build ，开发的时候，值为 dev
-		setting: 'dev',
+		setting: 'nat',
 	},
 	getters: {
 		PATH: function(state) {
 			if(state.setting == 'dev') {
-				return state.account.currentUrlHead + '//test.api.duokongtai.cn';
+				return state.account.currentUrlHead + '//test.api.dktai.cn';
 			} else if(state.setting == 'build'){
 				if(state.environment == 'test'){
-					return state.account.currentUrlHead + '//test.api.duokongtai.cn';
+					return state.account.currentUrlHead + '//test.api.dktai.cn';
 				}else{
-					return state.account.currentUrlHead + '//api.duokongtai.cn';
+					return state.account.currentUrlHead + '//api.dktai.cn';
 				}
 			} else if(state.setting == 'nat') {
-				return '/nat/vs-api';
+				return '/nat';
 			}
 		}
 	},

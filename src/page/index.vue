@@ -78,6 +78,7 @@
 
 <script>
 	import TabBar from "../components/TabBar.vue"
+	import pro from '../assets/js/common.js'
 	export default {
 		name: 'index',
 		components: {
@@ -91,6 +92,15 @@
 				TypeList: [],
 			}
 		},
+		mounted: function(){
+			pro.fetch('post', '/quoteTrader/getCommodityInfo', '', '').then((res) => {
+				if(res.success == true && res.code == 1){
+					console.log(1111);
+				}
+			}).catch((err) => {
+				console.log(222);
+			});
+		}
 	}
 </script>
 
