@@ -33,15 +33,18 @@
 				$(".nav li").eq(index).addClass("current");
 				switch (index){
 					case 0:
-						this.$router.push({path:"/schemeDetails"})
+						this.$router.push({path:"/financeDetails/schemeDetails"})
 						break;
 					case 1:
-						this.$router.push({path:"/historyRecords"})
+						this.$router.push({path:"/financeDetails/historyRecords"})
 						break;
 					default:
 						break;
 				}
 			}
+		},
+		mounted:function(){
+			this.$router.push({path:"/financeDetails/schemeDetails"})
 		}
 	}
 </script>

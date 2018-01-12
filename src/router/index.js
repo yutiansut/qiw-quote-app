@@ -36,6 +36,7 @@ import myFinance from"../page/account/myFinance/myFinance.vue"
 import financeDetails from"../page/account/myFinance/financeDetails.vue"
 import schemeDetails from"../page/account/myFinance/schemeDetails.vue"
 import historyRecords from"../page/account/myFinance/historyRecords.vue"
+import addMargin from"../page/account/myFinance/addMargin.vue"
 
 Vue.use(Router)
 
@@ -145,13 +146,16 @@ export default new Router({
 		component:financeDetails,
 		children:[
 			{
-				path:"/schemeDetails",
+				path:"/financeDetails/schemeDetails",
 				component:schemeDetails
 			},{
-				path:"/historyRecords",
+				path:"/financeDetails/historyRecords",
 				component:historyRecords
 			}
 		]
+	},{
+		path:'/addMargin',
+		component:addMargin,
 	}
 	]
 })
