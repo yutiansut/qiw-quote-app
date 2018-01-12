@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { Toast } from 'mint-ui';
 
 Vue.use(Vuex)
 
@@ -37,7 +38,7 @@ var account = {
 var market = {
 	state: {
 		quoteConfig:{
-			url_real: "ws://192.168.0.232:9002",  //测试地址
+			url_real: "ws://192.168.0.213:9002",  //测试地址
 //			url_real: "ws://quote.vs.com:9002",   //正式地址
 			userName: "13677622344",
 			passWord: "a123456"
