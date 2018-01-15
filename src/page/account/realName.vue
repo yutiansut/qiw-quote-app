@@ -1,6 +1,6 @@
 <template>
 	<div id="realName">
-		<mt-header title="实名认证" fixed style="background-color:#242933;font-size: 0.32rem;height: 0.8rem;">
+		<mt-header title="实名认证" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
 		  	<router-link to="/account" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
@@ -52,8 +52,7 @@
 	}
 	#container{
 		width: 100%;
-		margin-top: 0.8rem;
-		border-top: 1px solid #12141a;
+		margin-top: 1rem;
 		padding: 0 0.3rem;
 		display: flex;
 		flex-direction: column;
@@ -101,7 +100,7 @@
 				outline: none;
 				border-radius: 0.1rem;
 				height: 0.88rem;
-				width: 100%;
+				width: 6.6rem;
 				text-indent: 1rem;
 				color: $white;
 				margin-top: 0.3rem;

@@ -1,6 +1,6 @@
 <template>
 	<div id="customerServices">
-		<mt-header title="客服" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem;">
+		<mt-header title="客服" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
 		  	<router-link to="/account" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
@@ -59,7 +59,6 @@
 		color:$fontBlue ;
 		width: 100%;
 		margin-top: 1rem;
-		border-top: 1px solid #12141a;
 		.cell{
 			padding-left: 0.1rem;
 			background-color: $bg;

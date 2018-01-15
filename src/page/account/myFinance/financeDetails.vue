@@ -1,6 +1,6 @@
 <template>
 	<div id="financeDetails">
-		<mt-header title="融资详情" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem;">
+		<mt-header title="融资详情" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
 		  	<router-link to="/account" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
@@ -66,7 +66,6 @@
 	#container{
 		width: 100%;
 		margin-top: 1rem;
-		border-top: 1px solid #12141a;
 		.nav{
 			width: 100%;
 			padding: 0rem 1rem;

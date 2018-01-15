@@ -1,6 +1,6 @@
 <template>
 	<div id="personalSet">
-		<mt-header title="个人设置" fixed style="background-color:#242933;font-size: 0.32rem;height: 0.8rem;">
+		<mt-header title="个人设置" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
 		  	<router-link to="/account" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
@@ -67,8 +67,7 @@
 	}
 	#container{
 		width: 100%;
-		margin-top: 0.8rem;
-		border-top: 1px solid #12141a;
+		margin-top: 1rem;
 		.list{
 			width: 100%;
 			height: 0.9rem;

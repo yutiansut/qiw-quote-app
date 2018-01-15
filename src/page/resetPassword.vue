@@ -1,11 +1,11 @@
 <template>
 	<div id="resetPassword">
-		<mt-header title="设置新密码" fixed style="background-color:#242933;font-size: 0.32rem;height: 0.8rem;">
+		<mt-header title="设置新密码" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
 		  	<router-link to="/account" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
 		    <router-link to="/account" slot="right">
-		    	<mt-button style="font-size: 0.16rem;color: #9ba8c2;">客服</mt-button>
+		    	<mt-button style="font-size: 0.24rem;color: #9ba8c2;">客服</mt-button>
 		 	</router-link>
 		</mt-header>
 		<div id="container">
@@ -52,10 +52,9 @@
 	}
 	#container{
 		width: 100%;
-		margin-top: 0.8rem;
+		margin-top: 1rem;
 		display: flex;
 		flex-direction: column;
-		border-top: 1px solid #12141a;
 		text-align: center;
 		padding: 0.5rem 0.3rem 0rem 0.3rem;
 			li{
@@ -91,14 +90,11 @@
 			border: none;
 			outline: none;
 			height: 0.9rem;
-			width: 100%;
+			width: 6.6rem;
 			border-bottom: 1px solid #505664;
 			text-indent: 1rem;
 			color: $white;
 			margin-top: 0.2rem;
-			&:hover{
-				border-color: $blue;
-			}
 		}
 		#eye{
 			position: absolute;
