@@ -169,6 +169,8 @@ var market = {
 		selectTime: 1,
 		//当前合约代码（CL）
 		currentNo: '',
+		//当前类型平台合约
+		commodityOrder: [],
 		//第一次所有合约列表
 		markettemp: [],
 		//订阅成功后查询品种列表
@@ -176,7 +178,7 @@ var market = {
 		//存订阅成功后的行情信息
 		templateList:{},
 		//当前所有有效合约列表
-		Parameters: [],
+		Parameters: [],    //有问题
 		//当前所有有效合约成交明细
 		tradeParameters: [],
 		//当前选中合约
@@ -2062,10 +2064,9 @@ export default new Vuex.Store({
 		},
 		//初始化行情
 		initQuoteClient: function(context) {
-			console.log(1111111);
 			context.state.quoteSocket = new WebSocket(context.state.market.quoteConfig.url_real);
 			context.state.quoteSocket.onopen = function(evt) {
-				console.log('open');
+//				console.log('open');
 				context.state.quoteSocket.send('{"Method":"Login","Parameters":{"UserName":"'+context.state.market.quoteConfig.userName+'","PassWord":"'+context.state.market.quoteConfig.passWord+'"}}');
 			};
 			context.state.quoteSocket.onclose = function(evt) {
@@ -2081,41 +2082,48 @@ export default new Vuex.Store({
 //				console.log('message');
 				context.state.wsjsondata = JSON.parse(evt.data);
 				if(context.state.wsjsondata.Method == "OnRspLogin") { // 登录行情服务器
-					layer.msg('行情服务器连接成功',{time: 1000});
+					Toast({message: '行情服务器连接成功', position: 'bottom', duration: 2000});
 					sessionStorage.quoteStatus = true;
 					// 查询服务器支持品种用于订阅
 					context.state.quoteSocket.send('{"Method":"QryCommodity","Parameters":{' + null + '}}');
 				} else if(context.state.wsjsondata.Method == "OnRspQryCommodity") { // 行情服务器支持的品种
 					// 行情服务器支持的品种
 					context.state.market.markettemp = JSON.parse(evt.data).Parameters;
-					console.log(context.state.market.markettemp);
 					context.state.market.markettemp.forEach(function(e) {
 						var key = e.CommodityNo;
 						context.state.market.orderTemplist[key] = e;
-						if(e.IsUsed != 0) {
-							context.state.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + e.ExchangeNo + '","CommodityNo":"' + e.CommodityNo + '","ContractNo":"' + e.MainContract + '"}}');
-						}
+					});
+					context.state.market.commodityOrder.forEach((o, i) => {
+						context.state.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 					});
 				} else if(context.state.wsjsondata.Method == "OnRspSubscribe") { // 订阅成功信息
 					var key = JSON.parse(evt.data).Parameters.CommodityNo;
-					context.state.market.templateList[key]=JSON.parse(evt.data).Parameters;
+					var aaa = [];
+					context.state.market.templateList[key] = JSON.parse(evt.data).Parameters;
 					var dealDetails = {CommodityNo: '', data: []}, _dealDetails = {};
 					context.state.market.markettemp.forEach(function(e) {
-//						if(e.IsUsed != 0){
-							if(e.CommodityNo == key) {
-								e.LastQuotation = JSON.parse(evt.data).Parameters.LastQuotation;
-								context.state.market.Parameters.push(e);
-								//订阅成功  成交信息
-								_dealDetails['time'] = e.LastQuotation.DateTimeStamp.split(' ')[1];
-								_dealDetails['price'] = e.LastQuotation.LastPrice;
-								_dealDetails['volume'] = e.LastQuotation.LastVolume;
-								_dealDetails['_price'] = e.LastQuotation.PreSettlePrice;
-								_dealDetails['dotSize'] = e.DotSize;
-								dealDetails.CommodityNo = e.CommodityNo;
-								dealDetails.data.push(_dealDetails);
-								context.state.market.tradeParameters.push(dealDetails); 
-							}
-//						}
+						if(e.CommodityNo == key) {
+							e.LastQuotation = JSON.parse(evt.data).Parameters.LastQuotation;
+							context.state.market.Parameters.push(e);
+							//订阅成功  成交信息
+							_dealDetails['time'] = e.LastQuotation.DateTimeStamp.split(' ')[1];
+							_dealDetails['price'] = e.LastQuotation.LastPrice;
+							_dealDetails['volume'] = e.LastQuotation.LastVolume;
+							_dealDetails['_price'] = e.LastQuotation.PreSettlePrice;
+							_dealDetails['dotSize'] = e.DotSize;
+							dealDetails.CommodityNo = e.CommodityNo;
+							dealDetails.data.push(_dealDetails);
+							context.state.market.tradeParameters.push(dealDetails); 
+						}
+					});
+					//重新组装数据
+					context.state.market.Parameters.forEach(function(o, i){
+						context.state.market.commodityOrder.forEach(function(v){
+							o.isRecommend = v.isRecommend;
+							o.commodityType = v.commodityType;
+							o.contrast = v.contrast;
+							o.sortNum = v.sortNum;
+						});
 					});
 					context.state.market.quoteInitStep = true;
 					if(context.state.market.subscribeIndex == 1){
@@ -2159,6 +2167,7 @@ export default new Vuex.Store({
 						if(JSON.parse(evt.data).Parameters.CommodityNo == e.CommodityNo) {
 							//就把拿到数据存入缓存中
 							e.LastQuotation = JSON.parse(evt.data).Parameters;
+							context.state.market.orderTemplist[key] = e;
 							//将显示数据进行更新
 							context.state.market.Parameters.forEach(function(a, r) {
 								if(a.CommodityNo == e.CommodityNo) {

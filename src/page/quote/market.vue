@@ -8,11 +8,11 @@
 			</div>
 		</nav>
 		<div class="recommend">
-			<template v-for="(v, index) in recommendList">
-				<div class="col">
-					<span class="name">{{v.describe}}</span>
-					<span class="red">52.49<i class="icon icon_arrow up"></i></span>
-					<span class="red">+0.05%&nbsp;&nbsp;+0.69</span>
+			<template v-for="(v, index) in parameters">
+				<div class="col" v-show="v.isRecommend == '1'">
+					<span class="name">{{v.CommodityName}}</span>
+					<span :class="{red: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.LastPrice | fixNum(v.DotSize)}}<i class="icon icon_arrow" :class="{up: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, down: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}"></i></span>
+					<span :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeRate | fixNumTwo}}%&nbsp;&nbsp;<em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeValue | fixNum(v.DotSize)}}</span>
 				</div>
 			</template>
 		</div>
@@ -22,17 +22,18 @@
 					<div class="name"><span>名称</span></div>
 					<span>价格</span>
 					<span>成交量</span>
-					<span>涨跌幅<i class="icon icon_switch"></i></span>
+					<span @touchstart="switchEvent">{{changeRateName}}<i class="icon icon_switch"></i></span>
 				</li>
-				<template v-for="(v, index) in contList.list">
+				<template v-for="(v, index) in parameters">
 					<li>
 						<div class="name">
-							<em>{{v.describe}}</em>
-							<em>{{v.commodityNo + v.contractNo}}</em>
+							<em>{{v.CommodityName}}</em>
+							<em>{{v.CommodityNo + v.MainContract}}</em>
 						</div>
-						<span class="red">50.15</span>
-						<span>1500</span>
-						<span class="red">+0.03%</span>
+						<span :class="{red: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.LastPrice | fixNum(v.DotSize)}}<i class="icon icon_arrow" :class="{up: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, down: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}"></i></span>
+						<span>{{v.LastQuotation.TotalVolume}}</span>
+						<span v-show="changeRateShow" class="changeRate" :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeRate | fixNumTwo}}%</span>
+						<span v-show="!changeRateShow" class="changeRate" :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeValue | fixNum(v.DotSize)}}</span>
 					</li>
 				</template>
 			</ul>
@@ -41,8 +42,8 @@
 </template>
 
 <script>
-	import { mapMutations,mapActions } from 'vuex'
 	import pro from '../../assets/js/common.js'
+	import { Toast } from 'mint-ui';
 	export default {
 		name: 'market',
 		components: {},
@@ -50,52 +51,92 @@
 			return{
 				currentNum: 0,
 				typeList: [],
-				contList: [],
-				recommendList: [],
 				goodsList: [],   //商品
-				goodsRecommendList: [],
 				stockList: [],   //股指期货
-				stockRecommendList: [],
 				foreignList: [],   //外汇
-				foreignRecommendList: [],
 				metalList: [],  //金属
-				metalRecommendList: [],
 				bondList: [],   //债券期货
-				bondRecommendList: [],
 				etfList: [],   //ETF
-				etfRecommendList: [],
+				changeRateShow: true,
+				changeRateName: '涨跌幅',
+			}
+		},
+		computed: {
+			parameters(){
+				return this.$store.state.market.Parameters;
+			},
+			quoteSocket(){
+				return this.$store.state.quoteSocket;
+			}
+		},
+		filters:{
+			fixNumTwo: function(num){
+				return num.toFixed(2);
+			},
+			fixNum: function(num, dotsize){
+				return num.toFixed(dotsize);
 			}
 		},
 		methods: {
-			...mapActions([
-				'initQuoteClient'
-			]),
+			switchEvent: function(){   //涨跌幅与涨跌额切换
+				if(this.changeRateShow == true){
+					this.changeRateShow = false;
+					this.changeRateName = '涨跌额';
+				}else{
+					this.changeRateShow = true;
+					this.changeRateName = '涨跌幅';
+				}
+			},
 			clickEvent: function(index){
 				this.currentNum = index;
 				switch(index){
 					case 0:
-						this.contList = this.goodsList;
-						this.recommendList = this.goodsRecommendList
+						this.$store.state.market.Parameters = [];
+						if(this.goodsList.list.length > 0){
+							this.goodsList.list.forEach((o, i) => {
+								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+							});
+						}
 						break;
 					case 1:
-						this.contList = this.stockList;
-						this.recommendList = this.stockRecommendList
+						this.$store.state.market.Parameters = [];
+						if(this.stockList.list.length > 0){
+							this.stockList.list.forEach((o, i) => {
+								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+							});
+						}
 						break;
 					case 2:
-						this.contList = this.foreignList;
-						this.recommendList = this.foreignRecommendList
+						this.$store.state.market.Parameters = [];
+						if(this.foreignList.list.length > 0){
+							this.foreignList.list.forEach((o, i) => {
+								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+							});
+						}
 						break;
 					case 3:
-						this.contList = this.metalList;
-						this.recommendList = this.metalRecommendList
+						this.$store.state.market.Parameters = [];
+						if(this.metalList.list.length > 0){
+							this.metalList.list.forEach((o, i) => {
+								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+							});
+						}
 						break;
 					case 4:
-						this.contList = this.bondList;
-						this.recommendList = this.bondRecommendList
+						this.$store.state.market.Parameters = [];
+						if(this.bondList.list.length > 0){
+							this.bondList.list.forEach((o, i) => {
+								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+							});
+						}
 						break;
 					case 5:
-						this.contList = this.etfList;
-						this.recommendList = this.etfRecommendList
+						this.$store.state.market.Parameters = [];
+						if(this.etfList.list.length > 0){
+							this.etfList.list.forEach((o, i) => {
+								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+							});
+						}
 						break;
 					default:
 						break;
@@ -106,36 +147,14 @@
 					if(res.success == true && res.code == 1){
 						this.typeList = res.data;
 						this.goodsList = this.typeList[0];
-						this.goodsList.list.forEach((o, i) => {
-							if(o.isRecommend == 1) this.goodsRecommendList.push(o);
-						});
-						this.contList = this.goodsList;
-						this.recommendList = this.goodsRecommendList;
 						this.stockList = this.typeList[1];
-						this.stockList.list.forEach((o, i) => {
-							if(o.isRecommend == 1) this.stockRecommendList.push(o);
-						});
 						this.foreignList = this.typeList[2];
-						this.foreignList.list.forEach((o, i) => {
-							if(o.isRecommend == 1) this.foreignRecommendList.push(o);
-						});
 						this.metalList = this.typeList[3];
-						this.metalList.list.forEach((o, i) => {
-							if(o.isRecommend == 1) this.metalRecommendList.push(o);
-						});
 						this.bondList = this.typeList[4];
-						this.bondList.list.forEach((o, i) => {
-							if(o.isRecommend == 1) this.bondRecommendList.push(o);
-						});
 						this.etfList = this.typeList[5];
-						this.etfList.list.forEach((o, i) => {
-							if(o.isRecommend == 1) this.etfListRecommendList.push(o);
-						});
-						//初始化行情
-//						this.initQuoteClient();
 					}
 				}).catch((err) => {
-					
+					Toast({message: '网络不稳定，请稍后再试', position: 'bottom', duration: 2000});
 				});
 			}
 		},
@@ -257,7 +276,7 @@
 					width: 1.25rem;
 					color: $white;
 				}
-				&:nth-child(4){
+				&:nth-child(4), &:nth-child(5){
 					width: 1.4rem;
 				}
 				&.red{
