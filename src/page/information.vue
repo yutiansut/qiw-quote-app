@@ -10,7 +10,7 @@
 		    </div>
 		</mt-loadmore>-->
 		<mt-header title="资讯" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem;border-bottom: 1px solid #12141a;">
-		    <router-link to="/account" slot="right">
+		    <router-link to="/information_search" slot="right">
 		    	<i id="search" v-show="showSearch"></i>
 		    	<i id="chooseday" v-show="showChooseDay"></i>
 		 	</router-link>
@@ -108,8 +108,7 @@
 		    	this.showChooseDay=!this.showChooseDay
 		    },
 		    toDetails:function(){
-		    	console.log("11111111111111111")
-		    	this.$router.push({path:"/information/information_details"});
+		    	this.$router.push({path:"/information_details"});
 		    }
 		}
 	}
