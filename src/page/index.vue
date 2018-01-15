@@ -9,16 +9,18 @@
 			</div>
 			<i class="icon icon_search" @touchstart="toSearch"></i>
 		</header>
-		<div class="cont">
+		<div class="cont" v-if="isInit">
 			<components :is="currentView"></components>
 		</div>
 	</div>
 </template>
 
 <script>
+	import { mapMutations,mapActions } from 'vuex'
 	import TabBar from "../components/TabBar.vue"
 	import optionalList from "./quote/optionalList.vue"
 	import market from "./quote/market.vue"
+	import pro from '../assets/js/common.js'
 	import { Toast } from 'mint-ui';
 	export default {
 		name: 'index',
@@ -28,9 +30,27 @@
 				currentNum: 1,
 				tabList: ['自选', '市场'],
 				currentView: 'market',
+				isInit: false,
+			}
+		},
+		computed: {
+			quoteInitStep(){
+				return this.$store.state.market.quoteInitStep;
+			},
+		},
+		watch: {
+			quoteInitStep: function(n, o){
+				if(n == true){
+					this.isInit = true;
+				}else{
+					Toast({message: '网络不稳定，请稍后再试', position: 'bottom', duration: 2000});
+				}
 			}
 		},
 		methods: {
+			...mapActions([
+				'initQuoteClient'
+			]),
 			tavEvent: function(index){
 				this.currentNum = index;
 				if(index == 0){
@@ -42,9 +62,21 @@
 			toSearch: function(){
 				this.$router.push({path: '/search'});
 			},
+			getCommodityInfoNoType: function(){
+				pro.fetch('post', '/quoteTrader/getCommodityInfo', '', '').then((res) => {
+					if(res.success == true && res.code == 1){
+						this.$store.state.market.commodityOrder = res.data[0].list;
+					}
+				}).catch((err) => {
+					Toast({message: '网络不稳定，请稍后再试', position: 'bottom', duration: 2000});
+				});
+			}
 		},
 		mounted: function(){
-			
+			//获取所有合约
+			this.getCommodityInfoNoType();
+			//初始化行情
+			this.initQuoteClient();
 		}
 	}
 </script>

@@ -7,8 +7,8 @@
 					<span :class="{current: selectNum == index}">{{v}}</span>
 				</template>
 			</div>
-			<i class="icon icon_search"></i>
-			<i class="icon icon_set"></i>
+			<i class="icon icon_search" @touchstart="toSearch"></i>
+			<i class="icon icon_set" @touchstart="toOptionalManage"></i>
 		</header>
 		<div class="main">
 			<div class="title">
@@ -97,6 +97,12 @@
 			}
 		},
 		methods: {
+			toSearch: function(){
+				this.$router.push({path: '/search'});
+			},
+			toOptionalManage: function(){
+				this.$router.push({path: '/optionalManage'});
+			},
 			addOptional: function(){
 				this.$router.push({path: '/search'});
 			},
