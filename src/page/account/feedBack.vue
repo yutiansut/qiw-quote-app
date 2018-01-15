@@ -1,6 +1,6 @@
 <template>
 	<div id="feedBack">
-		<mt-header title="意见反馈" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem;">
+		<mt-header title="意见反馈" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
 		  	<router-link to="/account" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
@@ -66,7 +66,6 @@
 		text-align: center;
 		width: 100%;
 		margin-top: 1rem;
-		border-top: 1px solid #12141a;
 		.title_lev2{
 			height: 0.64rem;
 			width: 100%;
@@ -122,7 +121,7 @@
 			border-bottom:1px solid #12141a;
 			height: 1.5rem;
 			input{
-				width: 100%;
+				width: 6.6rem;
 				height: 0.9rem;
 				margin-top: 0.3rem;
 				border: 1px solid #12141a;

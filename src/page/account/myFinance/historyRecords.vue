@@ -53,7 +53,7 @@
 	.list_title{
 		width: 100%;
 		background-color:$titleBlue;
-		overflow: hidden;
+		overflow-x: scroll;
 		height: 0.8rem;
 		border-bottom: 1px solid #12141a;
 		ul{

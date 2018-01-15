@@ -40,6 +40,8 @@ import financeDetails from"../page/account/myFinance/financeDetails.vue"
 import schemeDetails from"../page/account/myFinance/schemeDetails.vue"
 import historyRecords from"../page/account/myFinance/historyRecords.vue"
 import addMargin from"../page/account/myFinance/addMargin.vue"
+import information_details from "../page/information/information_details.vue"
+import information_search from "../page/information/information_search.vue"
 
 Vue.use(Router)
 
@@ -171,6 +173,12 @@ export default new Router({
 	},{
 		path:'/addMargin',
 		component:addMargin,
+	},{
+		path:'/information_details',
+		component:information_details
+	},{
+		path:'/information_search',
+		component:information_search
 	}
 	]
 })

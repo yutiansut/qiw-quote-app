@@ -1,11 +1,11 @@
 <template>
 	<div id="regisiter">
-		<mt-header title="注册" fixed style="background-color:#242933;font-size: 0.32rem;height: 0.8rem;">
+		<mt-header title="注册" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
 		  	<router-link to="/account" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
 		    <router-link to="/account" slot="right">
-		    	<mt-button style="font-size: 0.16rem;color: #9ba8c2;">客服</mt-button>
+		    	<mt-button style="font-size: 0.24rem;color: #9ba8c2;">客服</mt-button>
 		 	</router-link>
 		</mt-header>
 		<div id="container">
@@ -36,14 +36,16 @@
 			<div id="to">
 				<p>注册即代表阅读并同意<a>《指数天下用户协议》</a></p>
 			</div>
-			
 		</div>
+		<codeDialog ref="codeDialog" type="register"></codeDialog>
 	</div>
 </template>
 
 <script>
+	import codeDialog from "../components/codeDialog.vue"
 	export default{
 		name:'regisiter',
+		components:{codeDialog},
 		data(){
 			return{
 				
@@ -51,7 +53,7 @@
 		},
 		methods:{
 			getCode:function(){
-				
+				this.$refs.codeDialog.isshow = true;
 			}
 		}
 	}
@@ -71,11 +73,9 @@
 	}
 	#container{
 		width: 100%;
-		margin-top: 0.8rem;
+		margin-top: 1rem;
 		display: flex;
 		flex-direction: column;
-		border-top: 1px solid #12141a;
-		text-align: center;
 		padding: 0.5rem 0.3rem 0rem 0.3rem;
 		li{
 			height: 1.2rem;
@@ -118,25 +118,22 @@
 			}
 		}
 		.input1{
+			border-radius: none;
 			background-color: $bg;
-			border: none;
-			outline: none;
 			height: 0.9rem;
-			width: 100%;
+			width: 6.6rem;
 			border-bottom: 1px solid #505664;
 			text-indent: 1rem;
 			color: $white;
 			margin-top: 0.2rem;
-			&:hover{
-				border-color: $blue;
-			}
 		}
 		#code{
+			text-align: center;
 			position: absolute;
 			width: 1.8rem;
 			height: 0.24rem;
 			top: 0.5rem;
-			right: 0;
+			right: 0.3rem;
 			border-left: 1px solid #9ba8c2;
 			color: $white;
 		}
@@ -158,6 +155,7 @@
 			border: none;
 		}
 		#wechat{
+			text-align: center;
 			width: 100%;
 			margin-top: 1.9rem;
 			i{

@@ -10,7 +10,7 @@
 		</mt-header>
 		<div id="container" v-show="exist">
 			<div class="list" v-for="n in 10">
-				<div class="state">
+				<div class="state" @click="toDetails">
 					<ul>
 						<li>
 							<i></i>
@@ -48,6 +48,11 @@
 			return{
 				exist:true,
 				none:false
+			}
+		},
+		methods:{
+			toDetails:function(){
+				this.$router.push({path:"/financeDetails"});
 			}
 		}
 	}
