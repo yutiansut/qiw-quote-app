@@ -55,13 +55,7 @@ export default new Router({
 		component:account
 	},{
 		path: '/information',
-		component: information,
-		children:[
-			{
-				path:'/information/information_details',
-				component:information_details
-			}
-		]
+		component: information
 	},{
 		path: '/trade',
 		component: trade
@@ -177,6 +171,9 @@ export default new Router({
 	},{
 		path:'/addMargin',
 		component:addMargin,
+	},{
+		path:'/information_details',
+		component:information_details
 	}
 	]
 })

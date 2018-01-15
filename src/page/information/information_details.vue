@@ -24,4 +24,14 @@
 
 <style scoped lang="scss">
 	@import "../../assets/css/common.scss";
+	#information_details{
+		width: 7.5rem;
+	}
+	#back{
+		background: url(../../assets/images/back_icon.png) no-repeat;
+		display: inline-block;
+		width: 0.24rem;
+		height: 0.32rem;
+		background-size: 100% 100%;
+	}
 </style>
