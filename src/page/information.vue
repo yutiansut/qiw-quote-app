@@ -34,7 +34,7 @@
 				</div>
 				<div class="list" v-for="n in 5">
 					<p>16:44</p>
-					<p>【不利因素渐显 现货煤价止涨】“CCTD秦皇岛动力煤价格”终止上行；“CCTD广州港进口煤价格”所采集相关煤种价格涨幅显著扩大；“CCTD唐山炼焦煤价格”和“CCTD徐州无烟煤价格”所采集相关煤种的价格走势保持平稳。环渤海地区三种现货动力煤价格终止上涨，一是主要发电企业的电煤采购压力难以舒缓；二是进口煤炭对市场资源的补充尚需时日；三是支持环渤海地区的动力煤价格上涨的动力减弱；四是主要煤炭生产企业主动下调动力煤销售价格。（中国煤炭市场网）</p>
+					<p @click="toDetails">【不利因素渐显 现货煤价止涨】“CCTD秦皇岛动力煤价格”终止上行；“CCTD广州港进口煤价格”所采集相关煤种价格涨幅显著扩大；“CCTD唐山炼焦煤价格”和“CCTD徐州无烟煤价格”所采集相关煤种的价格走势保持平稳。环渤海地区三种现货动力煤价格终止上涨，一是主要发电企业的电煤采购压力难以舒缓；二是进口煤炭对市场资源的补充尚需时日；三是支持环渤海地区的动力煤价格上涨的动力减弱；四是主要煤炭生产企业主动下调动力煤销售价格。（中国煤炭市场网）</p>
 					<p><span>展开</span></p>
 				</div>
 			</div>
@@ -106,6 +106,10 @@
 		    	this.showCalendar=!this.showCalendar;
 		    	this.showSearch=!this.showSearch;
 		    	this.showChooseDay=!this.showChooseDay
+		    },
+		    toDetails:function(){
+		    	console.log("11111111111111111")
+		    	this.$router.push({path:"/information/information_details"});
 		    }
 		}
 	}

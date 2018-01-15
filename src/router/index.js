@@ -40,7 +40,7 @@ import financeDetails from"../page/account/myFinance/financeDetails.vue"
 import schemeDetails from"../page/account/myFinance/schemeDetails.vue"
 import historyRecords from"../page/account/myFinance/historyRecords.vue"
 import addMargin from"../page/account/myFinance/addMargin.vue"
-
+import information_details from "../page/information/information_details.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -55,7 +55,13 @@ export default new Router({
 		component:account
 	},{
 		path: '/information',
-		component: information
+		component: information,
+		children:[
+			{
+				path:'/information/information_details',
+				component:information_details
+			}
+		]
 	},{
 		path: '/trade',
 		component: trade
