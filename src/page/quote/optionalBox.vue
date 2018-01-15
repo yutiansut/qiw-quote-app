@@ -73,10 +73,10 @@
 			<div class="add_optional">
 				<div class="box">
 					<i class="icon icon_add"></i>
-					<span>添加自选</span>
+					<span @touchstart="addOptional">添加自选</span>
 				</div>
 			</div>
-			<div class="icon icon_list"></div>
+			<div class="icon icon_list" @touchstart="switchList"></div>
 		</div>
 	</div>
 </template>
@@ -96,6 +96,14 @@
 				TypeList: [],
 			}
 		},
+		methods: {
+			addOptional: function(){
+				this.$router.push({path: '/search'});
+			},
+			switchList: function(){
+				this.$router.push({path: '/optionalList'});
+			}
+		}
 	}
 </script>
 

@@ -51,13 +51,13 @@
 		<div class="add_optional">
 			<div class="box">
 				<i class="icon icon_add"></i>
-				<span>添加自选</span>
+				<span @touchstart="addOptional">添加自选</span>
 			</div>
 		</div>
 		<div class="btn_box">
-			<i class="icon icon_rotate"></i>
-			<i class="icon icon_box"></i>
-			<i class="icon icon_optional"></i>
+			<i class="icon icon_rotate" @touchstart="rotateEvent"></i>
+			<i class="icon icon_box" @touchstart="switchBox"></i>
+			<i class="icon icon_optional" @touchstart="optionalEvent"></i>
 		</div>
 	</div>
 </template>
@@ -71,6 +71,20 @@
 				
 			}
 		},
+		methods: {
+			addOptional: function(){
+				this.$router.push({path: '/search'});
+			},
+			rotateEvent: function(){
+				
+			},
+			switchBox: function(){
+				this.$router.push({path: '/optionalBox'});
+			},
+			optionalEvent: function(){
+				this.$router.push({path: '/optionalManage'});
+			}
+		}
 	}
 </script>
 
