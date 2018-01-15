@@ -36,14 +36,16 @@
 			<div id="to">
 				<p>注册即代表阅读并同意<a>《指数天下用户协议》</a></p>
 			</div>
-			
 		</div>
+		<codeDialog ref="codeDialog" type="register"></codeDialog>
 	</div>
 </template>
 
 <script>
+	import codeDialog from "../components/codeDialog.vue"
 	export default{
 		name:'regisiter',
+		components:{codeDialog},
 		data(){
 			return{
 				
@@ -51,7 +53,7 @@
 		},
 		methods:{
 			getCode:function(){
-				
+				this.$refs.codeDialog.isshow = true;
 			}
 		}
 	}
@@ -122,14 +124,11 @@
 			border: none;
 			outline: none;
 			height: 0.9rem;
-			width: 100%;
+			width: 6.9rem;
 			border-bottom: 1px solid #505664;
 			text-indent: 1rem;
 			color: $white;
 			margin-top: 0.2rem;
-			&:hover{
-				border-color: $blue;
-			}
 		}
 		#code{
 			position: absolute;
