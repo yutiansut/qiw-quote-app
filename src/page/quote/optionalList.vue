@@ -2,13 +2,9 @@
 	<div id="index">
 		<nav>
 			<div class="nav_box">
-				<span class="current">全部</span>
-				<span>商品</span>
-				<span>股指期货</span>
-				<span>外汇</span>
-				<span>LME金属</span>
-				<span>债券期货</span>
-				<span>ETF</span>
+				<template v-for="(v,index) in tabList">
+					<span :class="{current: currentNum == index}" @touchstart="tabEvent(index)">{{v}}</span>
+				</template>
 			</div>
 		</nav>
 		<div class="list">
@@ -20,7 +16,7 @@
 					<span @touchstart="switchEvent">{{changeRateName}}<i class="icon icon_switch"></i></span>
 				</li>
 				<template v-for="(v, index) in parameters">
-					<li>
+					<li v-if="">
 						<div class="name">
 							<em>{{v.CommodityName}}</em>
 							<em>{{v.CommodityNo + v.MainContract}}</em>
@@ -54,6 +50,9 @@
 		components: {optionalBox,  },
 		data(){
 			return{
+				tabList: ['全部','商品','股指期货','外汇','LME金属','债券期货 ','ETF'],
+				currentNum: 0,
+//				currentType: 0,
 				changeRateShow: true,
 				changeRateName: '涨跌幅',
 			}
@@ -72,6 +71,9 @@
 			}
 		},
 		methods: {
+			tabEvent: function(index){
+				this.currentNum = index;
+			},
 			switchEvent: function(){   //涨跌幅与涨跌额切换
 				if(this.changeRateShow == true){
 					this.changeRateShow = false;
@@ -95,7 +97,7 @@
 			}
 		},
 		mounted: function(){
-			
+			console.log(this.parameters);
 		}
 	}
 </script>

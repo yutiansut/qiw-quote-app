@@ -21,12 +21,13 @@
 	import TabBar from "../components/TabBar.vue"
 	import optionalList from "./quote/optionalList.vue"
 	import optionalBox from "./quote/optionalBox.vue"
+	import noLogin from "./quote/noLogin.vue"
 	import market from "./quote/market.vue"
 	import pro from '../assets/js/common.js'
 	import { Toast } from 'mint-ui'
 	export default {
 		name: 'index',
-		components: {TabBar, optionalList, optionalBox, market},
+		components: {TabBar, optionalList, optionalBox, noLogin, market},
 		data(){
 			return{
 				currentNum: 1,
@@ -55,12 +56,15 @@
 			tavEvent: function(index){
 				this.currentNum = index;
 				if(index == 0){
-					this.currentView = 'optionalList';
-					this.setShow = true;
-					//获取用户所有自选 合约
-					this.getUserCommodityList();
-					this.$store.state.market.Parameters = [];
-					
+					if(this.userInfo == undefined || this.userInfo == null || this.userInfo == ''){
+						this.currentView = 'noLogin';
+					}else{
+						this.currentView = 'optionalList';
+						this.setShow = true;
+						//获取用户所有自选 合约
+						this.getUserCommodityList();
+						this.$store.state.market.Parameters = [];
+					}
 				}else{
 					this.currentView = 'market';
 					this.setShow = false;
