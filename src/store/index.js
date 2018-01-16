@@ -2093,9 +2093,6 @@ export default new Vuex.Store({
 						var key = e.CommodityNo;
 						context.state.market.orderTemplist[key] = e;
 					});
-					context.state.market.commodityOrder.forEach((o, i) => {
-						context.state.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
-					});
 				} else if(context.state.wsjsondata.Method == "OnRspSubscribe") { // 订阅成功信息
 					var key = JSON.parse(evt.data).Parameters.CommodityNo;
 					var aaa = [];

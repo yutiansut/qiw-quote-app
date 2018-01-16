@@ -161,6 +161,7 @@
 		mounted: function(){
 			//获取合约类型
 			this.getCommodityInfo();
+			console.log(this.parameters);
 		}
 	}
 </script>
