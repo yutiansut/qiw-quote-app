@@ -12,11 +12,11 @@
 			<ul>
 				<li>
 					<i></i>
-					<input type="text" value="" placeholder="请输入手机号" class="input1"/>
+					<input type="text" value="" placeholder="请输入手机号" class="input1" v-model="phone"/>
 				</li>
 				<li>
 					<i></i>
-					<input type="password"  value="" placeholder="请输入密码" class="input1"/>
+					<input type="password"  value="" placeholder="请输入密码" class="input1" v-model="password"/>
 					<div id="eye">
 					</div>
 				</li>
@@ -25,7 +25,7 @@
 				<span>请输入正确手机号</span>
 				<a href="">忘记密码？</a>
 			</div>
-			<mt-button class="btn">登录</mt-button>
+			<mt-button class="btn" @click.native="login">登录</mt-button>
 			<p>新用户注册>></p>
 			<div id="wechat">
 				<i></i>
@@ -35,11 +35,68 @@
 </template>
 
 <script>
+	import pro from "../assets/js/common.js"
+	import axios from "axios"
 	export default{
 		name:'login',
 		data(){
 			return{
-				
+				phone:"",
+				password:"",
+				phoneReg:/^(((13[0-9])|(14[5-7])|(15[0-9])|(17[0-9])|(18[0-9]))+\d{8})$/,
+				pwdReg:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/,
+			}
+		},
+		methods:{
+			login:function(){
+				if(this.phone == ''){
+					this.$toast({message: '请输入手机号',duration: 2000});
+				}else if(this.phoneReg.test(this.phone) == false){
+					this.$toast({message: '手机格式错误',duration: 2000});
+				}else if(this.password == ''){
+					this.$toast({message: '请输入密码',duration: 2000});
+				}else if(this.pwdReg.test(this.password) == false){
+					this.$toast({message: '密码由6到18位字母和数字组成',duration: 2000});
+				}else{
+					//登录请求
+					var info = {
+						mobile:this.phone,
+						pwd:this.password,
+						
+					};
+					pro.fetch('post', '/loginAndRegister/mobileLogin',info, "").then(function(res){
+						console.log(res)
+						if(res.success == true){
+							if(res.code == 1){
+								this.$toast({message: '登录成功',duration: 1000});
+							}
+						}
+					}.bind(this)).catch(function(err){
+						console.log(err)
+						var data = err.data;
+						this.num = data.data.failNum;
+						if(data.success == false){
+							if(this.num > 2){
+								this.$refs.codeDialog.isshow = true;
+								this.$refs.codeDialog.path = this.PATH + "/loginAndRegister/getImgCode.jpg" + Math.random()*1000 + "?mobile=" + this.phone;
+								this.str = {
+									loginName : this.phone,
+									password :this.pwd
+								}
+							}
+							if(data.data.date != undefined){
+								var h = data.data.thawTime;
+								var hour = h.split(':')[0];
+								var minute = parseInt((h - hour) * 60);
+								this.$toast({message: data.message + '，距解冻时间还有' + hour + '小时' + minute + '分',duration: 2000});
+							}else{
+								this.$toast({message: data.message,duration: 2000});
+							}
+						}else {
+							this.$toast({message: '网路不给力',duration: 2000});
+						}
+					}.bind(this));
+				}
 			}
 		}
 	}

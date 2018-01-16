@@ -12,23 +12,23 @@
 			<ul>
 				<li>
 					<i></i>
-					<input type="text" value="" placeholder="请输入手机号" class="input1"/>
+					<input type="text" value="" placeholder="请输入手机号" class="input1" v-model="phone"/>
 				</li>
 				<li>
 					<i></i>
-					<input type="text"  value="" placeholder="请输入验证码" class="input1"/>
+					<input type="text"  value="" placeholder="请输入验证码" class="input1" v-model="code"/>
 					<div id="code">
-						<span @click="getCode">获取验证码</span>
+						<span @click="getCode">{{volid ? info : (time + '秒')}}</span>
 					</div>
 				</li>
 				<li>
 					<i></i>
-					<input type="password"  value="" placeholder="请输入密码" class="input1"/>
+					<input type="password"  value="" placeholder="请输入密码" class="input1" v-model="password"/>
 					<div id="eye">
 					</div>
 				</li>
 			</ul>	
-			<mt-button class="btn">注册</mt-button>
+			<mt-button class="btn" @click.native="regisiter">注册</mt-button>
 			<a @click="">已有账户？立即登录>></a>
 			<div id="wechat">
 				<i></i>
@@ -43,17 +43,87 @@
 
 <script>
 	import codeDialog from "../components/codeDialog.vue"
+	import pro from "../assets/js/common.js"
 	export default{
 		name:'regisiter',
 		components:{codeDialog},
 		data(){
 			return{
-				
+				phone:"",
+				code:"",
+				password:"",
+				phoneReg: /^(((13[0-9])|(14[5-7])|(15[0-9])|(17[0-9])|(18[0-9]))+\d{8})$/,
+				pwdReg: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/,
+				info:"获取验证码",
+				time: 0
+			}
+		},
+		computed: {
+			PATH: function(){
+				return this.$store.getters.PATH;
+			},
+			volid: function(){
+				if(this.time <= 0){
+					return true
+				}else{
+					return false
+				}
+			},
+			environment(){
+				return this.$store.state.environment;
+			},
+			version: function(){
+				return '1.1';
 			}
 		},
 		methods:{
-			getCode:function(){
-				this.$refs.codeDialog.isshow = true;
+			getCode :function(e){
+				if($(e.target).hasClass('current')) return false;
+				if(this.phone == ''){
+					this.$toast({message: '请输入手机号码',duration: 2000});
+				}else if(this.phoneReg.test(this.phone) == false){
+					this.$toast({message: '手机格式错误',duration: 2000});
+				}else{
+					this.$refs.codeDialog.isshow = true;
+					this.$refs.codeDialog.path= this.PATH+"/loginAndRegister/getImgCode.jpg"+Math.random()*1000+"?mobile=" + this.phone;
+					this.$refs.codeDialog.phone = this.phone;
+					//页面效果
+					$(e.target).addClass('current');
+					this.time = 60;
+					var timing = setInterval(function(){
+						this.time--;
+						if(this.time <= 0){
+							clearInterval(timing);
+							$(e.target).removeClass('current');
+						}
+					}.bind(this), 1000);
+				}
+			},
+			regisiter:function(){
+				if(this.phone == ""){
+					this.$toast({message: '请输入手机号码',duration: 2000});
+				}else if(this.code == ""){
+					this.$toast({message: '请输入短信验证码',duration: 2000});
+				}else if(this.password == ""){
+					this.$toast({message: '请输入登录密码',duration: 2000});
+				}else if(this.phoneReg.test(this.phone) == false){
+					this.$toast({message: '请输入正确手机格式',duration: 2000});
+				}else if(this.pwdReg.test(this.password) == false){
+					this.$toast({message: '请输入6-16位数字加字母的密码',duration: 2000});
+				}else {
+					var data = {
+						mobile:this.phone,
+						password:this.password,
+						code:this.code,
+						resource:this.version
+					}
+					pro.fetch("post","/loginAndRegister/register",data,{}).then((res)=>{
+						console.log(res)
+					}).catch((err)=>{
+						console.log(err)
+					})
+				}
+				
 			}
 		}
 	}

@@ -10,7 +10,7 @@
 				</div>
 				<div class="black"></div>
 				<div class="btn_box">
-					<span>确认</span>
+					<span @click="confirm">确认</span>
 					<span @click="close">取消</span>
 				</div>
 			</div>
@@ -20,6 +20,7 @@
 
 <script>
 	import pro from '../assets/js/common.js'
+	import axios from "axios"
 	export default{
 		name: 'codeDialog',
 		data(){
@@ -58,108 +59,105 @@
 			refreshCode: function(){
 				this.path = this.path + '&' + Math.random();
 			},
-//			confirm: function(){
-//				if(this.code == ''){
-//					layer.msg('请输入验证码', {time: 1000});
-//				}else{
-//					if(this.type == 'login'){
-////						请求认证
-//						var data = {
-//							loginName: this.info.loginName,
-//							password: this.info.password,
-//							code: this.code
-//						};
-//						var headers = {version:this.version}
-//						pro.fetch("post",'/login',data,headers).then(function(){
-//							if(res.success = true){
-//								if(res.code = 1){
-//									layer.msg('登录成功', {time: 1000});
-//									this.token = res.data.token;
-//									this.secret = res.data.secret;
-//									var userData = {'username': this.info.loginName, 'password': this.info.password, 'token': res.data.token, 'secret': res.data.secret};  
-//									localStorage.setItem("user", JSON.stringify(userData));
-//									this.code = '';
-//									setTimeout(function(){
-//										this.isshow = false;
-//									},1000)
-//								}
-//							}
-//						}.bind(this)).catch(function(err){
-//							var data = err.data;
-//							if(data.success == false){
-//								this.code = '';
-//								this.path = this.path + '&' + Math.random()*10;
-//								layer.msg(data.message,{time:1000})
-//								if(data.code == 4){
-//									layer.msg(data.message, {time: 1000});
-//								}else{
-//									layer.msg(res.message, {time: 1000});
-//									setTimeout(function(){
-//										this.isshow = false;
-//									}.bind(this),1000);
-//								}
-//							}else{
-//								layer.msg('网络不给力，请稍后重试', {time: 5000});
-//							}
-//						}.bind(this))
-//					}else if(this.type == 'register'){
-//						//请求发送验证码
-//						var data ={
-//						 	mobile: this.phone,
-//							type: 1,
-//							yzm: this.code
-//						};
-//						var headers = {
-//							version: this.version
-//						};
-//						pro.fetch('post', '/sms', data, headers).then(function(res){
+			confirm: function(){
+				if(this.code == ''){
+					this.$toast({message: '请输入验证码',duration: 2000});
+				}else{
+					if(this.type == 'login'){
+//						请求认证
+						var data = {
+							loginName: this.info.loginName,
+							password: this.info.password,
+							code: this.code
+						};
+						var headers = {version:this.version}
+						pro.fetch("post",'/login',data,headers).then(function(){
+							if(res.success = true){
+								if(res.code = 1){
+									layer.msg('登录成功', {time: 1000});
+									this.token = res.data.token;
+									this.secret = res.data.secret;
+									var userData = {'username': this.info.loginName, 'password': this.info.password, 'token': res.data.token, 'secret': res.data.secret};  
+									localStorage.setItem("user", JSON.stringify(userData));
+									this.code = '';
+									setTimeout(function(){
+										this.isshow = false;
+									},1000)
+								}
+							}
+						}.bind(this)).catch(function(err){
+							var data = err.data;
+							if(data.success == false){
+								this.code = '';
+								this.path = this.path + '&' + Math.random()*10;
+								layer.msg(data.message,{time:1000})
+								if(data.code == 4){
+									layer.msg(data.message, {time: 1000});
+								}else{
+									layer.msg(res.message, {time: 1000});
+									setTimeout(function(){
+										this.isshow = false;
+									}.bind(this),1000);
+								}
+							}else{
+								layer.msg('网络不给力，请稍后重试', {time: 5000});
+							}
+						}.bind(this))
+					}else if(this.type == 'register'){
+						//请求发送验证码
+						var data ={
+						 	"mobile": this.phone,
+							"type": 1,
+							"imageCode": this.code
+						};
+						pro.fetch('post', '/loginAndRegister/getSmsCode', data, "").then(function(res){
+							console.log(res)
 //							if(res.success == true){
 //								if(res.code == 1){
-//									layer.msg('发送成功', {time: 1000});
 //									this.isshow = false;
+//									this.$toast({message: '发送成功',duration: 2000});
 //								}
 //							}
-//						}.bind(this)).catch(function(err){
-//							var data = err.data;
+						}.bind(this)).catch(function(err){
+							console.log(err)
+							var data = err.data;
 //							if(data.success == false){
 //								this.code = '',
 //								this.path = this.path + '&' + Math.random()*10;
-//								layer.msg(data.message,{time:1000})
+//								this.$toast({message: data.message,duration: 2000});
 //							}else{
-//								layer.msg('网络不给力，请稍后再试',{time:5000})
+//								this.$toast({message: "网络不给力，请稍后再试",duration: 5000});
 //							}
-//						}.bind(this));
-//					}else if(this.type == 'findpwd'){
-//						//请求发送验证码
-//						var data={
-//								mobile: this.phone,
-//								type: 2,
-//								yzm: this.code
-//						};
-//						var headers = {version:this.version}
-//						pro.fetch("post",'/sms',data,headers).then(function(res){
-//							if(res.success == true){
-//								if(res.code == 1){
-//									layer.msg('发送成功', {time: 1000});
-//									setTimeout(function(){
-//										this.isshow = false;
-//									}.bind(this),1000);
-//								}
-//							}
-//						}.bind(this)).catch(function(err){
-//							var data = err.data;
-//							if(data.success == false){
-//								this.code = '',
-//								layer.msg(data.message,{time:1000})
-//							}else{
-//								layer.msg('网络不给力，请稍后重试', {time: 5000});
-//							}
-//						}.bind(this))
-//					}
-//				}
-//			}
-		},
-		mounted: function(){
+						}.bind(this));
+					}else if(this.type == 'findpwd'){
+						//请求发送验证码
+						var data={
+								mobile: this.phone,
+								type: 2,
+								yzm: this.code
+						};
+						var headers = {version:this.version}
+						pro.fetch("post",'/sms',data,headers).then(function(res){
+							if(res.success == true){
+								if(res.code == 1){
+									layer.msg('发送成功', {time: 1000});
+									setTimeout(function(){
+										this.isshow = false;
+									}.bind(this),1000);
+								}
+							}
+						}.bind(this)).catch(function(err){
+							var data = err.data;
+							if(data.success == false){
+								this.code = '',
+								layer.msg(data.message,{time:1000})
+							}else{
+								layer.msg('网络不给力，请稍后重试', {time: 5000});
+							}
+						}.bind(this))
+					}
+				}
+			}
 		}
 	}
 </script>
