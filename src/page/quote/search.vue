@@ -21,7 +21,7 @@
 									<span>{{v.CommodityName}}</span>
 									<span>{{v.CommodityNo + v.MainContract}}</span>
 								</div>
-								<i class="icon icon_check"></i>
+								<i class="icon" :class="{icon_check: v.isOptional == 0, icon_checked: v.isOptional == 1}"></i>
 							</li>
 						</template>
 					</ul>
@@ -59,6 +59,8 @@
 				totalList: [],
 				resultList: [],
 				recommendList: [],
+				userInfo: '',
+				optionalList: [],
 			}
 		},
 		computed: {
@@ -78,6 +80,11 @@
 			},
 			toIndex: function(){
 				this.searchCont = '';
+				this.resultList = [];
+				this.resultShow = false;
+				this.emptyShow = false;
+				this.contShow = false;
+				this.recommendShow = true;
 				this.$router.push({path: '/index'});
 			},
 			searchEvent: function(){
@@ -101,17 +108,44 @@
 						this.emptyShow = true;
 						this.contShow = false;
 					}
+					//判断是否是自选合约
+					this.resultList.forEach((o, i) => {
+						this.optionalList.forEach((v, k) => {
+							if(o.CommodityNo == v.commodityNo){
+								o.isOptional = 1;
+							}else{
+								o.isOptional = 0;
+							}
+						});
+					});
 				}else{
 					this.resultList = [];
 					this.resultShow = false;
 					this.emptyShow = false;
 					this.recommendShow = true;
 				}
+			},
+			getUserCommodityList: function(){
+				this.userInfo = JSON.parse(localStorage.user);
+				var headers = {
+					token: this.userInfo.token,
+					secret: this.userInfo.secret
+				}
+				pro.fetch('post', '/quoteTrader/userGetCommodityList', '', headers).then((res) => {
+					if(res.success == true && res.code == 1){
+						this.optionalList = res.data;
+					}
+				}).catch((err) => {
+					Toast({message: err.message, position: 'bottom', duration: 2000});
+				});
 			}
 		},
 		mounted: function(){
 			//获取推荐
 			this.getRecommend();
+			//获取自选列表
+			this.getUserCommodityList();
+			//所有合约
 			this.$store.state.market.markettemp.forEach((o,i) => {
 				let str = o.CommodityName + ',' + o.CommodityNo + ',' + o.MainContract;
 				this.totalList.push(str);
@@ -128,6 +162,7 @@
 		left: 0;
 		width: 7.5rem;
 		height: 1rem;
+		background: $bg;
 		border-bottom: 0.01rem solid $black;
 		padding: 0.18rem 0.3rem;
 		.search{

@@ -17,8 +17,11 @@
 			]),
 		},
 		mounted: function(){
-			//初始化行情
-//			this.initQuoteClient();
+			var user = {
+				token: 'MTBiODQ4NzM0YjMyNDBhNWI3NWYzNGQ5NTMxNGViYmQ=',
+				secret: '829ae864957d6fce9aa9bda7dad0c026'
+			}
+			localStorage.setItem("user", JSON.stringify(user));
 		}
 	}
 </script>
