@@ -21,7 +21,8 @@
 									<span>{{v.CommodityName}}</span>
 									<span>{{v.CommodityNo + v.MainContract}}</span>
 								</div>
-								<i class="icon" :class="{icon_check: v.isOptional == 0, icon_checked: v.isOptional == 1}" @touchstart="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract)"></i>
+								<i class="icon icon_check" v-show="v.isOptional == undefined" @touchstart="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract)"></i>
+								<i class="icon" v-show="v.isOptional != undefined" :class="{icon_check: v.isOptional == 0, icon_checked: v.isOptional == 1}" @touchstart="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract)"></i>
 							</li>
 						</template>
 					</ul>
@@ -90,11 +91,6 @@
 				this.$router.push({path: '/index'});
 			},
 			searchEvent: function(){
-				if(this.userInfo == undefined){
-					Toast({message: '请先登录平台', position: 'bottom', duration: 2000});
-					this.searchCont = '';
-					return;
-				}
 				if(this.searchCont != ''){
 					this.resultShow = true;
 					this.resultList = [];
@@ -106,6 +102,7 @@
 							obj.CommodityNo = arr[1];
 							obj.MainContract = arr[2];
 							obj.ExchangeNo = arr[3];
+							obj.isOptional = 0;
 							this.resultList.push(obj);
 						}
 					});
@@ -121,8 +118,6 @@
 						this.optionalList.forEach((v, k) => {
 							if(o.CommodityNo == v.commodityNo){
 								o.isOptional = 1;
-							}else{
-								o.isOptional = 0;
 							}
 						});
 					});
@@ -134,6 +129,7 @@
 				}
 			},
 			getUserCommodityList: function(){
+				if(this.userInfo == undefined) return;
 				var headers = {
 					token: this.userInfo.token,
 					secret: this.userInfo.secret
@@ -147,6 +143,10 @@
 				});
 			},
 			addOptional: function(key,exchangeNo,commodityNo,contractNo){
+				if(this.userInfo == undefined){
+					Toast({message: '请先登录平台', position: 'bottom', duration: 2000});
+					return;
+				}
 				if(key == 1) return;
 				var headers = {
 					token: this.userInfo.token,
@@ -159,7 +159,12 @@
 				}
 				pro.fetch('post', '/quoteTrader/userAddCommodity', datas, headers).then((res) => {
 					if(res.success == true && res.code == 1){
-						Toast({message: err.message, position: 'bottom', duration: 2000});
+						Toast({message: '自选添加成功', position: 'bottom', duration: 2000});
+						this.resultList.forEach((o, i) => {
+							if(o.CommodityNo == commodityNo){
+								o.isOptional = 1;
+							}
+						});
 					}
 				}).catch((err) => {
 					Toast({message: err.data.message, position: 'bottom', duration: 2000});
