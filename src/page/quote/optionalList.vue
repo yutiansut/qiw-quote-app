@@ -63,10 +63,9 @@
 </template>
 
 <script>
-	import optionalBox from "./optionalBox.vue"
 	export default {
 		name: 'index',
-		components: {optionalBox,  },
+		components: {},
 		data(){
 			return{
 				
@@ -81,8 +80,6 @@
 			},
 			switchBox: function(){
 				this.$parent.currentView = 'optionalBox';
-				console.log(this.$parent.currentView);
-//				this.$router.push({path: '/optionalBox'});
 			},
 			optionalEvent: function(){
 				this.$router.push({path: '/optionalManage'});

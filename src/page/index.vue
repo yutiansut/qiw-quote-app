@@ -8,6 +8,7 @@
 				</template>
 			</div>
 			<i class="icon icon_search" @touchstart="toSearch"></i>
+			<i class="icon icon_set" v-show="setShow" @touchstart="toOptionalManage"></i>
 		</header>
 		<div class="cont" v-if="isInit">
 			<components :is="currentView"></components>
@@ -19,18 +20,20 @@
 	import { mapMutations,mapActions } from 'vuex'
 	import TabBar from "../components/TabBar.vue"
 	import optionalList from "./quote/optionalList.vue"
+	import optionalBox from "./quote/optionalBox.vue"
 	import market from "./quote/market.vue"
 	import pro from '../assets/js/common.js'
-	import { Toast } from 'mint-ui';
+	import { Toast } from 'mint-ui'
 	export default {
 		name: 'index',
-		components: {TabBar, optionalList, market},
+		components: {TabBar, optionalList, optionalBox, market},
 		data(){
 			return{
 				currentNum: 1,
 				tabList: ['自选', '市场'],
 				currentView: 'market',
 				isInit: false,
+				setShow: false,
 			}
 		},
 		computed: {
@@ -55,12 +58,17 @@
 				this.currentNum = index;
 				if(index == 0){
 					this.currentView = 'optionalList';
+					this.setShow = true;
 				}else{
 					this.currentView = 'market';
+					this.setShow = false;
 				}
 			},
 			toSearch: function(){
 				this.$router.push({path: '/search'});
+			},
+			toOptionalManage: function(){
+				this.$router.push({path: '/optionalManage'});
 			},
 			getCommodityInfoNoType: function(){
 				pro.fetch('post', '/quoteTrader/getCommodityInfo', '', '').then((res) => {
@@ -120,6 +128,15 @@
 			position: absolute;
 			top: 0;
 			right: 0.3rem;
+		}
+		.icon_set{
+			width: 0.6rem;
+			height: 1rem;
+			background: url(../assets/images/set.png) no-repeat left 0.3rem;
+			background-size: 0.4rem 0.4rem;
+			position: absolute;
+			top: 0;
+			right: 0.9rem;
 		}
 	}
 	
