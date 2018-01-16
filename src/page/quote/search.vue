@@ -63,7 +63,6 @@
 		methods: {
 			toIndex: function(){
 				this.$router.push({path: '/index'});
-				console.log(this.$store.state.market.quoteInitStatus);
 			}
 		}
 	}
