@@ -3,12 +3,32 @@
 		<div class="search_box">
 			<div class="search">
 				<i class="icon icon_search"></i>
-				<input type="text" placeholder="搜索合约代码/简称" />
+				<input type="text" placeholder="搜索合约代码/简称" v-model="searchCont" @keyup="searchEvent" />
 				<span @touchstart="toIndex">取消</span>
 			</div>
 		</div>
 		<div class="main">
-			<div class="recommend_box">
+			<div class="result" v-if="resultShow">
+				<p class="title">搜索结果</p>
+				<div class="empty" v-if="emptyShow">
+					<p>暂无相关合约</p>
+				</div>
+				<div class="cont" v-if="contShow">
+					<ul>
+						<template v-for="(v, index) in resultList">
+							<li>
+								<div class="col">
+									<span>{{v.CommodityName}}</span>
+									<span>{{v.CommodityNo + v.MainContract}}</span>
+								</div>
+								<i class="icon icon_check"></i>
+							</li>
+						</template>
+					</ul>
+					<p class="tips">没有更多啦</p>
+				</div>
+			</div>
+			<div class="recommend_box" v-show="recommendShow">
 				<p class="title">大家都在搜索</p>
 				<div class="recommend">
 					<ul>
@@ -21,49 +41,83 @@
 					</ul>
 				</div>
 			</div>
-			<div class="result">
-				<p class="title">搜索结果</p>
-				<div class="empty">
-					<p>暂无相关合约</p>
-				</div>
-				<div class="cont">
-					<ul>
-						<li>
-							<div class="col">
-								<span>日经225</span>
-								<span>CNQ16</span>
-							</div>
-							<i class="icon icon_check"></i>
-						</li>
-						<li>
-							<div class="col">
-								<span>日经225</span>
-								<span>CNQ16</span>
-							</div>
-							<i class="icon icon_checked"></i>
-						</li>
-					</ul>
-				</div>
-				<p class="tips">没有更多啦</p>
-			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+	import pro from '../../assets/js/common.js'
+	import { Toast } from 'mint-ui';
 	export default {
 		name: 'search',
 		components: {
 		},
 		data(){
 			return{
-				
+				searchCont: '',
+				resultShow: false,
+				emptyShow: false,
+				contShow: false,
+				recommendShow: true,
+				totalList: [],
+				resultList: [],
+			}
+		},
+		computed: {
+			markettemp(){
+				return this.$store.state.market.markettemp;
 			}
 		},
 		methods: {
+			getRecommend: function(){
+				pro.fetch('post', '/quoteTrader/getRecommend', '', '').then((res) => {
+					if(res.success == true && res.code == 1){
+						
+					}
+				}).catch((err) => {
+					Toast({message: err.message, position: 'bottom', duration: 2000});
+				});
+			},
 			toIndex: function(){
+				this.searchCont = '';
 				this.$router.push({path: '/index'});
+			},
+			searchEvent: function(){
+				if(this.searchCont != ''){
+					this.resultShow = true;
+					this.resultList = [];
+					this.totalList.forEach((o, i) => {
+						if(o.match(this.searchCont) != null){
+							let obj = {};
+							let arr = o.split(',');
+							obj.CommodityName = arr[0];
+							obj.CommodityNo = arr[1];
+							obj.MainContract = arr[2];
+							this.resultList.push(obj);
+						}
+					});
+					if(this.resultList.length > 0){
+						this.contShow = true;
+						this.recommendShow = false;
+					}else{
+						this.emptyShow = true;
+						this.contShow = false;
+					}
+				}else{
+					this.resultList = [];
+					this.resultShow = false;
+					this.emptyShow = false;
+					this.recommendShow = true;
+				}
 			}
+		},
+		mounted: function(){
+			//获取推荐
+//			this.getRecommend();
+			this.$store.state.market.markettemp.forEach((o,i) => {
+				let str = o.CommodityName + ',' + o.CommodityNo + ',' + o.MainContract;
+				this.totalList.push(str);
+			});
 		}
 	}
 </script>

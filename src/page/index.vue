@@ -81,7 +81,7 @@
 						}
 					}
 				}).catch((err) => {
-					Toast({message: '网络不稳定，请稍后再试', position: 'bottom', duration: 2000});
+					Toast({message: err.message, position: 'bottom', duration: 2000});
 				});
 			}
 		},
