@@ -45,6 +45,7 @@
 
 <script>
 	import optionalBox from "./optionalBox.vue"
+	import pro from '../../assets/js/common.js'
 	export default {
 		name: 'index',
 		components: {optionalBox,  },
@@ -52,15 +53,27 @@
 			return{
 				tabList: ['全部','商品','股指期货','外汇','LME金属','债券期货 ','ETF'],
 				currentNum: 0,
-//				currentType: 0,
 				changeRateShow: true,
 				changeRateName: '涨跌幅',
+				contList: [],   //全部
+				goodsList: [],   //商品
+				stockList: [],   //股指期货
+				foreignList: [],   //外汇
+				metalList: [],  //金属
+				bondList: [],   //债券期货
+				etfList: [],   //ETF
 			}
 		},
 		computed: {
+			quoteSocket(){
+				return this.$store.state.quoteSocket;
+			},
 			parameters(){
 				return this.$store.state.market.Parameters;
 			},
+			userInfo(){
+				if(localStorage.user) return JSON.parse(localStorage.user);
+			}
 		},
 		filters:{
 			fixNumTwo: function(num){
@@ -73,6 +86,66 @@
 		methods: {
 			tabEvent: function(index){
 				this.currentNum = index;
+				switch(index){
+					case 0:
+						this.$store.state.market.Parameters = [];
+						if(this.contList.length > 0){
+							this.contList.forEach((o, i) => {
+								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+							});
+						}
+						break;
+					case 1:
+						this.$store.state.market.Parameters = [];
+						if(this.goodsList.length > 0){
+							this.goodsList.forEach((o, i) => {
+								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+							});
+						}
+						break;
+					case 2:
+						this.$store.state.market.Parameters = [];
+						if(this.stockList.length > 0){
+							this.stockList.forEach((o, i) => {
+								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+							});
+						}
+						break;
+					case 3:
+						this.$store.state.market.Parameters = [];
+						if(this.foreignList.length > 0){
+							this.foreignList.forEach((o, i) => {
+								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+							});
+						}
+						break;
+					case 4:
+						this.$store.state.market.Parameters = [];
+						if(this.metalList.length > 0){
+							this.metalList.forEach((o, i) => {
+								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+							});
+						}
+						break;
+					case 5:
+						this.$store.state.market.Parameters = [];
+						if(this.bondList.length > 0){
+							this.bondList.forEach((o, i) => {
+								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+							});
+						}
+						break;
+					case 6:
+						this.$store.state.market.Parameters = [];
+						if(this.etfList.length > 0){
+							this.etfList.forEach((o, i) => {
+								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+							});
+						}
+						break;
+					default:
+						break;
+				}
 			},
 			switchEvent: function(){   //涨跌幅与涨跌额切换
 				if(this.changeRateShow == true){
@@ -94,10 +167,42 @@
 			},
 			optionalEvent: function(){
 				this.$router.push({path: '/optionalManage'});
-			}
+			},
+			getUserCommodityList: function(){
+				if(this.userInfo == undefined) return;
+				var headers = {
+					token: this.userInfo.token,
+					secret: this.userInfo.secret
+				}
+				pro.fetch('post', '/quoteTrader/userGetCommodityList', '', headers).then((res) => {
+					if(res.success == true && res.code == 1){
+						if(res.data && res.data.length > 0){
+							this.contList = res.data;
+							res.data.forEach((o, i) => {
+								if(o.commodityType == 1){
+									this.goodsList.push(o);
+								}else if(o.commodityType == 2){
+									this.stockList.push(o);
+								}else if(o.commodityType == 3){
+									this.foreignList.push(o);
+								}else if(o.commodityType == 4){
+									this.metalList.push(o);
+								}else if(o.commodityType == 5){
+									this.bondList.push(o);
+								}else if(o.commodityType == 6){
+									this.etfList.push(o);
+								}
+							});
+						}
+					}
+				}).catch((err) => {
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
+				});
+			},
 		},
 		mounted: function(){
-			console.log(this.parameters);
+			//获取所有自选
+			this.getUserCommodityList();
 		}
 	}
 </script>

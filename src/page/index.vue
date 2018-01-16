@@ -38,7 +38,6 @@
 				selected:"行情",
 				tabs:[require("../assets/images/quotation_01.png"),require("../assets/images/mockTrading_02.png"),
 				require("../assets/images/information_02.png"),require("../assets/images/mine_02.png")],
-				optionalList: [],
 			}
 		},
 		computed: {
@@ -96,7 +95,6 @@
 				}
 				pro.fetch('post', '/quoteTrader/userGetCommodityList', '', headers).then((res) => {
 					if(res.success == true && res.code == 1){
-						this.optionalList = res.data;
 						if(res.data && res.data.length > 0){
 							res.data.forEach((o, i) => {
 								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
