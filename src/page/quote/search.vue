@@ -21,7 +21,7 @@
 									<span>{{v.CommodityName}}</span>
 									<span>{{v.CommodityNo + v.MainContract}}</span>
 								</div>
-								<i class="icon" :class="{icon_check: v.isOptional == 0, icon_checked: v.isOptional == 1}"></i>
+								<i class="icon" :class="{icon_check: v.isOptional == 0, icon_checked: v.isOptional == 1}" @touchstart="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract)"></i>
 							</li>
 						</template>
 					</ul>
@@ -59,13 +59,15 @@
 				totalList: [],
 				resultList: [],
 				recommendList: [],
-				userInfo: '',
 				optionalList: [],
 			}
 		},
 		computed: {
 			markettemp(){
 				return this.$store.state.market.markettemp;
+			},
+			userInfo(){
+				if(localStorage.user) return JSON.parse(localStorage.user);
 			}
 		},
 		methods: {
@@ -75,7 +77,7 @@
 						this.recommendList = res.data;
 					}
 				}).catch((err) => {
-					Toast({message: err.message, position: 'bottom', duration: 2000});
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
 				});
 			},
 			toIndex: function(){
@@ -88,6 +90,11 @@
 				this.$router.push({path: '/index'});
 			},
 			searchEvent: function(){
+				if(this.userInfo == undefined){
+					Toast({message: '请先登录平台', position: 'bottom', duration: 2000});
+					this.searchCont = '';
+					return;
+				}
 				if(this.searchCont != ''){
 					this.resultShow = true;
 					this.resultList = [];
@@ -98,6 +105,7 @@
 							obj.CommodityName = arr[0];
 							obj.CommodityNo = arr[1];
 							obj.MainContract = arr[2];
+							obj.ExchangeNo = arr[3];
 							this.resultList.push(obj);
 						}
 					});
@@ -126,7 +134,6 @@
 				}
 			},
 			getUserCommodityList: function(){
-				this.userInfo = JSON.parse(localStorage.user);
 				var headers = {
 					token: this.userInfo.token,
 					secret: this.userInfo.secret
@@ -136,7 +143,26 @@
 						this.optionalList = res.data;
 					}
 				}).catch((err) => {
-					Toast({message: err.message, position: 'bottom', duration: 2000});
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
+				});
+			},
+			addOptional: function(key,exchangeNo,commodityNo,contractNo){
+				if(key == 1) return;
+				var headers = {
+					token: this.userInfo.token,
+					secret: this.userInfo.secret
+				}
+				var datas = {
+					'exchangeNo': exchangeNo,
+					'commodityNo': commodityNo,
+					'contractNo': contractNo,
+				}
+				pro.fetch('post', '/quoteTrader/userAddCommodity', datas, headers).then((res) => {
+					if(res.success == true && res.code == 1){
+						Toast({message: err.message, position: 'bottom', duration: 2000});
+					}
+				}).catch((err) => {
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
 				});
 			}
 		},
@@ -147,7 +173,7 @@
 			this.getUserCommodityList();
 			//所有合约
 			this.$store.state.market.markettemp.forEach((o,i) => {
-				let str = o.CommodityName + ',' + o.CommodityNo + ',' + o.MainContract;
+				let str = o.CommodityName + ',' + o.CommodityNo + ',' + o.MainContract + ',' + o.ExchangeNo;
 				this.totalList.push(str);
 			});
 		}

@@ -154,7 +154,7 @@
 						this.etfList = this.typeList[5];
 					}
 				}).catch((err) => {
-					Toast({message: err.message, position: 'bottom', duration: 2000});
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
 				});
 			}
 		},
