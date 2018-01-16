@@ -2,13 +2,9 @@
 	<div id="index">
 		<nav>
 			<div class="nav_box">
-				<span class="current">全部</span>
-				<span>商品</span>
-				<span>股指期货</span>
-				<span>外汇</span>
-				<span>LME金属</span>
-				<span>债券期货</span>
-				<span>ETF</span>
+				<template v-for="(v,index) in tabList">
+					<span :class="{current: currentNum == index}" @touchstart="tabEvent(index)">{{v}}</span>
+				</template>
 			</div>
 		</nav>
 		<div class="list">
@@ -17,35 +13,20 @@
 					<div class="name"><span>名称</span></div>
 					<span>价格</span>
 					<span>成交量</span>
-					<span>涨跌幅<i class="icon icon_switch"></i></span>
+					<span @touchstart="switchEvent">{{changeRateName}}<i class="icon icon_switch"></i></span>
 				</li>
-				<li>
-					<div class="name">
-						<em>小原油</em>
-						<em>QM1801</em>
-					</div>
-					<span class="red">50.15</span>
-					<span>1500</span>
-					<span class="red">+0.03%</span>
-				</li>
-				<li>
-					<div class="name">
-						<em>小原油</em>
-						<em>QM1801</em>
-					</div>
-					<span class="green">50.15</span>
-					<span>1500</span>
-					<span class="green">+0.03%</span>
-				</li>
-				<li>
-					<div class="name">
-						<em>小原油</em>
-						<em>QM1801</em>
-					</div>
-					<span class="red">50.15</span>
-					<span>1500</span>
-					<span class="red">+0.03%</span>
-				</li>
+				<template v-for="(v, index) in parameters">
+					<li v-if="">
+						<div class="name">
+							<em>{{v.CommodityName}}</em>
+							<em>{{v.CommodityNo + v.MainContract}}</em>
+						</div>
+						<span :class="{red: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.LastPrice | fixNum(v.DotSize)}}<i class="icon icon_arrow" :class="{up: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, down: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}"></i></span>
+						<span>{{v.LastQuotation.TotalVolume}}</span>
+						<span v-show="changeRateShow" class="changeRate" :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeRate | fixNumTwo}}%</span>
+						<span v-show="!changeRateShow" class="changeRate" :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeValue | fixNum(v.DotSize)}}</span>
+					</li>
+				</template>
 			</ul>
 		</div>
 		<div class="add_optional">
@@ -69,10 +50,39 @@
 		components: {optionalBox,  },
 		data(){
 			return{
-				
+				tabList: ['全部','商品','股指期货','外汇','LME金属','债券期货 ','ETF'],
+				currentNum: 0,
+//				currentType: 0,
+				changeRateShow: true,
+				changeRateName: '涨跌幅',
+			}
+		},
+		computed: {
+			parameters(){
+				return this.$store.state.market.Parameters;
+			},
+		},
+		filters:{
+			fixNumTwo: function(num){
+				return num.toFixed(2);
+			},
+			fixNum: function(num, dotsize){
+				return num.toFixed(dotsize);
 			}
 		},
 		methods: {
+			tabEvent: function(index){
+				this.currentNum = index;
+			},
+			switchEvent: function(){   //涨跌幅与涨跌额切换
+				if(this.changeRateShow == true){
+					this.changeRateShow = false;
+					this.changeRateName = '涨跌额';
+				}else{
+					this.changeRateShow = true;
+					this.changeRateName = '涨跌幅';
+				}
+			},
 			addOptional: function(){
 				this.$router.push({path: '/search'});
 			},
@@ -81,12 +91,13 @@
 			},
 			switchBox: function(){
 				this.$parent.currentView = 'optionalBox';
-				console.log(this.$parent.currentView);
-//				this.$router.push({path: '/optionalBox'});
 			},
 			optionalEvent: function(){
 				this.$router.push({path: '/optionalManage'});
 			}
+		},
+		mounted: function(){
+			console.log(this.parameters);
 		}
 	}
 </script>
@@ -153,7 +164,7 @@
 					width: 1.25rem;
 					color: $white;
 				}
-				&:nth-child(4){
+				&:nth-child(4), &:nth-child(5){
 					width: 1.4rem;
 				}
 				&.red{
