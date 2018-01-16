@@ -10,7 +10,7 @@
 			<i class="icon icon_search" @touchstart="toSearch"></i>
 			<i class="icon icon_set" v-show="setShow" @touchstart="toOptionalManage"></i>
 		</header>
-		<div class="cont">
+		<div class="cont" v-if="isInit">
 			<components :is="currentView"></components>
 		</div>
 	</div>
@@ -33,6 +33,7 @@
 				tabList: ['自选', '市场'],
 				currentView: 'market',
 				setShow: false,
+				isInit: false,
 				selected:"行情",
 				tabs:[require("../assets/images/quotation_01.png"),require("../assets/images/mockTrading_02.png"),
 				require("../assets/images/information_02.png"),require("../assets/images/mine_02.png")],
@@ -73,10 +74,10 @@
 				pro.fetch('post', '/quoteTrader/getCommodityInfo', '', '').then((res) => {
 					if(res.success == true && res.code == 1){
 						this.$store.state.market.commodityOrder = res.data[0].list;
-						if(res.data[0].list.length > 0){
-							res.data[0].list.forEach((o, i) => {
-								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
-							});
+						//初始化行情
+						if(this.$store.state.market.commodityOrder){
+							this.initQuoteClient();
+							this.isInit = true;
 						}
 					}
 				}).catch((err) => {
@@ -87,8 +88,6 @@
 		mounted: function(){
 			//获取所有合约
 			this.getCommodityInfoNoType();
-			//初始化行情
-			this.initQuoteClient();
 		}
 	}
 </script>
