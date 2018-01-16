@@ -88,10 +88,7 @@
 			//获取所有合约
 			this.getCommodityInfoNoType();
 			//初始化行情
-			if(this.quoteInitStatus == false){
-				this.initQuoteClient();
-				this.$store.state.market.quoteInitStatus == true;
-			};
+			this.initQuoteClient();
 		}
 	}
 </script>
