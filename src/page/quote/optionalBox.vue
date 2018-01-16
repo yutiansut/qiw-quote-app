@@ -1,5 +1,15 @@
 <template>
 	<div id="index">
+		<TabBar></TabBar>
+		<header>
+			<div class="tab">
+				<template v-for="(v, index) in tabList">
+					<span :class="{current: selectNum == index}">{{v}}</span>
+				</template>
+			</div>
+			<i class="icon icon_search" @touchstart="toSearch"></i>
+			<i class="icon icon_set" @touchstart="toOptionalManage"></i>
+		</header>
 		<div class="main">
 			<div class="title">
 				<span>外汇</span>
@@ -72,19 +82,32 @@
 </template>
 
 <script>
+	import TabBar from "../../components/TabBar.vue"
 	export default {
 		name: 'index',
-		components: {},
+		components: {
+			TabBar
+		},
 		data(){
 			return{
+				selectNum: 0,
+				tabList: ['自选', '市场'],
+				selectTypeNum: 0,
+				TypeList: [],
 			}
 		},
 		methods: {
+			toSearch: function(){
+				this.$router.push({path: '/search'});
+			},
+			toOptionalManage: function(){
+				this.$router.push({path: '/optionalManage'});
+			},
 			addOptional: function(){
 				this.$router.push({path: '/search'});
 			},
 			switchList: function(){
-				this.$parent.currentView = 'optionalList';
+				this.$router.push({path: '/optionalList'});
 			}
 		}
 	}
