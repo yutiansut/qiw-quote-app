@@ -32,12 +32,9 @@
 				<p class="title">大家都在搜索</p>
 				<div class="recommend">
 					<ul>
-						<li>黄金</li>
-						<li>布伦特原油</li>
-						<li>美国原油</li>
-						<li>黄金</li>
-						<li>布伦特原油</li>
-						<li>美国原油</li>
+						<template v-for="(v,index) in recommendList">
+							<li>{{v.label}}</li>
+						</template>
 					</ul>
 				</div>
 			</div>
@@ -61,6 +58,7 @@
 				recommendShow: true,
 				totalList: [],
 				resultList: [],
+				recommendList: [],
 			}
 		},
 		computed: {
@@ -72,7 +70,7 @@
 			getRecommend: function(){
 				pro.fetch('post', '/quoteTrader/getRecommend', '', '').then((res) => {
 					if(res.success == true && res.code == 1){
-						
+						this.recommendList = res.data;
 					}
 				}).catch((err) => {
 					Toast({message: err.message, position: 'bottom', duration: 2000});
@@ -113,7 +111,7 @@
 		},
 		mounted: function(){
 			//获取推荐
-//			this.getRecommend();
+			this.getRecommend();
 			this.$store.state.market.markettemp.forEach((o,i) => {
 				let str = o.CommodityName + ',' + o.CommodityNo + ',' + o.MainContract;
 				this.totalList.push(str);
@@ -186,7 +184,7 @@
 				height: 0.88rem;
 				line-height: 0.88rem;
 				text-align: center;
-				border-left: 0.01rem solid $black;
+				border-right: 0.01rem solid $black;
 				border-bottom: 0.01rem solid $black;
 			}
 		}
