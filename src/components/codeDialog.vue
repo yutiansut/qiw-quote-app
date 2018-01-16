@@ -66,42 +66,27 @@
 					if(this.type == 'login'){
 //						请求认证
 						var data = {
-							loginName: this.info.loginName,
+							mobile: this.info.loginName,
 							password: this.info.password,
-							code: this.code
+							imgCode: this.code
 						};
-						var headers = {version:this.version}
-						pro.fetch("post",'/login',data,headers).then(function(){
-							if(res.success = true){
-								if(res.code = 1){
-									layer.msg('登录成功', {time: 1000});
-									this.token = res.data.token;
-									this.secret = res.data.secret;
-									var userData = {'username': this.info.loginName, 'password': this.info.password, 'token': res.data.token, 'secret': res.data.secret};  
-									localStorage.setItem("user", JSON.stringify(userData));
-									this.code = '';
-									setTimeout(function(){
-										this.isshow = false;
-									},1000)
-								}
+						pro.fetch("post",'/loginAndRegister/mobileLogin',data,"").then(function(){
+							if(res.success == true && res.code == 1){
+								this.$toast({message: "登录成功",duration: 2000});
+								this.code = '';
+								this.token = res.data.token;
+								this.secret = res.data.secret;
+								var userData = {'username': this.info.loginName, 'password': this.info.password, 'token': res.data.token, 'secret': res.data.secret};  
+								localStorage.setItem("user", JSON.stringify(userData));
+								setTimeout(function(){
+									this.isshow = false;
+								},1000)
 							}
 						}.bind(this)).catch(function(err){
 							var data = err.data;
-							if(data.success == false){
-								this.code = '';
-								this.path = this.path + '&' + Math.random()*10;
-								layer.msg(data.message,{time:1000})
-								if(data.code == 4){
-									layer.msg(data.message, {time: 1000});
-								}else{
-									layer.msg(res.message, {time: 1000});
-									setTimeout(function(){
-										this.isshow = false;
-									}.bind(this),1000);
-								}
-							}else{
-								layer.msg('网络不给力，请稍后重试', {time: 5000});
-							}
+							this.$toast({message:data.message,duration: 2000});
+							this.code = '';
+							this.path = this.path + '&' + Math.random()*10;
 						}.bind(this))
 					}else if(this.type == 'register'){
 						//请求发送验证码
@@ -111,23 +96,21 @@
 							"imageCode": this.code
 						};
 						pro.fetch('post', '/loginAndRegister/getSmsCode', data, "").then(function(res){
-							console.log(res)
-//							if(res.success == true){
-//								if(res.code == 1){
-//									this.isshow = false;
-//									this.$toast({message: '发送成功',duration: 2000});
-//								}
-//							}
+							if(res.success == true){
+								if(res.code == 1){
+									this.isshow = false;
+									this.$toast({message: '发送成功',duration: 2000});
+								}
+							}
 						}.bind(this)).catch(function(err){
-							console.log(err)
 							var data = err.data;
-//							if(data.success == false){
-//								this.code = '',
-//								this.path = this.path + '&' + Math.random()*10;
-//								this.$toast({message: data.message,duration: 2000});
-//							}else{
-//								this.$toast({message: "网络不给力，请稍后再试",duration: 5000});
-//							}
+							if(data.success == false){
+								this.code = '',
+								this.path = this.path + '&' + Math.random()*10;
+								this.$toast({message: data.message,duration: 2000});
+							}else{
+								this.$toast({message: "网络不给力，请稍后再试",duration: 5000});
+							}
 						}.bind(this));
 					}else if(this.type == 'findpwd'){
 						//请求发送验证码
@@ -215,6 +198,7 @@
 				display: block;
 				width: 2.7rem;
 				height: 0.9rem;
+				border-radius: 0.1rem;
 			}
 		}
 	}

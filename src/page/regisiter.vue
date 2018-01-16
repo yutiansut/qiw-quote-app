@@ -118,9 +118,12 @@
 						resource:this.version
 					}
 					pro.fetch("post","/loginAndRegister/register",data,{}).then((res)=>{
-						console.log(res)
+						if(res.code == 1 && res.success == true){
+							this.$toast({message:"注册成功",duration: 2000});
+						}
 					}).catch((err)=>{
-						console.log(err)
+						var data = err.data;
+						this.$toast({message:data.message,duration: 2000});
 					})
 				}
 				
