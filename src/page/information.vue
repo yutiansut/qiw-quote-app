@@ -75,12 +75,17 @@
 				</div>
 			</div>
 		</div>
+		<TabBar :selected="selected" :tabs="tabs" ></TabBar>
 	</div>
 </template>
 
 <script>
+	import TabBar from "../components/TabBar.vue"
 	export default{
 		name:"information",
+		components: {
+			TabBar
+		},
 		data(){
 			return{
 				showSearch:true,
@@ -96,7 +101,10 @@
 					{day:21,weekday:"六"},
 					{day:22,weekday:"七"}
 				],
-				current:3
+				current:3,
+				selected:"资讯",
+				tabs:[require("../assets/images/quotation_02.png"),require("../assets/images/mockTrading_02.png"),
+				require("../assets/images/information_01.png"),require("../assets/images/mine_02.png")]
 			}
 		},
 		methods:{
