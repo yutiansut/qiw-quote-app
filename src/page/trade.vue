@@ -1,6 +1,6 @@
 <template>
 	<div id="trade">
-		<TabBar></TabBar>
+		<TabBar :selected="selected" :tabs="tabs" ></TabBar>
 		<header>
 			<h1>ID:10081</h1>
 			<i class="icon icon_menu"></i>
@@ -75,7 +75,10 @@
 			return{
 				currentOrderType: 0,
 				orderList: ['普通单','条件单'],
-				currentOrderView: 'conditionOrder'
+				currentOrderView: 'conditionOrder',
+				selected:"模拟交易",
+				tabs:[require("../assets/images/quotation_02.png"),require("../assets/images/mockTrading_01.png"),
+				require("../assets/images/information_02.png"),require("../assets/images/mine_02.png")]
 			}
 		}
 	}
