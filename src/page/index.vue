@@ -37,17 +37,15 @@
 				selected:"行情",
 				tabs:[require("../assets/images/quotation_01.png"),require("../assets/images/mockTrading_02.png"),
 				require("../assets/images/information_02.png"),require("../assets/images/mine_02.png")],
+				optionalList: [],
 			}
 		},
 		computed: {
-			quoteInitStatus(){
-				return this.$store.state.market.quoteInitStatus;
-			},
-			quoteInitStep(){
-				return this.$store.state.market.quoteInitStep;
-			},
 			quoteSocket(){
 				return this.$store.state.quoteSocket;
+			},
+			userInfo(){
+				if(localStorage.user) return JSON.parse(localStorage.user);
 			}
 		},
 		methods: {
@@ -59,9 +57,25 @@
 				if(index == 0){
 					this.currentView = 'optionalList';
 					this.setShow = true;
+					//获取用户所有自选 合约
+					this.getUserCommodityList();
+					this.$store.state.market.Parameters = [];
+					
 				}else{
 					this.currentView = 'market';
 					this.setShow = false;
+					this.$store.state.market.Parameters = [];
+					pro.fetch('post', '/quoteTrader/getCommodityInfo', '', '').then((res) => {
+						if(res.success == true && res.code == 1){
+							if(res.data[0].list && res.data[0].list.length > 0){
+								res.data[0].list.forEach((o, i) => {
+									this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+								});
+							}
+						}
+					}).catch((err) => {
+						Toast({message: err.data.message, position: 'bottom', duration: 2000});
+					});
 				}
 			},
 			toSearch: function(){
@@ -69,6 +83,25 @@
 			},
 			toOptionalManage: function(){
 				this.$router.push({path: '/optionalManage'});
+			},
+			getUserCommodityList: function(){
+				if(this.userInfo == undefined) return;
+				var headers = {
+					token: this.userInfo.token,
+					secret: this.userInfo.secret
+				}
+				pro.fetch('post', '/quoteTrader/userGetCommodityList', '', headers).then((res) => {
+					if(res.success == true && res.code == 1){
+						this.optionalList = res.data;
+						if(res.data && res.data.length > 0){
+							res.data.forEach((o, i) => {
+								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+							});
+						}
+					}
+				}).catch((err) => {
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
+				});
 			},
 			getCommodityInfoNoType: function(){
 				pro.fetch('post', '/quoteTrader/getCommodityInfo', '', '').then((res) => {
