@@ -172,7 +172,7 @@
 				}
 			},
 			addOptional: function(){
-				this.$router.push({path: '/search'});
+				this.$router.push({path: '/search', query: {isRefresh: 1}});
 			},
 			rotateEvent: function(){
 				
@@ -222,6 +222,29 @@
 			});
 			//获取所有自选
 			this.operateData();
+		},
+		activated: function(){
+			//重新请求自选合约列表
+			if(this.userInfo == undefined) return;
+			var headers = {
+				token: this.userInfo.token,
+				secret: this.userInfo.secret
+			}
+			pro.fetch('post', '/quoteTrader/userGetCommodityList', '', headers).then((res) => {
+				if(res.success == true && res.code == 1){
+					if(res.data && res.data.length > 0){
+						this.$store.state.market.Parameters = [];
+						this.$store.state.market.commodityOrder = [];
+						this.$store.state.market.commodityOrder = res.data;
+						this.$parent.optionalList = res.data;
+						res.data.forEach((o, i) => {
+							this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+						});
+					}
+				}
+			}).catch((err) => {
+				Toast({message: err.data.message, position: 'bottom', duration: 2000});
+			});
 		}
 	}
 </script>
