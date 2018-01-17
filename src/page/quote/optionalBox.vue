@@ -1,65 +1,24 @@
 <template>
 	<div id="index">
 		<div class="main">
-			<div class="title">
-				<span>外汇</span>
-				<!--<i class="icon icon_show"></i>-->
-				<i class="icon icon_hide"></i>
-			</div>
-			<div class="recommend">
-				<div class="col">
-					<span class="name">美原油</span>
-					<span class="red">52.49<i class="icon icon_arrow up"></i></span>
-					<span class="red">+0.05%&nbsp;&nbsp;+0.69</span>
+			<template v-for="(v,index) in typeList">
+				<div>
+					<div class="title">
+						<span>{{v | operateData}}</span>
+						<!--<i class="icon icon_show"></i>-->
+						<i class="icon icon_hide"></i>
+					</div>
+					<div class="recommend">
+						<template v-for="(o, k) in parameters">
+							<div class="col" v-if="v == o.commodityType" :type="v" :types="o.commodityType">
+								<span class="name">{{o.CommodityName}}</span>
+								<span :class="{red: o.LastQuotation.LastPrice > o.LastQuotation.PreSettlePrice, green: o.LastQuotation.LastPrice < o.LastQuotation.PreSettlePrice}">{{o.LastQuotation.LastPrice | fixNum(o.DotSize)}}<i class="icon icon_arrow" :class="{up: o.LastQuotation.LastPrice > o.LastQuotation.PreSettlePrice, down: o.LastQuotation.LastPrice < o.LastQuotation.PreSettlePrice}"></i></span>
+								<span :class="{green: o.LastQuotation.ChangeRate < 0, red: o.LastQuotation.ChangeRate > 0}"><em v-show="o.LastQuotation.ChangeRate > 0">+</em>{{o.LastQuotation.ChangeRate | fixNumTwo}}%&nbsp;&nbsp;<em v-show="o.LastQuotation.ChangeRate > 0">+</em>{{o.LastQuotation.ChangeValue | fixNum(o.DotSize)}}</span>
+							</div>
+						</template>
+					</div>
 				</div>
-				<div class="col">
-					<span class="name">美黄金</span>
-					<span class="green">52.49<i class="icon icon_arrow down"></i></span>
-					<span class="green">+0.05%&nbsp;&nbsp;+0.69</span>
-				</div>
-				<div class="col">
-					<span class="name">美铜</span>
-					<span class="red">1036.49<i class="icon icon_arrow up"></i></span>
-					<span class="red">+0.05%&nbsp;&nbsp;+0.69</span>
-				</div>
-			</div>
-			<div class="title">
-				<span>商品</span>
-				<i class="icon icon_show"></i>
-				<!--<i class="icon icon_hide"></i>-->
-			</div>
-			<div class="recommend">
-				<div class="col">
-					<span class="name">美原油</span>
-					<span class="red">52.49<i class="icon icon_arrow up"></i></span>
-					<span class="red">+0.05%&nbsp;&nbsp;+0.69</span>
-				</div>
-				<div class="col">
-					<span class="name">美黄金</span>
-					<span class="green">52.49<i class="icon icon_arrow down"></i></span>
-					<span class="green">+0.05%&nbsp;&nbsp;+0.69</span>
-				</div>
-				<div class="col">
-					<span class="name">美铜</span>
-					<span class="red">1036.49<i class="icon icon_arrow up"></i></span>
-					<span class="red">+0.05%&nbsp;&nbsp;+0.69</span>
-				</div>
-				<div class="col">
-					<span class="name">美原油</span>
-					<span class="red">52.49<i class="icon icon_arrow up"></i></span>
-					<span class="red">+0.05%&nbsp;&nbsp;+0.69</span>
-				</div>
-				<div class="col">
-					<span class="name">美黄金</span>
-					<span class="green">52.49<i class="icon icon_arrow down"></i></span>
-					<span class="green">+0.05%&nbsp;&nbsp;+0.69</span>
-				</div>
-				<div class="col">
-					<span class="name">美铜</span>
-					<span class="red">1036.49<i class="icon icon_arrow up"></i></span>
-					<span class="red">+0.05%&nbsp;&nbsp;+0.69</span>
-				</div>
-			</div>
+			</template>
 			<div class="add_optional">
 				<div class="box">
 					<i class="icon icon_add"></i>
@@ -72,18 +31,53 @@
 </template>
 
 <script>
-	import TabBar from "../../components/TabBar.vue"
+	import pro from '../../assets/js/common.js'
+	import { Toast } from 'mint-ui';
 	export default {
 		name: 'index',
-		components: {
-			TabBar
-		},
+		components: {},
 		data(){
 			return{
-				selectNum: 0,
-				tabList: ['自选', '市场'],
-				selectTypeNum: 0,
-				TypeList: [],
+				_typeList: [],
+				typeList: [],
+			}
+		},
+		computed: {
+			quoteSocket(){
+				return this.$store.state.quoteSocket;
+			},
+			parameters(){
+				return this.$store.state.market.Parameters;
+			},
+		},
+		filters: {
+			operateData: function(e) {
+				switch(e) {
+					case '1':
+						return '商品';
+						break;
+					case '2':
+						return '投指期货';
+						break;
+					case '3':
+						return '外汇';
+						break;
+					case '4':
+						return 'LME金属';
+						break;
+					case '5':
+						return '债券期货';
+						break;
+					case '6':
+						return 'ETF';
+						break;
+				}
+			},
+			fixNumTwo: function(num){
+				return num.toFixed(2);
+			},
+			fixNum: function(num, dotsize){
+				return num.toFixed(dotsize);
 			}
 		},
 		methods: {
@@ -91,8 +85,30 @@
 				this.$router.push({path: '/search'});
 			},
 			switchList: function(){
-				this.$router.push({path: '/optionalList'});
-			}
+				this.$parent.currentView = 'optionalList';
+			},
+			getOrderInfo: function(){
+				this.$store.state.market.Parameters = [];
+				this.$store.state.market.commodityOrder = [];
+				let arr = [];
+				if(this.$parent.userOptionalList && this.$parent.userOptionalList.length > 0){
+					this.$store.state.market.commodityOrder = this.$parent.userOptionalList;
+					this.$parent.userOptionalList.forEach((o,i) => {
+						this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+						arr.push(o.commodityType);
+					});
+					arr.forEach((o, i) => {
+						if(this.typeList.indexOf(o) == -1){
+							this.typeList.push(o);
+						}
+					});
+				}
+				
+			},
+		},
+		mounted: function(){
+			//获取所有自合约数据
+			this.getOrderInfo();
 		}
 	}
 </script>
