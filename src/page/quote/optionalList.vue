@@ -46,6 +46,7 @@
 <script>
 	import optionalBox from "./optionalBox.vue"
 	import pro from '../../assets/js/common.js'
+	import { Toast } from 'mint-ui';
 	export default {
 		name: 'index',
 		components: {optionalBox,  },

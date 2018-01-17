@@ -2121,10 +2121,13 @@ export default new Vuex.Store({
 					//重新组装数据
 					context.state.market.Parameters.forEach(function(o, i){
 						context.state.market.commodityOrder.forEach(function(v){
-							o.isRecommend = v.isRecommend;
-							o.commodityType = v.commodityType;
-							o.contrast = v.contrast;
-							o.sortNum = v.sortNum;
+							if(o.CommodityNo == v.commodityNo){
+								o.isRecommend = v.isRecommend;
+								o.commodityType = v.commodityType;
+								o.contrast = v.contrast;
+								o.sortNum = v.sortNum;
+							}
+							
 						});
 					});
 					context.state.market.quoteInitStep = true;
