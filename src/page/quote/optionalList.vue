@@ -183,35 +183,22 @@
 			optionalEvent: function(){
 				this.$router.push({path: '/optionalManage'});
 			},
-			getUserCommodityList: function(){
-				if(this.userInfo == undefined) return;
-				var headers = {
-					token: this.userInfo.token,
-					secret: this.userInfo.secret
-				}
-				pro.fetch('post', '/quoteTrader/userGetCommodityList', '', headers).then((res) => {
-					if(res.success == true && res.code == 1){
-						if(res.data && res.data.length > 0){
-							this.contList = res.data;
-							res.data.forEach((o, i) => {
-								if(o.commodityType == 1){
-									this.goodsList.push(o);
-								}else if(o.commodityType == 2){
-									this.stockList.push(o);
-								}else if(o.commodityType == 3){
-									this.foreignList.push(o);
-								}else if(o.commodityType == 4){
-									this.metalList.push(o);
-								}else if(o.commodityType == 5){
-									this.bondList.push(o);
-								}else if(o.commodityType == 6){
-									this.etfList.push(o);
-								}
-							});
-						}
+			operateData: function(){
+				this.contList = this.$parent.optionalList;
+				this.contList.forEach((o, i) => {
+					if(o.commodityType == 1){
+						this.goodsList.push(o);
+					}else if(o.commodityType == 2){
+						this.stockList.push(o);
+					}else if(o.commodityType == 3){
+						this.foreignList.push(o);
+					}else if(o.commodityType == 4){
+						this.metalList.push(o);
+					}else if(o.commodityType == 5){
+						this.bondList.push(o);
+					}else if(o.commodityType == 6){
+						this.etfList.push(o);
 					}
-				}).catch((err) => {
-					Toast({message: err.data.message, position: 'bottom', duration: 2000});
 				});
 			},
 		},
@@ -221,7 +208,7 @@
 				this.tabList.push(o.name);
 			});
 			//获取所有自选
-			this.getUserCommodityList();
+			this.operateData();
 		}
 	}
 </script>

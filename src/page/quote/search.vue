@@ -3,7 +3,7 @@
 		<div class="search_box">
 			<div class="search">
 				<i class="icon icon_search"></i>
-				<input type="text" placeholder="搜索合约代码/简称" v-model="searchCont" @keyup="searchEvent" />
+				<input type="text" placeholder="搜索合约代码/简称" v-model="searchCont" />
 				<span @touchstart="toIndex">取消</span>
 			</div>
 		</div>
@@ -34,7 +34,7 @@
 				<div class="recommend">
 					<ul>
 						<template v-for="(v,index) in recommendList">
-							<li>{{v.label}}</li>
+							<li @touchstart="quickSearchEvent(v.label)">{{v.label}}</li>
 						</template>
 					</ul>
 				</div>
@@ -71,27 +71,9 @@
 				if(localStorage.user) return JSON.parse(localStorage.user);
 			}
 		},
-		methods: {
-			getRecommend: function(){
-				pro.fetch('post', '/quoteTrader/getRecommend', '', '').then((res) => {
-					if(res.success == true && res.code == 1){
-						this.recommendList = res.data;
-					}
-				}).catch((err) => {
-					Toast({message: err.data.message, position: 'bottom', duration: 2000});
-				});
-			},
-			toIndex: function(){
-				this.searchCont = '';
-				this.resultList = [];
-				this.resultShow = false;
-				this.emptyShow = false;
-				this.contShow = false;
-				this.recommendShow = true;
-				this.$router.push({path: '/index'});
-			},
-			searchEvent: function(){
-				if(this.searchCont != ''){
+		watch: {
+			searchCont: function(n, o){
+				if(n != ''){
 					this.resultShow = true;
 					this.resultList = [];
 					this.totalList.forEach((o, i) => {
@@ -129,6 +111,29 @@
 					this.emptyShow = false;
 					this.recommendShow = true;
 				}
+			}
+		},
+		methods: {
+			getRecommend: function(){
+				pro.fetch('post', '/quoteTrader/getRecommend', '', '').then((res) => {
+					if(res.success == true && res.code == 1){
+						this.recommendList = res.data;
+					}
+				}).catch((err) => {
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
+				});
+			},
+			toIndex: function(){
+				this.searchCont = '';
+				this.resultList = [];
+				this.resultShow = false;
+				this.emptyShow = false;
+				this.contShow = false;
+				this.recommendShow = true;
+				this.$router.push({path: '/index'});
+			},
+			quickSearchEvent: function(key){
+				this.searchCont = key;
 			},
 			getUserCommodityList: function(){
 				if(this.userInfo == undefined) return;

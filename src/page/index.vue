@@ -38,7 +38,7 @@
 				selected:"行情",
 				tabs:[require("../assets/images/quotation_01.png"),require("../assets/images/mockTrading_02.png"),
 				require("../assets/images/information_02.png"),require("../assets/images/mine_02.png")],
-				userOptionalList: [],
+				optionalList: [],
 				marketList: [],
 			}
 		},
@@ -65,14 +65,17 @@
 						//获取用户所有自选 合约
 						this.getUserCommodityList();
 						this.$store.state.market.Parameters = [];
+						this.$store.state.market.commodityOrder = [];
 					}
 				}else{
 					this.currentView = 'market';
 					this.setShow = false;
 					this.$store.state.market.Parameters = [];
+					this.$store.state.market.commodityOrder = [];
 					pro.fetch('post', '/quoteTrader/getCommodityInfo', '', '').then((res) => {
 						if(res.success == true && res.code == 1){
 							if(res.data[0].list && res.data[0].list.length > 0){
+								this.$store.state.market.commodityOrder = res.data[0].list;
 								res.data[0].list.forEach((o, i) => {
 									this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 								});
@@ -98,7 +101,9 @@
 				pro.fetch('post', '/quoteTrader/userGetCommodityList', '', headers).then((res) => {
 					if(res.success == true && res.code == 1){
 						if(res.data && res.data.length > 0){
-							this.userOptionalList = res.data;
+							console.log(res.data);
+							this.optionalList = res.data;
+							this.$store.state.market.commodityOrder = res.data;
 							res.data.forEach((o, i) => {
 								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 							});

@@ -109,7 +109,6 @@
 								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 							});
 						}
-						console.log(this.parameters);
 						break;
 					case 2:
 						this.$store.state.market.Parameters = [];
@@ -155,25 +154,19 @@
 						break;
 				}
 			},
-			getCommodityInfo: function(){
-				pro.fetch('post', '/quoteTrader/getCommodityInfo', '', '').then((res) => {
-					if(res.success == true && res.code == 1){
-						this.typeList = res.data;
-						this.goodsList = this.typeList[0];
-						this.stockList = this.typeList[1];
-						this.foreignList = this.typeList[2];
-						this.metalList = this.typeList[3];
-						this.bondList = this.typeList[4];
-						this.etfList = this.typeList[5];
-					}
-				}).catch((err) => {
-					Toast({message: err.data.message, position: 'bottom', duration: 2000});
-				});
+			operateDate: function(){
+				this.typeList = this.$parent.marketList;
+				this.goodsList = this.typeList[0];
+				this.stockList = this.typeList[1];
+				this.foreignList = this.typeList[2];
+				this.metalList = this.typeList[3];
+				this.bondList = this.typeList[4];
+				this.etfList = this.typeList[5];
 			}
 		},
 		mounted: function(){
 			//获取合约类型
-			this.getCommodityInfo();
+			this.operateDate();
 		}
 	}
 </script>
