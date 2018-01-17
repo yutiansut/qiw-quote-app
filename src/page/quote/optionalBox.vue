@@ -4,13 +4,13 @@
 			<template v-for="(v,index) in typeList">
 				<div class="type">
 					<div class="title">
-						<span>{{v | operateData}}</span>
-						<!--<i class="icon icon_show"></i>-->
-						<i class="icon icon_hide"></i>
+						<span>{{v.name | operateData}}</span>
+						<i class="icon" :class="{icon_show: v.status == 1, icon_hide: v.status == 0}" @touchstart="switchEvent(v.status, v.name)"></i>
+						<!--<i class="icon icon_hide"></i>-->
 					</div>
-					<div class="recommend">
+					<div class="recommend" v-show="v.status == 1">
 						<template v-for="(o, k) in parameters">
-							<div class="col" v-if="v == o.commodityType" :type="v" :types="o.commodityType">
+							<div class="col" v-if="v.name == o.commodityType">
 								<span class="name">{{o.CommodityName}}</span>
 								<span :class="{red: o.LastQuotation.LastPrice > o.LastQuotation.PreSettlePrice, green: o.LastQuotation.LastPrice < o.LastQuotation.PreSettlePrice}">{{o.LastQuotation.LastPrice | fixNum(o.DotSize)}}<i class="icon icon_arrow" :class="{up: o.LastQuotation.LastPrice > o.LastQuotation.PreSettlePrice, down: o.LastQuotation.LastPrice < o.LastQuotation.PreSettlePrice}"></i></span>
 								<span :class="{green: o.LastQuotation.ChangeRate < 0, red: o.LastQuotation.ChangeRate > 0}"><em v-show="o.LastQuotation.ChangeRate > 0">+</em>{{o.LastQuotation.ChangeRate | fixNumTwo}}%&nbsp;&nbsp;<em v-show="o.LastQuotation.ChangeRate > 0">+</em>{{o.LastQuotation.ChangeValue | fixNum(o.DotSize)}}</span>
@@ -39,6 +39,7 @@
 		data(){
 			return{
 				typeList: [],
+				isShow: true,
 			}
 		},
 		computed: {
@@ -86,6 +87,17 @@
 			switchList: function(){
 				this.$parent.currentView = 'optionalList';
 			},
+			switchEvent: function(status, name){
+				if(status == 1){
+					this.typeList.forEach((o) => {
+						if(name == o.name) o.status = 0;
+					});
+				}else{
+					this.typeList.forEach((o) => {
+						if(name == o.name) o.status = 1;
+					});
+				}
+			},
 			getOrderInfo: function(){
 				this.$store.state.market.Parameters = [];
 				this.$store.state.market.commodityOrder = [];
@@ -98,7 +110,11 @@
 					});
 					arr.forEach((o, i) => {
 						if(this.typeList.indexOf(o) == -1){
-							this.typeList.push(o);
+							let obj = {
+								name: o,
+								status: 1
+							}
+							this.typeList.push(obj);
 						}
 					});
 				}
