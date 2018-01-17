@@ -101,7 +101,6 @@
 				pro.fetch('post', '/quoteTrader/userGetCommodityList', '', headers).then((res) => {
 					if(res.success == true && res.code == 1){
 						if(res.data && res.data.length > 0){
-							console.log(res.data);
 							this.optionalList = res.data;
 							this.$store.state.market.commodityOrder = res.data;
 							res.data.forEach((o, i) => {

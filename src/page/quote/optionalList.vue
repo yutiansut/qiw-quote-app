@@ -184,21 +184,34 @@
 				this.$router.push({path: '/optionalManage'});
 			},
 			operateData: function(){
-				this.contList = this.$parent.optionalList;
-				this.contList.forEach((o, i) => {
-					if(o.commodityType == 1){
-						this.goodsList.push(o);
-					}else if(o.commodityType == 2){
-						this.stockList.push(o);
-					}else if(o.commodityType == 3){
-						this.foreignList.push(o);
-					}else if(o.commodityType == 4){
-						this.metalList.push(o);
-					}else if(o.commodityType == 5){
-						this.bondList.push(o);
-					}else if(o.commodityType == 6){
-						this.etfList.push(o);
+				if(this.userInfo == undefined) return;
+				var headers = {
+					token: this.userInfo.token,
+					secret: this.userInfo.secret
+				}
+				pro.fetch('post', '/quoteTrader/userGetCommodityList', '', headers).then((res) => {
+					if(res.success == true && res.code == 1){
+						if(res.data && res.data.length > 0){
+							this.contList = res.data;
+							this.contList.forEach((o, i) => {
+								if(o.commodityType == 1){
+									this.goodsList.push(o);
+								}else if(o.commodityType == 2){
+									this.stockList.push(o);
+								}else if(o.commodityType == 3){
+									this.foreignList.push(o);
+								}else if(o.commodityType == 4){
+									this.metalList.push(o);
+								}else if(o.commodityType == 5){
+									this.bondList.push(o);
+								}else if(o.commodityType == 6){
+									this.etfList.push(o);
+								}
+							});
+						}
 					}
+				}).catch((err) => {
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
 				});
 			},
 		},
