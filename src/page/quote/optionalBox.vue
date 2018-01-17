@@ -2,7 +2,7 @@
 	<div id="index">
 		<div class="main">
 			<template v-for="(v,index) in typeList">
-				<div>
+				<div class="type">
 					<div class="title">
 						<span>{{v | operateData}}</span>
 						<!--<i class="icon icon_show"></i>-->
@@ -38,7 +38,6 @@
 		components: {},
 		data(){
 			return{
-				_typeList: [],
 				typeList: [],
 			}
 		},
@@ -91,9 +90,9 @@
 				this.$store.state.market.Parameters = [];
 				this.$store.state.market.commodityOrder = [];
 				let arr = [];
-				if(this.$parent.userOptionalList && this.$parent.userOptionalList.length > 0){
-					this.$store.state.market.commodityOrder = this.$parent.userOptionalList;
-					this.$parent.userOptionalList.forEach((o,i) => {
+				if(this.$parent.optionalList && this.$parent.optionalList.length > 0){
+					this.$store.state.market.commodityOrder = this.$parent.optionalList;
+					this.$parent.optionalList.forEach((o,i) => {
 						this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 						arr.push(o.commodityType);
 					});
@@ -117,6 +116,10 @@
 	@import "../../assets/css/common.scss";
 	.main{
 		margin-top: 1.01rem;
+	}
+	.type{
+		overflow: hidden;
+		border-bottom: 0.01rem solid $black;
 	}
 	.title{
 		width: 7.5rem;
@@ -149,7 +152,6 @@
 			width: 2.5rem;
 			height: 1.6rem;
 			border-right: 0.01rem solid $black;
-			border-bottom: 0.01rem solid $black;
 			span{
 				display: block;
 				text-align: center;
