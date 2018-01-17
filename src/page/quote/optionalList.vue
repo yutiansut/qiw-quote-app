@@ -30,9 +30,9 @@
 			</ul>
 		</div>
 		<div class="add_optional">
-			<div class="box">
+			<div class="box" @touchstart="addOptional">
 				<i class="icon icon_add"></i>
-				<span @touchstart="addOptional">添加自选</span>
+				<span>添加自选</span>
 			</div>
 		</div>
 		<div class="btn_box">

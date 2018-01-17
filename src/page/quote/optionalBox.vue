@@ -6,7 +6,6 @@
 					<div class="title">
 						<span>{{v.name | operateData}}</span>
 						<i class="icon" :class="{icon_show: v.status == 1, icon_hide: v.status == 0}" @touchstart="switchEvent(v.status, v.name)"></i>
-						<!--<i class="icon icon_hide"></i>-->
 					</div>
 					<div class="recommend" v-show="v.status == 1">
 						<template v-for="(o, k) in parameters">
@@ -20,9 +19,9 @@
 				</div>
 			</template>
 			<div class="add_optional">
-				<div class="box">
+				<div class="box" @touchstart="addOptional">
 					<i class="icon icon_add"></i>
-					<span @touchstart="addOptional">添加自选</span>
+					<span>添加自选</span>
 				</div>
 			</div>
 			<div class="icon icon_list" @touchstart="switchList"></div>
@@ -38,8 +37,8 @@
 		components: {},
 		data(){
 			return{
+				_typeList: [],
 				typeList: [],
-				isShow: true,
 			}
 		},
 		computed: {
@@ -101,7 +100,7 @@
 			getOrderInfo: function(){
 				this.$store.state.market.Parameters = [];
 				this.$store.state.market.commodityOrder = [];
-				let arr = [];
+				let arr = [], arrs = [];
 				if(this.$parent.optionalList && this.$parent.optionalList.length > 0){
 					this.$store.state.market.commodityOrder = this.$parent.optionalList;
 					this.$parent.optionalList.forEach((o,i) => {
@@ -109,13 +108,13 @@
 						arr.push(o.commodityType);
 					});
 					arr.forEach((o, i) => {
-						if(this.typeList.indexOf(o) == -1){
-							let obj = {
-								name: o,
-								status: 1
-							}
-							this.typeList.push(obj);
+						if(arrs.indexOf(o) == -1){
+							arrs.push(o);
 						}
+					});
+					arrs.forEach((v) => {
+						let obj = {name: v, status: 1};
+						this.typeList.push(obj);
 					});
 				}
 				
