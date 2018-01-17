@@ -39,6 +39,7 @@
 				tabs:[require("../assets/images/quotation_01.png"),require("../assets/images/mockTrading_02.png"),
 				require("../assets/images/information_02.png"),require("../assets/images/mine_02.png")],
 				userOptionalList: [],
+				marketList: [],
 			}
 		},
 		computed: {
@@ -107,9 +108,10 @@
 					Toast({message: err.data.message, position: 'bottom', duration: 2000});
 				});
 			},
-			getCommodityInfoNoType: function(){
+			getCommodityInfo: function(){
 				pro.fetch('post', '/quoteTrader/getCommodityInfo', '', '').then((res) => {
 					if(res.success == true && res.code == 1){
+						this.marketList = res.data;
 						this.$store.state.market.commodityOrder = res.data[0].list;
 						//初始化行情
 						if(this.$store.state.market.commodityOrder){
@@ -124,7 +126,7 @@
 		},
 		mounted: function(){
 			//获取所有合约
-			this.getCommodityInfoNoType();
+			this.getCommodityInfo();
 		}
 	}
 </script>

@@ -115,11 +115,13 @@
 					}
 					//判断是否是自选合约
 					this.resultList.forEach((o, i) => {
-						this.optionalList.forEach((v, k) => {
-							if(o.CommodityNo == v.commodityNo){
-								o.isOptional = 1;
-							}
-						});
+						if(this.optionalList.length > 0){
+							this.optionalList.forEach((v, k) => {
+								if(o.CommodityNo == v.commodityNo){
+									o.isOptional = 1;
+								}
+							});
+						}
 					});
 				}else{
 					this.resultList = [];
@@ -136,6 +138,7 @@
 				}
 				pro.fetch('post', '/quoteTrader/userGetCommodityList', '', headers).then((res) => {
 					if(res.success == true && res.code == 1){
+						if(res.data == undefined) return;
 						this.optionalList = res.data;
 					}
 				}).catch((err) => {

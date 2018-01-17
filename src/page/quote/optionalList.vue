@@ -52,7 +52,7 @@
 		components: {optionalBox,  },
 		data(){
 			return{
-				tabList: ['全部','商品','股指期货','外汇','LME金属','债券期货 ','ETF'],
+				tabList: ['全部'],
 				currentNum: 0,
 				changeRateShow: true,
 				changeRateName: '涨跌幅',
@@ -90,7 +90,9 @@
 				switch(index){
 					case 0:
 						this.$store.state.market.Parameters = [];
+						this.$store.state.market.commodityOrder = [];
 						if(this.contList.length > 0){
+							this.$store.state.market.commodityOrder = this.contList;
 							this.contList.forEach((o, i) => {
 								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 							});
@@ -98,7 +100,9 @@
 						break;
 					case 1:
 						this.$store.state.market.Parameters = [];
+						this.$store.state.market.commodityOrder = [];
 						if(this.goodsList.length > 0){
+							this.$store.state.market.commodityOrder = this.goodsList;
 							this.goodsList.forEach((o, i) => {
 								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 							});
@@ -106,7 +110,9 @@
 						break;
 					case 2:
 						this.$store.state.market.Parameters = [];
+						this.$store.state.market.commodityOrder = [];
 						if(this.stockList.length > 0){
+							this.$store.state.market.commodityOrder = this.stockList;
 							this.stockList.forEach((o, i) => {
 								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 							});
@@ -114,7 +120,9 @@
 						break;
 					case 3:
 						this.$store.state.market.Parameters = [];
+						this.$store.state.market.commodityOrder = [];
 						if(this.foreignList.length > 0){
+							this.$store.state.market.commodityOrder = this.foreignList;
 							this.foreignList.forEach((o, i) => {
 								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 							});
@@ -122,7 +130,9 @@
 						break;
 					case 4:
 						this.$store.state.market.Parameters = [];
+						this.$store.state.market.commodityOrder = [];
 						if(this.metalList.length > 0){
+							this.$store.state.market.commodityOrder = this.metalList;
 							this.metalList.forEach((o, i) => {
 								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 							});
@@ -130,7 +140,9 @@
 						break;
 					case 5:
 						this.$store.state.market.Parameters = [];
+						this.$store.state.market.commodityOrder = [];
 						if(this.bondList.length > 0){
+							this.$store.state.market.commodityOrder = this.bondList;
 							this.bondList.forEach((o, i) => {
 								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 							});
@@ -138,7 +150,9 @@
 						break;
 					case 6:
 						this.$store.state.market.Parameters = [];
+						this.$store.state.market.commodityOrder = [];
 						if(this.etfList.length > 0){
+							this.$store.state.market.commodityOrder = this.etfList;
 							this.etfList.forEach((o, i) => {
 								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 							});
@@ -202,6 +216,10 @@
 			},
 		},
 		mounted: function(){
+			//分类tab列表
+			this.$parent.marketList.forEach((o, i) => {
+				this.tabList.push(o.name);
+			});
 			//获取所有自选
 			this.getUserCommodityList();
 		}

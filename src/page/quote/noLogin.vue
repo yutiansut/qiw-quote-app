@@ -3,8 +3,8 @@
 		<div class="main">
 			<p>你还未登录指数天下账号哟</p>
 			<div class="btn_box">
-				<btn name="注册" className="bluemd"></btn>
-				<btn name="登录" className="orangemd"></btn>
+				<btn name="注册" className="bluemd" @touchstart.native="toRegister"></btn>
+				<btn name="登录" className="orangemd" @touchstart.native="toLogin"></btn>
 			</div>
 		</div>
 	</div>
@@ -21,6 +21,14 @@
 				tabList: ['自选', '市场'],
 			}
 		},
+		methods: {
+			toRegister: function(){
+				this.$router.push({path: '/regisiter'});
+			},
+			toLogin: function(){
+				this.$router.push({path: '/login'});
+			},
+		}
 	}
 </script>
 
