@@ -84,9 +84,13 @@
 							}
 						}.bind(this)).catch(function(err){
 							var data = err.data;
-							this.$toast({message:data.message,duration: 2000});
-							this.code = '';
-							this.path = this.path + '&' + Math.random()*10;
+							if(data == undefined){
+								this.$toast({message:"网络不给力，请稍后重试",duration: 2000});
+							}else{
+								this.$toast({message:data.message,duration: 2000});
+								this.code = '';
+								this.path = this.path + '&' + Math.random()*10;
+							}
 						}.bind(this))
 					}else if(this.type == 'register'){
 						//请求发送验证码
@@ -104,12 +108,12 @@
 							}
 						}.bind(this)).catch(function(err){
 							var data = err.data;
-							if(data.success == false){
+							if(data == undefined){
+								this.$toast({message:"网络不给力，请稍后重试",duration: 2000});
+							}else{
 								this.code = '',
 								this.path = this.path + '&' + Math.random()*10;
 								this.$toast({message: data.message,duration: 2000});
-							}else{
-								this.$toast({message: "网络不给力，请稍后再试",duration: 5000});
 							}
 						}.bind(this));
 					}else if(this.type == 'findpwd'){

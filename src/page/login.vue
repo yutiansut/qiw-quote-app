@@ -27,7 +27,7 @@
 			<mt-button class="btn" @click.native="login">登录</mt-button>
 			<p>新用户注册>></p>
 			<div id="wechat">
-				<i @click="getWechatId"></i>
+				<!--<i @click="getWechatId"></i>-->
 			</div>
 		</div>
 		<codeDialog ref="codeDialog" :objstr="sendMsg" type="login"></codeDialog>
@@ -80,6 +80,7 @@
 						password:this.password
 					};
 					pro.fetch('post', '/loginAndRegister/mobileLogin',info, "").then(function(res){
+						console.log(res)
 						if(res.success == true){
 							if(res.code == 1){
 								this.$toast({message: '登录成功',duration: 1000});
@@ -91,80 +92,61 @@
 						}
 					}.bind(this)).catch(function(err){
 						var data = err.data;
-						this.num = data.data.failNum;
-						if(this.num > 2){
-							this.$refs.codeDialog.isshow = true;
-							this.$refs.codeDialog.path = this.PATH + "/loginAndRegister/getImgCode.jpg" + Math.random()*1000 + "?mobile=" + this.phone;
-							this.str = {
-								loginName : this.phone,
-								password :this.password
-							}
+						if(data == undefined){
+							this.$toast({message:"网络不给力，请稍后重试",duration: 2000});
+						}else{
 							this.$toast({message: data.message,duration: 2000});
+							this.num = data.data.failNum;
+							if(this.num > 2){
+								this.$refs.codeDialog.isshow = true;
+								this.$refs.codeDialog.path = this.PATH + "/loginAndRegister/getImgCode.jpg" + Math.random()*1000 + "?mobile=" + this.phone;
+								this.str = {
+									loginName : this.phone,
+									password :this.password
+								}
+							}
 						}
 					}.bind(this));
 				}
 			},
-			getWechatId:function(){
-//				var wxopenid=getcookie('wxopenid');  
-//			    var key=getcookie('key');  
-//			    if (key==''){  
-//			        var access_code=GetQueryString('code');  
-//			        if (wxopenid==""){  
-//			            if (access_code==null)  
-//			            {     
-//			                var fromurl=location.href;  
-//			                var url='https://open.weixin.qq.com/connect/oauth2/authorize?appid=填你自已的appid哟&redirect_uri='+encodeURIComponent(fromurl)+'&response_type=code&scope=snsapi_base&state=STATE%23wechat_redirect&connect_redirect=1#wechat_redirect';  
-//			                location.href=url;  
-//			            }  
-//			            else  
-//			            {     
-//			                $.ajax({  
-//			                    type:'get',  
-//			                    url:ApiUrl+'/index.php?act=payment&op=getopenid',   
-//			                    async:false,  
-//			                    cache:false,  
-//			                    data:{code:access_code},  
-//			                    dataType:'json',  
-//			                    success:function(result){                   
-//			                            if (result!=null && result.hasOwnProperty('openid') && result.openid!=""){  
-//			                               addcookie('wxopenid',result.openid,360000);                             
-//			                               getlogininfo(result.openid);  
-//			                            }   
-//			                            else  
-//			                            {  
-//			                              alert('微信身份识别失败 \n '+result);  
-//			                              location.href=fromurl;  
-//			                            }  
-//			                        }  
-//			                    });      
-//			            }  
-//			        }else{  
-//			           if (key=='' && wxopenid!='')  
-//			               getlogininfo(wxopenid);    
-//			        }  
-//			  
-//			        function getlogininfo(wxopenid){         
-//			            $.ajax({  
-//			               type:'get',  
-//			               url: ApiUrl + '/index.php?act=login&op=autologininfo',  
-//			               data: { wxopenid:wxopenid},  
-//			               dataType:'json',  
-//			               async:false,  
-//			               cache:false,                 
-//			               success: function (result) {                     
-//			                       if (result.return_code=='OK'){  
-//			                           addcookie('key',result.memberinfo.key);  
-//			                           addcookie('username',result.memberinfo.username);  
-//			                       }else{  
-//			                           alert(result.return_msg);  
-//			                           location.href=WapSiteUrl+'/tmpl/member/login.html';  
-//			                       }  
-//			               }  
-//			            });  
-//			        }  
-//			    }  
-//			}
+			  //判断是否微信登陆 是不是微信浏览器
+			isWeiXin:function() {
+			  	let ua = window.navigator.userAgent.toLowerCase();
+			  	console.log(ua);//mozilla/5.0 (iphone; cpu iphone os 9_1 like mac os x) applewebkit/601.1.46 (khtml, like gecko)version/9.0 mobile/13b143 safari/601.1
+			  	if(ua.match(/MicroMessenger/i) == 'micromessenger') {
+			  		return true;
+			  	}else{
+			  		return false;
+			  	}
+			},
+			 test:function(){
+			   if(this.isWeiXin()){
+			   	//微信登录，接口由后台定义
+			    this.$http.get('/wx/index/login/type/2').then((res) => {  
+			     	if(res.data.code==0){  //微信登录成功跳转个人中心
+			       		this.$router.push({
+			         		name:'UserHome',
+			       		})
+			     	}else{        //微信登录失败，使用填写信息登录
+			       		this.$router.push({
+			         		name:'Login',
+			       		})
+			     	}
+			    })
+			}
 		}
+	},
+	mounted:function(){
+//		if(this.isWeiXin()){  //是来自微信内置浏览器
+//	   	// 获取微信信息，如果之前没有使用微信登陆过，将进行授权登录
+//	   		this.$http.get(this.$root.api+"/index/index/wx_info").then((res) => {
+//	    		if(res.data.code!=0){
+//	      			location.href='/wx/index/wxAutoLogin';
+//	    		}
+//	   		})
+//	  	}else{
+//	  		location.href='/wx/index/wxAutoLogin';
+//	  	}
 	}
 }
 </script>
