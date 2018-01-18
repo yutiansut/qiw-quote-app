@@ -163,6 +163,7 @@
 				pro.fetch('post', '/quoteTrader/userRemoveCommodity', datas, headers).then((res) => {
 					if(res.success == true && res.code == 1){
 						Toast({message: '删除成功', position: 'bottom', duration: 2000});
+						this.num = 0;
 						//重新请求自选合约列表
 						this.getCommodityList();
 					}
