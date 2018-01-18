@@ -1,11 +1,12 @@
 <template>
 	<div id="quoteDetails">
+		<template v-for="(v, index) in parameters">
 		<header>
 			<i class="icon icon_back" @touchstart="goBackEvent"></i>
 			<div class="title">
 				<div class="name fl">
-					<span>{{currentdetail.CommodityName}}</span>
-					<span>{{currentdetail.CommodityNo + currentdetail.MainContract}}</span>
+					<span>{{v.CommodityName}}</span>
+					<!--<span>{{currentdetail.CommodityNo + currentdetail.MainContract}}</span>-->
 				</div>
 				<i class="icon icon_triangle"></i>
 			</div>
@@ -14,9 +15,10 @@
 		<div class="main">
 			<div class="details">
 				<div class="cont">
-					<p class="name"><span>美黄金</span>&nbsp;&nbsp;GC1702</p>
-					<p class="price red">1276.1</p>
-					<p class="change red">+2.1&nbsp;&nbsp;+0.29%</p>
+					<p class="price">{{v.LastQuotation.LastPrice}}</p>
+					<!--<p class="name"><span>{{currentdetail.CommodityName}}</span>&nbsp;&nbsp;{{currentdetail.CommodityNo + currentdetail.MainContract}}</p>
+					<p class="price" :class="{red: currentdetail.LastQuotation.LastPrice > currentdetail.LastQuotation.PreSettlePrice, green: currentdetail.LastQuotation.LastPrice < currentdetail.LastQuotation.PreSettlePrice}">{{currentdetail.LastQuotation.LastPrice | fixNum(currentdetail.DotSize)}}</p>
+					<p class="change" :class="{green: currentdetail.LastQuotation.ChangeRate < 0, red: currentdetail.LastQuotation.ChangeRate > 0}"><em v-show="currentdetail.LastQuotation.ChangeRate > 0">+</em>{{currentdetail.LastQuotation.ChangeValue | fixNum(currentdetail.DotSize)}}&nbsp;&nbsp;<em v-show="currentdetail.LastQuotation.ChangeRate > 0">+</em>{{currentdetail.LastQuotation.ChangeRate | fixNumTwo}}%</p>-->
 					<div class="row">
 						<div class="col">
 							<span>现手</span>
@@ -237,6 +239,7 @@
 				</div>
 			</div>
 		</div>
+		</template>
 		<mt-tabbar fixed class="menu">
 			<mt-tab-item class="col">  
 			    <img slot="icon" src="../../assets/images/mockTrading_02.png">  
@@ -264,7 +267,7 @@
 		components: {},
 		data(){
 			return{
-				
+				currentdetail: '',
 			}
 		},
 		computed: {
@@ -277,17 +280,40 @@
 			userInfo(){
 				if(localStorage.user) return JSON.parse(localStorage.user);
 			},
-			currentdetail(){
-				return this.$store.state.market.currentdetail;
+		},
+		filters:{
+			fixNumTwo: function(num){
+				return num.toFixed(2);
+			},
+			fixNum: function(num, dotsize){
+				return num.toFixed(dotsize);
 			}
+		},
+		watch: {
+			
 		},
 		methods: {
 			goBackEvent: function(){
 				this.$router.go(-1);
 			},
+			operateData: function(){
+				let arr = [];
+				let obj = this.$route.query;
+				arr.push(obj);
+				this.$store.state.market.Parameters = [];
+				this.$store.state.market.commodityOrder = [];
+				this.$store.state.market.commodityOrder = arr;
+				arr.forEach((o, i) => {
+					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.mainContract +'"}}');
+				});
+			}
 		},
 		mounted: function(){
-			console.log(this.currentdetail);
+			
+		},
+		activated: function(){
+			this.operateData();
+			console.log(this.parameters);
 		}
 	}
 </script>

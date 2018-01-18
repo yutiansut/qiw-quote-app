@@ -61,7 +61,6 @@
 				resultList: [],
 				recommendList: [],
 				optionalList: [],
-				commodityNo: '',
 			}
 		},
 		computed: {
@@ -119,13 +118,6 @@
 					this.recommendShow = true;
 				}
 			},
-			parameters: function(n, o){
-				if(n != undefined){
-					n.forEach((o, i) => {
-						if(o.CommodityNo == this.commodityNo) this.$store.state.market.currentdetail = o;
-					});
-				}
-			}
 		},
 		methods: {
 			getRecommend: function(){
@@ -147,21 +139,7 @@
 				this.$router.go(-1);
 			},
 			toQuoteDetails: function(commodityNo, mainContract, exchangeNo){
-				this.commodityNo = commodityNo;
-				let arr = [];
-				let obj = {
-					'commodityNo': commodityNo,
-					'mainContract': mainContract,
-					'exchangeNo': exchangeNo
-				}
-				arr.push(obj);
-				this.$store.state.market.Parameters = [];
-				this.$store.state.market.commodityOrder = [];
-				this.$store.state.market.commodityOrder = arr;
-				arr.forEach((o, i) => {
-					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + commodityNo + '","ContractNo":"' + mainContract +'"}}');
-				});
-				this.$router.push({path: '/quoteDetails'});
+				this.$router.push({path: '/quoteDetails', query: {'commodityNo': commodityNo, 'mainContract': mainContract, 'exchangeNo': exchangeNo}});
 			},
 			quickSearchEvent: function(key){
 				this.searchCont = key;

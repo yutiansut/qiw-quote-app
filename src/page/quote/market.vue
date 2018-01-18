@@ -9,7 +9,7 @@
 		</nav>
 		<div class="recommend">
 			<template v-for="(v, index) in parameters">
-				<div class="col" v-show="v.isRecommend == '1'" @touchstart="toQuoteDetails(v.CommodityNo)">
+				<div class="col" v-show="v.isRecommend == '1'" @touchstart="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo)">
 					<span class="name">{{v.CommodityName}}</span>
 					<span :class="{red: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.LastPrice | fixNum(v.DotSize)}}<i class="icon icon_arrow" :class="{up: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, down: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}"></i></span>
 					<span :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeRate | fixNumTwo}}%&nbsp;&nbsp;<em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeValue | fixNum(v.DotSize)}}</span>
@@ -25,7 +25,7 @@
 					<span @touchstart="switchEvent">{{changeRateName}}<i class="icon icon_switch"></i></span>
 				</li>
 				<template v-for="(v, index) in parameters">
-					<li @touchstart="toQuoteDetails(v.CommodityNo)">
+					<li @touchstart="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo)">
 						<div class="name">
 							<em>{{v.CommodityName}}</em>
 							<em>{{v.CommodityNo + v.MainContract}}</em>
@@ -78,13 +78,8 @@
 			}
 		},
 		methods: {
-			toQuoteDetails: function(commodityNo){
-				this.parameters.forEach((o, i) => {
-					if(o.CommodityNo == commodityNo){
-						this.$store.state.market.currentdetail = o;
-					}
-				});
-				this.$router.push({path: '/quoteDetails'});
+			toQuoteDetails: function(commodityNo, mainContract, exchangeNo){
+				this.$router.push({path: '/quoteDetails', query: {'commodityNo': commodityNo, 'mainContract': mainContract, 'exchangeNo': exchangeNo}});
 			},
 			switchEvent: function(){   //涨跌幅与涨跌额切换
 				if(this.changeRateShow == true){
@@ -177,6 +172,9 @@
 			this.operateDate();
 		},
 		activated: function(){
+			this.$store.state.market.Parameters = [];
+			this.$store.state.market.commodityOrder = [];
+			this.$store.state.market.commodityOrder = this.$parent.marketList[0].list;
 			this.$parent.marketList[0].list.forEach((o, i) => {
 				this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 			});
