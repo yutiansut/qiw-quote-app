@@ -50,7 +50,7 @@
 				<i class="icon icon_radios" v-show="checkedShow"></i>
 				<span>全选</span>
 			</div>
-			<div class="col">
+			<div class="col" @touchstart="deleteEvent">
 				<i class="icon icon_del"></i>
 				<span>删除</span>
 				<em>({{this.num}})</em>
@@ -71,6 +71,7 @@
 				checkedShow: false,
 				optionalList: [],
 				num: 0,
+				id: '',
 			}
 		},
 		computed: {
@@ -111,7 +112,6 @@
 							this.checkedShow = true;
 						}
 					}
-					
 				}
 			}
 		},
@@ -148,6 +148,28 @@
 					});
 				}
 			},
+			deleteEvent: function(){
+				if(this.userInfo == undefined) return;
+				var headers = {
+					token: this.userInfo.token,
+					secret: this.userInfo.secret
+				}
+				let arr = [];
+				this.parameters.forEach((o, i) => {
+					if(o.check == 1) arr.push(o.id);
+				});
+				this.id = arr.join(',');
+				let datas = {id: this.id};
+				pro.fetch('post', '/quoteTrader/userRemoveCommodity', datas, headers).then((res) => {
+					if(res.success == true && res.code == 1){
+						Toast({message: '删除成功', position: 'bottom', duration: 2000});
+						//重新请求自选合约列表
+						this.getCommodityList();
+					}
+				}).catch((err) => {
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
+				});
+			},
 			getCommodityList: function(){
 				if(this.userInfo == undefined) return;
 				var headers = {
@@ -172,6 +194,9 @@
 			}
 		},
 		mounted: function(){
+			
+		},
+		activated: function(){
 			//重新请求自选合约列表
 			this.getCommodityList();
 		}
