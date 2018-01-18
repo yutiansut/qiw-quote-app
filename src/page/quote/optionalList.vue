@@ -227,6 +227,7 @@
 			this.operateData();
 		},
 		activated: function(){
+			this.currentNum = 0;
 			//重新请求自选合约列表
 			if(this.userInfo == undefined) return;
 			var headers = {

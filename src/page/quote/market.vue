@@ -172,6 +172,7 @@
 			this.operateDate();
 		},
 		activated: function(){
+			this.currentNum = 0;
 			this.$store.state.market.Parameters = [];
 			this.$store.state.market.commodityOrder = [];
 			this.$store.state.market.commodityOrder = this.$parent.marketList[0].list;

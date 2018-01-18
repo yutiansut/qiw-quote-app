@@ -147,92 +147,80 @@
 					</div>
 					<div class="cont_right fl">
 						<div class="tab_title">
-							<span>五档</span>
-							<span class="current">明细</span>
+							<template v-for="(v, index) in tabList">
+								<span :class="{current: currentNum == index}" @touchstart="tabEvent(index)">{{v}}</span>
+							</template>
 						</div>
 						<div class="tab_cont">
-							<div class="five_quote">
+							<div class="five_quote" v-show="tabShow">
 								<h3>卖五档</h3>
 								<ul>
 									<li>
 										<span>卖五</span>
-										<span>52.16</span>
-										<span>20</span>
+										<span :class="{red: v.LastQuotation.AskPrice5 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice5 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice5 | fixNum(v.dotSize)}}</span>
+										<span>{{v.LastQuotation.AskQty5}}</span>
 									</li>
 									<li>
 										<span>卖四</span>
-										<span>52.16</span>
-										<span>20</span>
+										<span :class="{red: v.LastQuotation.AskPrice4 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice4 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice4 | fixNum(v.dotSize)}}</span>
+										<span>{{v.LastQuotation.AskQty4}}</span>
 									</li>
 									<li>
 										<span>卖三</span>
-										<span>52.16</span>
-										<span>20</span>
+										<span :class="{red: v.LastQuotation.AskPrice3 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice3 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice3 | fixNum(v.dotSize)}}</span>
+										<span>{{v.LastQuotation.AskQty3}}</span>
 									</li>
 									<li>
 										<span>卖二</span>
-										<span>52.16</span>
-										<span>20</span>
+										<span :class="{red: v.LastQuotation.AskPrice2 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice2 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice2 | fixNum(v.dotSize)}}</span>
+										<span>{{v.LastQuotation.AskQty2}}</span>
 									</li>
 									<li>
 										<span>卖一</span>
-										<span>52.16</span>
-										<span>20</span>
+										<span :class="{red: v.LastQuotation.AskPrice1 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice1 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice1 | fixNum(v.dotSize)}}</span>
+										<span>{{v.LastQuotation.AskQty1}}</span>
 									</li>
 								</ul>
 								<h3 class="border_top">买五档</h3>
 								<ul>
 									<li>
 										<span>买一</span>
-										<span>52.16</span>
-										<span>20</span>
+										<span :class="{red: v.LastQuotation.BidPrice1 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice1 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice1 | fixNum(v.dotSize)}}</span>
+										<span>{{v.LastQuotation.BidQty1}}</span>
 									</li>
 									<li>
 										<span>买二</span>
-										<span>52.16</span>
-										<span>20</span>
+										<span :class="{red: v.LastQuotation.BidPrice2 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice2 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice2 | fixNum(v.dotSize)}}</span>
+										<span>{{v.LastQuotation.BidQty2}}</span>
 									</li>
 									<li>
 										<span>买三</span>
-										<span>52.16</span>
-										<span>20</span>
+										<span :class="{red: v.LastQuotation.BidPrice3 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice3 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice3 | fixNum(v.dotSize)}}</span>
+										<span>{{v.LastQuotation.BidQty3}}</span>
 									</li>
 									<li>
 										<span>买四</span>
-										<span>52.16</span>
-										<span>20</span>
+										<span :class="{red: v.LastQuotation.BidPrice4 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice4 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice4 | fixNum(v.dotSize)}}</span>
+										<span>{{v.LastQuotation.BidQty4}}</span>
 									</li>
 									<li>
 										<span>买五</span>
-										<span>52.16</span>
-										<span>20</span>
+										<span :class="{red: v.LastQuotation.BidPrice5 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice5 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice5 | fixNum(v.dotSize)}}</span>
+										<span>{{v.LastQuotation.BidQty5}}</span>
 									</li>
 								</ul>
 							</div>
-							<!--<div class="trade_log">
+							<div class="trade_log" v-show="!tabShow">
 								<ul>
-									<li>
-										<span>15:16</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>15:16</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>15:16</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>15:16</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
+									<template v-for="k in tradeParameters[0].data">
+										<li>
+											<span>{{k.time | operateTime}}</span>
+											<span>{{k.price}}</span>
+											<span>{{k.volume}}</span>
+										</li>
+									</template>
 								</ul>
-							</div>-->
+							</div>
 						</div>
 					</div>
 				</div>
@@ -266,7 +254,12 @@
 		components: {},
 		data(){
 			return{
-				currentdetail: '',
+				currentNum: 0,
+				tabList: ['五档','明细'],
+				tabShow: true,
+				chartsList: ['闪电图','分时','1分','5分','15分','30分','日K'],
+				currentChartsNum: 1,
+				currentChartsView: 'fens',
 			}
 		},
 		computed: {
@@ -279,6 +272,9 @@
 			userInfo(){
 				if(localStorage.user) return JSON.parse(localStorage.user);
 			},
+			tradeParameters(){
+				return this.$store.state.market.tradeParameters;
+			},
 		},
 		filters:{
 			fixNumTwo: function(num){
@@ -286,6 +282,9 @@
 			},
 			fixNum: function(num, dotsize){
 				return num.toFixed(dotsize);
+			},
+			operateTime: function(val){
+				return val.split(':')[0] + ':' + val.split(':')[1];
 			}
 		},
 		watch: {
@@ -295,11 +294,20 @@
 			goBackEvent: function(){
 				this.$router.go(-1);
 			},
+			tabEvent: function(index){
+				this.currentNum = index;
+				if(index == 0){
+					this.tabShow = true;
+				}else{
+					this.tabShow = false;
+				}
+			},
 			operateData: function(){
 				let arr = [];
 				let obj = this.$route.query;
 				arr.push(obj);
 				this.$store.state.market.Parameters = [];
+				this.$store.state.market.tradeParameters = [];
 				this.$store.state.market.commodityOrder = [];
 				this.$store.state.market.commodityOrder = arr;
 				arr.forEach((o, i) => {
@@ -308,11 +316,11 @@
 			}
 		},
 		mounted: function(){
-			
+//			console.log(this.tradeParameters);
 		},
 		activated: function(){
 			this.operateData();
-			console.log(this.parameters);
+//			console.log(this.parameters);
 		}
 	}
 </script>
@@ -601,8 +609,17 @@
 								line-height: 0.36rem;
 								display: flex;
 								justify-content: space-around;
+								padding: 0 0.1rem;
 								span{
+									display: inline-block;
 									font-size: 0.2rem;
+									&:first-child{
+										width: 0.5rem;
+									}
+									&:nth-child(2){
+										width: 1rem;
+										text-align: center;
+									}
 									&.red{
 										color: $red;
 									}
@@ -611,14 +628,16 @@
 									}
 									&:last-child{
 										color: $white;
+										width: 0.3rem;
+										text-align: right;
 									}
 								}
 							}
 						}
 						.trade_log{
 							li{
-								height: 0.36rem;
-								line-height: 0.36rem;
+								height: 0.38rem;
+								line-height: 0.38rem;
 								display: flex;
 								justify-content: space-around;
 								span{

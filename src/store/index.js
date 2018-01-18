@@ -2161,7 +2161,7 @@ export default new Vuex.Store({
 							_dealDetails00['volume'] = val.LastVolume;
 							_dealDetails00['_price'] = val.PreSettlePrice;
 							_dealDetails00['dotSize'] = context.state.market.orderTemplist[key].DotSize;
-							if(o.data.length >= 10){
+							if(o.data.length >= 12){
 								o.data.shift();
 							}
 							o.data.push(_dealDetails00);
