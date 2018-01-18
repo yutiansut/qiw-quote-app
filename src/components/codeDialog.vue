@@ -121,25 +121,22 @@
 						var data={
 								mobile: this.phone,
 								type: 2,
-								yzm: this.code
+								imageCode: this.code
 						};
 						var headers = {version:this.version}
-						pro.fetch("post",'/sms',data,headers).then(function(res){
-							if(res.success == true){
-								if(res.code == 1){
-									layer.msg('发送成功', {time: 1000});
+						pro.fetch("post",'/loginAndRegister/getSmsCode',data,"").then(function(res){
+							if(res.success == true && res.code == 1){
+									this.$toast({message:"发送成功",duration: 2000});
 									setTimeout(function(){
 										this.isshow = false;
 									}.bind(this),1000);
-								}
 							}
 						}.bind(this)).catch(function(err){
 							var data = err.data;
-							if(data.success == false){
-								this.code = '',
-								layer.msg(data.message,{time:1000})
+							if(data == undefined){
+								this.$toast({message:"网络不给力，请稍后重试",duration: 2000});
 							}else{
-								layer.msg('网络不给力，请稍后重试', {time: 5000});
+								this.$toast({message:data.message,duration: 2000});
 							}
 						}.bind(this))
 					}
@@ -191,6 +188,7 @@
 			border-radius: 0.1rem;
 			color: $white;
 			font-size: $fs32;
+			text-align: center;
 		}
 		.fr{
 			position: absolute;

@@ -23,13 +23,13 @@
 				</li>
 				<li>
 					<i></i>
-					<input type="password"  value="" placeholder="请输入密码" class="input1" v-model="password"/>
-					<div id="eye">
-					</div>
+					<input type="password"  value="" placeholder="请输入密码" class="input1 input2" v-model="password"/>
+					<div class="eye" @click="eyeEvent" v-show="showEye"></div>
+					<div class="eye1" @click="eyeEvent" v-show="showNo"></div>
 				</li>
 			</ul>	
 			<mt-button class="btn" @click.native="regisiter">注册</mt-button>
-			<a @click="">已有账户？立即登录>></a>
+			<a @click="toLogin">已有账户？立即登录>></a>
 			<div id="wechat">
 				<i></i>
 			</div>
@@ -55,7 +55,9 @@
 				phoneReg: /^(((13[0-9])|(14[5-7])|(15[0-9])|(17[0-9])|(18[0-9]))+\d{8})$/,
 				pwdReg: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/,
 				info:"获取验证码",
-				time: 0
+				time: 0,
+				showEye:true,
+				showNo:false
 			}
 		},
 		computed: {
@@ -77,6 +79,20 @@
 			}
 		},
 		methods:{
+			toLogin:function(){
+				this.$router.push({path:"/login"})
+			},
+			eyeEvent:function(e){
+				if(this.showEye == true){
+					this.showEye=!this.showEye;
+					this.showNo=!this.showNo;
+					$(e.target).removeClass("current").siblings(".input2").attr("type",'text');
+				}else{
+					this.showEye=!this.showEye;
+					this.showNo=!this.showNo;
+					$(e.target).removeClass("current").siblings(".input2").attr("type",'password');
+				}
+			},
 			getCode :function(e){
 				if($(e.target).hasClass('current')) return false;
 				if(this.phone == ''){
@@ -214,13 +230,22 @@
 			border-left: 1px solid #9ba8c2;
 			color: $white;
 		}
-		#eye{
+		.eye{
 			position: absolute;
 			width: 0.4rem;
 			height: 0.24rem;
 			top: 0.5rem;
 			right: 0.3rem;
 			background: url(../assets/images/eye_icon.png);
+			background-size: 100% 100%;
+		}
+		.eye1{
+			position: absolute;
+			width: 0.4rem;
+			height: 0.24rem;
+			top: 0.5rem;
+			right: 0.3rem;
+			background: url(../assets/images/eyeopen_icon.png);
 			background-size: 100% 100%;
 		}
 		.btn{

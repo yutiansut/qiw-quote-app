@@ -1,7 +1,7 @@
 <template>
 	<div id="forgetPassword">
-		<mt-header title="找回密码" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
-		  	<router-link to="/account" slot="left">
+		<mt-header title="获取验证码" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
+		  	<router-link to="/login" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
 		    <router-link to="/account" slot="right">
@@ -12,39 +12,86 @@
 			<ul>
 				<li>
 					<i></i>
-					<input type="text" value="" placeholder="请输入手机号" class="input1"/>
+					<input type="text" value="" placeholder="请输入手机号" class="input1" v-model="phone"/>
 				</li>
 				<li>
 					<i></i>
-					<input type="text"  value="" placeholder="请输入验证码" class="input1"/>
+					<input type="text"  value="" placeholder="请输入验证码" class="input1" v-model="code"/>
 					<div id="code">
-						<span @click="getCode">获取验证码</span>
+						<span @click="getCode">{{volid ? info : (time+'秒')}}</span>
 					</div>
 				</li>
 			</ul>
-			<mt-button class="btn">下一步</mt-button>
-			<p>新用户注册>></p>
+			<mt-button class="btn" @click.native="toRetPassword">下一步</mt-button>
+			<p @click="toRegisiter">新用户注册>></p>
 			<div id="wechat">
 				<i></i>
 			</div>
 		</div>
+		<codeDialog ref="codeDialog"  type="findpwd"></codeDialog>
 	</div>
 </template>
 
 <script>
+	import codeDialog from "../components/codeDialog.vue"
 	export default{
 		name:"forgetPassword",
+		components : {codeDialog},
 		data(){
 			return{
-				
+				phone:"",
+				code:"",
+				time: 0,
+				info: '获取验证码',
+				phoneReg:/^(((13[0-9])|(14[5-7])|(15[0-9])|(17[0-9])|(18[0-9]))+\d{8})$/
+			}
+		},
+		computed : {
+			PATH: function(){
+				return this.$store.getters.PATH;
+			},
+			volid: function(){
+				if(this.time <= 0){
+					return true
+				}else{
+					return false
+				}
+			},
+			version: function(){
+				return '1.1';
+			},
+			environment(){
+				return this.$store.state.environment;
 			}
 		},
 		methods:{
+			toRegisiter:function(){
+				this.$router.push({path:"/regisiter"});
+			},
 			getCode:function(){
-				
+				if(this.phone == ''){
+					this.$toast({message: '请输入手机号',duration: 2000});
+				}else if(this.phoneReg.test(this.phone) == false){
+					this.$toast({message: '手机格式错误',duration: 2000});
+				}else{
+					this.$refs.codeDialog.isshow = true;
+					this.$refs.codeDialog.path= this.PATH+"/loginAndRegister/getImgCode.jpg"+Math.random()*1000+"?mobile=" + this.phone;
+					this.$refs.codeDialog.phone = this.phone;
+				}
+			},
+		toRetPassword:function(){
+			if(this.phone == ''){
+				this.$toast({message: '请输入手机号',duration: 2000});
+			}else if(this.phoneReg.test(this.phone) == false){
+				this.$toast({message: '手机格式错误',duration: 2000});
+			}else if(this.code == ''){
+				this.$toast({message: '请输入验证码',duration: 2000});
+			}else{
+				this.$router.push({path:"/resetPassword",query:{sendcode:this.code,sendphone:this.phone}});
 			}
 		}
 	}
+}
 </script>
 
 <style scoped lang="scss">

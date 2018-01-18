@@ -16,18 +16,18 @@
 				</li>
 				<li>
 					<i></i>
-					<input type="password"  value="" placeholder="请输入密码" class="input1" v-model="password"/>
-					<div id="eye">
-					</div>
+					<input type="password"  value="" placeholder="请输入密码" class="input1 input2" v-model="password"/>
+					<div class="eye" @click="eyeEvent" v-show="showEye"></div>
+					<div class="eye1" @click="eyeEvent" v-show="showNo"></div>
 				</li>
 			</ul>
 			<div id="toForgetPassword">
-				<a href="">忘记密码？</a>
+				<a @click="toForgetPassword">忘记密码？</a>
 			</div>
 			<mt-button class="btn" @click.native="login">登录</mt-button>
-			<p>新用户注册>></p>
+			<p @click="toRegisiter">新用户注册>></p>
 			<div id="wechat">
-				<!--<i @click="getWechatId"></i>-->
+				<i @click="getWechatId"></i>
 			</div>
 		</div>
 		<codeDialog ref="codeDialog" :objstr="sendMsg" type="login"></codeDialog>
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+	import owner from "../assets/js/app.js"
 	import pro from "../assets/js/common.js"
 	import codeDialog from "../components/codeDialog.vue"
 	export default{
@@ -49,7 +50,9 @@
 				num:"",
 				str:'',
 				token:"",
-				secret:""
+				secret:"",
+				showEye:true,
+				showNo:false
 			}
 		},
 		computed : {
@@ -64,6 +67,23 @@
 			},
 		},
 		methods:{
+			toForgetPassword:function(){
+				this.$router.push({path:"/forgetPassword"})
+			},
+			toRegisiter:function(){
+				this.$router.push({path:"/regisiter"});
+			},
+			eyeEvent:function(e){
+				if(this.showEye == true){
+					this.showEye=!this.showEye;
+					this.showNo=!this.showNo;
+					$(e.target).removeClass("current").siblings(".input2").attr("type",'text');
+				}else{
+					this.showEye=!this.showEye;
+					this.showNo=!this.showNo;
+					$(e.target).removeClass("current").siblings(".input2").attr("type",'password');
+				}
+			},
 			login:function(){
 				if(this.phone == ''){
 					this.$toast({message: '请输入手机号',duration: 2000});
@@ -83,7 +103,7 @@
 						console.log(res)
 						if(res.success == true){
 							if(res.code == 1){
-								this.$toast({message: '登录成功',duration: 1000});
+								this.$toast({message: '登录成功',duration: 1000,});
 								this.token = res.data.token;
 								this.secret = res.data.secret;
 								var userData = {'username':this.phone,'password':Base64.encode(this.pwd),'token':res.data.token,'secret':res.data.secret};
@@ -109,45 +129,105 @@
 					}.bind(this));
 				}
 			},
-			  //判断是否微信登陆 是不是微信浏览器
-			isWeiXin:function() {
-			  	let ua = window.navigator.userAgent.toLowerCase();
-			  	console.log(ua);//mozilla/5.0 (iphone; cpu iphone os 9_1 like mac os x) applewebkit/601.1.46 (khtml, like gecko)version/9.0 mobile/13b143 safari/601.1
-			  	if(ua.match(/MicroMessenger/i) == 'micromessenger') {
-			  		return true;
-			  	}else{
-			  		return false;
-			  	}
-			},
-			 test:function(){
-			   if(this.isWeiXin()){
-			   	//微信登录，接口由后台定义
-			    this.$http.get('/wx/index/login/type/2').then((res) => {  
-			     	if(res.data.code==0){  //微信登录成功跳转个人中心
-			       		this.$router.push({
-			         		name:'UserHome',
-			       		})
-			     	}else{        //微信登录失败，使用填写信息登录
-			       		this.$router.push({
-			         		name:'Login',
-			       		})
-			     	}
-			    })
+			getWechatId:function(){
+				this.weixinLogin(this);
+					
 			}
+			,
+			weixinLogin:function (this1) {
+//			console.log("222222")
+			owner.setState(null);
+			//第三方登录
+			var authBtns = ['qihoo', 'weixin', 'sinaweibo', 'qq']; //配置业务支持的第三方登录
+			var auths = {};
+//			console.log(JSON.stringify(plus.oauth));
+//			console.log("666666666666666")
+			console.log("auths==="+JSON.stringify(auths))
+			plus.oauth.getServices(function(services) {
+//				console.log("1111111")
+				console.log(JSON.stringify(services))
+				console.log("1111111")
+				for(var i in services) {
+					var service = services[i];
+					auths[service.id] = service;
+					if(~authBtns.indexOf(service.id)) {
+						var isInstalled = owner.isInstalled(service.id);
+						//						var btn = document.createElement('div');
+						//如果微信未安装，则为不启用状态
+						//						btn.setAttribute('class', 'oauth-btn' + (!isInstalled && service.id === 'weixin' ? (' disabled') : ''));
+						//						btn.authId = service.id;
+						//						btn.style.backgroundImage = 'url("images/' + service.id + '.png")'
+						//						oauthArea.appendChild(btn);
+					}
+				}
+				if(this1.classList.contains('disabled')) {
+					mui.toast('抱歉，您尚未安装微信，请安装后再试！');
+					return;
+				}
+				var id = "weixin"
+				var auth = auths[id];
+				console.log(JSON.stringify(auth))
+				console.log("22222222222")
+				auth.login(function() {
+					//					mui.toast("登录认证成功");
+					console.log(JSON.stringify(auth))
+					console.log("88888888")
+					auth.getUserInfo(function() {
+						var name = auth.userInfo.nickname || auth.userInfo.name;
+//						console.log("333333333333")
+//						console.log(JSON.stringify(auth))
+						userweixinLogin(auth)
+//						app.createState(name, function() {
+//							//							mui.open_window_data("weixinRegister.html", "weixinRegister",{"openid": auth.userInfo.openid,"headimgurl":auth.userInfo.headimgurl,"nickName":auth.userInfo.nickname});
+//						});
+					}, function(e) {
+//						mui.toast("获取用户信息失败：1" + e.message);
+					});
+				}, function(e) {
+//					mui.toast("登录认证失败：2" + e.message);
+				});
+			}, function(e) {
+//				mui.toast("获取登录认证失败：3" + e.message);
+			});
+		},
+
+		userweixinLogin:function (auth) {
+			var name = auth.userInfo.nickname || auth.userInfo.name;
+//			mui.app_request('/wechatToLogin ', {
+//				'wxOpenId': auth.userInfo.unionid
+//			}, function(result) {
+//				mui.toast("登录成功！");
+//				//存储用户信息
+//				var win = mui.get_window_data();
+//				mui.cacheUser.save(result.data.token, result.data.secret);
+//				//				if(win.backpageID) {
+//				//						mui.app_back(win.backpageID, true,win.url);
+//				//					 //放回businessPageId页面，并且刷新该页面信息
+//				//					return;
+//				//				}
+//				mui.openWindow("../simulationQuote/simulationQuote.html", "simulationQuote");
+//				return;
+//
+//			}, function(result) {
+//				if(result.code == 2) {
+//					mui.toast("网络异常，发送失败！");
+//					return;
+//				} else if(result.code == 3) {
+//					mui.toast("抱歉，你尚未注册！");
+//					mui.open_window_data("weixinRegister.html", "weixinRegister",{"headimgurl":auth.userInfo.headimgurl,"unionid":auth.userInfo.unionid,"nickName":name});
+//					return;
+//				} else if(result.code == 4) {
+//					mui.toast("参数错误！");
+//					return;
+//				}
+//
+//			});
+
 		}
-	},
-	mounted:function(){
-//		if(this.isWeiXin()){  //是来自微信内置浏览器
-//	   	// 获取微信信息，如果之前没有使用微信登陆过，将进行授权登录
-//	   		this.$http.get(this.$root.api+"/index/index/wx_info").then((res) => {
-//	    		if(res.data.code!=0){
-//	      			location.href='/wx/index/wxAutoLogin';
-//	    		}
-//	   		})
-//	  	}else{
-//	  		location.href='/wx/index/wxAutoLogin';
-//	  	}
-	}
+		},
+		mounted:function(){
+			
+		}
 }
 </script>
 
@@ -209,13 +289,22 @@
 			color: $white;
 			margin-top: 0.2rem;
 		}
-		#eye{
+		.eye{
 			position: absolute;
 			width: 0.4rem;
 			height: 0.24rem;
 			top: 0.5rem;
 			right: 0.3rem;
 			background: url(../assets/images/eye_icon.png);
+			background-size: 100% 100%;
+		}
+		.eye1{
+			position: absolute;
+			width: 0.4rem;
+			height: 0.24rem;
+			top: 0.5rem;
+			right: 0.3rem;
+			background: url(../assets/images/eyeopen_icon.png);
 			background-size: 100% 100%;
 		}
 		#toForgetPassword{
