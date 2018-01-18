@@ -130,7 +130,7 @@
 				this.emptyShow = false;
 				this.contShow = false;
 				this.recommendShow = true;
-				this.$router.push({path: '/index'});
+				this.$router.go(-1);
 			},
 			quickSearchEvent: function(key){
 				this.searchCont = key;

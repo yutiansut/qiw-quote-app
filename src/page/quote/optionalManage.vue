@@ -1,6 +1,6 @@
 <template>
 	<div id="optionalManage">
-		<mt-header title="登录" fixed class="header">
+		<mt-header title="自选管理" fixed class="header">
 		  	<router-link to="/" slot="left">
 		    	<i class="icon icon_back"></i>
 		  	</router-link>
@@ -12,7 +12,7 @@
 			<div class="search_box">
 				<div class="search">
 					<i class="icon icon_search"></i>
-					<input type="text" placeholder="搜索并添加合约" />
+					<input type="text" placeholder="搜索并添加合约" @touchstart="toSearch" />
 				</div>
 			</div>
 			<div class="list">
@@ -25,79 +25,156 @@
 					</li>
 				</ul>
 				<ul class="cont">
-					<li>
-						<i class="icon icon_check"></i>
-						<!--<i class="icon icon_checked"></i>-->
-						<div class="name">
-							<span>日经225</span>
-							<span>CNQ16</span>
-						</div>
-						<div class="price">
-							<span>72.5</span>
-							<span>10:30:21</span>
-						</div>
-						<div class="drag">
-							<i class="icon icon_drag"></i>
-						</div>
-					</li>
-					<li>
-						<!--<i class="icon icon_check"></i>-->
-						<i class="icon icon_checked"></i>
-						<div class="name">
-							<span>日经225</span>
-							<span>CNQ16</span>
-						</div>
-						<div class="price">
-							<span>72.5</span>
-							<span>10:30:21</span>
-						</div>
-						<div class="drag">
-							<i class="icon icon_drag"></i>
-						</div>
-					</li>
-					<li>
-						<i class="icon icon_check"></i>
-						<!--<i class="icon icon_checked"></i>-->
-						<div class="name">
-							<span>日经225</span>
-							<span>CNQ16</span>
-						</div>
-						<div class="price">
-							<span>72.5</span>
-							<span>10:30:21</span>
-						</div>
-						<div class="drag">
-							<i class="icon icon_drag"></i>
-						</div>
-					</li>
+					<template v-for="(v, index) in parameters">
+						<li>
+							<i class="icon" :class="{icon_check: v.check == 0, icon_checked: v.check == 1}" @touchstart="checkEvent(v.check, v.CommodityNo)"></i>
+							<div class="name">
+								<span>{{v.CommodityName}}</span>
+								<span>{{v.CommodityNo + v.MainContract}}</span>
+							</div>
+							<div class="price">
+								<span>{{v.LastQuotation.LastPrice | fixNum(v.DotSize)}}</span>
+								<span>{{v.LastQuotation.DateTimeStamp | operateTime}}</span>
+							</div>
+							<div class="drag">
+								<i class="icon icon_drag"></i>
+							</div>
+						</li>
+					</template>
 				</ul>
 			</div>
 		</div>
 		<div class="tools">
-			<div class="col">
+			<div class="col" @touchstart="checkAllEvemt">
 				<i class="icon icon_radio"></i>
+				<i class="icon icon_radios" v-show="checkedShow"></i>
 				<span>全选</span>
 			</div>
 			<div class="col">
 				<i class="icon icon_del"></i>
 				<span>删除</span>
-				<em>(1)</em>
+				<em>({{this.num}})</em>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+	import pro from '../../assets/js/common.js'
+	import { Toast } from 'mint-ui';
 	export default {
 		name: 'optionalManage',
 		components: {
 		},
 		data(){
 			return{
-				selectNum: 0,
-				tabList: ['自选', '市场'],
+				checkedShow: false,
+				optionalList: [],
+				num: 0,
 			}
 		},
+		computed: {
+			quoteSocket(){
+				return this.$store.state.quoteSocket;
+			},
+			parameters(){
+				return this.$store.state.market.Parameters;
+			},
+			userInfo(){
+				if(localStorage.user) return JSON.parse(localStorage.user);
+			}
+		},
+		filters:{
+			fixNumTwo: function(num){
+				return num.toFixed(2);
+			},
+			fixNum: function(num, dotsize){
+				return num.toFixed(dotsize);
+			},
+			operateTime: function(val){
+				return val.split(' ')[1];
+			}
+		},
+		watch: {
+			parameters: function(n, o){
+				let num = 0;
+				if(n != undefined){
+					if(this.checkedShow == true){
+						n.forEach((o, i) => {
+							if(o.check == 0) this.checkedShow = false;
+						});
+					}else{
+						n.forEach((o, i) => {
+							if(o.check == 0) num++;
+						});
+						if(num == 0){
+							this.checkedShow = true;
+						}
+					}
+					
+				}
+			}
+		},
+		methods: {
+			toSearch: function(){
+				this.$router.push({path: '/search'});
+			},
+			checkEvent: function(val, name){
+				this.num = 0;
+				if(val == 0){
+					this.parameters.forEach((o, i) => {
+						if(name == o.CommodityNo) o.check = 1;
+						if(o.check == 1) this.num++;
+					});
+				}else{
+					this.parameters.forEach((o, i) => {
+						if(name == o.CommodityNo) o.check = 0;
+						if(o.check == 1) this.num++;
+					});
+				}
+			},
+			checkAllEvemt: function(){
+				if(this.checkedShow == false){
+					this.checkedShow = true;
+					this.num = this.parameters.length;
+					this.parameters.forEach((o, i) => {
+						o.check = 1;
+					});
+				}else{
+					this.checkedShow = false;
+					this.num = 0;
+					this.parameters.forEach((o, i) => {
+						o.check = 0;
+					});
+				}
+			},
+			getCommodityList: function(){
+				if(this.userInfo == undefined) return;
+				var headers = {
+					token: this.userInfo.token,
+					secret: this.userInfo.secret
+				}
+				pro.fetch('post', '/quoteTrader/userGetCommodityList', '', headers).then((res) => {
+					if(res.success == true && res.code == 1){
+						if(res.data && res.data.length > 0){
+							this.$store.state.market.Parameters = [];
+							this.$store.state.market.commodityOrder = [];
+							this.$store.state.market.commodityOrder = res.data;
+							this.$parent.optionalList = res.data;
+							res.data.forEach((o, i) => {
+								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+							});
+						}
+					}
+				}).catch((err) => {
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
+				});
+			}
+		},
+		mounted: function(){
+			//重新请求自选合约列表
+			this.getCommodityList();
+		}
 	}
 </script>
 
@@ -240,6 +317,7 @@
 			line-height: 0.96rem;
 			text-align: center;
 			border-left: 0.01rem solid $black;
+			position: rrelative;
 			&:first-child{
 				border: none;
 			}
@@ -256,6 +334,15 @@
 				background: $black;
 				border-radius: 0.12rem;
 				margin: 0.35rem 0.1rem 0 1.48rem;
+			}
+			.icon_radios{
+				width: 0.18rem;
+				height: 0.18rem;
+				background: $blue;
+				border-radius: 0.1rem;
+				position: absolute;
+				top: 0.38rem;
+				left: 1.51rem;
 			}
 			.icon_del{
 				width: 0.24rem;
