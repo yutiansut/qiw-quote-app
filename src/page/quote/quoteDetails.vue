@@ -237,7 +237,7 @@
 				</div>
 			</div>
 		</div>
-		<mt-tabbar v-model="selected" fixed class="menu">
+		<!--<mt-tabbar fixed class="menu">
 			<mt-tab-item class="col">  
 			    <img slot="icon" src="../../assets/images/mockTrading_02.png">  
 			    <span>模拟交易</span> 
@@ -254,7 +254,7 @@
 		        <img slot="icon" src="../../assets/images/position.png">  
 		         <span>持仓</span> 
 	      	</mt-tab-item> 
-		</mt-tabbar> 
+		</mt-tabbar> -->
 	</div>
 </template>
 
@@ -264,8 +264,15 @@
 		components: {},
 		data(){
 			return{
+				
 			}
 		},
+		methods: {
+			
+		},
+		mounted: function(){
+			
+		}
 	}
 </script>
 
