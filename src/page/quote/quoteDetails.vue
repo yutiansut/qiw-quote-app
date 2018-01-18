@@ -1,11 +1,11 @@
 <template>
 	<div id="quoteDetails">
 		<header>
-			<i class="icon icon_back"></i>
+			<i class="icon icon_back" @touchstart="goBackEvent"></i>
 			<div class="title">
 				<div class="name fl">
-					<span>美黄金</span>
-					<span>GC1702</span>
+					<span>{{currentdetail.CommodityName}}</span>
+					<span>{{currentdetail.CommodityNo + currentdetail.MainContract}}</span>
 				</div>
 				<i class="icon icon_triangle"></i>
 			</div>
@@ -237,7 +237,7 @@
 				</div>
 			</div>
 		</div>
-		<!--<mt-tabbar fixed class="menu">
+		<mt-tabbar fixed class="menu">
 			<mt-tab-item class="col">  
 			    <img slot="icon" src="../../assets/images/mockTrading_02.png">  
 			    <span>模拟交易</span> 
@@ -254,7 +254,7 @@
 		        <img slot="icon" src="../../assets/images/position.png">  
 		         <span>持仓</span> 
 	      	</mt-tab-item> 
-		</mt-tabbar> -->
+		</mt-tabbar> 
 	</div>
 </template>
 
@@ -267,11 +267,27 @@
 				
 			}
 		},
+		computed: {
+			quoteSocket(){
+				return this.$store.state.quoteSocket;
+			},
+			parameters(){
+				return this.$store.state.market.Parameters;
+			},
+			userInfo(){
+				if(localStorage.user) return JSON.parse(localStorage.user);
+			},
+			currentdetail(){
+				return this.$store.state.market.currentdetail;
+			}
+		},
 		methods: {
-			
+			goBackEvent: function(){
+				this.$router.go(-1);
+			},
 		},
 		mounted: function(){
-			
+			console.log(this.currentdetail);
 		}
 	}
 </script>
@@ -285,6 +301,7 @@
 		display: flex;
 		width: 7.5rem;
 		height: 1rem;
+		background: $bg;
 		border-bottom: 0.01rem solid $black;
 		padding: 0 0.3rem;
 		box-sizing: border-box;
