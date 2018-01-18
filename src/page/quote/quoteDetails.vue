@@ -131,19 +131,14 @@
 			<div class="chart_box">
 				<div class="title">
 					<div class="title_box">
-						<span>闪电图</span>
-						<span class="current">分时</span>
-						<span>1分</span>
-						<span>5分</span>
-						<span>15分</span>
-						<span>30分</span>
-						<span>日K</span>
-						<span>周K</span>
+						<template v-for="(v,index) in chartsList">
+							<span :class="{current: currentChartsNum == index}" @touchstart="menuEvent(index)">{{v}}</span>
+						</template>
 					</div>
 				</div>
 				<div class="cont">
 					<div class="chart fl">
-						
+						<components :is="currentChartsView"></components>
 					</div>
 					<div class="cont_right fl">
 						<div class="tab_title">
@@ -249,9 +244,10 @@
 </template>
 
 <script>
+	import fens from './fens.vue'
 	export default {
 		name: 'quoteDetails',
-		components: {},
+		components: {fens},
 		data(){
 			return{
 				currentNum: 0,
@@ -300,6 +296,32 @@
 					this.tabShow = true;
 				}else{
 					this.tabShow = false;
+				}
+			},
+			menuEvent: function(index){
+				this.currentChartsNum = index;
+				switch(index){
+					case 0:
+						this.currentChartsView = 'light';
+						break;
+					case 1:
+						this.currentChartsView = 'fens';
+						break;
+					case 2:
+						this.currentChartsView = 'klineOne';
+						break;
+					case 3:
+						this.currentChartsView = 'klineFive';
+						break;
+					case 4:
+						this.currentChartsView = 'klineFifteen';
+						break;
+					case 5:
+						this.currentChartsView = 'klineThirty';
+						break;
+					case 6:
+						this.currentChartsView = 'klineDay';
+						break;
 				}
 			},
 			operateData: function(){
