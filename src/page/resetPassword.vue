@@ -23,7 +23,7 @@
 					<div class="eye_2" @click="eyeEvents" v-show="showNo2"></div>
 				</li>
 			</ul>
-			<mt-button class="btn" @click="login">登录</mt-button>
+			<mt-button class="btn" @click="login">确认</mt-button>
 			<p @click="toRegisiter">新用户注册>></p>
 			<div id="wechat">
 				<i></i>
