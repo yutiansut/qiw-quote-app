@@ -9,7 +9,7 @@
 		</nav>
 		<div class="recommend">
 			<template v-for="(v, index) in parameters">
-				<div class="col" v-show="v.isRecommend == '1'">
+				<div class="col" v-show="v.isRecommend == '1'" @touchstart="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo)">
 					<span class="name">{{v.CommodityName}}</span>
 					<span :class="{red: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.LastPrice | fixNum(v.DotSize)}}<i class="icon icon_arrow" :class="{up: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, down: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}"></i></span>
 					<span :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeRate | fixNumTwo}}%&nbsp;&nbsp;<em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeValue | fixNum(v.DotSize)}}</span>
@@ -25,7 +25,7 @@
 					<span @touchstart="switchEvent">{{changeRateName}}<i class="icon icon_switch"></i></span>
 				</li>
 				<template v-for="(v, index) in parameters">
-					<li>
+					<li @touchstart="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo)">
 						<div class="name">
 							<em>{{v.CommodityName}}</em>
 							<em>{{v.CommodityNo + v.MainContract}}</em>
@@ -78,6 +78,9 @@
 			}
 		},
 		methods: {
+			toQuoteDetails: function(commodityNo, mainContract, exchangeNo){
+				this.$router.push({path: '/quoteDetails', query: {CommodityNo: commodityNo, MainContract: mainContract, ExchangeNo: exchangeNo}});
+			},
 			switchEvent: function(){   //涨跌幅与涨跌额切换
 				if(this.changeRateShow == true){
 					this.changeRateShow = false;

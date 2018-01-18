@@ -16,7 +16,7 @@
 					<span @touchstart="switchEvent">{{changeRateName}}<i class="icon icon_switch"></i></span>
 				</li>
 				<template v-for="(v, index) in parameters">
-					<li v-if="">
+					<li @touchstart="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo)">
 						<div class="name">
 							<em>{{v.CommodityName}}</em>
 							<em>{{v.CommodityNo + v.MainContract}}</em>
@@ -85,6 +85,9 @@
 			}
 		},
 		methods: {
+			toQuoteDetails: function(commodityNo, mainContract, exchangeNo){
+				this.$router.push({path: '/quoteDetails', query: {CommodityNo: commodityNo, MainContract: mainContract, ExchangeNo: exchangeNo}});
+			},
 			tabEvent: function(index){
 				this.currentNum = index;
 				switch(index){

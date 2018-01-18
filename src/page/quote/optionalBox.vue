@@ -9,7 +9,7 @@
 					</div>
 					<div class="recommend" v-show="v.status == 1">
 						<template v-for="(o, k) in parameters">
-							<div class="col" v-if="v.name == o.commodityType">
+							<div class="col" v-if="v.name == o.commodityType" @touchstart="toQuoteDetails(o.CommodityNo, o.MainContract, o.ExchangeNo)">
 								<span class="name">{{o.CommodityName}}</span>
 								<span :class="{red: o.LastQuotation.LastPrice > o.LastQuotation.PreSettlePrice, green: o.LastQuotation.LastPrice < o.LastQuotation.PreSettlePrice}">{{o.LastQuotation.LastPrice | fixNum(o.DotSize)}}<i class="icon icon_arrow" :class="{up: o.LastQuotation.LastPrice > o.LastQuotation.PreSettlePrice, down: o.LastQuotation.LastPrice < o.LastQuotation.PreSettlePrice}"></i></span>
 								<span :class="{green: o.LastQuotation.ChangeRate < 0, red: o.LastQuotation.ChangeRate > 0}"><em v-show="o.LastQuotation.ChangeRate > 0">+</em>{{o.LastQuotation.ChangeRate | fixNumTwo}}%&nbsp;&nbsp;<em v-show="o.LastQuotation.ChangeRate > 0">+</em>{{o.LastQuotation.ChangeValue | fixNum(o.DotSize)}}</span>
@@ -83,6 +83,9 @@
 			}
 		},
 		methods: {
+			toQuoteDetails: function(commodityNo, mainContract, exchangeNo){
+				this.$router.push({path: '/quoteDetails', query: {CommodityNo: commodityNo, MainContract: mainContract, ExchangeNo: exchangeNo}});
+			},
 			addOptional: function(){
 				this.$router.push({path: '/search'});
 			},

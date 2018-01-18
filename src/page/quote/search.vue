@@ -16,7 +16,7 @@
 				<div class="cont" v-if="contShow">
 					<ul>
 						<template v-for="(v, index) in resultList">
-							<li>
+							<li @touchstart="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo)">
 								<div class="col">
 									<span>{{v.CommodityName}}</span>
 									<span>{{v.CommodityNo + v.MainContract}}</span>
@@ -131,6 +131,9 @@
 				this.contShow = false;
 				this.recommendShow = true;
 				this.$router.go(-1);
+			},
+			toQuoteDetails: function(commodityNo, mainContract, exchangeNo){
+				this.$router.push({path: '/quoteDetails', query: {CommodityNo: commodityNo, MainContract: mainContract, ExchangeNo: exchangeNo}});
 			},
 			quickSearchEvent: function(key){
 				this.searchCont = key;
