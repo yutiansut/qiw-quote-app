@@ -6,7 +6,7 @@
 			<div class="title">
 				<div class="name fl">
 					<span>{{v.CommodityName}}</span>
-					<!--<span>{{currentdetail.CommodityNo + currentdetail.MainContract}}</span>-->
+					<span>{{v.CommodityNo + v.MainContract}}</span>
 				</div>
 				<i class="icon icon_triangle"></i>
 			</div>
@@ -15,58 +15,57 @@
 		<div class="main">
 			<div class="details">
 				<div class="cont">
-					<p class="price">{{v.LastQuotation.LastPrice}}</p>
-					<!--<p class="name"><span>{{currentdetail.CommodityName}}</span>&nbsp;&nbsp;{{currentdetail.CommodityNo + currentdetail.MainContract}}</p>
-					<p class="price" :class="{red: currentdetail.LastQuotation.LastPrice > currentdetail.LastQuotation.PreSettlePrice, green: currentdetail.LastQuotation.LastPrice < currentdetail.LastQuotation.PreSettlePrice}">{{currentdetail.LastQuotation.LastPrice | fixNum(currentdetail.DotSize)}}</p>
-					<p class="change" :class="{green: currentdetail.LastQuotation.ChangeRate < 0, red: currentdetail.LastQuotation.ChangeRate > 0}"><em v-show="currentdetail.LastQuotation.ChangeRate > 0">+</em>{{currentdetail.LastQuotation.ChangeValue | fixNum(currentdetail.DotSize)}}&nbsp;&nbsp;<em v-show="currentdetail.LastQuotation.ChangeRate > 0">+</em>{{currentdetail.LastQuotation.ChangeRate | fixNumTwo}}%</p>-->
+					<p class="name"><span>{{v.CommodityName}}</span>&nbsp;&nbsp;{{v.CommodityNo + v.MainContract}}</p>
+					<p class="price" :class="{red: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.LastPrice | fixNum(v.DotSize)}}</p>
+					<p class="change" :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeValue | fixNum(v.DotSize)}}&nbsp;&nbsp;<em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeRate | fixNumTwo}}%</p>
 					<div class="row">
 						<div class="col">
 							<span>现手</span>
-							<span>54.91</span>
+							<span>{{v.LastQuotation.LastVolume}}</span>
 						</div>
 						<div class="col">
 							<span>买价</span>
-							<span>54.91</span>
+							<span class="default" :class="{red: v.LastQuotation.BidPrice1 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice1 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice1 | fixNum(v.DotSize)}}</span>
 						</div>
 						<div class="col">
 							<span>卖价</span>
-							<span>52.91</span>
+							<span class="default" :class="{red: v.LastQuotation.AskPrice1 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice1 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice1 | fixNum(v.DotSize)}}</span>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col">
 							<span>买量</span>
-							<span>54.91</span>
+							<span>{{v.LastQuotation.BidQty1}}</span>
 						</div>
 						<div class="col">
 							<span>卖量</span>
-							<span>54.91</span>
+							<span>{{v.LastQuotation.AskQty1}}</span>
 						</div>
 						<div class="col">
 							<span>成交量</span>
-							<span>25880</span>
+							<span>{{v.LastQuotation.TotalVolume}}</span>
 						</div>
 						<div class="col">
 							<span>持仓量</span>
-							<span>158965</span>
+							<span>{{v.LastQuotation.Position}}</span>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col">
 							<span>开盘</span>
-							<span>54.91</span>
+							<span class="default" :class="{red: v.LastQuotation.OpenPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.OpenPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.OpenPrice | fixNum(v.DotSize)}}</span>
 						</div>
 						<div class="col">
 							<span>昨结</span>
-							<span>54.91</span>
+							<span>{{v.LastQuotation.PreSettlePrice}}</span>
 						</div>
 						<div class="col">
 							<span>最高价</span>
-							<span>25880</span>
+							<span class="default" :class="{red: v.LastQuotation.HighPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.HighPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.HighPrice | fixNum(v.DotSize)}}</span>
 						</div>
 						<div class="col">
 							<span>最低价</span>
-							<span>158965</span>
+							<span class="default" :class="{red: v.LastQuotation.LowPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.LowPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.LowPrice | fixNum(v.DotSize)}}</span>
 						</div>
 					</div>
 				</div>
@@ -444,6 +443,14 @@
 							&:last-child{
 								margin-top: 0.05rem;
 								color: $white;
+							}
+							&.default{
+								&.red{
+									color: $red;
+								}
+								&.green{
+									color: $green;
+								}
 							}
 						}
 					}
