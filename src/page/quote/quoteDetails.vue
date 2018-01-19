@@ -608,16 +608,16 @@
 				}*/
 				span{
 					display: inline-block;
-					height: 0.75rem;
-					line-height: 0.75rem;
-					border-bottom: 0.05rem solid $bg;
+					height: 0.8rem;
+					line-height: 0.8rem;
+					/*border-bottom: 0.05rem solid $bg;*/
 					font-size: $fs28;
 					margin-left: 0.3rem;
 					&:first-child{
 						margin: 0;
 					}
 					&.current{
-						border-color: $blue;
+						border-bottom: 0.05rem solid $blue;
 					}
 				}
 			}

@@ -14,14 +14,15 @@ module.exports = {
     	//跨域请求配置
 			'/api': {
 //				target: 'http://test.api.dktai.cn',
-				target: 'http://192.168.0.225',
+				target: 'http://192.168.0.225/qiw-platform',
 				changeOrigin: true,
 				pathRewrite: {
 			      '^/api': ''
 			    }
 			},
 			'/nat': {
-				target: 'http://192.168.0.107:8080/qiw-platform',
+//				target: 'http://192.168.0.107:8080/qiw-platform',
+				target: 'http://192.168.199.229:8080/qiw-platform',
 				changeOrigin: true,
 				pathRewrite: {
 			      '^/nat': ''

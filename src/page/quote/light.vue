@@ -1,7 +1,6 @@
 <template>
 	<div id="echarts">
-		<div id="fens"></div>
-		<div id="volume"></div>
+		<div id="light"></div>
 	</div>
 </template>
 
@@ -25,8 +24,7 @@
 		},
 		mounted: function(){
 			let h = this.$parent.chartsHight;
-			$("#fens").css('height', h/10*6.9 + 'rem');
-			$("#volume").css('height', h/10*3 + 'rem');
+			$("#light").css('height', h*0.98 + 'rem');
 			
 		}
 	}
