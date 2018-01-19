@@ -10,10 +10,10 @@
 		</mt-header>
 		<div id="wechatInfo">
 			<ul>
-				<li><span></span></li>
+				<li><img v-bind:src="this.imgurl"/></li>
 				<li>
-					<p>亲爱的&nbsp;<span>杨威利</span></p>
-					<p>为了您的账户安全，请您关联您的手机号，下次可直接登录。</p>
+					<p>亲爱的&nbsp;<span>{{nickname}}</span></p>
+					<p>{{info}}</p>
 				</li>
 			</ul>
 		</div>
@@ -44,17 +44,34 @@
 </template>
 
 <script>
+	import pro from "../assets/js/common.js"
 	export default{
 		name:"wechatRegisiter",
 		data(){
 			return{
-				
+				info:"为了您的账户安全，请您关联您的手机号，下次可直接登录。",
+				nickname:"留恋流年",
+				imgurl:"http://wx.qlogo.cn/mmopen/vi_32/waVrKVVGvmjlibK4yX2TxDYdNvPLXa5nl2FyN80C2guDZtd8VbfHqeYJaicTxhMDubhphVzUdxjb0ymKgNp6n10Q/132"
 			}
 		},
 		methods:{
 			getCode:function(){
 				
+			},
+			getinfo:function(){
+				var data = {
+					openId:"oRrdQt-T23iJ8wjd-PaCt_WoMefw"
+				}
+				pro.fetch("post","/loginAndRegister/wxLogin","").then((res)=>{
+					console.log("res==="+res)
+				}).catch((err)=>{
+					console.log("err==="+err)
+				})
 			}
+		},
+		mounted:function(){
+//			this.info = this.info1
+			this.getinfo();
 		}
 	}
 </script>
@@ -85,13 +102,13 @@
 			justify-content: flex-end;
 			li{
 				&:nth-child(1){
-					span{
-						background: url(../assets/images/wechat_head.png);
+					img{
 						width: 0.8rem;
 						height: 0.8rem;
 						display: block;
 						background-size: 100% 100%;
 						margin-top: 0.3rem;
+						border-radius: 50%;
 					}
 				}
 				&:nth-child(2){
@@ -101,7 +118,10 @@
 					text-align: left;
 					margin-top: 0.4rem;
 					p{
-						margin-top: 0.1rem;
+						line-height: 0.3rem;
+						&:nth-child(2){
+							margin-top: 0.1rem;
+						}
 					}
 					span{
 						color: white;
@@ -178,6 +198,7 @@
 			top: 0.5rem;
 			right: 0;
 			color: $white;
+			border-left: 1px solid #505664;
 		}
 		#eye{
 			position: absolute;

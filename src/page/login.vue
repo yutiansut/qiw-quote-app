@@ -35,7 +35,6 @@
 </template>
 
 <script>
-	import owner from "../assets/js/app.js"
 	import pro from "../assets/js/common.js"
 	import codeDialog from "../components/codeDialog.vue"
 	export default{
@@ -130,100 +129,8 @@
 				}
 			},
 			getWechatId:function(){
-				this.weixinLogin(this);
-					
+									
 			}
-			,
-			weixinLogin:function (this1) {
-//			console.log("222222")
-			owner.setState(null);
-			//第三方登录
-			var authBtns = ['qihoo', 'weixin', 'sinaweibo', 'qq']; //配置业务支持的第三方登录
-			var auths = {};
-//			console.log(JSON.stringify(plus.oauth));
-//			console.log("666666666666666")
-			console.log("auths==="+JSON.stringify(auths))
-			plus.oauth.getServices(function(services) {
-//				console.log("1111111")
-				console.log(JSON.stringify(services))
-				console.log("1111111")
-				for(var i in services) {
-					var service = services[i];
-					auths[service.id] = service;
-					if(~authBtns.indexOf(service.id)) {
-						var isInstalled = owner.isInstalled(service.id);
-						//						var btn = document.createElement('div');
-						//如果微信未安装，则为不启用状态
-						//						btn.setAttribute('class', 'oauth-btn' + (!isInstalled && service.id === 'weixin' ? (' disabled') : ''));
-						//						btn.authId = service.id;
-						//						btn.style.backgroundImage = 'url("images/' + service.id + '.png")'
-						//						oauthArea.appendChild(btn);
-					}
-				}
-				if(this1.classList.contains('disabled')) {
-					mui.toast('抱歉，您尚未安装微信，请安装后再试！');
-					return;
-				}
-				var id = "weixin"
-				var auth = auths[id];
-				console.log(JSON.stringify(auth))
-				console.log("22222222222")
-				auth.login(function() {
-					//					mui.toast("登录认证成功");
-					console.log(JSON.stringify(auth))
-					console.log("88888888")
-					auth.getUserInfo(function() {
-						var name = auth.userInfo.nickname || auth.userInfo.name;
-//						console.log("333333333333")
-//						console.log(JSON.stringify(auth))
-						userweixinLogin(auth)
-//						app.createState(name, function() {
-//							//							mui.open_window_data("weixinRegister.html", "weixinRegister",{"openid": auth.userInfo.openid,"headimgurl":auth.userInfo.headimgurl,"nickName":auth.userInfo.nickname});
-//						});
-					}, function(e) {
-//						mui.toast("获取用户信息失败：1" + e.message);
-					});
-				}, function(e) {
-//					mui.toast("登录认证失败：2" + e.message);
-				});
-			}, function(e) {
-//				mui.toast("获取登录认证失败：3" + e.message);
-			});
-		},
-
-		userweixinLogin:function (auth) {
-			var name = auth.userInfo.nickname || auth.userInfo.name;
-//			mui.app_request('/wechatToLogin ', {
-//				'wxOpenId': auth.userInfo.unionid
-//			}, function(result) {
-//				mui.toast("登录成功！");
-//				//存储用户信息
-//				var win = mui.get_window_data();
-//				mui.cacheUser.save(result.data.token, result.data.secret);
-//				//				if(win.backpageID) {
-//				//						mui.app_back(win.backpageID, true,win.url);
-//				//					 //放回businessPageId页面，并且刷新该页面信息
-//				//					return;
-//				//				}
-//				mui.openWindow("../simulationQuote/simulationQuote.html", "simulationQuote");
-//				return;
-//
-//			}, function(result) {
-//				if(result.code == 2) {
-//					mui.toast("网络异常，发送失败！");
-//					return;
-//				} else if(result.code == 3) {
-//					mui.toast("抱歉，你尚未注册！");
-//					mui.open_window_data("weixinRegister.html", "weixinRegister",{"headimgurl":auth.userInfo.headimgurl,"unionid":auth.userInfo.unionid,"nickName":name});
-//					return;
-//				} else if(result.code == 4) {
-//					mui.toast("参数错误！");
-//					return;
-//				}
-//
-//			});
-
-		}
 		},
 		mounted:function(){
 			
