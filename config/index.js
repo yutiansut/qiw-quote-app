@@ -21,8 +21,7 @@ module.exports = {
 			    }
 			},
 			'/nat': {
-//				target: 'http://192.168.0.107:8080/qiw-platform',
-				target: 'http://192.168.199.229:8080/qiw-platform',
+				target: 'http://192.168.0.107:8080/qiw-platform',
 				changeOrigin: true,
 				pathRewrite: {
 			      '^/nat': ''

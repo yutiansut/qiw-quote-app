@@ -19,7 +19,6 @@
 		watch: {
 			currentdetail: function(n, o){
 				if(n != undefined && n != null && n != ''){
-					console.log(222);
 					let data = {
 						Method: "QryHistory",
 						Parameters:{
@@ -41,8 +40,7 @@
 			let h = this.$parent.chartsHight;
 			$("#fens").css('height', h/10*6.9 + 'rem');
 			$("#volume").css('height', h/10*3 + 'rem');
-			if(this.currentdetail != undefined && this.currentdetail != null && this.currentdetail != ''){
-				console.log(111);
+			if(this.currentdetail.CommodityNo != undefined){
 				let data = {
 					Method: "QryHistory",
 					Parameters:{
@@ -55,7 +53,6 @@
 						Count: 0
 					}
 				};
-				console.log(data);
 				this.$store.state.isshow.isfens = true;
 				this.quoteSocket.send(JSON.stringify(data));
 			}

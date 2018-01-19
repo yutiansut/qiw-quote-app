@@ -347,25 +347,6 @@
 					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.mainContract +'"}}');
 				});
 			},
-//			operateCharts: function(){
-//				this.parameters.forEach((o, i) => {
-//					if(o.CommodityNo == currentNo){
-//						var data = {
-//							Method: "QryHistory",
-//							Parameters:{
-//								ExchangeNo: o.ExchangeNo,
-//								CommodityNo: o.CommodityNo,
-//								ContractNo: o.MainContract,
-//								HisQuoteType: 0,
-//								BeginTime: "",
-//								EndTime: "",
-//								Count: 0
-//							}
-//						};
-//						this.quoteSocket.send(JSON.stringify(data));
-//					}
-//				})
-//			},
 		},
 		mounted: function(){
 			//画图
