@@ -1,7 +1,7 @@
 <template>
 	<div id="quoteDetails">
 		<template v-for="(v, index) in parameters">
-		<div v-if="v.CommodityNo == commodityNo">
+		<div v-if="v.CommodityNo == currentNo">
 			<header>
 				<i class="icon icon_back" @touchstart="goBackEvent"></i>
 				<div class="title">
@@ -81,7 +81,7 @@
 							</div>
 							<ul v-show="!noContrast">
 								<template v-for="(v, index) in parameters">
-									<li :class="{current: v.check == 1}" v-if="v.CommodityNo != commodityNo">
+									<li :class="{current: v.check == 1}" v-if="v.CommodityNo != currentNo">
 										<div class="name fl">
 											<span>{{v.CommodityName}}</span>
 											<span>{{v.CommodityNo + v.MainContract}}</span>
@@ -218,7 +218,7 @@
 		components: {fens},
 		data(){
 			return{
-				commodityNo: '',
+				currentNo: '',
 				currentNum: 0,
 				tabList: ['五档','明细'],
 				tabShow: true,
@@ -226,6 +226,7 @@
 				currentChartsNum: 1,
 				currentChartsView: 'fens',
 				noContrast: false,
+				chartsHight: 5.4,
 			}
 		},
 		computed: {
@@ -237,6 +238,9 @@
 			},
 			orderTemplist(){
 				return this.$store.state.market.orderTemplist;
+			},
+			quoteInitStep(){
+				return this.$store.state.market.quoteInitStep;
 			},
 			userInfo(){
 				if(localStorage.user) return JSON.parse(localStorage.user);
@@ -257,7 +261,16 @@
 			}
 		},
 		watch: {
-			
+			parameters: function(n, o){
+				if(n.length > 1){
+					this.parameters.forEach((o, i) => {
+						if(o.CommodityNo == this.currentNo){
+							this.$store.state.market.currentdetail = o;
+							return;
+						}
+					});
+				}
+			}
 		},
 		methods: {
 			goBackEvent: function(){
@@ -301,7 +314,7 @@
 				let arr = [];
 				let obj = this.$route.query;
 				arr.push(obj);
-				this.commodityNo = obj.commodityNo;
+				this.currentNo = obj.commodityNo;
 				let contrast = obj.contrast;
 				if(contrast == '' || contrast == undefined){
 					this.noContrast = true;
@@ -324,10 +337,30 @@
 				arr.forEach((o, i) => {
 					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.mainContract +'"}}');
 				});
-			}
+			},
+//			operateCharts: function(){
+//				this.parameters.forEach((o, i) => {
+//					if(o.CommodityNo == currentNo){
+//						var data = {
+//							Method: "QryHistory",
+//							Parameters:{
+//								ExchangeNo: o.ExchangeNo,
+//								CommodityNo: o.CommodityNo,
+//								ContractNo: o.MainContract,
+//								HisQuoteType: 0,
+//								BeginTime: "",
+//								EndTime: "",
+//								Count: 0
+//							}
+//						};
+//						this.quoteSocket.send(JSON.stringify(data));
+//					}
+//				})
+//			},
 		},
 		mounted: function(){
-//			console.log(this.tradeParameters);
+			//画图
+//			this.operateCharts();
 		},
 		activated: function(){
 			this.operateData();
