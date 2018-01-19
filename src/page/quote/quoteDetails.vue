@@ -1,242 +1,195 @@
 <template>
 	<div id="quoteDetails">
-		<header>
-			<i class="icon icon_back" @touchstart="goBackEvent"></i>
-			<div class="title">
-				<div class="name fl">
-					<span>{{currentdetail.CommodityName}}</span>
-					<span>{{currentdetail.CommodityNo + currentdetail.MainContract}}</span>
-				</div>
-				<i class="icon icon_triangle"></i>
-			</div>
-			<button>规则</button>
-		</header>
-		<div class="main">
-			<div class="details">
-				<div class="cont">
-					<p class="name"><span>美黄金</span>&nbsp;&nbsp;GC1702</p>
-					<p class="price red">1276.1</p>
-					<p class="change red">+2.1&nbsp;&nbsp;+0.29%</p>
-					<div class="row">
-						<div class="col">
-							<span>现手</span>
-							<span>54.91</span>
-						</div>
-						<div class="col">
-							<span>买价</span>
-							<span>54.91</span>
-						</div>
-						<div class="col">
-							<span>卖价</span>
-							<span>52.91</span>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col">
-							<span>买量</span>
-							<span>54.91</span>
-						</div>
-						<div class="col">
-							<span>卖量</span>
-							<span>54.91</span>
-						</div>
-						<div class="col">
-							<span>成交量</span>
-							<span>25880</span>
-						</div>
-						<div class="col">
-							<span>持仓量</span>
-							<span>158965</span>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col">
-							<span>开盘</span>
-							<span>54.91</span>
-						</div>
-						<div class="col">
-							<span>昨结</span>
-							<span>54.91</span>
-						</div>
-						<div class="col">
-							<span>最高价</span>
-							<span>25880</span>
-						</div>
-						<div class="col">
-							<span>最低价</span>
-							<span>158965</span>
-						</div>
-					</div>
-				</div>
-				<div class="contrast">
-					<div class="title">
-						<i class="icon icon_contrast fl"></i>
-						<span class="fl">对比合约</span>
-					</div>
-					<div class="contrast_list">
-						<div class="empty">
-							<p>无对比合约</p>
-						</div>
-						<!--<ul>
-							<li class="current">
-								<div class="name fl">
-									<span>纳斯达克</span>
-									<span>CNQ16</span>
-								</div>
-								<p>50.12</p>
-								<p>+0.03%</p>
-								<i class="icon icon_checked"></i>
-							</li>
-							<li>
-								<div class="name fl">
-									<span>纳斯达克</span>
-									<span>CNQ16</span>
-								</div>
-								<p>50.12</p>
-								<p>+0.03%</p>
-								<i class="icon icon_check"></i>
-							</li>
-							<li>
-								<div class="name fl">
-									<span>纳斯达克</span>
-									<span>CNQ16</span>
-								</div>
-								<p>50.12</p>
-								<p>+0.03%</p>
-								<i class="icon icon_check"></i>
-							</li>
-							<li>
-								<div class="name fl">
-									<span>纳斯达克</span>
-									<span>CNQ16</span>
-								</div>
-								<p>50.12</p>
-								<p>+0.03%</p>
-								<i class="icon icon_check"></i>
-							</li>
-							<li class="current">
-								<div class="name fl">
-									<span>纳斯达克</span>
-									<span>CNQ16</span>
-								</div>
-								<p>50.12</p>
-								<p>+0.03%</p>
-								<i class="icon icon_checked"></i>
-							</li>
-						</ul>-->
-					</div>
-				</div>
-			</div>
-			<div class="chart_box">
+		<template v-for="(v, index) in parameters">
+		<div v-if="v.CommodityNo == currentNo">
+			<header>
+				<i class="icon icon_back" @touchstart="goBackEvent"></i>
 				<div class="title">
-					<div class="title_box">
-						<span>闪电图</span>
-						<span class="current">分时</span>
-						<span>1分</span>
-						<span>5分</span>
-						<span>15分</span>
-						<span>30分</span>
-						<span>日K</span>
-						<span>周K</span>
+					<div class="name fl">
+						<span>{{v.CommodityName}}</span>
+						<span>{{v.CommodityNo + v.MainContract}}</span>
+					</div>
+					<i class="icon icon_triangle"></i>
+				</div>
+				<button>规则</button>
+			</header>
+			<div class="main">
+				<div class="details">
+					<div class="cont">
+						<p class="name"><span>{{v.CommodityName}}</span>&nbsp;&nbsp;{{v.CommodityNo + v.MainContract}}</p>
+						<p class="price" :class="{red: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.LastPrice | fixNum(v.DotSize)}}</p>
+						<p class="change" :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeValue | fixNum(v.DotSize)}}&nbsp;&nbsp;<em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeRate | fixNumTwo}}%</p>
+						<div class="row">
+							<div class="col">
+								<span>现手</span>
+								<span>{{v.LastQuotation.LastVolume}}</span>
+							</div>
+							<div class="col">
+								<span>买价</span>
+								<span class="default" :class="{red: v.LastQuotation.BidPrice1 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice1 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice1 | fixNum(v.DotSize)}}</span>
+							</div>
+							<div class="col">
+								<span>卖价</span>
+								<span class="default" :class="{red: v.LastQuotation.AskPrice1 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice1 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice1 | fixNum(v.DotSize)}}</span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<span>买量</span>
+								<span>{{v.LastQuotation.BidQty1}}</span>
+							</div>
+							<div class="col">
+								<span>卖量</span>
+								<span>{{v.LastQuotation.AskQty1}}</span>
+							</div>
+							<div class="col">
+								<span>成交量</span>
+								<span>{{v.LastQuotation.TotalVolume}}</span>
+							</div>
+							<div class="col">
+								<span>持仓量</span>
+								<span>{{v.LastQuotation.Position}}</span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<span>开盘</span>
+								<span class="default" :class="{red: v.LastQuotation.OpenPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.OpenPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.OpenPrice | fixNum(v.DotSize)}}</span>
+							</div>
+							<div class="col">
+								<span>昨结</span>
+								<span>{{v.LastQuotation.PreSettlePrice}}</span>
+							</div>
+							<div class="col">
+								<span>最高价</span>
+								<span class="default" :class="{red: v.LastQuotation.HighPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.HighPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.HighPrice | fixNum(v.DotSize)}}</span>
+							</div>
+							<div class="col">
+								<span>最低价</span>
+								<span class="default" :class="{red: v.LastQuotation.LowPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.LowPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.LowPrice | fixNum(v.DotSize)}}</span>
+							</div>
+						</div>
+					</div>
+					<div class="contrast">
+						<div class="title">
+							<i class="icon icon_contrast fl"></i>
+							<span class="fl">对比合约</span>
+						</div>
+						<div class="contrast_list">
+							<div class="empty" v-if="noContrast">
+								<p>无对比合约</p>
+							</div>
+							<ul v-show="!noContrast">
+								<template v-for="(v, index) in parameters">
+									<li :class="{current: v.check == 1}" v-if="v.CommodityNo != currentNo">
+										<div class="name fl">
+											<span>{{v.CommodityName}}</span>
+											<span>{{v.CommodityNo + v.MainContract}}</span>
+										</div>
+										<p :class="{red: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.LastPrice | fixNum(v.DotSize)}}<i class="icon icon_arrow" :class="{up: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, down: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}"></i></p>
+										<p :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeRate | fixNumTwo}}%</p>
+										<i class="icon" :class="{icon_check: v.check == 0, icon_checked: v.check == 1}"></i>
+									</li>
+								</template>
+							</ul>
+						</div>
 					</div>
 				</div>
-				<div class="cont">
-					<div class="chart fl">
-						
-					</div>
-					<div class="cont_right fl">
-						<div class="tab_title">
-							<span>五档</span>
-							<span class="current">明细</span>
+				<div class="chart_box">
+					<div class="title">
+						<div class="title_box">
+							<template v-for="(key,index) in chartsList">
+								<span :class="{current: currentChartsNum == index}" @touchstart="menuEvent(index)">{{key}}</span>
+							</template>
 						</div>
-						<div class="tab_cont">
-							<div class="five_quote">
-								<h3>卖五档</h3>
-								<ul>
-									<li>
-										<span>卖五</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>卖四</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>卖三</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>卖二</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>卖一</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-								</ul>
-								<h3 class="border_top">买五档</h3>
-								<ul>
-									<li>
-										<span>买一</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>买二</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>买三</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>买四</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>买五</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-								</ul>
+					</div>
+					<div class="cont">
+						<div class="chart fl">
+							<components :is="currentChartsView"></components>
+						</div>
+						<div class="cont_right fl">
+							<div class="tab_title">
+								<template v-for="(o, index) in tabList">
+									<span :class="{current: currentNum == index}" @touchstart="tabEvent(index)">{{o}}</span>
+								</template>
 							</div>
-							<!--<div class="trade_log">
-								<ul>
-									<li>
-										<span>15:16</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>15:16</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>15:16</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-									<li>
-										<span>15:16</span>
-										<span>52.16</span>
-										<span>20</span>
-									</li>
-								</ul>
-							</div>-->
+							<div class="tab_cont">
+								<div class="five_quote" v-show="tabShow">
+									<h3>卖五档</h3>
+									<ul>
+										<li>
+											<span>卖五</span>
+											<span :class="{red: v.LastQuotation.AskPrice5 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice5 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice5 | fixNum(v.dotSize)}}</span>
+											<span>{{v.LastQuotation.AskQty5}}</span>
+										</li>
+										<li>
+											<span>卖四</span>
+											<span :class="{red: v.LastQuotation.AskPrice4 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice4 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice4 | fixNum(v.dotSize)}}</span>
+											<span>{{v.LastQuotation.AskQty4}}</span>
+										</li>
+										<li>
+											<span>卖三</span>
+											<span :class="{red: v.LastQuotation.AskPrice3 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice3 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice3 | fixNum(v.dotSize)}}</span>
+											<span>{{v.LastQuotation.AskQty3}}</span>
+										</li>
+										<li>
+											<span>卖二</span>
+											<span :class="{red: v.LastQuotation.AskPrice2 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice2 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice2 | fixNum(v.dotSize)}}</span>
+											<span>{{v.LastQuotation.AskQty2}}</span>
+										</li>
+										<li>
+											<span>卖一</span>
+											<span :class="{red: v.LastQuotation.AskPrice1 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice1 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice1 | fixNum(v.dotSize)}}</span>
+											<span>{{v.LastQuotation.AskQty1}}</span>
+										</li>
+									</ul>
+									<h3 class="border_top">买五档</h3>
+									<ul>
+										<li>
+											<span>买一</span>
+											<span :class="{red: v.LastQuotation.BidPrice1 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice1 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice1 | fixNum(v.dotSize)}}</span>
+											<span>{{v.LastQuotation.BidQty1}}</span>
+										</li>
+										<li>
+											<span>买二</span>
+											<span :class="{red: v.LastQuotation.BidPrice2 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice2 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice2 | fixNum(v.dotSize)}}</span>
+											<span>{{v.LastQuotation.BidQty2}}</span>
+										</li>
+										<li>
+											<span>买三</span>
+											<span :class="{red: v.LastQuotation.BidPrice3 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice3 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice3 | fixNum(v.dotSize)}}</span>
+											<span>{{v.LastQuotation.BidQty3}}</span>
+										</li>
+										<li>
+											<span>买四</span>
+											<span :class="{red: v.LastQuotation.BidPrice4 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice4 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice4 | fixNum(v.dotSize)}}</span>
+											<span>{{v.LastQuotation.BidQty4}}</span>
+										</li>
+										<li>
+											<span>买五</span>
+											<span :class="{red: v.LastQuotation.BidPrice5 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice5 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice5 | fixNum(v.dotSize)}}</span>
+											<span>{{v.LastQuotation.BidQty5}}</span>
+										</li>
+									</ul>
+								</div>
+								<div class="trade_log" v-show="!tabShow">
+									<ul>
+										<template v-for="k in tradeParameters[0].data">
+											<li>
+												<span>{{k.time | operateTime}}</span>
+												<span>{{k.price}}</span>
+												<span>{{k.volume}}</span>
+											</li>
+										</template>
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		</template>
 		<mt-tabbar fixed class="menu">
 			<mt-tab-item class="col">  
 			    <img slot="icon" src="../../assets/images/mockTrading_02.png">  
@@ -259,12 +212,27 @@
 </template>
 
 <script>
+	import fens from './fens.vue'
+	import light from './light.vue'
+	import klineOne from './klineOne.vue'
+	import klineFive from './klineFive.vue'
+	import klineFifteen from './klineFifteen.vue'
+	import klineThirty from './klineThirty.vue'
+	import klineDay from './klineDay.vue'
 	export default {
 		name: 'quoteDetails',
-		components: {},
+		components: {fens, light, klineOne, klineFive, klineFifteen, klineThirty, klineDay},
 		data(){
 			return{
-				
+				currentNo: '',
+				currentNum: 0,
+				tabList: ['五档','明细'],
+				tabShow: true,
+				chartsList: ['闪电图','分时','1分','5分','15分','30分','日K'],
+				currentChartsNum: 1,
+				currentChartsView: 'fens',
+				noContrast: false,
+				chartsHight: 5.4,
 			}
 		},
 		computed: {
@@ -274,20 +242,138 @@
 			parameters(){
 				return this.$store.state.market.Parameters;
 			},
+			orderTemplist(){
+				return this.$store.state.market.orderTemplist;
+			},
+			quoteInitStep(){
+				return this.$store.state.market.quoteInitStep;
+			},
 			userInfo(){
 				if(localStorage.user) return JSON.parse(localStorage.user);
 			},
-			currentdetail(){
-				return this.$store.state.market.currentdetail;
+			tradeParameters(){
+				return this.$store.state.market.tradeParameters;
+			},
+		},
+		filters:{
+			fixNumTwo: function(num){
+				return num.toFixed(2);
+			},
+			fixNum: function(num, dotsize){
+				return num.toFixed(dotsize);
+			},
+			operateTime: function(val){
+				return val.split(':')[0] + ':' + val.split(':')[1];
+			}
+		},
+		watch: {
+			parameters: function(n, o){
+				if(n.length > 1){
+					this.parameters.forEach((o, i) => {
+						if(o.CommodityNo == this.currentNo){
+							this.$store.state.market.currentdetail = o;
+							return;
+						}
+					});
+				}
 			}
 		},
 		methods: {
 			goBackEvent: function(){
 				this.$router.go(-1);
 			},
+			tabEvent: function(index){
+				this.currentNum = index;
+				if(index == 0){
+					this.tabShow = true;
+				}else{
+					this.tabShow = false;
+				}
+			},
+			menuEvent: function(index){
+				this.currentChartsNum = index;
+				switch(index){
+					case 0:
+						this.currentChartsView = 'light';
+						break;
+					case 1:
+						this.currentChartsView = 'fens';
+						break;
+					case 2:
+						this.currentChartsView = 'klineOne';
+						break;
+					case 3:
+						this.currentChartsView = 'klineFive';
+						break;
+					case 4:
+						this.currentChartsView = 'klineFifteen';
+						break;
+					case 5:
+						this.currentChartsView = 'klineThirty';
+						break;
+					case 6:
+						this.currentChartsView = 'klineDay';
+						break;
+				}
+				this.$store.state.isshow.isfensshow = false;
+				this.$store.state.isshow.isklineshow = false;
+				this.$store.state.isshow.islightshow = false;
+			},
+			operateData: function(){
+				let arr = [];
+				let obj = this.$route.query;
+				arr.push(obj);
+				this.currentNo = obj.commodityNo;
+				let contrast = obj.contrast;
+				if(contrast == '' || contrast == undefined){
+					this.noContrast = true;
+				}else{
+					contrast = contrast.split(',');
+					contrast.forEach((o, i) => {
+						let a = {
+							commodityNo: o,
+							exchangeNo: this.orderTemplist[o].ExchangeNo,
+							mainContract: this.orderTemplist[o].MainContract
+						}
+						arr.push(a);
+					});
+				}
+				
+				this.$store.state.market.Parameters = [];
+				this.$store.state.market.tradeParameters = [];
+				this.$store.state.market.commodityOrder = [];
+				this.$store.state.market.commodityOrder = arr;
+				arr.forEach((o, i) => {
+					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.mainContract +'"}}');
+				});
+			},
+//			operateCharts: function(){
+//				this.parameters.forEach((o, i) => {
+//					if(o.CommodityNo == currentNo){
+//						var data = {
+//							Method: "QryHistory",
+//							Parameters:{
+//								ExchangeNo: o.ExchangeNo,
+//								CommodityNo: o.CommodityNo,
+//								ContractNo: o.MainContract,
+//								HisQuoteType: 0,
+//								BeginTime: "",
+//								EndTime: "",
+//								Count: 0
+//							}
+//						};
+//						this.quoteSocket.send(JSON.stringify(data));
+//					}
+//				})
+//			},
 		},
 		mounted: function(){
-			console.log(this.currentdetail);
+			//画图
+//			this.operateCharts();
+		},
+		activated: function(){
+			this.operateData();
+//			console.log(this.parameters);
 		}
 	}
 </script>
@@ -373,7 +459,7 @@
 			border-bottom: 0.01rem solid $black;
 			.cont{
 				float: left;
-				width: 4.3rem;
+				width: 4.2rem;
 				height: 3.65rem;
 				background: $bg;
 				border-bottom: 0.01rem solid $black;
@@ -411,7 +497,7 @@
 					margin-bottom: 0.2rem;
 					.col{
 						float: left;
-						width: 1rem;
+						width: 0.95rem;
 						span{
 							display: block;
 							font-size: 0.2rem;
@@ -419,13 +505,21 @@
 								margin-top: 0.05rem;
 								color: $white;
 							}
+							&.default{
+								&.red{
+									color: $red;
+								}
+								&.green{
+									color: $green;
+								}
+							}
 						}
 					}
 				}
 			}
 			.contrast{
 				float: left;
-				width: 3.2rem;
+				width: 3.3rem;
 				height: 3.65rem;
 				background: $bg;
 				.title{
@@ -476,6 +570,12 @@
 							width: 0.75rem;
 							line-height: 0.64rem;
 							font-size: 0.2rem;
+							&.red{
+								color: $red;
+							}
+							&.green{
+								color: $green;
+							}
 						}
 						.icon{
 							float: right;
@@ -503,14 +603,14 @@
 				padding: 0 0.3rem;
 				border-bottom: 0.01rem solid $black;
 				overflow-x: scroll;
-				.title_box{
+				/*.title_box{
 					width: 7.6rem;
-				}
+				}*/
 				span{
 					display: inline-block;
-					height: 0.74rem;
-					line-height: 0.74rem;
-					border-bottom: 0.04rem solid $bg;
+					height: 0.75rem;
+					line-height: 0.75rem;
+					border-bottom: 0.05rem solid $bg;
 					font-size: $fs28;
 					margin-left: 0.3rem;
 					&:first-child{
@@ -568,8 +668,17 @@
 								line-height: 0.36rem;
 								display: flex;
 								justify-content: space-around;
+								padding: 0 0.1rem;
 								span{
+									display: inline-block;
 									font-size: 0.2rem;
+									&:first-child{
+										width: 0.5rem;
+									}
+									&:nth-child(2){
+										width: 1rem;
+										text-align: center;
+									}
 									&.red{
 										color: $red;
 									}
@@ -578,14 +687,16 @@
 									}
 									&:last-child{
 										color: $white;
+										width: 0.3rem;
+										text-align: right;
 									}
 								}
 							}
 						}
 						.trade_log{
 							li{
-								height: 0.36rem;
-								line-height: 0.36rem;
+								height: 0.38rem;
+								line-height: 0.38rem;
 								display: flex;
 								justify-content: space-around;
 								span{

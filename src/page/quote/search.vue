@@ -16,8 +16,8 @@
 				<div class="cont" v-if="contShow">
 					<ul>
 						<template v-for="(v, index) in resultList">
-							<li @touchstart="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo)">
-								<div class="col">
+							<li>
+								<div class="col" @touchstart="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo, v.contrast)">
 									<span>{{v.CommodityName}}</span>
 									<span>{{v.CommodityNo + v.MainContract}}</span>
 								</div>
@@ -61,7 +61,6 @@
 				resultList: [],
 				recommendList: [],
 				optionalList: [],
-				commodityNo: '',
 			}
 		},
 		computed: {
@@ -108,6 +107,7 @@
 							this.optionalList.forEach((v, k) => {
 								if(o.CommodityNo == v.commodityNo){
 									o.isOptional = 1;
+									o.contrast = v.contrast;
 								}
 							});
 						}
@@ -119,13 +119,6 @@
 					this.recommendShow = true;
 				}
 			},
-			parameters: function(n, o){
-				if(n != undefined){
-					n.forEach((o, i) => {
-						if(o.CommodityNo == this.commodityNo) this.$store.state.market.currentdetail = o;
-					});
-				}
-			}
 		},
 		methods: {
 			getRecommend: function(){
@@ -146,22 +139,8 @@
 				this.recommendShow = true;
 				this.$router.go(-1);
 			},
-			toQuoteDetails: function(commodityNo, mainContract, exchangeNo){
-				this.commodityNo = commodityNo;
-				let arr = [];
-				let obj = {
-					'commodityNo': commodityNo,
-					'mainContract': mainContract,
-					'exchangeNo': exchangeNo
-				}
-				arr.push(obj);
-				this.$store.state.market.Parameters = [];
-				this.$store.state.market.commodityOrder = [];
-				this.$store.state.market.commodityOrder = arr;
-				arr.forEach((o, i) => {
-					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + commodityNo + '","ContractNo":"' + mainContract +'"}}');
-				});
-				this.$router.push({path: '/quoteDetails'});
+			toQuoteDetails: function(commodityNo, mainContract, exchangeNo, contrast){
+				this.$router.push({path: '/quoteDetails', query: {'commodityNo': commodityNo, 'mainContract': mainContract, 'exchangeNo': exchangeNo, 'contrast': contrast}});
 			},
 			quickSearchEvent: function(key){
 				this.searchCont = key;

@@ -16,7 +16,7 @@
 					<span @touchstart="switchEvent">{{changeRateName}}<i class="icon icon_switch"></i></span>
 				</li>
 				<template v-for="(v, index) in parameters">
-					<li @touchstart="toQuoteDetails(v.CommodityNo)">
+					<li @touchstart="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo, v.contrast)">
 						<div class="name">
 							<em>{{v.CommodityName}}</em>
 							<em>{{v.CommodityNo + v.MainContract}}</em>
@@ -85,13 +85,8 @@
 			}
 		},
 		methods: {
-			toQuoteDetails: function(commodityNo){
-				this.parameters.forEach((o, i) => {
-					if(o.CommodityNo == commodityNo){
-						this.$store.state.market.currentdetail = o;
-					}
-				});
-				this.$router.push({path: '/quoteDetails'});
+			toQuoteDetails: function(commodityNo, mainContract, exchangeNo, contrast){
+				this.$router.push({path: '/quoteDetails', query: {'commodityNo': commodityNo, 'mainContract': mainContract, 'exchangeNo': exchangeNo, 'contrast': contrast}});
 			},
 			tabEvent: function(index){
 				this.currentNum = index;
@@ -232,6 +227,7 @@
 			this.operateData();
 		},
 		activated: function(){
+			this.currentNum = 0;
 			//重新请求自选合约列表
 			if(this.userInfo == undefined) return;
 			var headers = {
