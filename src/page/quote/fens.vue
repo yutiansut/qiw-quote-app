@@ -19,24 +19,31 @@
 				return this.$store.state.market.currentdetail;
 			}
 		},
+		watch: {
+			currentdetail: function(n, o){
+				if(n != undefined && n != null && n != ''){
+					let data = {
+						Method: "QryHistory",
+						Parameters:{
+							ExchangeNo: this.currentdetail.ExchangeNo,
+							CommodityNo: this.currentdetail.CommodityNo,
+							ContractNo: this.currentdetail.MainContract,
+							HisQuoteType: 0,
+							BeginTime: "",
+							EndTime: "",
+							Count: 0
+						}
+					};
+					this.$store.state.isshow.isfens = true;
+					this.quoteSocket.send(JSON.stringify(data));
+				}
+			}
+		},
 		mounted: function(){
 			let h = this.$parent.chartsHight;
 			$("#fens").css('height', h/10*6.9 + 'rem');
 			$("#volume").css('height', h/10*3 + 'rem');
-			let data = {
-				Method: "QryHistory",
-				Parameters:{
-					ExchangeNo: this.currentdetail.ExchangeNo,
-					CommodityNo: this.currentdetail.CommodityNo,
-					ContractNo: this.currentdetail.MainContract,
-					HisQuoteType: 0,
-					BeginTime: "",
-					EndTime: "",
-					Count: 0
-				}
-			};
-			this.$store.state.isshow.isfens = true;
-			this.quoteSocket.send(JSON.stringify(data));
+			
 		}
 	}
 </script>
