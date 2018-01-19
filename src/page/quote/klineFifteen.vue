@@ -16,18 +16,25 @@
 				return this.$store.state.market.currentdetail;
 			}
 		},
-		watch: {
-			currentdetail: function(n, o){
-				if(n != undefined && n != null && n != ''){
-					
-				}
-			}
-		},
 		mounted: function(){
 			let h = this.$parent.chartsHight;
 			$("#kline").css('height', h/10*6.9 + 'rem');
 			$("#kline_volume").css('height', h/10*3 + 'rem');
-			
+			this.$store.state.isshow.iskline = true;
+			this.$store.state.market.selectTime = 15;
+			var data = {
+				Method: "QryHistory",
+				Parameters:{
+					ExchangeNo: this.currentdetail.ExchangeNo,
+					CommodityNo: this.currentdetail.CommodityNo,
+					ContractNo: this.currentdetail.MainContract,
+					HisQuoteType: 15,
+					BeginTime: "",
+					EndTime: "",
+					Count: 0
+				}
+			};
+			this.quoteSocket.send(JSON.stringify(data));
 		}
 	}
 </script>
