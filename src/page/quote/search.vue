@@ -16,9 +16,8 @@
 				<div class="cont" v-if="contShow">
 					<ul>
 						<template v-for="(v, index) in resultList">
-							<!--<li @touchstart="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo)">-->
 							<li>
-								<div class="col">
+								<div class="col" @touchstart="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo, v.contrast)">
 									<span>{{v.CommodityName}}</span>
 									<span>{{v.CommodityNo + v.MainContract}}</span>
 								</div>
@@ -108,6 +107,7 @@
 							this.optionalList.forEach((v, k) => {
 								if(o.CommodityNo == v.commodityNo){
 									o.isOptional = 1;
+									o.contrast = v.contrast;
 								}
 							});
 						}
@@ -139,8 +139,8 @@
 				this.recommendShow = true;
 				this.$router.go(-1);
 			},
-			toQuoteDetails: function(commodityNo, mainContract, exchangeNo){
-				this.$router.push({path: '/quoteDetails', query: {'commodityNo': commodityNo, 'mainContract': mainContract, 'exchangeNo': exchangeNo}});
+			toQuoteDetails: function(commodityNo, mainContract, exchangeNo, contrast){
+				this.$router.push({path: '/quoteDetails', query: {'commodityNo': commodityNo, 'mainContract': mainContract, 'exchangeNo': exchangeNo, 'contrast': contrast}});
 			},
 			quickSearchEvent: function(key){
 				this.searchCont = key;

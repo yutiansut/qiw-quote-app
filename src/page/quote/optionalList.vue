@@ -225,7 +225,6 @@
 			});
 			//获取所有自选
 			this.operateData();
-			console.log(this.parameters);
 		},
 		activated: function(){
 			this.currentNum = 0;
