@@ -303,16 +303,20 @@
 				arr.push(obj);
 				this.commodityNo = obj.commodityNo;
 				let contrast = obj.contrast;
-				if(contrast == '' || contrast == undefined) this.noContrast = true;
-				contrast = contrast.split(',');
-				contrast.forEach((o, i) => {
-					let a = {
-						commodityNo: o,
-						exchangeNo: this.orderTemplist[o].ExchangeNo,
-						mainContract: this.orderTemplist[o].MainContract
-					}
-					arr.push(a);
-				});
+				if(contrast == '' || contrast == undefined){
+					this.noContrast = true;
+				}else{
+					contrast = contrast.split(',');
+					contrast.forEach((o, i) => {
+						let a = {
+							commodityNo: o,
+							exchangeNo: this.orderTemplist[o].ExchangeNo,
+							mainContract: this.orderTemplist[o].MainContract
+						}
+						arr.push(a);
+					});
+				}
+				
 				this.$store.state.market.Parameters = [];
 				this.$store.state.market.tradeParameters = [];
 				this.$store.state.market.commodityOrder = [];

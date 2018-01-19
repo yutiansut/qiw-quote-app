@@ -16,7 +16,8 @@
 				<div class="cont" v-if="contShow">
 					<ul>
 						<template v-for="(v, index) in resultList">
-							<li @touchstart="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo)">
+							<!--<li @touchstart="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo)">-->
+							<li>
 								<div class="col">
 									<span>{{v.CommodityName}}</span>
 									<span>{{v.CommodityNo + v.MainContract}}</span>

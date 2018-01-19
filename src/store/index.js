@@ -289,7 +289,8 @@ export default new Vuex.Store({
 	getters: {
 		PATH: function(state) {
 			if(state.setting == 'dev') {
-				return state.account.currentUrlHead + '//test.api.dktai.cn';
+//				return state.account.currentUrlHead + '//test.api.dktai.cn';
+				return state.account.currentUrlHead + '//192.168.0.225:8080/qiw-platform';
 			} else if(state.setting == 'build'){
 				if(state.environment == 'test'){
 					return state.account.currentUrlHead + '//test.api.dktai.cn';
