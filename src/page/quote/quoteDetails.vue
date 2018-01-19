@@ -191,7 +191,7 @@
 		</div>
 		</template>
 		<mt-tabbar fixed class="menu">
-			<mt-tab-item class="col">  
+			<mt-tab-item class="col" v-show="isTradeLogin">  
 			    <img slot="icon" src="../../assets/images/mockTrading_02.png">  
 			    <span>模拟交易</span> 
 			</mt-tab-item> 
@@ -199,19 +199,21 @@
 		        <img slot="icon" src="../../assets/images/remind.png">  
 		        <span>提醒</span>  
 		    </mt-tab-item> 
-      		<mt-tab-item class="col">  
+      		<mt-tab-item class="col" @touchstart.native="addOptional">  
 		        <img slot="icon" src="../../assets/images/add_optional.png">  
 		        <span>添加自选</span> 
 		    </mt-tab-item>
-      		<mt-tab-item class="col">  
+      		<mt-tab-item class="col" v-show="isTradeLogin">  
 		        <img slot="icon" src="../../assets/images/position.png">  
 		         <span>持仓</span> 
 	      	</mt-tab-item> 
-		</mt-tabbar> 
+		</mt-tabbar>
 	</div>
 </template>
 
 <script>
+	import pro from '../../assets/js/common.js'
+	import { Toast } from 'mint-ui';
 	import fens from './fens.vue'
 	import light from './light.vue'
 	import klineOne from './klineOne.vue'
@@ -233,6 +235,7 @@
 				currentChartsView: 'fens',
 				noContrast: false,
 				chartsHight: 5.4,
+				isTradeLogin: false,
 			}
 		},
 		computed: {
@@ -250,6 +253,9 @@
 			},
 			userInfo(){
 				if(localStorage.user) return JSON.parse(localStorage.user);
+			},
+			tradeUserInfo(){
+				if(localStorage.tradeUser) return JSON.parse(localStorage.tradeUser);
 			},
 			tradeParameters(){
 				return this.$store.state.market.tradeParameters;
@@ -320,6 +326,28 @@
 				this.$store.state.isshow.isklineshow = false;
 				this.$store.state.isshow.islightshow = false;
 			},
+			addOptional: function(){
+				if(this.userInfo == undefined){
+					Toast({message: '请先登录平台', position: 'bottom', duration: 2000});
+					return;
+				}
+				var headers = {
+					token: this.userInfo.token,
+					secret: this.userInfo.secret
+				}
+				var datas = {
+					'exchangeNo': this.orderTemplist[this.currentNo].ExchangeNo,
+					'commodityNo': this.currentNo,
+					'contractNo': this.orderTemplist[this.currentNo].MainContract,
+				}
+				pro.fetch('post', '/quoteTrader/userAddCommodity', datas, headers).then((res) => {
+					if(res.success == true && res.code == 1){
+						Toast({message: '自选添加成功', position: 'bottom', duration: 2000});
+					}
+				}).catch((err) => {
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
+				});
+			},
 			operateData: function(){
 				let arr = [];
 				let obj = this.$route.query;
@@ -347,11 +375,13 @@
 				arr.forEach((o, i) => {
 					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.mainContract +'"}}');
 				});
-			},
+			}
 		},
 		mounted: function(){
-			//画图
-//			this.operateCharts();
+			//判断交易是否登录
+			if(this.tradeUserInfo != undefined && this.tradeUserInfo != null && this.tradeUserInfo != ''){
+				this.isTradeUser = true;
+			}
 		},
 		activated: function(){
 			this.operateData();
