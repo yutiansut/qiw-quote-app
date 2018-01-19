@@ -131,9 +131,9 @@
 						mobile:this.phone,
 						password:this.password,
 						code:this.code,
-						resource:this.version
+						resource:"app"
 					}
-					pro.fetch("post","/loginAndRegister/register",data,{}).then((res)=>{
+					pro.fetch("post","/loginAndRegister/register",data,"").then((res)=>{
 						if(res.code == 1 && res.success == true){
 							this.$toast({message:"注册成功",duration: 2000});
 						}
