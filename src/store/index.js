@@ -315,11 +315,11 @@ export default new Vuex.Store({
 				lightChart = echarts.init(document.getElementById(e));
 				state.isshow.islightshow = true;
 			} else {
-				
 				if(document.getElementById(e) != null){
 					lightChart = echarts.getInstanceByDom(document.getElementById(e));
 				}
 			}
+			
 			lightChart.setOption(state.market.option5);
 		},
 		//设置闪电图数据

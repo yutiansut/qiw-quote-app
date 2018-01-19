@@ -272,6 +272,7 @@
 					this.parameters.forEach((o, i) => {
 						if(o.CommodityNo == this.currentNo){
 							this.$store.state.market.currentdetail = o;
+							this.$store.state.market.currentNo = o.CommodityNo;
 							return;
 						}
 					});
