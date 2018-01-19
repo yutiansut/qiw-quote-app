@@ -213,9 +213,15 @@
 
 <script>
 	import fens from './fens.vue'
+	import light from './light.vue'
+	import klineOne from './klineOne.vue'
+	import klineFive from './klineFive.vue'
+	import klineFifteen from './klineFifteen.vue'
+	import klineThirty from './klineThirty.vue'
+	import klineDay from './klineDay.vue'
 	export default {
 		name: 'quoteDetails',
-		components: {fens},
+		components: {fens, light, klineOne, klineFive, klineFifteen, klineThirty, klineDay},
 		data(){
 			return{
 				currentNo: '',
@@ -309,6 +315,9 @@
 						this.currentChartsView = 'klineDay';
 						break;
 				}
+				this.$store.state.isshow.isfensshow = false;
+				this.$store.state.isshow.isklineshow = false;
+				this.$store.state.isshow.islightshow = false;
 			},
 			operateData: function(){
 				let arr = [];
