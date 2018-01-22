@@ -153,6 +153,9 @@
 		background-color: #0e1014;
 		opacity: 1;
 	}
+	#codeDialog{
+		width: 7.5rem;
+	}
 	.codeDialog {
 		top: 50%;
 		left: 50%;
@@ -165,69 +168,70 @@
 		background-color: #242933;
 		color: $fontBlueTitle;
 		z-index: 105;
-	}
-	.title {
-		height: 0.9rem;
-		border-radius: 0.1rem 0.1rem 0 0;
-		line-height: 0.9rem;
-		border-bottom: 1px solid #12141a;
-	}
-	.code_box{
-		width: 100%;
-		position: relative;
-		height: 1.3rem;
-		line-height:1.3rem;
-		border-bottom: 1px solid #12141a;
-		.fl{
-			position: absolute;
-			left: 0.2rem;
-			top: 0.2rem;
-			width: 2.7rem;
+		.title {
 			height: 0.9rem;
-			border: 1px solid #12141a;
-			border-radius: 0.1rem;
-			color: $white;
-			font-size: $fs32;
-			text-align: center;
+			border-radius: 0.1rem 0.1rem 0 0;
+			line-height: 0.9rem;
+			border-bottom: 1px solid #12141a;
 		}
-		.fr{
-			position: absolute;
-			top: 0.2rem;
-			right: 0.2rem;
-			border-radius: 0.1rem;
-			border: 1px solid #12141a;
-			img{
-				display: block;
-				width: 2.7rem;
+		.code_box{
+			width: 100%;
+			position: relative;
+			height: 1.3rem;
+			line-height:1.3rem;
+			border-bottom: 1px solid #12141a;
+			.fl{
+				position: absolute;
+				left: 0.2rem;
+				top: 0.2rem;
+				width: 2.4rem;
 				height: 0.9rem;
+				border: 1px solid #12141a;
 				border-radius: 0.1rem;
+				color: $white;
+				font-size: $fs32;
+				text-align: center;
+			}
+			.fr{
+				position: absolute;
+				top: 0.2rem;
+				right: 0.2rem;
+				border-radius: 0.1rem;
+				border: 1px solid #12141a;
+				img{
+					display: block;
+					width: 2.7rem;
+					height: 0.9rem;
+					border-radius: 0.1rem;
+				}
+			}
+		}
+		.black{
+			height: 0.2rem;
+			background-color: #1b1f26;
+			border-bottom: 1px solid #12141a;
+		}
+		.btn_box{
+			width: 100%;
+			height: 0.9rem;
+			line-height: 0.9rem;
+			border-radius: 0 0 0.1rem 0.1rem;
+			span{
+				float: left;
+				display: block;
+				width: 50%;
+				height: 100%;
+				font-size:$fs28; 
+				&:nth-child(1){
+					border-radius: 0 0 0 0.1rem;
+				}
+				&:nth-child(2){
+					border-radius: 0 0 0.1rem 0;
+				}
 			}
 		}
 	}
-	.black{
-		height: 0.2rem;
-		background-color: #1b1f26;
-		border-bottom: 1px solid #12141a;
-	}
-	.btn_box{
-		width: 100%;
-		height: 0.9rem;
-		line-height: 0.9rem;
-		border-radius: 0 0 0.1rem 0.1rem;
-		span{
-			float: left;
-			display: block;
-			width: 50%;
-			height: 100%;
-			font-size:$fs28; 
-			&:nth-child(1){
-				border-radius: 0 0 0 0.1rem;
-			}
-			&:nth-child(2){
-				border-radius: 0 0 0.1rem 0;
-			}
-		}
-	}
+	
 	
 </style>
 
