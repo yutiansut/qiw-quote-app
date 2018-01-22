@@ -105,7 +105,7 @@
 					</div>
 					<div class="cont">
 						<div class="chart fl">
-							<components :is="currentChartsView"></components>
+							<components :is="currentChartsView" v-if="chartsShow"></components>
 						</div>
 						<div class="cont_right fl">
 							<div class="tab_title">
@@ -236,6 +236,7 @@
 				noContrast: false,
 				chartsHight: 5.4,
 				isTradeLogin: false,
+				chartsShow: false,
 			}
 		},
 		computed: {
@@ -288,6 +289,10 @@
 		methods: {
 			goBackEvent: function(){
 				this.$router.go(-1);
+				this.chartsShow = false;
+				this.$store.state.isshow.isfensshow = false;
+				this.$store.state.isshow.islightshow = false;
+				this.$store.state.isshow.isklineshow = false;
 			},
 			tabEvent: function(index){
 				this.currentNum = index;
@@ -349,6 +354,11 @@
 				});
 			},
 			operateData: function(){
+				//渲染画图
+				this.chartsShow = true;
+				this.currentChartsNum = 1;
+				this.currentChartsView = 'fens';
+				//重组数据
 				let arr = [];
 				let obj = this.$route.query;
 				arr.push(obj);
