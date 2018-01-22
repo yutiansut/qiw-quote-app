@@ -190,23 +190,33 @@
 			</div>
 		</div>
 		</template>
+		<div class="select_box">
+			<ul>
+				<li><span>切换合约</span></li>
+				<template v-for="(v, index) in commodityAll">
+					<li @touchstart="selectEvent(v)">
+						<span>{{v.describe}}&nbsp;&nbsp;{{v.commodityNo + v.contractNo}}</span>
+					</li>
+				</template>
+			</ul>
+		</div>
 		<mt-tabbar fixed class="menu">
 			<mt-tab-item class="col" v-show="isTradeLogin">  
 			    <img slot="icon" src="../../assets/images/mockTrading_02.png">  
-			    <span>模拟交易</span> 
-			</mt-tab-item> 
-      		<mt-tab-item class="col">  
+			    <span>模拟交易</span>
+			</mt-tab-item>
+      		<mt-tab-item class="col">
 		        <img slot="icon" src="../../assets/images/remind.png">  
-		        <span>提醒</span>  
-		    </mt-tab-item> 
+		        <span>提醒</span>
+		    </mt-tab-item>
       		<mt-tab-item class="col" @touchstart.native="addOptional">  
 		        <img slot="icon" src="../../assets/images/add_optional.png">  
-		        <span>添加自选</span> 
+		        <span>添加自选</span>
 		    </mt-tab-item>
       		<mt-tab-item class="col" v-show="isTradeLogin">  
 		        <img slot="icon" src="../../assets/images/position.png">  
-		         <span>持仓</span> 
-	      	</mt-tab-item> 
+		         <span>持仓</span>
+	      	</mt-tab-item>
 		</mt-tabbar>
 	</div>
 </template>
@@ -237,6 +247,7 @@
 				chartsHight: 5.4,
 				isTradeLogin: false,
 				chartsShow: false,
+				commodityAll: [],
 			}
 		},
 		computed: {
@@ -260,7 +271,7 @@
 			},
 			tradeParameters(){
 				return this.$store.state.market.tradeParameters;
-			},
+			}
 		},
 		filters:{
 			fixNumTwo: function(num){
@@ -301,6 +312,18 @@
 				}else{
 					this.tabShow = false;
 				}
+			},
+			selectEvent: function(obj){
+				this.$store.state.isshow.isfensshow = false;
+				this.$store.state.isshow.islightshow = false;
+				this.$store.state.isshow.isklineshow = false;
+				let _obj = {
+					"commodityNo": obj.commodityNo,
+					"contrast": obj.contrast,
+					"exchangeNo": obj.exchangeNo,
+					"mainContract": obj.contractNo
+				}
+				this.operateData(_obj);
 			},
 			menuEvent: function(index){
 				this.currentChartsNum = index;
@@ -353,14 +376,19 @@
 					Toast({message: err.data.message, position: 'bottom', duration: 2000});
 				});
 			},
-			operateData: function(){
+			operateData: function(val){
 				//渲染画图
 				this.chartsShow = true;
 				this.currentChartsNum = 1;
 				this.currentChartsView = 'fens';
 				//重组数据
 				let arr = [];
-				let obj = this.$route.query;
+				let obj;
+				if(val){
+					obj = val;
+				}else{
+					obj = this.$route.query;
+				}
 				arr.push(obj);
 				this.currentNo = obj.commodityNo;
 				let contrast = obj.contrast;
@@ -386,6 +414,16 @@
 					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.mainContract +'"}}');
 				});
 			}
+		},
+		beforeMount: function(){
+			//获取所有市场合约
+			pro.fetch('post', '/quoteTrader/getCommodityInfoNoType', '', '').then((res) => {
+				if(res.success == true && res.code == 1){
+					this.commodityAll = res.data;
+				}
+			}).catch((err) => {
+				Toast({message: err.data.message, position: 'bottom', duration: 2000});
+			});			
 		},
 		mounted: function(){
 			//判断交易是否登录
@@ -734,6 +772,32 @@
 						}
 					}
 				}
+			}
+		}
+	}
+	.select_box{
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		z-index: 2;
+		width: 7.5rem;
+		height: 5.3rem;
+		overflow-y: auto;
+		background: $white;
+		li{
+			width: 7.5rem;
+			height: 0.88rem;
+			line-height: 0.88rem;
+			text-align: center;
+			border-bottom: 0.01rem solid #e6e6e6;
+			&:first-child{
+				span{
+					font-weight: bold;
+				}
+			}
+			span{
+				color: #1a1a1a;
+				font-size: $fs28;
 			}
 		}
 	}
