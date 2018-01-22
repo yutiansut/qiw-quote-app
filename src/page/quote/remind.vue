@@ -1,31 +1,35 @@
 <template>
 	<div id="remind">
+		<template v-for="(v, index) in parameters">
+		<div v-if="v.CommodityNo == currentNo">
 		<header>
-			<i class="icon icon_back"></i>
+			<i class="icon icon_back" @touchstart="goBackEvent"></i>
 			<div class="title">
 				<div class="name fl">
-					<span>美黄金</span>
-					<span>GC1702</span>
+					<span>{{v.CommodityName}}</span>
+					<span>{{v.CommodityNo + v.MainContract}}</span>
 				</div>
 			</div>
 		</header>
 		<div class="main">
 			<div class="title">
 				<div class="row">
-					<em class="red">1276.1</em>
-					<em class="red">+2.1</em>
-					<em class="red">+0.29%</em>
+					<em :class="{red: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.LastPrice | fixNum(v.DotSize)}}</em>
+					<em :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><i v-show="v.LastQuotation.ChangeRate > 0">+</i>{{v.LastQuotation.ChangeValue | fixNum(v.DotSize)}}</em>
+					<em :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><i v-show="v.LastQuotation.ChangeRate > 0">+</i>{{v.LastQuotation.ChangeRate | fixNumTwo}}%</em>
 				</div>
 				<div class="row">
 					<span>提醒方式</span>
-					<div class="reminda_ways fl">
-						<i class="icon icon_check"></i>
-						<span>通知提醒</span>
-					</div>
-					<div class="reminda_ways fl">
+					<template v-for="(v, index) in remindWays">
+						<div class="reminda_ways fl" @touchstart="checkEvent">
+							<i class="icon" :class="{icon_checked: v.status == 1, icon_check: v.status == 0}"></i>
+							<span>{{v.name}}</span>
+						</div>
+					</template>
+					<!--<div class="reminda_ways fl">
 						<i class="icon icon_checked"></i>
 						<span>短信提醒</span>
-					</div>
+					</div>-->
 				</div>
 				<div class="row">
 					<p>实时智能盯盘，免费短信预警，不再担心错过行情，价格波动实时短信提醒，现已免费提供。</p>
@@ -115,6 +119,8 @@
 				<btn name="完成" className="bluelg"></btn>
 			</div>
 		</div>
+		</div>
+		</template>
 	</div>
 </template>
 
@@ -125,9 +131,42 @@
 		components: {btn, },
 		data(){
 			return{
-				value: true,
+				remindWays: [{
+					name: '短信提醒',
+					status: 1,
+				},{
+					name: '通知提醒',
+					status: 1,
+				}]
 			}
 		},
+		computed: {
+			parameters(){
+				return this.$store.state.market.Parameters;
+			},
+			currentNo(){
+				return this.$store.state.market.currentNo;
+			}
+		},
+		filters:{
+			fixNumTwo: function(num){
+				return num.toFixed(2);
+			},
+			fixNum: function(num, dotsize){
+				return num.toFixed(dotsize);
+			}
+		},
+		methods: {
+			goBackEvent: function(){
+				this.$router.go(-1);
+			},
+			checkEvent: function(){
+				
+			},
+		},
+		mounted: function(){
+			
+		}
 		
 	}
 </script>

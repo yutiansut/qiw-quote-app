@@ -119,27 +119,27 @@
 									<ul>
 										<li>
 											<span>卖五</span>
-											<span :class="{red: v.LastQuotation.AskPrice5 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice5 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice5 | fixNum(v.dotSize)}}</span>
+											<span :class="{red: v.LastQuotation.AskPrice5 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice5 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice5 | fixNum(v.DotSize)}}</span>
 											<span>{{v.LastQuotation.AskQty5}}</span>
 										</li>
 										<li>
 											<span>卖四</span>
-											<span :class="{red: v.LastQuotation.AskPrice4 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice4 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice4 | fixNum(v.dotSize)}}</span>
+											<span :class="{red: v.LastQuotation.AskPrice4 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice4 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice4 | fixNum(v.DotSize)}}</span>
 											<span>{{v.LastQuotation.AskQty4}}</span>
 										</li>
 										<li>
 											<span>卖三</span>
-											<span :class="{red: v.LastQuotation.AskPrice3 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice3 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice3 | fixNum(v.dotSize)}}</span>
+											<span :class="{red: v.LastQuotation.AskPrice3 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice3 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice3 | fixNum(v.DotSize)}}</span>
 											<span>{{v.LastQuotation.AskQty3}}</span>
 										</li>
 										<li>
 											<span>卖二</span>
-											<span :class="{red: v.LastQuotation.AskPrice2 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice2 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice2 | fixNum(v.dotSize)}}</span>
+											<span :class="{red: v.LastQuotation.AskPrice2 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice2 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice2 | fixNum(v.DotSize)}}</span>
 											<span>{{v.LastQuotation.AskQty2}}</span>
 										</li>
 										<li>
 											<span>卖一</span>
-											<span :class="{red: v.LastQuotation.AskPrice1 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice1 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice1 | fixNum(v.dotSize)}}</span>
+											<span :class="{red: v.LastQuotation.AskPrice1 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.AskPrice1 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.AskPrice1 | fixNum(v.DotSize)}}</span>
 											<span>{{v.LastQuotation.AskQty1}}</span>
 										</li>
 									</ul>
@@ -147,27 +147,27 @@
 									<ul>
 										<li>
 											<span>买一</span>
-											<span :class="{red: v.LastQuotation.BidPrice1 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice1 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice1 | fixNum(v.dotSize)}}</span>
+											<span :class="{red: v.LastQuotation.BidPrice1 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice1 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice1 | fixNum(v.DotSize)}}</span>
 											<span>{{v.LastQuotation.BidQty1}}</span>
 										</li>
 										<li>
 											<span>买二</span>
-											<span :class="{red: v.LastQuotation.BidPrice2 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice2 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice2 | fixNum(v.dotSize)}}</span>
+											<span :class="{red: v.LastQuotation.BidPrice2 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice2 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice2 | fixNum(v.DotSize)}}</span>
 											<span>{{v.LastQuotation.BidQty2}}</span>
 										</li>
 										<li>
 											<span>买三</span>
-											<span :class="{red: v.LastQuotation.BidPrice3 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice3 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice3 | fixNum(v.dotSize)}}</span>
+											<span :class="{red: v.LastQuotation.BidPrice3 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice3 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice3 | fixNum(v.DotSize)}}</span>
 											<span>{{v.LastQuotation.BidQty3}}</span>
 										</li>
 										<li>
 											<span>买四</span>
-											<span :class="{red: v.LastQuotation.BidPrice4 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice4 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice4 | fixNum(v.dotSize)}}</span>
+											<span :class="{red: v.LastQuotation.BidPrice4 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice4 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice4 | fixNum(v.DotSize)}}</span>
 											<span>{{v.LastQuotation.BidQty4}}</span>
 										</li>
 										<li>
 											<span>买五</span>
-											<span :class="{red: v.LastQuotation.BidPrice5 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice5 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice5 | fixNum(v.dotSize)}}</span>
+											<span :class="{red: v.LastQuotation.BidPrice5 > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.BidPrice5 < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.BidPrice5 | fixNum(v.DotSize)}}</span>
 											<span>{{v.LastQuotation.BidQty5}}</span>
 										</li>
 									</ul>
@@ -205,7 +205,7 @@
 			    <img slot="icon" src="../../assets/images/mockTrading_02.png">  
 			    <span>模拟交易</span>
 			</mt-tab-item>
-      		<mt-tab-item class="col">
+      		<mt-tab-item class="col" @touchstart.native="addRemind">
 		        <img slot="icon" v-show="!remindShow" src="../../assets/images/remind.png">
 		        <img slot="icon" v-show="remindShow" src="../../assets/images/remind_01.png">
 		        <span>提醒</span>
@@ -337,6 +337,13 @@
 				this.operateData(_obj);
 				//判断是否自选
 				this.getUserCommodityList();
+			},
+			addRemind: function(){
+				this.chartsShow = false;
+				this.$store.state.isshow.isfensshow = false;
+				this.$store.state.isshow.islightshow = false;
+				this.$store.state.isshow.isklineshow = false;
+				this.$router.push({path: '/remind'});
 			},
 			menuEvent: function(index){
 				this.currentChartsNum = index;
@@ -475,7 +482,6 @@
 			this.getUserCommodityList();
 			//重组数据
 			this.operateData();
-			
 //			console.log(this.parameters);
 		}
 	}
