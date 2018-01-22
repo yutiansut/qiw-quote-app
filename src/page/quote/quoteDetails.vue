@@ -4,7 +4,7 @@
 		<div v-if="v.CommodityNo == currentNo">
 			<header>
 				<i class="icon icon_back" @touchstart="goBackEvent"></i>
-				<div class="title">
+				<div class="title" @touchstart="switchEvent">
 					<div class="name fl">
 						<span>{{v.CommodityName}}</span>
 						<span>{{v.CommodityNo + v.MainContract}}</span>
@@ -190,7 +190,7 @@
 			</div>
 		</div>
 		</template>
-		<div class="select_box">
+		<div class="select_box" v-show="selectBoxShow">
 			<ul>
 				<li><span>切换合约</span></li>
 				<template v-for="(v, index) in commodityAll">
@@ -248,6 +248,7 @@
 				isTradeLogin: false,
 				chartsShow: false,
 				commodityAll: [],
+				selectBoxShow: false,
 			}
 		},
 		computed: {
@@ -313,7 +314,11 @@
 					this.tabShow = false;
 				}
 			},
-			selectEvent: function(obj){
+			switchEvent: function(){   //打开切换合约下拉框
+				this.selectBoxShow = true;
+			},
+			selectEvent: function(obj){    //选择合约进行切换
+				this.selectBoxShow = false;
 				this.$store.state.isshow.isfensshow = false;
 				this.$store.state.isshow.islightshow = false;
 				this.$store.state.isshow.isklineshow = false;
