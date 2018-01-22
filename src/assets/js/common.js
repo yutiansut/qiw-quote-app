@@ -127,22 +127,22 @@ pro.toweixin=function(){
 							//						oauthArea.appendChild(btn);
 						}
 					}
-					if(this1.classList.contains('disabled')) {
-						mui.toast('抱歉，您尚未安装微信，请安装后再试！');
-						return;
-					}
+//					if(this1.classList.contains('disabled')) {
+//						mui.toast('抱歉，您尚未安装微信，请安装后再试！');
+//						return;
+//					}
 					var id = "weixin"
 					var auth = auths[id];
 					auth.login(function() {
-						mui.toast("登录认证成功");
-						console.log(JSON.stringify(auth))
-						localStorage.setItem("weixinUser", JSON.stringify(auth));
-//						auth.getUserInfo(function() {
+						mui.toast("微信授权成功");
+						auth.getUserInfo(function() {
 //							var userInfo = userweixinLogin(auth);
-//							return userInfo;
-//						}, function(e) {
-//							mui.toast("获取用户信息失败：1" + e.message);
-//						});
+//							console.log("--------------------")
+//							console.log(JSON.stringify(auth));
+							localStorage.setItem("weixinUser",JSON.stringify(auth));
+						}, function(e) {
+							mui.toast("获取用户信息失败：1" + e.message);
+						});
 					}, function(e) {
 						mui.toast("登录认证失败：2" + e.message);
 					});
