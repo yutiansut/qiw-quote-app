@@ -211,7 +211,7 @@
 		    </mt-tab-item>
       		<mt-tab-item class="col" @touchstart.native="addOptional">  
 		        <img slot="icon" src="../../assets/images/add_optional.png">  
-		        <span>添加自选</span>
+		        <span>{{optionalName}}</span>
 		    </mt-tab-item>
       		<mt-tab-item class="col" v-show="isTradeLogin">  
 		        <img slot="icon" src="../../assets/images/position.png">  
@@ -249,6 +249,8 @@
 				chartsShow: false,
 				commodityAll: [],
 				selectBoxShow: false,
+				optionalName: '添加自选',
+				optionalList: [],
 			}
 		},
 		computed: {
@@ -381,6 +383,22 @@
 					Toast({message: err.data.message, position: 'bottom', duration: 2000});
 				});
 			},
+			getUserCommodityList: function(){
+				if(this.userInfo == undefined) return;
+				var headers = {
+					token: this.userInfo.token,
+					secret: this.userInfo.secret
+				}
+				pro.fetch('post', '/quoteTrader/userGetCommodityList', '', headers).then((res) => {
+					if(res.success == true && res.code == 1){
+						if(res.data && res.data.length > 0){
+							this.optionalList = res.data;
+						}
+					}
+				}).catch((err) => {
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
+				});
+			},
 			operateData: function(val){
 				//渲染画图
 				this.chartsShow = true;
@@ -395,7 +413,8 @@
 					obj = this.$route.query;
 				}
 				arr.push(obj);
-				this.currentNo = obj.commodityNo;
+				this.currentNo = obj.commodityNo;    //当前合约
+				//对比合约
 				let contrast = obj.contrast;
 				if(contrast == '' || contrast == undefined){
 					this.noContrast = true;
@@ -428,7 +447,7 @@
 				}
 			}).catch((err) => {
 				Toast({message: err.data.message, position: 'bottom', duration: 2000});
-			});			
+			});
 		},
 		mounted: function(){
 			//判断交易是否登录
@@ -437,7 +456,15 @@
 			}
 		},
 		activated: function(){
+			//获取自选列表
+			this.getUserCommodityList();
+			//重组数据
 			this.operateData();
+			//
+			console.log(this.optionalList);
+			this.optionalList.forEach((o, i) => {
+				console.log(o);
+			});
 //			console.log(this.parameters);
 		}
 	}
