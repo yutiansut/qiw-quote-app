@@ -206,12 +206,14 @@
 			    <span>模拟交易</span>
 			</mt-tab-item>
       		<mt-tab-item class="col">
-		        <img slot="icon" src="../../assets/images/remind.png">  
+		        <img slot="icon" v-show="!remindShow" src="../../assets/images/remind.png">
+		        <img slot="icon" v-show="remindShow" src="../../assets/images/remind_01.png">
 		        <span>提醒</span>
 		    </mt-tab-item>
       		<mt-tab-item class="col" @touchstart.native="addOptional">  
-		        <img slot="icon" src="../../assets/images/add_optional.png">  
-		        <span>{{optionalName}}</span>
+		        <img slot="icon" v-show="!optionalIconShow" src="../../assets/images/add_optional.png">
+		        <img slot="icon" v-show="optionalIconShow" src="../../assets/images/add_optional_01.png">
+		        <span :class="{current: optionalIconShow == true}">{{optionalName}}</span>
 		    </mt-tab-item>
       		<mt-tab-item class="col" v-show="isTradeLogin">  
 		        <img slot="icon" src="../../assets/images/position.png">  
@@ -249,8 +251,10 @@
 				chartsShow: false,
 				commodityAll: [],
 				selectBoxShow: false,
+				optionalIconShow: false,
 				optionalName: '添加自选',
 				optionalList: [],
+				remindShow: false,
 			}
 		},
 		computed: {
@@ -331,6 +335,8 @@
 					"mainContract": obj.contractNo
 				}
 				this.operateData(_obj);
+				//判断是否自选
+				this.getUserCommodityList();
 			},
 			menuEvent: function(index){
 				this.currentChartsNum = index;
@@ -377,6 +383,7 @@
 				}
 				pro.fetch('post', '/quoteTrader/userAddCommodity', datas, headers).then((res) => {
 					if(res.success == true && res.code == 1){
+						this.optionalIconShow = true;
 						Toast({message: '自选添加成功', position: 'bottom', duration: 2000});
 					}
 				}).catch((err) => {
@@ -393,6 +400,14 @@
 					if(res.success == true && res.code == 1){
 						if(res.data && res.data.length > 0){
 							this.optionalList = res.data;
+							this.optionalName = '添加自选';
+							this.optionalIconShow = false;
+							this.optionalList.forEach((o, i) => {
+								if(o.commodityNo == this.currentNo){
+									this.optionalName = '已添加自选';
+									this.optionalIconShow = true;
+								}
+							});
 						}
 					}
 				}).catch((err) => {
@@ -456,15 +471,11 @@
 			}
 		},
 		activated: function(){
-			//获取自选列表
+			//判断是否自选
 			this.getUserCommodityList();
 			//重组数据
 			this.operateData();
-			//
-			console.log(this.optionalList);
-			this.optionalList.forEach((o, i) => {
-				console.log(o);
-			});
+			
 //			console.log(this.parameters);
 		}
 	}
@@ -538,7 +549,9 @@
 			}
 			span{
 				color: $fontBlue;
-				
+				&.current{
+					color: $blue;
+				}
 			}
 		}
 	}
