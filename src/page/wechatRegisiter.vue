@@ -1,7 +1,7 @@
 <template>
 	<div id="regisiter">
 		<mt-header title="注册" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
-		  	<router-link to="/account" slot="left">
+		  	<router-link to="/login" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
 		    <router-link to="/account" slot="right">
@@ -10,9 +10,9 @@
 		</mt-header>
 		<div id="wechatInfo">
 			<ul>
-				<li><img v-bind:src="this.info.userInfo.headimgurl"/></li>
+				<li><img v-bind:src="this.headimgurl"/></li>
 				<li>
-					<p>亲爱的&nbsp;<span>{{info.userInfo.nickname}}</span></p>
+					<p>亲爱的&nbsp;<span>{{nickname}}</span></p>
 					<p>为了您的账户安全，请关联您的手机号，下次可直接登录。</p>
 				</li>
 			</ul>
@@ -27,7 +27,7 @@
 					<i></i>
 					<input type="text"  value="" placeholder="请输入验证码" class="input1" v-model="code"/>
 					<div id="code">
-						<span @click="getCode">{{volid ? info : (time + '秒')}}</span>
+						<span @click="getCode">{{volid ? info1 : (time + '秒')}}</span>
 					</div>
 				</li>
 				<li>
@@ -38,7 +38,7 @@
 				</li>
 			</ul>
 			<mt-button class="btn" @click.native="confirm">立即绑定并注册</mt-button>
-			<a @click="">已有账户？立即登录>></a>
+			<a @click="toLogin">已有账户？立即登录>></a>
 		</div>
 		<codeDialog ref="codeDialog" type="register"></codeDialog>
 	</div>
@@ -52,16 +52,28 @@
 		components:{codeDialog},
 		data(){
 			return{
-				info:{},
+				info:"",
+				headimgurl:"",
 				phone:"",
 				code:"",
 				password:"",
 				phoneReg: /^(((13[0-9])|(14[5-7])|(15[0-9])|(17[0-9])|(18[0-9]))+\d{8})$/,
 				pwdReg: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/,
-				info:"获取验证码",
+				info1:"获取验证码",
 				time: 0,
 				showEye:true,
-				showNo:false
+				showNo:false,
+				nickname:"",
+				openid:"",
+				nickname:"",
+				sex:"",
+				unionid:"",
+				province:"",
+				city:"",
+				country:"",
+				headimgurl:"",
+				privilege:"",
+				accessToken:""
 			}
 		},
 		computed: {
@@ -83,6 +95,9 @@
 			}
 		},
 		methods:{
+			toLogin:function(){
+				this.$router.push({path:"/login"})
+			},
 			eyeEvent:function(e){
 				if(this.showEye == true){
 					this.showEye=!this.showEye;
@@ -94,7 +109,7 @@
 					$(e.target).removeClass("current").siblings(".input2").attr("type",'password');
 				}
 			},
-			getCode:function(){
+			getCode:function(e){
 				if($(e.target).hasClass('current')) return false;
 				if(this.phone == ''){
 					this.$toast({message: '请输入手机号码',duration: 2000});
@@ -133,23 +148,26 @@
 						password:this.password,
 						code:this.code,
 						resource:"app",
-						openid:"",
-						unionid:"",
-						nickname:"",
-						sex:"",
-						province:"",
-						city:"",
-						country:"",
-						headimgurl:"",
-						privilege:"",
-						accessToken:""
+						openid:this.openid,
+						nickname:this.nickname,
+						sex:this.sex,
+						unionid:this.unionid,
+						province:this.province,
+						city:this.city,
+						country:this.country,
+						headimgurl:this.headimgurl,
+						privilege:this.privilege,
+						accessToken:this.accessToken
 					}
+//					console.log("data======="+JSON.stringify(data));
 					pro.fetch("post","/loginAndRegister/register",data,"").then((res)=>{
+//						console.log("res+++++++++++"+res)
 						if(res.code == 1 && res.success == true){
 							this.$toast({message:"注册成功",duration: 2000});
 							this.router.push({path:"/login"})
 						}
 					}).catch((err)=>{
+//						console.log("err==="+JSON.stringify(err))
 						var data = err.data;
 						if(data == undefined){
 							this.$toast({message:"网络不给力，请稍后重试",duration: 2000});
@@ -162,7 +180,29 @@
 		},
 		mounted:function(){
 			this.info = this.$route.query.weixinInfo;
-			console.log(JSON.stringify(this.info));
+			this.headimgurl = this.$route.query.weixinInfo.userInfo.headimgurl;
+			this.nickname = this.$route.query.weixinInfo.userInfo.nickname;
+			this.openid=this.$route.query.weixinInfo.userInfo.openid;
+			this.unionid=this.$route.query.weixinInfo.userInfo.unionid;
+			this.province=this.$route.query.weixinInfo.userInfo.province;
+			this.city=this.$route.query.weixinInfo.userInfo.city;
+			this.country=this.$route.query.weixinInfo.userInfo.country;
+			this.privilege=this.$route.query.weixinInfo.userInfo.privilege;
+			this.accessToken=this.$route.query.weixinInfo.authResult.access_token;
+			this.sex=this.$route.query.weixinInfo.userInfo.sex;
+		},
+		activited:function(){
+			this.info = this.$route.query.weixinInfo;
+			this.headimgurl = this.$route.query.weixinInfo.userInfo.headimgurl;
+			this.nickname = this.$route.query.weixinInfo.userInfo.nickname;
+			this.openid=this.$route.query.weixinInfo.userInfo.openid;
+			this.unionid=this.$route.query.weixinInfo.userInfo.unionid;
+			this.province=this.$route.query.weixinInfo.userInfo.province;
+			this.city=this.$route.query.weixinInfo.userInfo.city;
+			this.country=this.$route.query.weixinInfo.userInfo.country;
+			this.privilege=this.$route.query.weixinInfo.userInfo.privilege;
+			this.accessToken=this.$route.query.weixinInfo.authResult.access_token;
+			this.sex=this.$route.query.weixinInfo.userInfo.sex;
 		}
 	}
 </script>

@@ -107,6 +107,7 @@
 								this.secret = res.data.secret;
 								var userData = {'username':this.phone,'password':Base64.encode(this.pwd),'token':res.data.token,'secret':res.data.secret};
 								localStorage.setItem("user", JSON.stringify(userData));
+								this.$router.push({path:"/index"})
 							}
 						}
 					}.bind(this)).catch(function(err){
@@ -129,51 +130,52 @@
 				}
 			},
 			getWechatId:function(){
-//				pro.toweixin();
-//				var weixinInfo = JSON.parse(localStorage.weixinUser);
-				var weixinInfo = 
-					{
-						id: "weixin",
-						description: "微信",
-						authResult: {
-							code: "013e0wJ901NBcw14odL90TZpJ90e0wJ-",
-							refresh_token: "6_auRDs3t2Ysr0ldZ4p3rcoo1ovIhxP3E9dsaBRIemEn9gCDB9Sai1w7ENEC1pMxjKunvVAx9L3J_GpyKRVWqg6H-dE9BXCmEdKKA8JJ_sJL0",
-							scope: "snsapi_userinfo",
-							expires_in: 6492.319,
-							access_token: "6_auRDs3t2Ysr0ldZ4p3rcovu7Z9jQQ39bWdrTSU_IlQJ5e-_eHtFFUe8uA1XMKQmri_0c19UBsdKamQhMy1VMogj7EzqRbxHbTtpL_SdC2VE",
-							openid: "oRrdQt-T23iJ8wjd-PaCt_WoMefw"
-						},
-						userInfo: {
-							openid: "oRrdQt-T23iJ8wjd-PaCt_WoMefw",
-							city: "Chengdu",
-							country: "China",
-							nickname: "留念流年",
-							privilege: [],
-							language: "zh_CN",
-							headimgurl: "http://wx.qlogo.cn/mmopen/vi_32/waVrKVVGvmjlibK4yX2TxDYdNvPLXa5nl2FyN80C2guDZtd8VbfHqeYJaicTxhMDubhphVzUdxjb0ymKgNp6n10Q/132",
-							unionid: "oU5Yytxt6RvumWnF0YRX1vT2UX7k",
-							sex: 1,
-							province: "Sichuan"
-						}
-					}
+				pro.toweixin();
+				var weixinInfo = JSON.parse(localStorage.weixinUser)
+//				console.log("weixinInfo==="+JSON.stringify(weixinInfo))
+//				var weixinInfo = 
+//					{
+//						id: "weixin",
+//						description: "微信",
+//						authResult: {
+//							code: "013e0wJ901NBcw14odL90TZpJ90e0wJ-",
+//							refresh_token: "6_auRDs3t2Ysr0ldZ4p3rcoo1ovIhxP3E9dsaBRIemEn9gCDB9Sai1w7ENEC1pMxjKunvVAx9L3J_GpyKRVWqg6H-dE9BXCmEdKKA8JJ_sJL0",
+//							scope: "snsapi_userinfo",
+//							expires_in: 6492.319,
+//							access_token: "6_auRDs3t2Ysr0ldZ4p3rcovu7Z9jQQ39bWdrTSU_IlQJ5e-_eHtFFUe8uA1XMKQmri_0c19UBsdKamQhMy1VMogj7EzqRbxHbTtpL_SdC2VE",
+//							openid: "oRrdQt-T23iJ8wjd-PaCt_WoMefw"
+//						},
+//						userInfo: {
+//							openid: "oRrdQt-T23iJ8wjd-PaCt_WoMefw",
+//							city: "Chengdu",
+//							country: "China",
+//							nickname: "留念流年",
+//							privilege: [],
+//							language: "zh_CN",
+//							headimgurl: "http://wx.qlogo.cn/mmopen/vi_32/waVrKVVGvmjlibK4yX2TxDYdNvPLXa5nl2FyN80C2guDZtd8VbfHqeYJaicTxhMDubhphVzUdxjb0ymKgNp6n10Q/132",
+//							unionid: "oU5Yytxt6RvumWnF0YRX1vT2UX7k",
+//							sex: 1,
+//							province: "Sichuan"
+//						}
+//					}
 				var data ={
-//					openId:weixinInfo.userInfo.openid
-					openId:"oRrdQt-T23iJ8wjd-PaCt_WoMefw"
+					openId:weixinInfo.authResult.openid
+//					openId:"oRrdQt-T23iJ8wjd-PaCt_WoMefw"
 				}
-				console.log(typeof data.openId);
 				pro.fetch("post","/loginAndRegister/wxLogin",data,"").then(function(res){
 					if(res.code == 1 && res.success == true){
-						this.$toast({message:"授权登录成功",duration: 2000});
-//						this.$router
+						this.$toast({message:"授权登录成功",duration: 1000});
+						this.$router.push({path:"/index"})
 					}
 				}.bind(this)).catch(function(err){
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:"网络不给力，请稍后再试",duration: 2000});
 					}else{
+						this.$toast({message:"请先绑定手机号",duration: 1000});
 						this.$router.push({path:"/wechatRegisiter",query:{weixinInfo:weixinInfo}})
 					}
-				}.bind(this))
+				}.bind(this));
 			}
 		},
 		mounted:function(){
