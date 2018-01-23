@@ -12,8 +12,8 @@
 						<i></i>
 					</li>
 					<li>
-						<span>杨威利</span>
-						<p>158****4997</p>
+						<span v-show="nickname">杨威利</span>
+						<p>{{mobile}}</p>
 					</li>
 				</ul>
 				<ul>
@@ -36,13 +36,13 @@
 				<ul>
 					<li>
 						<span>可用资金</span>
-						<span>0.00元</span>
+						<span>{{balance}}元</span>
 					</li>
 				</ul>
 				<ul>
 					<li>
 						<span>账户余额</span>
-						<span>0.00元</span>
+						<span>{{accountMoney}}元</span>
 					</li>
 				</ul>
 			</div>
@@ -111,6 +111,7 @@
 
 <script>
 	import TabBar from "../components/TabBar.vue"
+	import pro from "../assets/js/common.js"
 	export default{
 		name:"account",
 		components: {
@@ -122,7 +123,26 @@
 				showNotLogin:true,
 				selected:"我的",
 				tabs:[require("../assets/images/quotation_02.png"),require("../assets/images/mockTrading_02.png"),
-				require("../assets/images/information_02.png"),require("../assets/images/mine_01.png")]
+				require("../assets/images/information_02.png"),require("../assets/images/mine_01.png")],
+				userInfo:"",
+				//手机账户号码
+				mobile:"",
+				nickname:false,
+				//是否实名
+				isRealNameAuth:false,
+				//微信头像
+				wxHeadimgurl: "",
+				//冻结资金
+          		freeze: '',
+          		//可以资金
+          		balance: '',
+          		//微信昵称
+          		wxNickname: "",
+          		//支付宝账户
+          		aliaccount: "" ,
+          		accountMoney:0,
+          		phone:""
+
 			}
 		},
 		methods:{
@@ -133,7 +153,13 @@
 				this.$router.push({path:'/login'});
 			},
 			tonext:function(){
-				this.$router.push({path:'/personalSet'});
+				this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+				if(this.userInfo == ''){
+					this.$toast({message:"您还未登录，请先登录",duration: 2000});
+					this.$router.push({path:'/login'});
+				}else{
+					this.$router.push({path:'/personalSet',query:{phone:this.phone,wxNickname:this.wxNickname}});
+				}
 			},
 			toMoney:function(){
 				this.$router.push({path:'/moneyDetails'});
@@ -155,7 +181,59 @@
 			},
 			toMyFinance:function(){
 				this.$router.push({path:'/myFinance'});	
+			},
+			//获取用户信息
+			getUserInfo:function(){
+				var headers = {
+					token : this.userInfo.token,
+					secret : this.userInfo.secret
+				}
+				console.log(headers)
+				pro.fetch("post","/account/getBasicMsg","",headers).then((res)=>{
+					console.log("res===="+JSON.stringify(res))
+					if(res.code == 1 && res.success == true){
+						var phoneNumber= res.data.mobile;
+						this.mobile = phoneNumber.substr(0, 3) + '****' + phoneNumber.substr(7);
+						this.phone=res.data.mobile;
+						this.isRealNameAuth = res.data.isRealNameAuth;
+						this.wxHeadimgurl=res.data.wxHeadimgurl;
+		          		this.freeze=res.data.freeze;
+		          		this.balance=res.data.balance;
+		          		this.aliaccount= res.data.aliaccount;
+		          		this.wxNickname = res.data.wxNickname;
+//		          		this.accountMoney = Number(this.balance)+Number(this.this.freeze);
+						if(res.data.wxNickname ==''){
+							this.nickname = false
+						}else{
+							this.nickname = true
+						}
+					}
+				}).catch((err)=>{
+					console.log("err==0"+JSON.stringify(err))
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
+					}else{
+						this.$toast({message:data.message,duration: 1000});
+					}
+				})
 			}
+		},
+		mounted:function(){
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+			console.log(this.userInfo);
+			if(this.userInfo == ''){
+				this.showLoginIn = false;
+				this.showNotLogin = true;
+			}else{
+				this.showLoginIn = true;
+				this.showNotLogin = false;
+				this.getUserInfo();
+			}
+		},
+		activated: function(){
+			//获取平台账户登录信息
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 		}
 	}
 </script>

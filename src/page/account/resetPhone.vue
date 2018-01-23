@@ -7,16 +7,16 @@
 		</mt-header>
 		<div id="container">
 			<div class="info">
-				<p>您现在正在为账户&nbsp;182****0000&nbsp;修改手机号</p>
+				<p>您现在正在为账户&nbsp;{{mobile}}&nbsp;修改手机号</p>
 			</div>
 			<div class="phoneNumber">
-				手机号:<span>182****0000</span>
+				手机号:<span>{{mobile}}</span>
 			</div>
 			<div id="ipt">
 				<ul>
 					<li>
 						<input type="text" class="input1" placeholder="短信验证"/>
-						<i>倒计时<span>60</span>s</i>
+						<i @click="getcode">{{volid ? info : (time + '秒')}}</i>
 					</li>
 				</ul>
 				<ul>
@@ -27,7 +27,7 @@
 				<ul>
 					<li>
 						<input type="text" class="input1" placeholder="新验证码"/>
-						<i>点击获取</i>
+						<i @click="getcode1">{{volid1 ? info : (time1 + '秒')}}</i>
 					</li>
 				</ul>
 				<mt-button class="btn">确认</mt-button>
@@ -38,7 +38,79 @@
 
 <script>
 	export default{
-		name:"resetPhone"
+		name:"resetPhone",
+		data(){
+			return{
+				phone:"",
+				mobile:"",
+				userInfo:"",
+				info:"获取验证码",
+				time: 0,
+				time1:0
+			}
+		},
+		computed: {
+			PATH: function(){
+				return this.$store.getters.PATH;
+			},
+			volid: function(){
+				if(this.time <= 0){
+					return true
+				}else{
+					return false
+				}
+			},
+			environment(){
+				return this.$store.state.environment;
+			},
+			version: function(){
+				return '1.1';
+			},
+			volid1:function(){
+				if(this.time1 <= 0){
+					return true
+				}else{
+					return false
+				}
+			}
+		},
+		methods:{
+			getcode :function(e){
+					//页面效果
+					$(e.target).addClass('current');
+					this.time = 60;
+					var timing = setInterval(function(){
+						this.time--;
+						if(this.time <= 0){
+							clearInterval(timing);
+							$(e.target).removeClass('current');
+						}
+					}.bind(this), 1000);
+			},
+			getcode1:function(e){
+				//页面效果
+					$(e.target).addClass('current');
+					this.time1 = 60;
+					var timing = setInterval(function(){
+						this.time1--;
+						if(this.time1 <= 0){
+							clearInterval(timing);
+							$(e.target).removeClass('current');
+						}
+					}.bind(this), 1000);
+			}
+		},
+		mounted:function(){
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+			this.phone = this.$route.query.phone;
+			var phone = this.$route.query.phone;
+			this.mobile = phone.substr(0, 3) + '****' + phone.substr(7);
+		},
+		activited:function(){
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+			this.phone = this.$route.query.phone
+			this.wxNickname = this.$route.query.wxNickname
+		}
 	}
 </script>
 <style scoped lang="scss">
