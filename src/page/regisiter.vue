@@ -31,7 +31,7 @@
 			<mt-button class="btn" @click.native="regisiter">注册</mt-button>
 			<a @click="toLogin">已有账户？立即登录>></a>
 			<div id="wechat">
-				<i></i>
+				<i @click="getWechatId"></i>
 			</div>
 			<div id="to">
 				<p>注册即代表阅读并同意<a>《指数天下用户协议》</a></p>
@@ -148,6 +148,27 @@
 					})
 				}
 				
+			},
+			getWechatId:function(){
+				pro.toweixin();
+				var weixinInfo = JSON.parse(localStorage.weixinUser)
+				var data ={
+					openId:weixinInfo.authResult.openid
+				}
+				pro.fetch("post","/loginAndRegister/wxLogin",data,"").then(function(res){
+					if(res.code == 1 && res.success == true){
+						this.$toast({message:"授权登录成功",duration: 1000});
+						this.$router.push({path:"/index"})
+					}
+				}.bind(this)).catch(function(err){
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:"网络不给力，请稍后再试",duration: 2000});
+					}else{
+						this.$toast({message:"请先绑定手机号",duration: 1000});
+						this.$router.push({path:"/wechatRegisiter",query:{weixinInfo:weixinInfo}})
+					}
+				}.bind(this));
 			}
 		}
 	}
