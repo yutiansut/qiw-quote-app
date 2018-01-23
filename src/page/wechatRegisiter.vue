@@ -159,15 +159,31 @@
 						privilege:this.privilege,
 						accessToken:this.accessToken
 					}
-//					console.log("data======="+JSON.stringify(data));
+//					var data={
+//						mobile: "18215606251",
+//						password: "a123456",
+//						code: "756529",
+//						resource: "app",
+//						openid: "oRrdQt-T23iJ8wjd-PaCt_WoMefw",
+//						nickname: "留念流年",
+//						sex: 1,
+//						unionid: "oU5Yytxt6RvumWnF0YRX1vT2UX7k",
+//						province: "Sichuan",
+//						city: "Chengdu",
+//						country: "China",
+//						headimgurl: "http://wx.qlogo.cn/mmopen/vi_32/waVrKVVGvmjlibK4yX2TxDYdNvPLXa5nl2FyN80C2guDZtd8VbfHqeYJaicTxhMDubhphVzUdxjb0ymKgNp6n10Q/132",
+//						privilege: [],
+//						accessToken: "6_9tsZRM-EjpQIeqQU7oD6s03D-8q2QX0yHZm5t26b3HiVcRRtB0jbI3V2FFY0q9SowmPlCLgdgY1_fuusQHtbDz-l6OTKjKqk-l3LyAwye7Y"
+//					}
+					console.log("data======="+JSON.stringify(data));
 					pro.fetch("post","/loginAndRegister/register",data,"").then((res)=>{
-//						console.log("res+++++++++++"+res)
+						console.log("res+++++++++++"+res)
 						if(res.code == 1 && res.success == true){
 							this.$toast({message:"注册成功",duration: 2000});
 							this.router.push({path:"/login"})
 						}
 					}).catch((err)=>{
-//						console.log("err==="+JSON.stringify(err))
+						console.log("err==="+JSON.stringify(err))
 						var data = err.data;
 						if(data == undefined){
 							this.$toast({message:"网络不给力，请稍后重试",duration: 2000});
