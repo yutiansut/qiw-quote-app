@@ -21,7 +21,7 @@
 				<div class="row">
 					<span>提醒方式</span>
 					<template v-for="(v, index) in remindWays">
-						<div class="reminda_ways fl" @touchstart="checkEvent">
+						<div class="reminda_ways fl" @touchstart="checkEvent(index)">
 							<i class="icon" :class="{icon_checked: v.status == 1, icon_check: v.status == 0}"></i>
 							<span>{{v.name}}</span>
 						</div>
@@ -39,8 +39,11 @@
 				<div class="row">
 					<span class="type">价格上涨到</span>
 					<input type="text" class="ipt_lg" />
-					<div class="switch">
-						<i class="icon icon_zero"></i>
+					<div class="switch" @touchstart="show = !show">
+						<transition name="fade">
+							<!--<i class="icon icon_zero" v-show="show"></i>-->
+							<i class="icon icon_zero current" v-show="!show"></i>
+						</transition>
 					</div>
 				</div>
 				<div class="row">
@@ -52,7 +55,7 @@
 				<div class="row">
 					<span class="type">价格下跌到</span>
 					<input type="text" class="ipt_lg" />
-					<div class="switch">
+					<div class="switch" @touchstart="switchEvent">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
@@ -126,6 +129,8 @@
 
 <script>
 	import btn from "../../components/btn.vue"
+	import pro from '../../assets/js/common.js'
+	import { Toast } from 'mint-ui';
 	export default {
 		name: 'remind',
 		components: {btn, },
@@ -137,7 +142,8 @@
 				},{
 					name: '通知提醒',
 					status: 1,
-				}]
+				}],
+				show: true,
 			}
 		},
 		computed: {
@@ -146,7 +152,10 @@
 			},
 			currentNo(){
 				return this.$store.state.market.currentNo;
-			}
+			},
+			userInfo(){
+				if(localStorage.user) return JSON.parse(localStorage.user);
+			},
 		},
 		filters:{
 			fixNumTwo: function(num){
@@ -160,12 +169,59 @@
 			goBackEvent: function(){
 				this.$router.go(-1);
 			},
-			checkEvent: function(){
+			checkEvent: function(index){
+				this.remindWays.forEach((o, i) => {
+					if(i == index){
+						if(o.status == 1){
+							o.status = 0;
+						}else{
+							o.status = 1;
+						}
+					}
+				});
+			},
+			switchEvent: function(e){
+				console.log($(e.currentTarget))
+				let obj = $(e.currentTarget).find('.icon_zero');
+				if(obj.hasClass('current')){
+					obj.removeClass('current');
+					console.log(123);
+					obj.css({
+						'left': 0,
+						'background': '#525866'
+					});
+				}else{
+					obj.addClass('current');
+					obj.css({
+						'left': 0.48+'rem',
+						'background': '#00a1f2'
+					});
+				}
 				
 			},
+			getRemindInfo: function(){
+				var headers = {
+					token: this.userInfo.token,
+					secret: this.userInfo.secret
+				}
+				var datas = {
+					'exchangeNo': this.orderTemplist[this.currentNo].ExchangeNo,
+					'commodityNo': this.currentNo,
+					'contractNo': this.orderTemplist[this.currentNo].MainContract,
+				}
+				pro.fetch('post', '/quoteTrader/userAddCommodity', datas, headers).then((res) => {
+					if(res.success == true && res.code == 1){
+						this.optionalIconShow = true;
+						Toast({message: '自选添加成功', position: 'bottom', duration: 2000});
+					}
+				}).catch((err) => {
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
+				});
+			}
 		},
 		mounted: function(){
-			
+			//获取提醒相关信息
+//			this.getRemindInfo();
 		}
 		
 	}
@@ -173,6 +229,13 @@
 
 <style scoped lang="scss">
 	@import "../../assets/css/common.scss";
+	.fade-enter-active, .fade-leave-active{
+	  	transition: all .5s;
+	}
+	.fade-enter, .fade-leave-to{
+	  	transform: translateX(0.5rem);
+	  	background: $blue;
+	}
 	header{
 		position: fixed;
 		top: 0;
@@ -197,6 +260,7 @@
 			margin: auto;
 			.name{
 				height: 1rem;
+				text-align: center;
 			}
 			span{
 				display: block;
@@ -294,6 +358,7 @@
 					position: absolute;
 					top: 0.04rem;
 					left: 0.04rem;
+					transition: all .5s;
 				}
 				&.current{
 					.icon_zero{

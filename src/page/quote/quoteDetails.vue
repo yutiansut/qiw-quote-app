@@ -343,7 +343,12 @@
 				this.$store.state.isshow.isfensshow = false;
 				this.$store.state.isshow.islightshow = false;
 				this.$store.state.isshow.isklineshow = false;
-				this.$router.push({path: '/remind'});
+				let userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+				if(userInfo == undefined || userInfo == '' || userInfo == null){
+					this.$router.push({path: '/login'});
+				}else{
+					this.$router.push({path: '/remind'});
+				}
 			},
 			menuEvent: function(index){
 				this.currentChartsNum = index;
@@ -513,6 +518,7 @@
 			margin: auto;
 			.name{
 				height: 1rem;
+				text-align: center;
 			}
 			span{
 				display: block;
