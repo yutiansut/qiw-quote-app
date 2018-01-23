@@ -242,6 +242,9 @@
 				}
 			},
 			saveEvent: function(){
+				//是否自选
+				this.isOptional = this.$route.query.isOptional;
+				//提醒方式
 				let _remindWays = [];
 				this.remindWays.forEach((o, i) => {
 					if(o.name == '短信提醒' && o.status == 1){
@@ -279,7 +282,6 @@
 							setTimeout(() => {
 								this.$router.go(-1);
 							}, 1000);
-							
 						}else{
 							let info = {
 								'exchangeNo': this.orderTemplist[this.currentNo].ExchangeNo,
@@ -333,9 +335,6 @@
 		mounted: function(){
 			//获取提醒相关信息
 			this.getRemindInfo();
-			//是否自选
-			this.isOptional = this.$route.query.isOptional;
-			console.log(this.isOptional);
 		}
 		
 	}
