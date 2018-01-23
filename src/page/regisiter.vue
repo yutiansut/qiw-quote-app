@@ -136,6 +136,7 @@
 					pro.fetch("post","/loginAndRegister/register",data,"").then((res)=>{
 						if(res.code == 1 && res.success == true){
 							this.$toast({message:"注册成功",duration: 2000});
+							this.$router.push({path:"/account"});
 						}
 					}).catch((err)=>{
 						var data = err.data;
