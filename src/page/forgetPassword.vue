@@ -12,7 +12,7 @@
 			<ul>
 				<li>
 					<i></i>
-					<input type="text" value="" placeholder="请输入手机号" class="input1" v-model="phone"/>
+					<input type="tel" value="" placeholder="请输入手机号" class="input1" v-model="phone" maxlength="11"/>
 				</li>
 				<li>
 					<i></i>
