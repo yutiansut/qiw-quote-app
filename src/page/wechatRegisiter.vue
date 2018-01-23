@@ -21,7 +21,7 @@
 			<ul>
 				<li>
 					<i></i>
-					<input type="text" value="" placeholder="请输入手机号" class="input1" v-model="phone"/>
+					<input type="number" value="" placeholder="请输入手机号" class="input1" v-model="phone"/>
 				</li>
 				<li>
 					<i></i>
@@ -32,7 +32,7 @@
 				</li>
 				<li>
 					<i></i>
-					<input type="password"  value="" placeholder="请输入密码" class="input1 input2" v-model="password"/>
+					<input type="password"  value="" placeholder="请输入密码（至少6位且包含字母）" class="input1 input2" v-model="password"/>
 					<div class="eye" @click="eyeEvent" v-show="showEye"></div>
 					<div class="eye1" @click="eyeEvent" v-show="showNo"></div>
 				</li>

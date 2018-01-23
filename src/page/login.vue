@@ -16,7 +16,7 @@
 				</li>
 				<li>
 					<i></i>
-					<input type="password"  value="" placeholder="请输入密码" class="input1 input2" v-model="password"/>
+					<input type="password"  value="" placeholder="请输入密码（至少6位且包含字母）" class="input1 input2" v-model="password"/>
 					<div class="eye" @click="eyeEvent" v-show="showEye"></div>
 					<div class="eye1" @click="eyeEvent" v-show="showNo"></div>
 				</li>
