@@ -130,34 +130,55 @@
 				}
 			},
 			getWechatId:function(){
+				
+//				var browser = {
+//				    versions: function () {
+//				        var u = navigator.userAgent, app = navigator.appVersion;
+//				        return {         //移动终端浏览器版本信息
+//				            trident: u.indexOf('Trident') > -1, //IE内核
+//				            presto: u.indexOf('Presto') > -1, //opera内核
+//				            webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+//				            gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+//				            mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+//				            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+//				            android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
+//				            iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+//				            iPad: u.indexOf('iPad') > -1, //是否iPad
+//				            webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+//				        };
+//				    }(),
+//				    language: (navigator.browserLanguage || navigator.language).toLowerCase()
+//				}
+//				if (browser.versions.mobile) {//判断是否是移动设备打开。browser代码在下面
+//			        var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+//			        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+//			                //在微信中打开
+//			                console.log("weixin")
+//			        }
+//			        if (ua.match(/WeiBo/i) == "weibo") {
+//			                //在新浪微博客户端打开
+//			                 console.log("weibo")
+//			        }
+//			        if (ua.match(/QQ/i) == "qq") {
+//			                //在QQ空间打开
+//			                 console.log("qq")
+//			        }
+//			        if (browser.versions.ios) {
+//			                //是否在IOS浏览器打开
+//			                 console.log("ios")
+//			        } 
+//			        if(browser.versions.android){
+//			                //是否在安卓浏览器打开
+//			                 console.log("android")
+//			        }
+//				} else {
+//				        //否则就是PC浏览器打开
+//				         console.log("pc")
+//				}
 				pro.toweixin();
 				var weixinInfo = JSON.parse(localStorage.weixinUser)
 //				console.log("weixinInfo==="+JSON.stringify(weixinInfo))
-//				var weixinInfo = 
-//					{
-//						id: "weixin",
-//						description: "微信",
-//						authResult: {
-//							code: "013e0wJ901NBcw14odL90TZpJ90e0wJ-",
-//							refresh_token: "6_auRDs3t2Ysr0ldZ4p3rcoo1ovIhxP3E9dsaBRIemEn9gCDB9Sai1w7ENEC1pMxjKunvVAx9L3J_GpyKRVWqg6H-dE9BXCmEdKKA8JJ_sJL0",
-//							scope: "snsapi_userinfo",
-//							expires_in: 6492.319,
-//							access_token: "6_auRDs3t2Ysr0ldZ4p3rcovu7Z9jQQ39bWdrTSU_IlQJ5e-_eHtFFUe8uA1XMKQmri_0c19UBsdKamQhMy1VMogj7EzqRbxHbTtpL_SdC2VE",
-//							openid: "oRrdQt-T23iJ8wjd-PaCt_WoMefw"
-//						},
-//						userInfo: {
-//							openid: "oRrdQt-T23iJ8wjd-PaCt_WoMefw",
-//							city: "Chengdu",
-//							country: "China",
-//							nickname: "留念流年",
-//							privilege: [],
-//							language: "zh_CN",
-//							headimgurl: "http://wx.qlogo.cn/mmopen/vi_32/waVrKVVGvmjlibK4yX2TxDYdNvPLXa5nl2FyN80C2guDZtd8VbfHqeYJaicTxhMDubhphVzUdxjb0ymKgNp6n10Q/132",
-//							unionid: "oU5Yytxt6RvumWnF0YRX1vT2UX7k",
-//							sex: 1,
-//							province: "Sichuan"
-//						}
-//					}
+
 				var data ={
 					openId:weixinInfo.authResult.openid
 //					openId:"oRrdQt-T23iJ8wjd-PaCt_WoMefw"
