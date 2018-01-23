@@ -91,7 +91,7 @@
 				}else if(this.password == ''){
 					this.$toast({message: '请输入密码',duration: 2000});
 				}else if(this.pwdReg.test(this.password) == false){
-					this.$toast({message: '密码由6到18位字母和数字组成',duration: 2000});
+					this.$toast({message: '密码由6到16位字母和数字组成',duration: 2000});
 				}else{
 					//登录请求
 					var info = {
