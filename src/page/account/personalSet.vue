@@ -28,7 +28,7 @@
 				<li></li>
 			</ul>
 			<div id="btn">
-				<mt-button class="btn">退出登录</mt-button>
+				<mt-button class="btn" @click.native="exit">退出登录</mt-button>
 			</div>
 		</div>
 	</div>
@@ -51,6 +51,11 @@
 			},
 			toResetPassword:function(){
 				this.$router.push({path:"/resetLoginPassword"})
+			},
+			exit:function(){
+				localStorage.removeItem('user');
+				localStorage.removeItem('weixinUser');
+				this.$router.push({path:"/index"});
 			}
 		},
 		mounted:function(){

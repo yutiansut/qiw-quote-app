@@ -169,6 +169,7 @@
 		.input1{
 			background-color: $bg;
 			border: none;
+			border-radius: 0 !important;
 			outline: none;
 			height: 0.9rem;
 			width: 6.6rem;

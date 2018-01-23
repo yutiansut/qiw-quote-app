@@ -154,6 +154,7 @@
 		.input1{
 			background-color: $bg;
 			border: none;
+			border-radius: 0 !important;
 			outline: none;
 			height: 0.9rem;
 			width: 100%;
@@ -161,9 +162,6 @@
 			text-indent: 1rem;
 			color: $white;
 			margin-top: 0.2rem;
-			&:hover{
-				border-color: $blue;
-			}
 		}
 		#code{
 			position: absolute;

@@ -241,6 +241,7 @@
 			text-indent: 1rem;
 			color: $white;
 			margin-top: 0.2rem;
+			border-radius: 0 !important;
 		}
 		#code{
 			text-align: center;
