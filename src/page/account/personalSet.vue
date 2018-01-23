@@ -8,7 +8,7 @@
 		<div id="container">
 			<ul class="list" v-show="showNickname">
 				<li>昵称</li>
-				<li>哈肚子</li>
+				<li>{{wxNickname}}</li>
 				<li></li>
 			</ul>
 			<ul class="list">
@@ -58,6 +58,7 @@
 			var phone = this.$route.query.phone;
 			this.wxNickname = this.$route.query.wxNickname;
 			this.mobile = phone.substr(0, 3) + '****' + phone.substr(7);
+			console.log("this.wxNickname===="+this.wxNickname)
 			if(this.wxNickname == ""){
 				this.showNickname= false
 			}else{

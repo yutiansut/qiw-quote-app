@@ -188,9 +188,9 @@
 					token : this.userInfo.token,
 					secret : this.userInfo.secret
 				}
-				console.log(headers)
+//				console.log(headers)
 				pro.fetch("post","/account/getBasicMsg","",headers).then((res)=>{
-					console.log("res===="+JSON.stringify(res))
+//					console.log("res===="+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
 						var phoneNumber= res.data.mobile;
 						this.mobile = phoneNumber.substr(0, 3) + '****' + phoneNumber.substr(7);
@@ -214,7 +214,13 @@
 					if(data == undefined){
 						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
 					}else{
-						this.$toast({message:data.message,duration: 1000});
+						if(data.code == -9999){
+							this.$toast({message:"认证失败，请重新登录",duration: 1000});
+							this.$router.push({path:"/login"});
+						}
+						else{
+							this.$toast({message:data.message,duration: 1000});
+						}
 					}
 				})
 			}
