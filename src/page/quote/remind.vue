@@ -26,10 +26,6 @@
 							<span>{{v.name}}</span>
 						</div>
 					</template>
-					<!--<div class="reminda_ways fl">
-						<i class="icon icon_checked"></i>
-						<span>短信提醒</span>
-					</div>-->
 				</div>
 				<div class="row">
 					<p>实时智能盯盘，免费短信预警，不再担心错过行情，价格波动实时短信提醒，现已免费提供。</p>
@@ -38,11 +34,9 @@
 			<div class="cont">
 				<div class="row">
 					<span class="type">价格上涨到</span>
-					<input type="text" class="ipt_lg" />
-					<div class="switch" @touchstart="show = !show">
-						<transition name="fade">
-							<!--<i class="icon icon_zero" v-show="show"></i>-->
-							<i class="icon icon_zero current" v-show="!show"></i>
+					<input type="text" class="ipt_lg" v-model="remindList.lastPriceOverSomePrice" />
+					<div class="switch lastPriceUp" @touchstart="switchEvent" :class="{current: remindList.lastPriceOverSomePriceIsOpen == 1}">
+							<i class="icon icon_zero"></i>
 						</transition>
 					</div>
 				</div>
@@ -54,8 +48,8 @@
 				</div>
 				<div class="row">
 					<span class="type">价格下跌到</span>
-					<input type="text" class="ipt_lg" />
-					<div class="switch" @touchstart="switchEvent">
+					<input type="text" class="ipt_lg" v-model="remindList.lastPriceUnderSomePrice" />
+					<div class="switch lastPriceDown" @touchstart="switchEvent" :class="{current: remindList.lastPriceUnderSomePriceIsOpen == 1}">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
@@ -67,50 +61,36 @@
 				</div>
 				<div class="row">
 					<span class="type">当日涨幅超过</span>
-					<input type="text" class="ipt_sm" />
+					<input type="text" class="ipt_sm" v-model="remindList.todayRiseRangePoint" />
 					<span>%</span>
-					<div class="switch">
+					<div class="switch changeUp" @touchstart="switchEvent" :class="{current: remindList.todayRiseRangePointIsOpen == 1}">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
 				<div class="row">
 					<span class="type">当日跌幅超过</span>
-					<input type="text" class="ipt_sm" />
+					<input type="text" class="ipt_sm" v-model="remindList.todayFallRangePoint" />
 					<span>%</span>
-					<div class="switch">
-						<i class="icon icon_zero"></i>
-					</div>
-				</div>
-				<div class="row">
-					<span class="type">最新价高于</span>
-					<input type="text" class="ipt_sm" />
-					<div class="switch">
-						<i class="icon icon_zero"></i>
-					</div>
-				</div>
-				<div class="row">
-					<span class="type">最新价低于</span>
-					<input type="text" class="ipt_sm" />
-					<div class="switch">
+					<div class="switch changeDown" @touchstart="switchEvent" :class="{current: remindList.todayFallRangePointIsOpen == 1}">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
 				<div class="row">
 					<span class="type">突破当日最高价</span>
-					<div class="switch">
+					<div class="switch breakHightPrice" @touchstart="switchEvent" :class="{current: remindList.todayBreakHighestPriceIsOpen == 1}">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
 				<div class="row">
 					<span class="type">突破当日最低价</span>
-					<div class="switch">
+					<div class="switch breakLowPrice" @touchstart="switchEvent" :class="{current: remindList.todayBreakLowestPriceIsOpen == 1}">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
 				<div class="row">
 					<span class="type">提醒频率</span>
-					<div class="fr">
-						<span>每日一次</span>
+					<div class="fr" @touchstart="setRemindEvent">
+						<span>{{remindList.remindFrequency | operateFrequency}}</span>
 						<i class="icon icon_arrow"></i>
 					</div>
 				</div>
@@ -119,11 +99,22 @@
 				</div>
 			</div>
 			<div class="btn_box">
-				<btn name="完成" className="bluelg"></btn>
+				<btn name="完成" className="bluelg" @touchstart.native="saveEvent"></btn>
 			</div>
 		</div>
 		</div>
 		</template>
+		<div class="select_box">
+			<div class="bg" v-show="shadeShow"></div>
+			<div class="select_cont">
+				<ul>
+					<li><span>提醒频率</span></li>
+					<template v-for="v in remindFrequency">
+						<li :class="{current: v.status == remindList.remindFrequency}" @touchstart="chooseRemindEvent(v.status)"><span>{{v.name}}</span></li>
+					</template>
+				</ul>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -136,14 +127,26 @@
 		components: {btn, },
 		data(){
 			return{
+				commodityName: '',
+				remindList: {},
+				remindFrequency: [{
+					name: '每日一次',
+					status: '2'
+				},{
+					name: '仅一次',
+					status: '1'
+				},{
+					name: '持续提醒',
+					status: '3'
+				}],
 				remindWays: [{
 					name: '短信提醒',
-					status: 1,
+					status: 0,
 				},{
 					name: '通知提醒',
-					status: 1,
+					status: 0,
 				}],
-				show: true,
+				shadeShow: false,
 			}
 		},
 		computed: {
@@ -163,6 +166,15 @@
 			},
 			fixNum: function(num, dotsize){
 				return num.toFixed(dotsize);
+			},
+			operateFrequency: function(val){
+				if(val == '1'){
+					return '仅一次';
+				}else if(val == '2'){
+					return '每日一次';
+				}else if(val == '3'){
+					return '持续提醒';
+				}
 			}
 		},
 		methods: {
@@ -180,24 +192,89 @@
 					}
 				});
 			},
+			setRemindEvent: function(){
+				$(".select_cont").css({bottom: 0});
+				this.shadeShow = true;
+			},
+			chooseRemindEvent: function(val){
+				$(".select_cont").css({bottom: -3.5 + 'rem'});
+				this.shadeShow = false;
+				this.remindList.remindFrequency = val;
+			},
 			switchEvent: function(e){
-				console.log($(e.currentTarget))
 				let obj = $(e.currentTarget).find('.icon_zero');
 				if(obj.hasClass('current')){
 					obj.removeClass('current');
-					console.log(123);
-					obj.css({
-						'left': 0,
-						'background': '#525866'
-					});
+					obj.css({'left': 0, 'background': '#525866'});
+					if($(e.currentTarget).hasClass('lastPriceUp')){
+						this.remindList.lastPriceOverSomePriceIsOpen = '0';
+					}else if($(e.currentTarget).hasClass('lastPriceDown')){
+						this.remindList.lastPriceUnderSomePriceIsOpen = '0';
+					}else if($(e.currentTarget).hasClass('changeUp')){
+						this.remindList.todayRiseRangePointIsOpen = '0';
+					}else if($(e.currentTarget).hasClass('changeDown')){
+						this.remindList.todayFallRangePointIsOpen = '0';
+					}else if($(e.currentTarget).hasClass('breakHightPrice')){
+						this.remindList.todayBreakHighestPriceIsOpen = '0';
+					}else if($(e.currentTarget).hasClass('breakLowPrice')){
+						this.remindList.todayBreakLowestPriceIsOpen = '0';
+					}
 				}else{
 					obj.addClass('current');
-					obj.css({
-						'left': 0.48+'rem',
-						'background': '#00a1f2'
-					});
+					obj.css({'left': 0.48+'rem', 'background': '#00a1f2'});
+					if($(e.currentTarget).hasClass('lastPriceUp')){
+						this.remindList.lastPriceOverSomePriceIsOpen = '1';
+					}else if($(e.currentTarget).hasClass('lastPriceDown')){
+						this.remindList.lastPriceUnderSomePriceIsOpen = '1';
+					}else if($(e.currentTarget).hasClass('changeUp')){
+						this.remindList.todayRiseRangePointIsOpen = '1';
+					}else if($(e.currentTarget).hasClass('changeDown')){
+						this.remindList.todayFallRangePointIsOpen = '1';
+					}else if($(e.currentTarget).hasClass('breakHightPrice')){
+						this.remindList.todayBreakHighestPriceIsOpen = '1';
+					}else if($(e.currentTarget).hasClass('breakLowPrice')){
+						this.remindList.todayBreakLowestPriceIsOpen = '1';
+					}
 				}
-				
+			},
+			saveEvent: function(){
+				let _remindWays = [];
+				this.remindWays.forEach((o, i) => {
+					if(o.name == '短信提醒' && o.status == 1){
+						_remindWays.push(1);
+					}
+					if(o.name == '通知提醒' && o.status == 1){
+						_remindWays.push(2);
+					}
+				});
+				var headers = {
+					token: this.userInfo.token,
+					secret: this.userInfo.secret
+				}
+				var datas = {
+					'commodityNo': this.currentNo,
+					'commodityName': this.commodityName,
+					'remindType': _remindWays.join(','),
+					'risePoint': this.remindList.lastPriceOverSomePrice,
+					'risePointSwitch': this.remindList.lastPriceOverSomePriceIsOpen,
+					'losePoint': this.remindList.lastPriceUnderSomePrice,
+					'losePointSwitch': this.remindList.lastPriceUnderSomePriceIsOpen,
+					'increase': this.remindList.todayRiseRangePoint,
+					'increaseSwitch': this.remindList.todayRiseRangePointIsOpen,
+					'decrease': this.remindList.todayFallRangePoint,
+					'decreaseSwitch': this.remindList.todayFallRangePointIsOpen,
+					'isBreakHighestPriceSwitch': this.remindList.todayBreakHighestPriceIsOpen,
+					'isBreakLowestPriceSwitch': this.remindList.todayBreakLowestPriceIsOpen,
+					'remindFrequency': this.remindList.remindFrequency,
+					
+				}
+				pro.fetch('post', '/quoteTrader/saveRemindInfo', datas, headers).then((res) => {
+					if(res.success == true && res.code == 1){
+						Toast({message: '提醒设置成功', position: 'bottom', duration: 2000});
+					}
+				}).catch((err) => {
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
+				});
 			},
 			getRemindInfo: function(){
 				var headers = {
@@ -205,14 +282,22 @@
 					secret: this.userInfo.secret
 				}
 				var datas = {
-					'exchangeNo': this.orderTemplist[this.currentNo].ExchangeNo,
 					'commodityNo': this.currentNo,
-					'contractNo': this.orderTemplist[this.currentNo].MainContract,
 				}
-				pro.fetch('post', '/quoteTrader/userAddCommodity', datas, headers).then((res) => {
+				pro.fetch('post', '/quoteTrader/getByIdAndCommodityNo', datas, headers).then((res) => {
 					if(res.success == true && res.code == 1){
-						this.optionalIconShow = true;
-						Toast({message: '自选添加成功', position: 'bottom', duration: 2000});
+						console.log(res.data);
+						this.remindList = res.data;
+						this.commodityName = this.remindList.commodityName;
+						//提醒方式
+						let rmindWays = this.remindList.remindWay.split(',');
+						rmindWays.forEach((o, i) => {
+							if(o == '1'){
+								this.remindWays[0].status = 1;
+							}else if(o == '2'){
+								this.remindWays[1].status = 1;
+							}
+						});
 					}
 				}).catch((err) => {
 					Toast({message: err.data.message, position: 'bottom', duration: 2000});
@@ -221,7 +306,7 @@
 		},
 		mounted: function(){
 			//获取提醒相关信息
-//			this.getRemindInfo();
+			this.getRemindInfo();
 		}
 		
 	}
@@ -229,13 +314,6 @@
 
 <style scoped lang="scss">
 	@import "../../assets/css/common.scss";
-	.fade-enter-active, .fade-leave-active{
-	  	transition: all .5s;
-	}
-	.fade-enter, .fade-leave-to{
-	  	transform: translateX(0.5rem);
-	  	background: $blue;
-	}
 	header{
 		position: fixed;
 		top: 0;
@@ -283,13 +361,13 @@
 			.type{
 				width: 2rem;
 			}
-			
 		}
 		.btn_box{
 			padding: 0.98rem 0.3rem 0.3rem 0.3rem;
 		}
 		.row{
 			height: 0.96rem;
+			overflow: hidden;
 			border-bottom: 0.01rem solid $black;
 			padding: 0 0.3rem;
 			span{
@@ -303,6 +381,7 @@
 				display: inline-block;
 				height: 0.64rem;
 				background: #1b1f26;
+				border: 0.01rem solid $black;
 				border-radius: 0.1rem;
 				margin: 0.16rem 0;
 				padding: 0 0.1rem;
@@ -313,6 +392,9 @@
 				&.ipt_sm{
 					width: 1rem;
 					margin-right: 0.15rem;
+				}
+				&:focus{
+					border-color: $blue;
 				}
 			}
 			em{
@@ -358,7 +440,7 @@
 					position: absolute;
 					top: 0.04rem;
 					left: 0.04rem;
-					transition: all .5s;
+					transition: all .2s;
 				}
 				&.current{
 					.icon_zero{
@@ -392,6 +474,39 @@
 				line-height: 0.38rem;
 				color: $white;
 				margin-top: 0.1rem;
+			}
+		}
+	}
+	.select_box{
+		.select_cont{
+			position: fixed;
+			bottom: -3.5rem;
+			left: 0;
+			z-index: 100;
+			width: 7.5rem;
+			height: 3.5rem;
+			background: $white;
+			transition: all 0.3s;
+			li{
+				width: 7.5rem;
+				height: 0.88rem;
+				line-height: 0.88rem;
+				text-align: center;
+				border-bottom: 0.01rem solid #e6e6e6;
+				&:first-child{
+					span{
+						font-weight: bold;
+					}
+				}
+				&.current{
+					span{
+						color: $blue;
+					}
+				}
+				span{
+					color: #1a1a1a;
+					font-size: $fs28;
+				}
 			}
 		}
 	}

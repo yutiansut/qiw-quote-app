@@ -190,15 +190,18 @@
 			</div>
 		</div>
 		</template>
-		<div class="select_box" v-show="selectBoxShow">
-			<ul>
-				<li><span>切换合约</span></li>
-				<template v-for="(v, index) in commodityAll">
-					<li @touchstart="selectEvent(v)">
-						<span>{{v.describe}}&nbsp;&nbsp;{{v.commodityNo + v.contractNo}}</span>
-					</li>
-				</template>
+		<div class="select_box">
+			<div class="bg" v-show="shadeShow"></div>
+			<div class="select_cont">
+				<ul>
+					<li><span>切换合约</span></li>
+					<template v-for="(v, index) in commodityAll">
+						<li @touchstart="selectEvent(v)">
+							<span>{{v.describe}}&nbsp;&nbsp;{{v.commodityNo + v.contractNo}}</span>
+						</li>
+					</template>
 			</ul>
+			</div>
 		</div>
 		<mt-tabbar fixed class="menu">
 			<mt-tab-item class="col" v-show="isTradeLogin">  
@@ -250,11 +253,11 @@
 				isTradeLogin: false,
 				chartsShow: false,
 				commodityAll: [],
-				selectBoxShow: false,
 				optionalIconShow: false,
 				optionalName: '添加自选',
 				optionalList: [],
 				remindShow: false,
+				shadeShow: false,
 			}
 		},
 		computed: {
@@ -321,10 +324,10 @@
 				}
 			},
 			switchEvent: function(){   //打开切换合约下拉框
-				this.selectBoxShow = true;
+				$(".select_cont").css({bottom: 0});
 			},
 			selectEvent: function(obj){    //选择合约进行切换
-				this.selectBoxShow = false;
+				$(".select_cont").css({bottom: -5.3 + 'rem'});
 				this.$store.state.isshow.isfensshow = false;
 				this.$store.state.isshow.islightshow = false;
 				this.$store.state.isshow.isklineshow = false;
@@ -833,28 +836,31 @@
 		}
 	}
 	.select_box{
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		z-index: 2;
-		width: 7.5rem;
-		height: 5.3rem;
-		overflow-y: auto;
-		background: $white;
-		li{
+		.select_cont{
+			position: fixed;
+			bottom: -5.3rem;
+			left: 0;
+			z-index: 100;
 			width: 7.5rem;
-			height: 0.88rem;
-			line-height: 0.88rem;
-			text-align: center;
-			border-bottom: 0.01rem solid #e6e6e6;
-			&:first-child{
-				span{
-					font-weight: bold;
+			height: 5.3rem;
+			overflow-y: auto;
+			background: $white;
+			transition: all .3s;
+			li{
+				width: 7.5rem;
+				height: 0.88rem;
+				line-height: 0.88rem;
+				text-align: center;
+				border-bottom: 0.01rem solid #e6e6e6;
+				&:first-child{
+					span{
+						font-weight: bold;
+					}
 				}
-			}
-			span{
-				color: #1a1a1a;
-				font-size: $fs28;
+				span{
+					color: #1a1a1a;
+					font-size: $fs28;
+				}
 			}
 		}
 	}
