@@ -68,7 +68,7 @@
 			toRegisiter:function(){
 				this.$router.push({path:"/regisiter"});
 			},
-			getCode:function(){
+			getCode:function(e){
 				if(this.phone == ''){
 					this.$toast({message: '请输入手机号',duration: 2000});
 				}else if(this.phoneReg.test(this.phone) == false){
@@ -77,6 +77,16 @@
 					this.$refs.codeDialog.isshow = true;
 					this.$refs.codeDialog.path= this.PATH+"/loginAndRegister/getImgCode.jpg"+Math.random()*1000+"?mobile=" + this.phone;
 					this.$refs.codeDialog.phone = this.phone;
+					//页面效果
+					$(e.target).addClass('current');
+					this.time = 60;
+					var timing = setInterval(function(){
+						this.time--;
+						if(this.time <= 0){
+							clearInterval(timing);
+							$(e.target).removeClass('current');
+						}
+					}.bind(this), 1000);
 				}
 			},
 		toRetPassword:function(){
