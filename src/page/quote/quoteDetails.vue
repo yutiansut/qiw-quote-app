@@ -350,7 +350,7 @@
 				if(userInfo == undefined || userInfo == '' || userInfo == null){
 					this.$router.push({path: '/login'});
 				}else{
-					this.$router.push({path: '/remind'});
+					this.$router.push({path: '/remind', query: {isOptional: this.optionalIconShow}});
 				}
 			},
 			menuEvent: function(index){
