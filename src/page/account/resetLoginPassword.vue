@@ -9,29 +9,90 @@
 			<ul>
 				<li>
 					<i></i>
-					<input type="text" class="input1" placeholder="原密码"/>
+					<input type="password" class="input1" placeholder="原密码" v-model="oldPassword"/>
 				</li>
 			</ul>
 			<ul>
 				<li>
 					<i></i>
-					<input type="text" class="input1" placeholder="输入新密码(6-12位)"/>
+					<input type="password" class="input1" placeholder="输入新密码(6-12位)" v-model="newPassword"/>
 				</li>
 			</ul>
 			<ul>
 				<li>
 					<i></i>
-					<input type="text" class="input1" placeholder="确认新密码"/>
+					<input type="password" class="input1" placeholder="确认新密码" v-model="newPassword1"/>
 				</li>
 			</ul>
-			<mt-button class="btn">完成</mt-button>
+			<mt-button class="btn" @click.native="confirm">完成</mt-button>
 		</div>
 	</div>
 </template>
 
 <script>
+	import pro from "../../assets/js/common.js"
 	export default{
-		name:"resetLoginPassword"
+		name:"resetLoginPassword",
+		data(){
+			return{
+				oldPassword:"",
+				newPassword:"",
+				newPassword1:"",
+				pwdReg: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/
+			}
+		},
+		methods:{
+			confirm:function(){
+				if(this.oldPassword == ''){
+					this.$toast({message:"请输入原密码",duration: 2000});
+				}else if(this.newPassword == ''){
+					this.$toast({message:"请输入新密码",duration: 2000});
+				}else if(this.newPassword1 == ''){
+					this.$toast({message:"请输入确认密码",duration: 2000});
+				}else if(this.pwdReg.test(this.oldPassword)== false){
+					this.$toast({message:"原密码格式错误，请重新输入",duration: 2000});
+				}else if(this.pwdReg.test(this.newPassword)== false){
+					this.$toast({message:"新密码格式错误，请重新输入",duration: 2000});
+				}else if(this.pwdReg.test(this.newPassword1)== false){
+					this.$toast({message:"确认密码格式不正确，请重新输入",duration: 2000});
+				}else if(this.newPassword!=this.newPassword1){
+					this.$toast({message:"两次密码输入不一致，请重新输入",duration: 2000});
+				}
+				else{
+					var data = {
+						oldPwd:this.oldPassword,
+						newPwd:this.newPassword
+					}
+					var headers = {
+						token : this.userInfo.token,
+						secret : this.userInfo.secret
+					}
+					pro.fetch("post","/account/modifyPwd",data,headers).then((res)=>{
+						if(res.code == 1 && res.success == true){
+							this.$toast({message:"修改成功，请重新登录",duration: 2000});
+							this.$router.push({path:"/login"});
+						}
+					}).catch((err)=>{
+						var data = err.data;
+						if(data == undefined){
+							this.$toast({message:"网络不给力，请稍后再试",duration: 2000});
+						}else if(data.code == -9999){
+							this.$toast({message:"认证失败，请重新登录",duration: 2000});
+							this.$router.push({path:"/login"});
+						}else{
+							this.$toast({message:data.message,duration: 2000});
+						}
+					})
+				}
+			}
+		},
+		mounted:function(){
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+		},
+		activated: function(){
+			//获取平台账户登录信息
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+		}
 	}
 </script>
 

@@ -6,14 +6,14 @@
 		  	</router-link>
 		</mt-header>
 		<div id="container">
-			<ul class="list">
+			<ul class="list" v-show="showNickname">
 				<li>昵称</li>
-				<li>哈肚子</li>
+				<li>{{wxNickname}}</li>
 				<li></li>
 			</ul>
 			<ul class="list">
 				<li>手机号</li>
-				<li>158****0000</li>
+				<li>{{mobile}}</li>
 				<li @click="toResetPhone">修改&nbsp;></li>
 			</ul>
 			<div id="black"></div>
@@ -39,16 +39,35 @@
 		name:"personalSet",
 		data(){
 			return{
-				
+				mobile:'',
+				wxNickname:"",
+				showNickname:false,
+				phone:""
 			}
 		},
 		methods:{
 			toResetPhone:function(){
-				this.$router.push({path:"/resetPhone"})
+				this.$router.push({path:"/resetPhone",query:{phone:this.phone}})
 			},
 			toResetPassword:function(){
 				this.$router.push({path:"/resetLoginPassword"})
 			}
+		},
+		mounted:function(){
+			this.phone = this.$route.query.phone;
+			var phone = this.$route.query.phone;
+			this.wxNickname = this.$route.query.wxNickname;
+			this.mobile = phone.substr(0, 3) + '****' + phone.substr(7);
+			console.log("this.wxNickname===="+this.wxNickname)
+			if(this.wxNickname == ""){
+				this.showNickname= false
+			}else{
+				this.showNickname= true
+			}
+		},
+		activited:function(){
+			this.phone = this.$route.query.phone
+			this.wxNickname = this.$route.query.wxNickname
 		}
 	}
 </script>

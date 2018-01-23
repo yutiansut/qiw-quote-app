@@ -9,35 +9,94 @@
 			<div id="info">
 				<ul>
 					<li>
-						收入:&nbsp;<span>3</span>笔<i>3000</i>元
+						收入:&nbsp;<span>{{total.inItems}}</span>笔<i>{{total.inMoney}}</i>元
 					</li>
 					<li>
-						支出:&nbsp;<span>3</span>笔<i>3000</i>元
+						支出:&nbsp;<span>{{total.outItems}}</span>笔<i>{{total.outMoney}}</i>元
 					</li>
 				</ul>
 			</div>
-			<div class="list" v-for="n in 6">
-				<div class="black"></div>
-				<div class="details">
-					<ul>
-						<li>
-							<span>入金</span>
-							<p>2017-12-09 19:25</p>
-						</li>
-						<li>+1000元</li>
-					</ul>
-					<ul>
-						<li>注册账户获得1000元</li>
-					</ul>
+			<mt-loadmore :bottom-method="loadBottom"  ref="loadmore" :auto-fill="false">
+				<div class="list" v-for="k in this.moneyDetails">
+					<div class="black"></div>
+					<div class="details">
+						<ul class="color_red" v-if="k.type == 1">
+							<li>
+								<span>入金</span>
+								<p>{{k.createTime | showTime}}</p>
+							</li>
+							<li>+{{k.money}}元</li>
+						</ul>
+						<ul class="color_green" v-else="k.type == 2">
+							<li>
+								<span>出金</span>
+								<p>{{k.createTime | showTime}}</p>
+							</li>
+							<li>-{{k.money}}元</li>
+						</ul>
+						<ul>
+							<li>{{k.describe}}</li>
+						</ul>
+					</div>
 				</div>
-			</div>
+			</mt-loadmore>
 		</div>
 	</div>
 </template>
 
 <script>
+	import pro from "../../assets/js/common.js"
 	export default{
-		name:"moneyDetails"
+		name:"moneyDetails",
+		data(){
+			return{
+				moneyDetails:"",
+				total:'',
+				pageno:1,
+				pagesize:1
+			}
+		},
+		methods:{
+			//加载更多
+			loadBottom:function(){
+				this.pagesize+=1;
+				var pagesize1 = this.pagesize
+				this.getMoneyDetail("",pagesize1);
+			},
+			getMoneyDetail:function(pageno,pagesize){
+				var data ={
+					pageNo:this.pageno,
+					pageSize:this.pagesize
+				}
+				var headers = {
+					token : this.userInfo.token,
+					secret : this.userInfo.secret
+				}
+				pro.fetch("post","/account /getMoneyDetail",data,headers).then((res)=>{
+					console.log("res==="+JSON.stringify(res));
+					if(res.code == 1 && res.success == true){
+						this.total = res.data;
+						this.moneyDetails=res.data.inAndOutDetaiList.list;
+					}
+				}).catch((err)=>{
+					console.log("err==="+JSON.stringify(err));
+				})
+			}
+		},
+		filters:{
+			showTime:function(e){
+				var a = pro.getDate("y-m-d h:i:s",e);
+				return a;
+			}
+		},
+		mounted:function(){
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+			this.getMoneyDetail();
+		},
+		activated: function(){
+			//获取平台账户登录信息
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+		}
 	}
 </script>
 
@@ -91,7 +150,7 @@
 					padding: 0 0.3rem;
 					color: $white;
 					&:nth-child(1){
-						background-color: #3a2d36;
+						/*background-color: #3a2d36;*/
 						li{
 							height: 0.9rem;
 							display: flex;
@@ -105,7 +164,7 @@
 							}
 							&:nth-child(2){
 								padding-top: 0.3rem;
-								color: $red;
+								/*color: $red;*/
 							}
 						}
 					}
@@ -113,6 +172,24 @@
 						li{
 							height: 0.9rem;
 							padding-top: 0.3rem;
+						}
+					}
+				}
+				.color_red{
+					background-color: #3a2d36;
+					li{
+						&:nth-child(2){
+							color: #ff4c4c;
+							font-weight: 600;
+						}
+					}
+				}
+				.color_green{
+					background-color: #273a3b;
+					li{
+						&:nth-child(2){
+							color: #12b362;
+							font-weight: 600;
 						}
 					}
 				}
