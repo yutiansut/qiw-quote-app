@@ -147,6 +147,7 @@
 					status: 0,
 				}],
 				shadeShow: false,
+				isOptional: false,
 			}
 		},
 		computed: {
@@ -158,6 +159,9 @@
 			},
 			userInfo(){
 				if(localStorage.user) return JSON.parse(localStorage.user);
+			},
+			orderTemplist(){
+				return this.$store.state.market.orderTemplist;
 			},
 		},
 		filters:{
@@ -270,7 +274,29 @@
 				}
 				pro.fetch('post', '/quoteTrader/saveRemindInfo', datas, headers).then((res) => {
 					if(res.success == true && res.code == 1){
-						Toast({message: '提醒设置成功', position: 'bottom', duration: 2000});
+						if(this.isOptional == true){
+							Toast({message: '提醒设置成功', position: 'bottom', duration: 1000});
+							setTimeout(() => {
+								this.$router.go(-1);
+							}, 1000);
+							
+						}else{
+							let info = {
+								'exchangeNo': this.orderTemplist[this.currentNo].ExchangeNo,
+								'commodityNo': this.currentNo,
+								'contractNo': this.orderTemplist[this.currentNo].MainContract,
+							}
+							pro.fetch('post', '/quoteTrader/userAddCommodity', info, headers).then((res) => {
+								if(res.success == true && res.code == 1){
+									Toast({message: '提醒设置成功，已将该合约添加到自选', position: 'bottom', duration: 1000});
+									setTimeout(() => {
+										this.$router.go(-1);
+									}, 1000);
+								}
+							}).catch((err) => {
+								Toast({message: err.data.message, position: 'bottom', duration: 1000});
+							});
+						}
 					}
 				}).catch((err) => {
 					Toast({message: err.data.message, position: 'bottom', duration: 2000});
@@ -307,6 +333,9 @@
 		mounted: function(){
 			//获取提醒相关信息
 			this.getRemindInfo();
+			//是否自选
+			this.isOptional = this.$route.query.isOptional;
+			console.log(this.isOptional);
 		}
 		
 	}
