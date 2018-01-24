@@ -25,7 +25,25 @@
 					</li>
 				</ul>
 				<ul class="cont">
-					<template v-for="(v, index) in parameters">
+					<draggable v-model="optionalList">
+					    <transition-group>
+					      <li v-for="v in optionalList" :key="v.CommodityName">
+					        <i class="icon" :class="{icon_check: v.check == 0, icon_checked: v.check == 1}" @touchstart="checkEvent(v.check, v.CommodityNo)"></i>
+							<div class="name">
+								<span>{{v.CommodityName}}</span>
+								<span>{{v.CommodityNo + v.MainContract}}</span>
+							</div>
+							<div class="price">
+								<span>{{v.LastQuotation.LastPrice | fixNum(v.DotSize)}}</span>
+								<span>{{v.LastQuotation.DateTimeStamp | operateTime}}</span>
+							</div>
+							<div class="drag">
+								<i class="icon icon_drag"></i>
+							</div>
+					      </li>
+					    </transition-group>
+					</draggable>
+					<!--<template v-for="(v, index) in parameters">
 						<li>
 							<i class="icon" :class="{icon_check: v.check == 0, icon_checked: v.check == 1}" @touchstart="checkEvent(v.check, v.CommodityNo)"></i>
 							<div class="name">
@@ -40,7 +58,7 @@
 								<i class="icon icon_drag"></i>
 							</div>
 						</li>
-					</template>
+					</template>-->
 				</ul>
 			</div>
 		</div>
@@ -61,10 +79,11 @@
 
 <script>
 	import pro from '../../assets/js/common.js'
-	import { Toast } from 'mint-ui';
+	import { Toast } from 'mint-ui'
+	import draggable from 'vuedraggable'
 	export default {
 		name: 'optionalManage',
-		components: {
+		components: {draggable,
 		},
 		data(){
 			return{
@@ -72,6 +91,7 @@
 				optionalList: [],
 				num: 0,
 				id: '',
+				
 			}
 		},
 		computed: {
@@ -79,6 +99,7 @@
 				return this.$store.state.quoteSocket;
 			},
 			parameters(){
+				this.optionalList = this.$store.state.market.Parameters;
 				return this.$store.state.market.Parameters;
 			},
 			userInfo(){

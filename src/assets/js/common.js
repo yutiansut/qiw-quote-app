@@ -103,6 +103,8 @@ pro.getDate=function(d,time){
     	return d6;
     }
 }
+
+
 pro.toweixin=function(){
 	mui.plusReady(function(){
 		document.getElementById("wechat").addEventListener("tap",function(){

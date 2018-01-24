@@ -42,9 +42,9 @@
 				</div>
 				<div class="row">
 					<span class="type">最近</span>
-					<input type="text" class="ipt_sm" />
+					<input type="text" class="ipt_sm" v-model="daysHight" />
 					<span>天最高价</span>
-					<b>--</b>
+					<b>{{hightPrice}}</b>
 				</div>
 				<div class="row">
 					<span class="type">价格下跌到</span>
@@ -55,9 +55,9 @@
 				</div>
 				<div class="row">
 					<span class="type">最近</span>
-					<input type="text" class="ipt_sm" />
+					<input type="text" class="ipt_sm" v-model="daysLow" />
 					<span>天最低价</span>
-					<b>--</b>
+					<b>{{lowPrice}}</b>
 				</div>
 				<div class="row">
 					<span class="type">当日涨幅超过</span>
@@ -148,6 +148,10 @@
 				}],
 				shadeShow: false,
 				isOptional: false,
+				daysHight: '',
+				hightPrice: '--',
+				daysLow: '',
+				lowPrice: '--',
 			}
 		},
 		computed: {
@@ -163,6 +167,12 @@
 			orderTemplist(){
 				return this.$store.state.market.orderTemplist;
 			},
+			quoteSocket(){
+				return this.$store.state.quoteSocket;
+			},
+			jsonData(){
+				return this.$store.state.market.jsonDataKline.Parameters.Data;
+			}
 		},
 		filters:{
 			fixNumTwo: function(num){
@@ -179,6 +189,31 @@
 				}else if(val == '3'){
 					return '持续提醒';
 				}
+			}
+		},
+		watch: {
+			daysHight: function(n, o){
+				let _endTime = new Date();
+				let _beginTime = _endTime.getTime() - n*24*60*60*1000;
+				let beginTime = pro.getDate("y-m-d h:i:s", _beginTime);
+				let endTime = pro.getDate("y-m-d h:i:s", _endTime);
+				let data = {
+					Method: "QryHistory",
+					Parameters:{
+						ExchangeNo: this.orderTemplist[this.currentNo].ExchangeNo,
+						CommodityNo: this.currentNo,
+						ContractNo: this.orderTemplist[this.currentNo].MainContract,
+						HisQuoteType: 30,
+						BeginTime: beginTime,
+						EndTime: endTime,
+						Count: 0
+					}
+				};
+				if(n == '') return;
+				this.quoteSocket.send(JSON.stringify(data));
+			},
+			daysLow: function(n, o){
+				
 			}
 		},
 		methods: {
@@ -314,7 +349,6 @@
 				}
 				pro.fetch('post', '/quoteTrader/getByIdAndCommodityNo', datas, headers).then((res) => {
 					if(res.success == true && res.code == 1){
-						console.log(res.data);
 						this.remindList = res.data;
 						this.commodityName = this.remindList.commodityName;
 						//提醒方式

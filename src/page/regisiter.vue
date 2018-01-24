@@ -187,13 +187,15 @@
 		background-size: 100% 100%;
 	}
 	#container{
-		width: 100%;
+		width: 7.5rem;
 		margin-top: 1rem;
 		display: flex;
 		flex-direction: column;
-		padding: 0.5rem 0.3rem 0rem 0.3rem;
+		padding: 0.5rem 0 0rem 0;
 		li{
+			width: 7.5rem;
 			height: 1.2rem;
+			padding: 0 0.3rem;
 			position: relative;
 			&:nth-child(1){
 				i{
@@ -235,8 +237,9 @@
 		.input1{
 			border-radius: none;
 			background-color: $bg;
+			
 			height: 0.9rem;
-			width: 6.6rem;
+			width: 6.9rem;
 			border-bottom: 1px solid #505664;
 			text-indent: 1rem;
 			color: $white;
@@ -271,9 +274,9 @@
 			background-size: 100% 100%;
 		}
 		.btn{
-			margin-top: 0.9rem;
-			width:100%;
+			width: 6.9rem;
 			height: 0.8rem;
+			margin: 0.9rem 0.3rem 0 0.3rem;
 			background-color: $blue;
 			color: $white;
 			border: none;
