@@ -107,7 +107,8 @@
 								this.secret = res.data.secret;
 								var userData = {'username':this.phone,'password':Base64.encode(this.pwd),'token':res.data.token,'secret':res.data.secret};
 								localStorage.setItem("user", JSON.stringify(userData));
-								this.$router.push({path:"/index"})
+								this.$router.push({path:"/index"});
+								this.$store.state.account.isLogin = true;
 							}
 						}
 					}.bind(this)).catch(function(err){

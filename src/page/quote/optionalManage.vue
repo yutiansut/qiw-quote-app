@@ -1,13 +1,10 @@
 <template>
 	<div id="optionalManage">
-		<mt-header title="自选管理" fixed class="header">
-		  	<router-link to="/" slot="left">
-		    	<i class="icon icon_back"></i>
-		  	</router-link>
-	    	<router-link to="" slot="right">
-		    	<mt-button class="done">完成</mt-button>
-		 	</router-link>
-		</mt-header>
+		<header>
+			<i class="icon icon_back" @touchstart="goBackEvent"></i>
+			<h1>自选管理</h1>
+			<span>完成</span>
+		</header>
 		<div class="main">
 			<div class="search_box">
 				<div class="search">
@@ -137,6 +134,9 @@
 			}
 		},
 		methods: {
+			goBackEvent: function(){
+				this.$router.go(-1);
+			},
 			toSearch: function(){
 				this.$router.push({path: '/search'});
 			},
@@ -208,6 +208,9 @@
 							res.data.forEach((o, i) => {
 								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 							});
+						}else{
+							this.optionalList = [];
+							this.checkedShow = false;
 						}
 					}
 				}).catch((err) => {
@@ -227,22 +230,41 @@
 
 <style scoped lang="scss">
 	@import "../../assets/css/common.scss";
-	.header{
+	header{
 		height: 1rem;
+		overflow: hidden;
 		background: $bg;
 		border-bottom: 0.01rem solid $black;
 		padding: 0 0.3rem;
-		font-size: 0.36rem;
-		.done{
+		position: fixed;
+		top: 0;
+		left: 0;
+		h1{
+			width: 6.9rem;
+			height: 1rem;
+			line-height: 1rem;
+			text-align: center;
+			font-size: 0.36rem;
+		}
+		.icon_back{
+			width: 0.24rem;
+			height: 1rem;
+			background: url(../../assets/images/back_icon.png) no-repeat center 0.34rem;
+			background-size: 0.24rem 0.32rem;
+			position: fixed;
+			top: 0;
+			left: 0.3rem;
+		}
+		span{
+			display: inline-block;
+			height: 1rem;
+			line-height: 1rem;
 			font-size: $fs28;
 			color: $fontBlueTitle;
+			position: fixed;
+			top: 0;
+			right: 0.3rem;
 		}
-	}
-	.icon_back{
-		width: 0.24rem;
-		height: 0.32rem;
-		background: url(../../assets/images/back_icon.png) no-repeat center center;
-		background-size: 100% 100%;
 	}
 	.main{
 		margin-top: 1.01rem;

@@ -24,6 +24,7 @@ var isshow = {
 //账户信息
 var account = {
 	state: {
+		isLogin: false, //判断是否是从登录跳至首页
 		isRefresh: false,  //判断是否刷新
 		isBack: false,   //判断是否退出交易账号并跳至首页
 		loginStatus: false,  //交易账号登录状态	

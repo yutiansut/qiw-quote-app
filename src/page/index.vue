@@ -48,6 +48,9 @@
 			},
 			userInfo(){
 				if(localStorage.user) return JSON.parse(localStorage.user);
+			},
+			isLogin(){
+				return this.$store.state.account.isLogin;
 			}
 		},
 		methods: {
@@ -57,7 +60,8 @@
 			tavEvent: function(index){
 				this.currentNum = index;
 				if(index == 0){
-					if(this.userInfo == undefined || this.userInfo == null || this.userInfo == ''){
+					let userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+					if(userInfo == undefined || userInfo == null || userInfo == ''){
 						this.currentView = 'noLogin';
 					}else{
 						this.currentView = 'optionalList';
@@ -133,8 +137,18 @@
 			this.getCommodityInfo();
 		},
 		activated: function(){
-			this.currentNum = 1;
-			this.currentView = 'market';
+			if(this.isLogin == true){
+				this.$store.state.account.isLogin = false;
+				this.currentNum = 1;
+				this.currentView = 'market';
+				this.setShow = false;
+				this.$store.state.market.Parameters = [];
+				this.$store.state.market.commodityOrder = [];
+				this.$store.state.market.commodityOrder = this.marketList[0].list;
+				this.marketList[0].list.forEach((o, i) => {
+					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+				});
+			}
 		}
 	}
 </script>

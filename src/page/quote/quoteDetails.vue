@@ -474,7 +474,6 @@
 			pro.fetch('post', '/quoteTrader/getCommodityInfoNoType', '', '').then((res) => {
 				if(res.success == true && res.code == 1){
 					this.commodityAll = res.data;
-					console.log(res.data);
 				}
 			}).catch((err) => {
 				Toast({message: err.data.message, position: 'bottom', duration: 2000});
