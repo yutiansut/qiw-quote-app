@@ -97,6 +97,7 @@
 					if(this.resultList.length > 0){
 						this.contShow = true;
 						this.recommendShow = false;
+						this.emptyShow = false;
 					}else{
 						this.emptyShow = true;
 						this.contShow = false;
