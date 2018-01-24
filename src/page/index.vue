@@ -76,17 +76,9 @@
 					this.setShow = false;
 					this.$store.state.market.Parameters = [];
 					this.$store.state.market.commodityOrder = [];
-					pro.fetch('post', '/quoteTrader/getCommodityInfo', '', '').then((res) => {
-						if(res.success == true && res.code == 1){
-							if(res.data[0].list && res.data[0].list.length > 0){
-								this.$store.state.market.commodityOrder = res.data[0].list;
-								res.data[0].list.forEach((o, i) => {
-									this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
-								});
-							}
-						}
-					}).catch((err) => {
-						Toast({message: err.data.message, position: 'bottom', duration: 2000});
+					this.$store.state.market.commodityOrder = this.marketList[0].list;
+					this.marketList[0].list.forEach((o, i) => {
+						this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 					});
 				}
 			},
