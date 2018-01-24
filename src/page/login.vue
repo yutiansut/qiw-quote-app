@@ -12,7 +12,7 @@
 			<ul>
 				<li>
 					<i></i>
-					<input type="number" value="" placeholder="请输入手机号" class="input1" v-model="phone" maxlength="11"/>
+					<input type="tel" value="" placeholder="请输入手机号" class="input1" v-model="phone" maxlength="11"/>
 				</li>
 				<li>
 					<i></i>
@@ -218,13 +218,11 @@
 		background-size: 100% 100%;
 	}
 	#container{
-		width: 100%;
+		width: 7.5rem;
 		margin-top: 1rem;
-		display: flex;
-		flex-direction: column;
-		text-align: center;
-		padding: 0.5rem 0.3rem 0rem 0.3rem;
+		padding-top: 0.5rem;
 		li{
+			padding: 0 0.3rem;
 			height: 1.2rem;
 			position: relative;
 			&:nth-child(1){
@@ -233,7 +231,7 @@
 					background-size: 100% 100%;
 					position: absolute;
 					top: 0.48rem;
-					left: 0.28rem;	
+					left: 0.58rem;	
 					display: inline-block;
 					width: 0.42rem;
 					height: 0.42rem;
@@ -245,30 +243,31 @@
 					background-size: 100% 100%;
 					position: absolute;
 					top: 0.48rem;
-					left: 0.28rem;	
+					left: 0.58rem;	
 					display: inline-block;
 					width: 0.42rem;
 					height: 0.42rem;
 				}
 			}
-		}
-		.input1{
-			background-color: $bg;
-			border: none;
-			outline: none;
-			height: 0.9rem;
-			width: 6.6rem;
-			border-bottom: 1px solid #505664;
-			text-indent: 1rem;
-			color: $white;
-			margin-top: 0.2rem;
+			.input1{
+				background-color: $bg;
+				border: none;
+				outline: none;
+				height: 0.9rem;
+				width: 6.9rem;
+				border-bottom: 1px solid #505664;
+				text-indent: 1rem;
+				color: $white;
+				margin-top: 0.2rem;
+				border-radius: 0 !important;
+			}
 		}
 		.eye{
 			position: absolute;
 			width: 0.4rem;
 			height: 0.24rem;
 			top: 0.5rem;
-			right: 0.3rem;
+			right: 0.6rem;
 			background: url(../assets/images/eye_icon.png);
 			background-size: 100% 100%;
 		}
@@ -277,7 +276,7 @@
 			width: 0.4rem;
 			height: 0.24rem;
 			top: 0.5rem;
-			right: 0.3rem;
+			right: 0.6rem;
 			background: url(../assets/images/eyeopen_icon.png);
 			background-size: 100% 100%;
 		}
@@ -294,17 +293,20 @@
 		}
 		.btn{
 			margin-top: 0.9rem;
-			width:100%;
+			width:6.9rem;
 			height: 0.8rem;
 			background-color: $blue;
 			color: $white;
 			border: none;
+			margin-left: 0.3rem;
 		}
 		p{
+			text-align: center;
 			color: $white;
 			margin-top: 0.8rem;
 		}
 		#wechat{
+			text-align: center;
 			position: fixed;
 			bottom: 0.3rem;
 			width: 100%;

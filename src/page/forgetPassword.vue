@@ -12,7 +12,7 @@
 			<ul>
 				<li>
 					<i></i>
-					<input type="text" value="" placeholder="请输入手机号" class="input1" v-model="phone"/>
+					<input type="tel" value="" placeholder="请输入手机号" class="input1" v-model="phone" maxlength="11"/>
 				</li>
 				<li>
 					<i></i>
@@ -154,6 +154,7 @@
 		.input1{
 			background-color: $bg;
 			border: none;
+			border-radius: 0 !important;
 			outline: none;
 			height: 0.9rem;
 			width: 100%;
@@ -161,9 +162,6 @@
 			text-indent: 1rem;
 			color: $white;
 			margin-top: 0.2rem;
-			&:hover{
-				border-color: $blue;
-			}
 		}
 		#code{
 			position: absolute;

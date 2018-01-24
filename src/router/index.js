@@ -42,6 +42,7 @@ import historyRecords from"../page/account/myFinance/historyRecords.vue"
 import addMargin from"../page/account/myFinance/addMargin.vue"
 import information_details from "../page/information/information_details.vue"
 import information_search from "../page/information/information_search.vue"
+import service from "../page/account/service.vue"
 
 Vue.use(Router)
 
@@ -179,6 +180,9 @@ export default new Router({
 	},{
 		path:'/information_search',
 		component:information_search
+	},{
+		path:'/service',
+		component:service
 	}
 	]
 })

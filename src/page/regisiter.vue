@@ -12,7 +12,7 @@
 			<ul>
 				<li>
 					<i></i>
-					<input type="number" value="" placeholder="请输入手机号" class="input1" v-model="phone" maxlength="11"/>
+					<input type="tel" value="" placeholder="请输入手机号" class="input1" v-model="phone" maxlength="11"/>
 				</li>
 				<li>
 					<i></i>
@@ -244,6 +244,7 @@
 			text-indent: 1rem;
 			color: $white;
 			margin-top: 0.2rem;
+			border-radius: 0 !important;
 		}
 		#code{
 			text-align: center;

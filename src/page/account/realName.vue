@@ -155,9 +155,6 @@
 				text-indent: 1rem;
 				color: $white;
 				margin-top: 0.3rem;
-				&:hover{
-					border-color: $blue;
-				}
 			}
 	}
 </style>

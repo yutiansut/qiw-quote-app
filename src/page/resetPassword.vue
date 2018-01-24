@@ -12,13 +12,13 @@
 			<ul>
 				<li>
 					<i></i>
-					<input type="password" value="" placeholder="请输入密码(至少6位)" class="input1 input2" v-model="password"/>
+					<input type="password" value="" placeholder="请输入密码（至少6位且包含字母）" class="input1 input2" v-model="password"/>
 					<div class="eye1_1" @click="eyeEvent" v-show="show1"></div>
 					<div class="eye1_2" @click="eyeEvent" v-show="show2"></div>
 				</li>
 				<li>
 					<i></i>
-					<input type="password"  value="" placeholder="请再次输入密码" class="input1 input3" v-model="password1"/>
+					<input type="password"  value="" placeholder="请再次输入密码（至少6位且包含字母）" class="input1 input3" v-model="password1"/>
 					<div class="eye_1" @click="eyeEvents" v-show="showNo1"></div>
 					<div class="eye_2" @click="eyeEvents" v-show="showNo2"></div>
 				</li>
@@ -169,6 +169,7 @@
 		.input1{
 			background-color: $bg;
 			border: none;
+			border-radius: 0 !important;
 			outline: none;
 			height: 0.9rem;
 			width: 6.6rem;

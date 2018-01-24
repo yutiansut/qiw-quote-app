@@ -11,41 +11,84 @@
 			</div>
 			<div class="type">
 				<ul>
-					<li>程序bug</li>
+					<!--<li class="current">程序bug</li>
 					<li>功能建议</li>
 					<li>行情相关</li>
-					<li>其他</li>
+					<li>其他</li>-->
+					<li v-for="(k,index) in choose" @click="check(index,$event)" :class="{current:current1 == index}">{{k.name}}</li>
 				</ul>
 			</div>
 			<div class="title_lev2">
 				反馈内容
 			</div>
 			<div class="content">
-				<input type="text" placeholder="您可以留下您的意见或者建议，谢谢"/>
+				<!--<input type="text" placeholder="您可以留下您的意见或者建议，谢谢"/>-->
+				<textarea  cols="30" rows="10" placeholder="您可要留下您的意见或者建议，谢谢" v-model="suggest"></textarea>
 			</div>
 			<div class="title_lev2">
 				请填写您的联系方式
 			</div>
 			<div class="phone">
-				<input type="text" placeholder="手机号或者微信号"/>
+				<input type="text" placeholder="手机号或者微信号" v-model="phone"/>
 			</div>
-			<btn className="bluelg" name="提交" class="btn"></btn>
+			<btn className="bluelg" name="提交" class="btn" @click.native="submit"></btn>
 		</div>
 	</div>
 </template>
 
 <script>
 	import btn from "../../components/btn.vue"
+	import pro from "../../assets/js/common.js"
 	export default{
 		name:"feedBack",
 		components:{btn},
 		data(){
 			return{
-				
+				choose:[{name:"程序bug"},{name:"功能建议"},{name:"行情相关"},{name:"其他"}],
+				current1:0,
+				phone:"",
+				suggest:""
 			}
 		},
 		methods:{
-			
+			check:function(index,e){
+				this.current1 = index;
+			},
+			submit:function(){
+				if(this.suggest == ''){
+					this.$toast({message: '内容至少输入5个字',duration: 1000});
+				}else if(this.phone == ''){
+					this.$toast({message: '请正确填写联系方式',duration: 1000});
+				}else{
+					console.log("suggest=="+this.suggest);
+//					var data = {
+//						
+//					}
+//					pro.fetch("post","/",data,headers).then((res)={
+//						if(res.code == 1 && res.success == true){
+							
+//							this.$toast({message: '提交成功',duration: 1000});
+//						}
+//					}).catch((err)=>{
+//						var data = err.data;
+//						if(data == undefined){
+//							this.$toast({message: '网络不给力，请稍后重试',duration: 1000});
+//						}else{
+//							this.$toast({message:data.message,duration: 1000});
+//						}
+//					})
+				}
+			},
+			getinfo:function(){
+//				pro.fetch("post","/",data,headers).then((res)=>{
+//				
+//				}).catch((err)=>{
+//				
+//				})
+			}
+		},
+		mounted:function(){
+			this.getinfo();
 		}
 	}
 </script>
@@ -103,16 +146,23 @@
 					}
 				}
 			}
+			.current{
+				color: $blue;
+				background-color:$lightBlue ;
+			}
 		}
 		.content{
 			width: 100%;
 			height: 2.4rem;
-			input{
+			textarea{
 				width: 100%;
 				height: 2.4rem;
 				background-color: $bg;
 				border: none;
 				border-bottom:1px solid #12141a;
+				color: $white;
+				text-indent: 0.3rem;
+				font-size: $fs28;
 			}
 		}
 		.phone{
