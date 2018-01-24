@@ -236,6 +236,10 @@
 		methods: {
 			goBackEvent: function(){
 				this.$router.go(-1);
+				this.daysHight = '';
+				this.hightPrice = '--';
+				this.daysLow = '';
+				this.lowPrice = '--';
 			},
 			checkEvent: function(index){
 				this.remindWays.forEach((o, i) => {
