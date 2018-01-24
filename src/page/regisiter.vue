@@ -127,6 +127,7 @@
 				}else if(this.pwdReg.test(this.password) == false){
 					this.$toast({message: '请输入6-16位数字加字母的密码',duration: 2000});
 				}else {
+					$(".btn").attr("disabled","disabled"); 
 					var data = {
 						mobile:this.phone,
 						password:this.password,
@@ -142,8 +143,10 @@
 						var data = err.data;
 						if(data == undefined){
 							this.$toast({message:"网络不给力，请稍后重试",duration: 2000});
+							$(".btn").attr("disabled",false);
 						}else{
 							this.$toast({message:data.message,duration: 2000});
+							$(".btn").attr("disabled",false);
 						}
 					})
 				}

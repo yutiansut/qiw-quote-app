@@ -5,7 +5,7 @@
 			<div class="page_cont">
 				<h3 class="title">请先输入图形 验证码</h3>
 				<div class="code_box">
-					<input type="number" class="fl" v-model="code" />
+					<input type="tel" class="fl" v-model="code" />
 					<a href="javascript:void(0);" class="fr"><img :src="imgPath" v-on:click="refreshCode" /></a>
 				</div>
 				<div class="black"></div>
