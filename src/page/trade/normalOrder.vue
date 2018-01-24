@@ -9,17 +9,17 @@
 		</div>
 		<div class="row">
 			<b>订单类型</b>
-			<div class="slt fl">
+			<div class="slt slt_dm fl">
 				<input type="text" class="ipt_sm" value="市价" readonly="readonly" />
-				<i class="icon icon_selected"></i>
+				<i class="icon icon_select"></i>
 			</div>
-			<input type="text" class="ipt_md ml" value="市价" disabled />
+			<input type="text" class="ipt_md ml" value="市价" readonly />
 		</div>
 		<div class="row">
 			<b>委托数量</b>
 			<div class="num_box">
 				<span class="add">+</span>
-				<input type="text" class="ipt_md" />
+				<input type="number" />
 				<span class="reduce">-</span>
 			</div>
 		</div>
@@ -51,9 +51,12 @@
 		width: 7.5rem;
 		height: 5.02rem;
 		border-bottom: 0.01rem solid $black;
-		padding: 0.3rem 0.3rem 0 0.3rem;
+		padding: 0.3rem 0 0 0;
 		.row{
+			width: 7.5rem;
+			padding: 0 0.3rem;
 			height: 0.88rem;
+			overflow: hidden;
 			margin-bottom: 0.3rem;
 			b{
 				float: left;
@@ -65,7 +68,13 @@
 				font-size: $fs28;
 			}
 			.slt{
+				width: 5.6rem;
+				height: 0.88rem;
+				overflow: hidden;
 				position: relative;
+				&.slt_dm{
+					width: 1.2rem;
+				}
 				.icon{
 					width: 0.1rem;
 					height: 0.1rem;
@@ -84,22 +93,22 @@
 			}
 			input{
 				float: left;
+				display: inline-block;
 				height: 0.88rem;
-				line-height: 0.88rem;
 				color: $white;
 				border: 0.01rem solid $black;
 				border-radius: 0.1rem;
 				background: #1b1f26;
 				text-align: center;
-				margin: auto;
+				font-size: $fs28;
 				&.ipt_lg{
-					width: 5.58rem;
+					width: 5.6rem;
 				}
 				&.ipt_sm{
 					width: 1.2rem;
 				}
 				&.ipt_md{
-					width: 3.96rem;
+					width: 4rem;
 				}
 			}
 			.ml{
@@ -107,7 +116,7 @@
 			}
 			.num_box{
 				float: left;
-				width: 5.58rem;
+				width: 5.6rem;
 				height: 0.88rem;
 				border: 0.01rem solid $black;
 				background: #1b1f26;
@@ -129,12 +138,15 @@
 				}
 				input{
 					border: none;
-					height: 0.82rem;
-					line-height: 0.82rem;
+					width: 3rem;
+					height: 0.6rem;
+					line-height: 0.6rem;
+					margin: 0.14rem 0;
 				}
 			}
 		}
 		.btn_box{
+			padding: 0 0.3rem;
 			display: flex;
 			justify-content: space-between;
 		}

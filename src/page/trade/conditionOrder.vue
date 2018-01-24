@@ -104,14 +104,16 @@
 			}
 			input{
 				float: left;
-				height: 0.88rem;
-				line-height: 0.88rem;
+				height: 0.6rem;
+				line-height: 0.6rem;
+				padding: 0.14rem 0;
+				box-sizing: content-box;
 				color: $white;
 				border: 0.01rem solid $black;
 				border-radius: 0.1rem;
 				background: #1b1f26;
 				text-align: center;
-				margin: auto;
+				font-size: $fs24;
 				&.ipt_lg{
 					width: 5.58rem;
 				}
@@ -182,9 +184,11 @@
 					}
 				}
 				input{
+					box-sizing: border-box;
 					border: none;
-					height: 0.82rem;
-					line-height: 0.82rem;
+					height: 0.6rem;
+					line-height: 0.6rem;
+					margin: 0.14rem 0;
 				}
 			}
 			p{

@@ -30,7 +30,7 @@ input, button, select, textarea {
     outline: none;
     -webkit-appearance: none;
 }
- input:-webkit-autofill {
+input:-webkit-autofill {
 	-webkit-box-shadow: 0 0 0px 1000px white inset; /*利用阴影来填充掉input自动填充色*/
 }
 button{
@@ -52,7 +52,7 @@ img{
 em, i{ 
 	font-style: normal;
 }
-div, p, ul, li, h1, h2, h3, h4, h5, h6, nav, ul, li, span, em{
+div, p, ul, li, h1, h2, h3, h4, h5, h6, nav, ul, li, span, em, input, button{
 	box-sizing: border-box;
 }
 html{
