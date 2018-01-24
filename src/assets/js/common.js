@@ -104,7 +104,22 @@ pro.getDate=function(d,time){
     }
 }
 
+/**
+ * 数组取最大值、最小值
+ * 
+ */
+pro.getMaximin = function(arr,maximin){ 
+	if(maximin == "max"){ 
+		return Math.max.apply(Math, arr); 
+	}else if(maximin == "min"){ 
+		return Math.min.apply(Math, arr); 
+	} 
+} 
 
+/**
+ * 微信授权登录
+ * 
+ */
 pro.toweixin=function(){
 	mui.plusReady(function(){
 		document.getElementById("wechat").addEventListener("tap",function(){

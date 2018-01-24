@@ -193,27 +193,44 @@
 		},
 		watch: {
 			daysHight: function(n, o){
-				let _endTime = new Date();
-				let _beginTime = _endTime.getTime() - n*24*60*60*1000;
-				let beginTime = pro.getDate("y-m-d h:i:s", _beginTime);
-				let endTime = pro.getDate("y-m-d h:i:s", _endTime);
-				let data = {
-					Method: "QryHistory",
-					Parameters:{
-						ExchangeNo: this.orderTemplist[this.currentNo].ExchangeNo,
-						CommodityNo: this.currentNo,
-						ContractNo: this.orderTemplist[this.currentNo].MainContract,
-						HisQuoteType: 30,
-						BeginTime: beginTime,
-						EndTime: endTime,
-						Count: 0
-					}
-				};
 				if(n == '') return;
-				this.quoteSocket.send(JSON.stringify(data));
+				if(n == 0){
+					Toast({message: '请输入天数', position: 'bottom', duration: 1000});
+					this.hightPrice = '--';
+				}else if(n > 30){
+					Toast({message: '天数最多为30天', position: 'bottom', duration: 1000});
+					this.hightPrice = '--';
+					this.daysHight = '';
+				}else{
+					let _arr = [], arr = [];
+					for(let i = 1; i <= n; i++){
+						_arr.push(this.jsonData[this.jsonData.length - i]);
+					}
+					_arr.forEach((o, i) => {
+						arr.push(o[4]);
+					});
+					this.hightPrice = pro.getMaximin(arr, "max");
+				}
 			},
 			daysLow: function(n, o){
-				
+				if(n == '') return;
+				if(n == 0){
+					Toast({message: '请输入天数', position: 'bottom', duration: 1000});
+					this.lowPrice = '--';
+				}else if(n > 30){
+					Toast({message: '天数最多为30天', position: 'bottom', duration: 1000});
+					this.lowPrice = '--';
+					this.daysLow = '';
+				}else{
+					let _arr = [], arr = [];
+					for(let i = 1; i <= n; i++){
+						_arr.push(this.jsonData[this.jsonData.length - i]);
+					}
+					_arr.forEach((o, i) => {
+						arr.push(o[3]);
+					});
+					this.lowPrice = pro.getMaximin(arr, "min");
+				}
 			}
 		},
 		methods: {
@@ -239,6 +256,21 @@
 				$(".select_cont").css({bottom: -3.5 + 'rem'});
 				this.shadeShow = false;
 				this.remindList.remindFrequency = val;
+			},
+			getPriceByKline: function(){
+				let data = {
+					Method: "QryHistory",
+					Parameters:{
+						ExchangeNo: this.orderTemplist[this.currentNo].ExchangeNo,
+						CommodityNo: this.currentNo,
+						ContractNo: this.orderTemplist[this.currentNo].MainContract,
+						HisQuoteType: 1440,
+						BeginTime: '',
+						EndTime: '',
+						Count: 0
+					}
+				};
+				this.quoteSocket.send(JSON.stringify(data));
 			},
 			switchEvent: function(e){
 				let obj = $(e.currentTarget).find('.icon_zero');
@@ -367,8 +399,13 @@
 			}
 		},
 		mounted: function(){
+			
+		},
+		activated: function(){
 			//获取提醒相关信息
 			this.getRemindInfo();
+			//获取最新价与最低价
+			this.getPriceByKline();
 		}
 		
 	}
