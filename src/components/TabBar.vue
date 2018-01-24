@@ -31,7 +31,10 @@
 		},
 		props:['selected','tabs'],
 		watch:{
-			 message: function (val, oldVal) {
+			 message: function (val,oldVal) {
+			 	console.log("val==="+val);
+			 	console.log("oldval=="+oldVal);
+			 	console.log("selected==="+this.selected);
 	            switch(val){
 	                case '行情':
 	                    this.$router.push({path:'/index'});

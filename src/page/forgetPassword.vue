@@ -24,9 +24,9 @@
 			</ul>
 			<mt-button class="btn" @click.native="toRetPassword">下一步</mt-button>
 			<p @click="toRegisiter">新用户注册>></p>
-			<div id="wechat">
-				<i></i>
-			</div>
+		</div>
+		<div id="wechat">
+			<i></i>
 		</div>
 		<codeDialog ref="codeDialog"  type="findpwd"></codeDialog>
 	</div>
@@ -184,18 +184,19 @@
 			color: $white;
 			margin-top: 0.8rem;
 		}
-		#wechat{
-			width: 100%;
-			position: fixed;
-			bottom: 0.8rem;
-			i{
-				background:url(../assets/images/wechat_02.png);
-				display: inline-block;
-				width:0.88rem;
-				height: 0.88rem;
-				background-size: 100% 100%;
-				
-			}
+	}
+	#wechat{
+		text-align: center;
+		width: 100%;
+		position: fixed;
+		bottom: 0.8rem;
+		i{
+			background:url(../assets/images/wechat_02.png);
+			display: inline-block;
+			width:0.88rem;
+			height: 0.88rem;
+			background-size: 100% 100%;
+			
 		}
 	}
 </style>
