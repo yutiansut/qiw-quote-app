@@ -1,7 +1,7 @@
 <template>
-	<div id="service">
-		<mt-header title="在线客服" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
-		  	<router-link to="/customerServices" slot="left">
+	<div id="payWays">
+		<mt-header title="充值" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
+		  	<router-link to="/recharge" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
 		</mt-header>
@@ -13,18 +13,15 @@
 
 <script>
 	export default{
-		name:"service",
+		name:"payWays",
 		data(){
 			return{
 				
 			}
 		},
 		computed: {
-//			userInfo: function(){
-//				return this.$store.state.account;
-//			},
-			iframe: function() {
-				return  /*this.PATH + */'http://test.www.vs.com/topic/consistentBeauty/consistentbeauty.html?phone=' + this.$store.state.account.phone + '&userName=' + this.$store.state.account.username;
+			iframe(){
+				return 'http://pay.duokongtai.cn/app/appPayinfo?mobile='+ this.$route.query.phone +'&money='+ this.$route.query.money;
 			}
 		},
 		methods:{

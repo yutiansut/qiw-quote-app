@@ -28,18 +28,18 @@
 		data(){
 			return{
 				sheetVisible:false,
-				arr:[{name:"确认",method:this.sure}]
+				arr:[{name:"400-852-8008"},{name:"工作日08:00-24:00,周末09:00-17:00"},{name:"拨打",method:this.callphone}]
 			}
 		},
 		methods:{
-			sure:function(){
+			callphone:function(){
 				console.log("111111")
+				window.location.href = 'tel://' + 4008528008;
 			},
 			call:function(){
 				this.sheetVisible=true
 			},
 			online:function(){
-				console.log("111111111111")
 				this.$router.push({path:'/service'})
 //				this.$router.push({path:'/myFinance'});	
 			}
@@ -79,4 +79,5 @@
 			}
 		}
 	}
+	
 </style>

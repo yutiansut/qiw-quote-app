@@ -2,19 +2,20 @@
 	<div id="tradeApply">
 		<div class="choose">
 			<div class="p_left">选择融资本金(本金越多，可持仓手数越多)</div>
-			<div class="picture">
-				<mt-range v-model="rangeValue">
+			<div id="picture">
+				<!--<mt-range v-model="rangeValue" :barHeight="10">
 				  <div slot="start">0</div>
 				  <div slot="end">100</div>
-				</mt-range>
+				</mt-range>-->
+				<input type="range" style="width: 100%;"value="50" max="100" min="0"/>
 			</div>
 			<div class="p_left">选择融倍数，（倍数越多，可持仓手数越多）</div>
-			<div class="picture">
+			<!--<div class="picture">
 				<mt-range v-model="rangeValue">
 				  <div slot="start">0</div>
 				  <div slot="end">100</div>
 				</mt-range>
-			</div>
+			</div>-->
 			<div class="black"></div>
 			<div class="commodity">
 				<ul>
@@ -60,7 +61,7 @@
 					</li>
 				</ul>
 			</div>
-			<TabBar></TabBar>
+			<TabBar :selected="selected" :tabs="tabs" ></TabBar>
 		</div>
 		
 	</div>
@@ -73,7 +74,10 @@
 		components:{TabBar},
 		data(){
 			return{
-				rangeValue:50
+				rangeValue:50,
+				tabs:[require("../../assets/images/quotation_02.png"),require("../../assets/images/mockTrading_01.png"),
+				require("../../assets/images/information_02.png"),require("../../assets/images/mine_02.png")],
+				selected:"模拟交易"
 			}
 		},
 		watch:{
@@ -100,12 +104,19 @@
 				text-indent: 0.3rem;
 				border-bottom: 1px solid $black;
 			}
-			.picture{
+			#picture{
 				float: left;
-				display: none;
+				/*display: none;*/
 				width: 100%;
 				height: 1.8rem;
-				background-color: gainsboro;
+				background-color: $bg;
+				.mt-range{
+					.mt-range-content{
+						.mt-range-thumb{
+							background-color: red !important;
+						}
+					}
+				}
 			}
 			.black{
 				float: left;
@@ -184,7 +195,7 @@
 			}
 			.bt{
 				position: fixed;
-				bottom: 1rem;
+				bottom: 1.1rem;
 				width: 100%;
 				height: 1rem;
 				border-top: 1px solid $black;

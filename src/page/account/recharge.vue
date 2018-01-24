@@ -10,25 +10,93 @@
 		</mt-header>
 		<div id="container">
 			<div class="ipt">
-				<input type="text" placeholder="充值金额  请输入充值金额" />
+				<input type="number" v-model="rechargeMoney" placeholder="充值金额  请输入充值金额"/>
 			</div>
 			<div class="title_lev2">
-				充值余额：<span>1808.00</span>元
+				余额：<span>{{accountMoney}}</span>元
 			</div>
 			<div id="btn">
-				<mt-button class="btn">立即充值</mt-button>
+				<mt-button class="btn" @click.native="recharge">立即充值</mt-button>
 			</div>
+			<p>充值后余额：<span>{{totalMoney}}</span>元</p>
 		</div>
 	</div>
 </template>
 
 <script>
+	import pro from "../../assets/js/common.js"
 	export default{
 		name:"recharge",
 		data(){
 			return{
-				
+				rechargeMoney:"",
+				rechargeReg:/^[0-9]*$/,
+				accountMoney:"",
+				totalMoney:"",
+				phone:""
 			}
+		},
+		watch:{
+			rechargeMoney:function(e){
+				this.totalMoney = Number(this.accountMoney) + Number(e) ;
+				return
+			}
+		},
+		methods:{
+			recharge:function(){
+				if(this.rechargeMoney == ''){
+					this.$toast({message:"充值金额不能为空",duration: 1000});
+				}else if(this.rechargeReg.test(this.rechargeReg) == true){
+					this.$toast({message:"充值金额格式错误",duration: 1000});
+				}else{
+					this.$router.push({path:"/payWays",query:{phone:this.phone,money:this.rechargeMoney}});
+				}
+			},
+			getUserInfo:function(){
+				var headers = {
+					token : this.userInfo.token,
+					secret : this.userInfo.secret
+				}
+				pro.fetch("post","/account/getBasicMsg","",headers).then((res)=>{
+					console.log("res==="+JSON.stringify(res))
+					if(res.code == 1 && res.success == true){
+						this.accountMoney = res.data.balance;
+						this.totalMoney = res.data.balance;
+						this.phone = res.data.mobile;
+					}
+				}).catch((err)=>{
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
+					}else{
+						if(data.code == -9999){
+							this.$toast({message:"认证失败，请重新登录",duration: 1000});
+							this.$router.push({path:"/login"});
+						}
+						else{
+							this.$toast({message:data.message,duration: 1000});
+						}
+					}
+				})
+			}
+		},
+		mounted:function(){
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+			console.log(this.userInfo);
+			if(this.userInfo == ''){
+				this.showLoginIn = false;
+				this.showNotLogin = true;
+				console.log("1111")
+			}else{
+				this.showLoginIn = true;
+				this.showNotLogin = false;
+				console.log("22222")
+				this.getUserInfo();
+			}
+		},
+		activated: function(){
+			//获取平台账户登录信息
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 		}
 	}
 </script>
@@ -84,7 +152,7 @@
 		}
 		#btn{
 			width: 100%;
-			padding: 0rem 0.3rem;
+			padding: 0rem 0.3rem 0.3rem;
 			.btn{
 				margin-top: 0.3rem;
 				width:100%;
@@ -93,6 +161,13 @@
 				color: $white;
 				border: none;
 				font-size: $fs32;
+			}
+		}
+		p{
+			padding-left: 0.3rem;
+			span{
+				color: $white;
+				margin: 0 0.1rem;
 			}
 		}
 	}
