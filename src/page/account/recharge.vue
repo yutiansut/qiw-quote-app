@@ -10,14 +10,15 @@
 		</mt-header>
 		<div id="container">
 			<div class="ipt">
-				<input type="text" placeholder="充值金额  请输入充值金额" />
+				<input type="number" v-model="rechargeMoney" placeholder="充值金额  请输入充值金额"/>
 			</div>
 			<div class="title_lev2">
-				充值余额：<span>1808.00</span>元
+				余额：<span>{{accountMoney}}</span>元
 			</div>
 			<div id="btn">
-				<mt-button class="btn">立即充值</mt-button>
+				<mt-button class="btn" @click.native="recharge">立即充值</mt-button>
 			</div>
+			<p>充值后余额：<span>{{totalMoney}}</span>元</p>
 		</div>
 	</div>
 </template>
@@ -27,7 +28,28 @@
 		name:"recharge",
 		data(){
 			return{
+				rechargeMoney:"",
+				rechargeReg:/^[0-9]*$/,
+				accountMoney:1080,
+				totalMoney:1080
 				
+			}
+		},
+		watch:{
+			rechargeMoney:function(e){
+				this.totalMoney = Number(this.accountMoney) + Number(e) ;
+				return
+			}
+		},
+		methods:{
+			recharge:function(){
+				if(this.rechargeMoney == ''){
+					this.$toast({message:"充值金额不能为空",duration: 1000});
+				}else if(this.rechargeReg.test(this.rechargeReg) == true){
+					this.$toast({message:"充值金额格式错误",duration: 1000});
+				}else{
+					this.$router.push({path:"/payWays"});
+				}
 			}
 		}
 	}
@@ -84,7 +106,7 @@
 		}
 		#btn{
 			width: 100%;
-			padding: 0rem 0.3rem;
+			padding: 0rem 0.3rem 0.3rem;
 			.btn{
 				margin-top: 0.3rem;
 				width:100%;
@@ -93,6 +115,13 @@
 				color: $white;
 				border: none;
 				font-size: $fs32;
+			}
+		}
+		p{
+			padding-left: 0.3rem;
+			span{
+				color: $white;
+				margin: 0 0.1rem;
 			}
 		}
 	}
