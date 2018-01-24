@@ -7,7 +7,7 @@
 				  <div slot="start">0</div>
 				  <div slot="end">100</div>
 				</mt-range>-->
-				<input type="range" style="width: 100%;"value="50" max="100" min="0"/>
+				<input type="range" />
 			</div>
 			<div class="p_left">选择融倍数，（倍数越多，可持仓手数越多）</div>
 			<!--<div class="picture">
@@ -69,6 +69,7 @@
 
 <script>
 	import TabBar from "../../components/TabBar.vue"
+	import pro from "../../assets/js/common.js"
 	export default{
 		name:"tradeApply",
 		components:{TabBar},
@@ -80,11 +81,39 @@
 				selected:"模拟交易"
 			}
 		},
+		methods:{
+			getParameters:function(){
+				var headers = {
+					token : this.userInfo.token,
+					secret : this.userInfo.secret
+				}
+				pro.fetch("post","/futureManage/getApplyData","",headers).then((res)=>{
+					console.log("res==="+JSON.stringify(res));
+				}).catch((err)=>{
+					console.log("err==="+JSON.stringify(err));
+				})
+			}
+		},
+		mounted:function(){
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+			if(this.userInfo == ''){
+				this.showLoginIn = false;
+				this.showNotLogin = true;
+			}else{
+				this.showLoginIn = true;
+				this.showNotLogin = false;
+				this.getParameters();
+			}
+		},
+		activated: function(){
+			//获取平台账户登录信息
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+		},
 		watch:{
 			rangeValue:function(){
 				console.log(this.rangeValue)
 			}
-		},
+		}
 	}
 </script>
 
@@ -110,12 +139,12 @@
 				width: 100%;
 				height: 1.8rem;
 				background-color: $bg;
-				.mt-range{
-					.mt-range-content{
-						.mt-range-thumb{
-							background-color: red !important;
-						}
-					}
+				input{
+					background-color: #13161b;
+					border: 1px solid $yellow;
+					width: 100%;
+					height: 0.3rem;
+					border-radius: 0.15rem;
 				}
 			}
 			.black{
