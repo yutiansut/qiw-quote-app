@@ -197,7 +197,7 @@
 					<li><span>切换合约</span></li>
 					<template v-for="(v, index) in commodityAll">
 						<li @touchstart="selectEvent(v)">
-							<span>{{v.describe}}&nbsp;&nbsp;{{v.commodityNo + v.contractNo}}</span>
+							<span>{{v.commodityName}}&nbsp;&nbsp;{{v.commodityNo + v.contractNo}}</span>
 						</li>
 					</template>
 			</ul>
@@ -474,6 +474,7 @@
 			pro.fetch('post', '/quoteTrader/getCommodityInfoNoType', '', '').then((res) => {
 				if(res.success == true && res.code == 1){
 					this.commodityAll = res.data;
+					console.log(res.data);
 				}
 			}).catch((err) => {
 				Toast({message: err.data.message, position: 'bottom', duration: 2000});
