@@ -204,21 +204,21 @@
 			</div>
 		</div>
 		<mt-tabbar fixed class="menu">
-			<mt-tab-item class="col" v-show="isTradeLogin">  
+			<mt-tab-item class="col" v-show="isTradeLogin" style="background-color:#2d3340;">  
 			    <img slot="icon" src="../../assets/images/mockTrading_02.png">  
 			    <span>模拟交易</span>
 			</mt-tab-item>
-      		<mt-tab-item class="col" @touchstart.native="addRemind">
+      		<mt-tab-item class="col" @touchstart.native="addRemind" style="background-color:#2d3340;">
 		        <img slot="icon" v-show="!remindShow" src="../../assets/images/remind.png">
 		        <img slot="icon" v-show="remindShow" src="../../assets/images/remind_01.png">
 		        <span>提醒</span>
 		    </mt-tab-item>
-      		<mt-tab-item class="col" @touchstart.native="addOptional">  
+      		<mt-tab-item class="col" @touchstart.native="addOptional" style="background-color:#2d3340;">  
 		        <img slot="icon" v-show="!optionalIconShow" src="../../assets/images/add_optional.png">
 		        <img slot="icon" v-show="optionalIconShow" src="../../assets/images/add_optional_01.png">
 		        <span :class="{current: optionalIconShow == true}">{{optionalName}}</span>
 		    </mt-tab-item>
-      		<mt-tab-item class="col" v-show="isTradeLogin">  
+      		<mt-tab-item class="col" v-show="isTradeLogin" style="background-color:#2d3340;">  
 		        <img slot="icon" src="../../assets/images/position.png">  
 		         <span>持仓</span>
 	      	</mt-tab-item>
@@ -556,6 +556,7 @@
 	}
 	.menu{
 		.col{
+			overflow: hidden;
 			background: $titleBlue;
 			border-top: 0.01rem solid $black;
 			border-left: 0.01rem solid $black;

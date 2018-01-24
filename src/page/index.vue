@@ -131,6 +131,10 @@
 		mounted: function(){
 			//获取所有合约
 			this.getCommodityInfo();
+		},
+		activated: function(){
+			this.currentNum = 1;
+			this.currentView = 'market';
 		}
 	}
 </script>
