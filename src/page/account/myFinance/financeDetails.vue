@@ -1,7 +1,7 @@
 <template>
 	<div id="financeDetails">
 		<mt-header title="融资详情" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
-		  	<router-link to="/account" slot="left">
+		  	<router-link to="/myFinance" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
 		    <router-link to="/account" slot="right">
@@ -19,11 +19,12 @@
 </template>
 
 <script>
+	import pro from "../../../assets/js/common.js"
 	export default{
 		name:"financeDetails",
 		data(){
 			return{
-				
+				id:""
 			}
 		},
 		methods:{
@@ -41,10 +42,37 @@
 					default:
 						break;
 				}
+			},
+			getDetails:function(){
+				var data = {
+					id:this.id
+				}
+				var headers = {
+					token : this.userInfo.token,
+					secret : this.userInfo.secret
+				}
+//				pro.fetch("post","/futureManage/getProgramDetail",data,headers).then((res)=>{
+//					
+//				}).catch((err)=>{
+//					
+//				})
 			}
 		},
 		mounted:function(){
 			this.$router.push({path:"/financeDetails/schemeDetails"})
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+			this.id = this.$route.query.id;
+			console.log(this.userInfo);
+			if(this.userInfo == ''){
+				console.log("1111")
+			}else{
+				this.getDetails();
+			}
+		},
+		activated: function(){
+			//获取平台账户登录信息
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+			this.id = this.$route.query.id;
 		}
 	}
 </script>
