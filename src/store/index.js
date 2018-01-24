@@ -31,6 +31,8 @@ var account = {
 		userName: '',   //平台账号
 		currentNav: 0,  //当前导航索引
 		currentUrlHead: 'http:', //http or https
+		phone:"",
+		username:""
 	}
 }
 
