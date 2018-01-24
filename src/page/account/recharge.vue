@@ -24,15 +24,16 @@
 </template>
 
 <script>
+	import pro from "../../assets/js/common.js"
 	export default{
 		name:"recharge",
 		data(){
 			return{
 				rechargeMoney:"",
 				rechargeReg:/^[0-9]*$/,
-				accountMoney:1080,
-				totalMoney:1080
-				
+				accountMoney:"",
+				totalMoney:"",
+				phone:""
 			}
 		},
 		watch:{
@@ -48,9 +49,54 @@
 				}else if(this.rechargeReg.test(this.rechargeReg) == true){
 					this.$toast({message:"充值金额格式错误",duration: 1000});
 				}else{
-					this.$router.push({path:"/payWays"});
+					this.$router.push({path:"/payWays",query:{phone:this.phone,money:this.rechargeMoney}});
 				}
+			},
+			getUserInfo:function(){
+				var headers = {
+					token : this.userInfo.token,
+					secret : this.userInfo.secret
+				}
+				pro.fetch("post","/account/getBasicMsg","",headers).then((res)=>{
+					console.log("res==="+JSON.stringify(res))
+					if(res.code == 1 && res.success == true){
+						this.accountMoney = res.data.balance;
+						this.totalMoney = res.data.balance;
+						this.phone = res.data.mobile;
+					}
+				}).catch((err)=>{
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
+					}else{
+						if(data.code == -9999){
+							this.$toast({message:"认证失败，请重新登录",duration: 1000});
+							this.$router.push({path:"/login"});
+						}
+						else{
+							this.$toast({message:data.message,duration: 1000});
+						}
+					}
+				})
 			}
+		},
+		mounted:function(){
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+			console.log(this.userInfo);
+			if(this.userInfo == ''){
+				this.showLoginIn = false;
+				this.showNotLogin = true;
+				console.log("1111")
+			}else{
+				this.showLoginIn = true;
+				this.showNotLogin = false;
+				console.log("22222")
+				this.getUserInfo();
+			}
+		},
+		activated: function(){
+			//获取平台账户登录信息
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 		}
 	}
 </script>
