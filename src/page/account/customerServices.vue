@@ -10,7 +10,7 @@
 				<span>400-852-8008</span>
 				<img slot="icon" src="../../assets/images/account/phone.png" width="24" height="24">
 			</mt-cell>
-			<mt-cell title="在线客服" class="cell">
+			<mt-cell title="在线客服" class="cell" @click.native="online">
 				<span>随时解疑</span>
 				<img slot="icon" src="../../assets/images/account/online.png" width="24" height="24">
 			</mt-cell>
@@ -37,6 +37,11 @@
 			},
 			call:function(){
 				this.sheetVisible=true
+			},
+			online:function(){
+				console.log("111111111111")
+				this.$router.push({path:'/service'})
+//				this.$router.push({path:'/myFinance'});	
 			}
 		}
 	}

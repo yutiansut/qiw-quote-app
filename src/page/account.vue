@@ -231,9 +231,11 @@
 			if(this.userInfo == ''){
 				this.showLoginIn = false;
 				this.showNotLogin = true;
+				console.log("1111")
 			}else{
 				this.showLoginIn = true;
 				this.showNotLogin = false;
+				console.log("22222")
 				this.getUserInfo();
 			}
 		},
