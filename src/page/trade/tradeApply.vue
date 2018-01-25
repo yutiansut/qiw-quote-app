@@ -92,26 +92,30 @@
 				lossScale:"",
 				lossLine:'',
 				rate:"",
-				payMoney:"",
-				balance:"",
+				payMoney:0,
 				isLogin:false,
-				isPresentedgive:false
+				isPresentedgive:true,
+				balance:""
 			}
 		},
 		methods:{
 			//获取基础配置信息
-			getParameters:function(){
-				pro.fetch("post","/futureManage/getApplyData","","").then((res)=>{
-//					console.log("res==="+JSON.stringify(res));
+			getParameters:function(headers){
+				pro.fetch("post","/futureManage/getApplyData","",headers).then((res)=>{
+					console.log("res==="+JSON.stringify(res.data.balance))
 					if(res.code == 1 && res.success == true){
 						this.tradableList = res.data.tradableList;
 						this.lossScale = res.data.lossScale;
 						this.lossLine = this.rangeValue*this.lossScale + this.rangeValue*this.rangeValue1;
 						this.rate = res.data.rate;
-						this.balance = res.data.balance;
+						if(res.data.balance != '' && res.data.balance > 3){
+							this.startMax = res.data.balance*this.rate;
+							this.balance = res.data.balance;
+						}else if(res.data.balance != '' && res.data.balance < 3 || res.data.balance == 3){
+							this.startMax = 10000;
+						}
 					}
 				}).catch((err)=>{
-//					console.log("err==="+JSON.stringify(err));
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
@@ -121,7 +125,7 @@
 					}else{
 						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
 					}
-				})
+				});
 			},
 			clickBtn:function(){
 				if(this.isLogin == false){
@@ -130,7 +134,11 @@
 					if(this.isPresentedgive == false){
 						
 					}else{
-						
+						if(this.payMoney > this.balance){
+							console.log("去充值");
+						}else{
+							console.log("去支付");
+						}
 					}
 				}
 			}
@@ -140,17 +148,25 @@
 			this.financing = this.rangeValue;
 			this.totalMoney = this.rangeValue + this.rangeValue*this.rangeValue1;
 			this.payMoney = this.rangeValue/100;
-			this.getParameters();
+			this.startMin = 300;
+			this.rangeValue = 300;
 			if(this.userInfo == ''){
 				//未登录
 				console.log("未登录");
-				this.startMin = 300;
 				this.startMax = 1000;
-				this.rangeValue = this.startMin;
 				this.isLogin = false;
+				var headers = ""
+				this.getParameters(headers);
 			}else{
 				//已登录
+				console.log("一登录")
 				this.isLogin = true;
+				var headers = {
+					token : this.userInfo.token,
+					secret : this.userInfo.secret
+				}
+				this.getParameters(headers);
+				
 			}
 		},
 		activated: function(){
@@ -163,13 +179,13 @@
 				this.totalMoney = this.rangeValue + this.rangeValue*this.rangeValue1;
 				this.lossLine = this.rangeValue*this.lossScale + this.rangeValue*this.rangeValue1;
 				this.payMoney = this.rangeValue/100;
-				console.log(this.rangeValue)
+//				console.log(this.rangeValue)
 			},
 			rangeValue1:function(){
 				this.times = this.rangeValue1;
 				this.totalMoney = this.rangeValue + this.rangeValue*this.rangeValue1;
 				this.lossLine = this.rangeValue*this.lossScale + this.rangeValue*this.rangeValue1;
-				console.log(this.rangeValue1)
+//				console.log(this.rangeValue1)
 			},
 		},
 		filters:{
