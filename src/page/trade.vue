@@ -46,7 +46,7 @@
 				if(index == 0){
 					this.currentView = 'tradeCenter';
 				}else if(index == 1){
-					this.currentView = 'position';
+					this.currentView = 'holdOrder';
 				}else{
 					this.currentView = 'moneyDetails';
 				}

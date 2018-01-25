@@ -193,6 +193,7 @@
 		},
 		watch: {
 			daysHight: function(n, o){
+				console.log(n);
 				if(n == '') return;
 				if(n == 0){
 					Toast({message: '请输入天数', position: 'bottom', duration: 1000});
@@ -207,8 +208,10 @@
 						_arr.push(this.jsonData[this.jsonData.length - i]);
 					}
 					_arr.forEach((o, i) => {
+						if(o == undefined) return;
 						arr.push(o[4]);
 					});
+					console.log(arr);
 					this.hightPrice = pro.getMaximin(arr, "max");
 				}
 			},
@@ -227,6 +230,7 @@
 						_arr.push(this.jsonData[this.jsonData.length - i]);
 					}
 					_arr.forEach((o, i) => {
+						if(o == undefined) return;
 						arr.push(o[3]);
 					});
 					this.lowPrice = pro.getMaximin(arr, "min");

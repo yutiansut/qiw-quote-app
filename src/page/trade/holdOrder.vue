@@ -1,20 +1,28 @@
 <template>
 	<div id="holdOrder">
-		<nav>
-			<template v-for="(v, index) in navList">
-				<span></span>
-			</template>
-		</nav>
+		<div class="nav">
+			<ul>
+				<template v-for="(v, index) in navList">
+					<li>{{v}}</li>
+				</template>
+			</ul>
+		</div>
+		<div class="">
+			<components :is="currentView"></components>
+		</div>
 	</div>
 </template>
 
 <script>
+	import position from "./position.vue"
 	export default{
 		name: "holdOrder",
-		components: {},
+		components: {position},
 		data(){
 			return{
 				navList: ['持仓','挂单', '委托', '条件单', '止损单', '当日成交', '历史成交'],
+				currentNum: 0,
+				currentView: 'position',
 			}
 		},
 		methods: {
@@ -28,5 +36,22 @@
 
 <style lang="scss" scoped>
 	@import "../../assets/css/common.scss";
-	
+	.nav{
+		width: 7.5rem;
+		height: 0.8rem;
+		padding-left: 0.3rem;
+		overflow-y: auto;
+		ul{
+			width: 7.8rem;
+			li{
+				float: left;
+				height: 0.8rem;
+				line-height: 0.8rem;
+				margin-right: 0.4rem;
+				&:last-child{
+					margin-right: 0;
+				}
+			}
+		}
+	}
 </style>
