@@ -36,9 +36,9 @@
 			</div>
 		</div>
 		<div class="btn_box">
-			<i class="icon icon_rotate" @touchstart="rotateEvent"></i>
+			<!--<i class="icon icon_rotate" @touchstart="rotateEvent"></i>-->
 			<i class="icon icon_box" @touchstart="switchBox"></i>
-			<i class="icon icon_optional" @touchstart="optionalEvent"></i>
+			<i class="icon icon_btn" @touchstart="btnEvent"></i>
 		</div>
 	</div>
 </template>
@@ -185,6 +185,17 @@
 			},
 			optionalEvent: function(){
 				this.$router.push({path: '/optionalManage'});
+			},
+			btnEvent: function(e){
+				if(!$(e.currentTarget).hasClass('current')){
+					$(e.currentTarget).addClass('current');
+					$(".icon_box").css({bottom: 2.3 + 'rem', opacity: 1});
+					$(".icon_rotate").css({bottom: 3.1 + 'rem', opacity: 1});
+				}else{
+					$(e.currentTarget).removeClass('current');
+					$(".icon_box").css({bottom: 1.5 + 'rem', opacity: 0});
+					$(".icon_rotate").css({bottom: 1.5 + 'rem', opacity: 0});
+				}
 			},
 			operateData: function(){
 				if(this.userInfo == undefined) return;
@@ -368,15 +379,19 @@
 		}
 	}
 	.btn_box{
-		width: 0.9rem;
+		/*width: 0.9rem;
 		height: 2.9rem;
 		position: fixed;
 		bottom: 1.3rem;
-		right: 0;
+		right: 0;*/
 		.icon{
+			position: fixed;
+			bottom: 1.5rem;
+			right: 0.3rem;
 			width: 0.64rem;
 			height: 0.64rem;
-			margin-bottom: 0.2rem;
+			opacity: 0;
+			transition: all .3s;
 			&.icon_rotate{
 				background: url(../../assets/images/rotate.png) no-repeat center center;
 				background-size: 100% 100%;
@@ -385,7 +400,8 @@
 				background: url(../../assets/images/box.png) no-repeat center center;
 				background-size: 100% 100%;
 			}
-			&.icon_optional{
+			&.icon_btn{
+				opacity: 1;
 				background: url(../../assets/images/optional.png) no-repeat center center;
 				background-size: 100% 100%;
 			}

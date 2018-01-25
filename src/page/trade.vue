@@ -7,58 +7,15 @@
 		</header>
 		<div class="nav">
 			<ul>
-				<li class="current"><span>交易</span></li>
-				<li><span>持仓</span></li>
-				<li><span>资金明细</span></li>
+				<template v-for="(v, index) in tabList">
+					<li :class="{current: currentNum == index}" @touchstart="tabEvent(index)"><span>{{v}}</span></li>
+				</template>
 			</ul>
 		</div>
 		<div class="main">
 			<div class="cont">
-				<div class="total">
-					<div class="col">
-						<em>总资产</em>
-						<span>30000</span>
-					</div>
-					<div class="col">
-						<em>持仓盈亏</em>
-						<span>15540</span>
-					</div>
-					<div class="col">
-						<em>平仓线：<span>52.70</span></em>
-						<em>风险度：<span>95%</span></em>
-					</div>
-				</div>
-				<div class="tips">
-					<span class="red">1276.1</span>
-					<span class="red">1276.1</span>
-					<span class="red">1276.1</span>
-					<p>成交量：<em>100123</em></p>
-				</div>
-				<div class="fens_title">
-					<span>分时图</span>
-					<i class="icon icon_triangle"></i>
-					<button>规则</button>
-				</div>
-				<div class="buy_one">
-					<div class="col">
-						<em>卖一</em>
-						<span>50.12</span>
-						<em>20</em>
-					</div>
-					<div class="col">
-						<em>买一</em>
-						<span>50.12</span>
-						<em>20</em>
-					</div>
-				</div>
-				<div class="order_type">
-					<template v-for="(v, index) in orderList">
-						<span :class="{current: currentOrderType == index}">{{v}}</span>
-					</template>
-				</div>
-				<div class="order_cont">
-					<component :is="currentOrderView"></component>
-				</div>
+				<moneyTotal></moneyTotal>
+				<components :is="currentView"></components>
 			</div>
 		</div>
 	</div>
@@ -66,20 +23,37 @@
 
 <script>
 	import TabBar from "../components/TabBar.vue"
-	import normalOrder from "./trade/normalOrder.vue"
-	import conditionOrder from "./trade/conditionOrder.vue"
+	import moneyTotal from "../components/moneyTotal.vue"
+	import tradeCenter from "./trade/tradeCenter.vue"
+	import holdOrder from "./trade/holdOrder.vue"
+	import moneyDetails from "./trade/moneyDetails.vue"
 	export default{
 		name: "trade",
-		components: {TabBar, normalOrder, conditionOrder},
+		components: {TabBar, moneyTotal, tradeCenter, holdOrder, moneyDetails},
 		data(){
 			return{
-				currentOrderType: 0,
-				orderList: ['普通单','条件单'],
-				currentOrderView: 'conditionOrder',
-				selected:"模拟交易",
+				selected: "模拟交易",
 				tabs:[require("../assets/images/quotation_02.png"),require("../assets/images/mockTrading_01.png"),
-				require("../assets/images/information_02.png"),require("../assets/images/mine_02.png")]
+				require("../assets/images/information_02.png"),require("../assets/images/mine_02.png")],
+				tabList: ['交易','持仓','资金明细'],
+				currentNum: 0,
+				currentView: 'tradeCenter',
 			}
+		},
+		methods: {
+			tabEvent: function(index){
+				this.currentNum = index;
+				if(index == 0){
+					this.currentView = 'tradeCenter';
+				}else if(index == 1){
+					this.currentView = 'position';
+				}else{
+					this.currentView = 'moneyDetails';
+				}
+			}
+		},
+		mounted: function(){
+			
 		}
 	}
 </script>
@@ -141,145 +115,5 @@
 	.main{
 		margin-top: 1.81rem;
 		padding-bottom: 1rem;
-		.cont{
-			.total{
-				height: 0.95rem;
-				background: $lightBlue;
-				border-bottom: 0.01rem solid $black;
-				.col{
-					float: left;
-					width: 2.5rem;
-					height: 0.95rem;
-					text-align: center;
-					border-left: 0.01rem solid $black;
-					&:first-child{
-						border: none;
-					}
-					em{
-						display: block;
-						color: $fontBlue;
-						margin: 0.14rem 0;
-					}
-					span{
-						display: inline-block;
-						text-align: center;
-						color: $white;
-						font-size: $fs28;
-					}
-				}
-			}
-			.tips{
-				height: 0.64rem;
-				line-height: 0.64rem;
-				background: $titleBlue;
-				border-bottom: 0.01rem solid $black;
-				padding: 0 0.3rem;
-				span{
-					float: left;
-					font-size: $fs28;
-					margin-right: 0.3rem;
-					&.red{
-						color: $red;
-					}
-					&.green{
-						color: $green;
-					}
-				}
-				p{
-					float: right;
-					font-size: $fs28;
-					em{
-						color: $white;
-					}
-				}
-			}
-			.fens_title{
-				height: 0.48rem;
-				border-bottom: 0.01rem solid $black;
-				padding-left: 3.4rem;
-				span{
-					float: left;
-					display: inline-block;
-					height: 0.48rem;
-					line-height: 0.48rem;
-					color: $fontBlue;
-				}
-				.icon_triangle{
-					float: left;
-					width: 0.16rem;
-					height: 0.48rem;
-					background: url(../assets/images/triangle.png) no-repeat center 0.2rem;
-					background-size: 0.16rem 0.08rem;
-					margin: 0 0.2rem 0 0.06rem;
-				}
-				button{
-					float: left;
-					width: 0.64rem;
-					height: 0.32rem;
-					background: $yellow;
-					border-radius: 0.1rem;
-					margin: 0.08rem 0;
-					color: $bg;
-					font-size: 0.2rem;
-					padding: 0;
-				}
-			}
-			.buy_one{
-				width: 7.5rem;
-				height: 0.64rem;
-				line-height: 0.64rem;
-				border-bottom: 0.01rem solid $black;
-				display: flex;
-				text-align: center;
-				.col{
-					width: 50%;
-					background: #3a2d36;
-					&:first-child{
-						background: #273a3b;
-					}
-					em{
-						color: $white;
-						font-size: $fs28;
-						margin: 0 0.2rem;
-					}
-					span{
-						font-size: $fs28;
-						&.red{
-							color: $red;
-						}
-						&.green{
-							color: $green;
-						}
-					}
-				}
-			}
-			.order_type{
-				height: 0.96rem;
-				padding: 0 0.3rem;
-				border-bottom: 0.01rem solid $black;
-				span{
-					display: inline-block;
-					float: left;
-					width: 3.45rem;
-					height: 0.56rem;
-					line-height: 0.56rem;
-					text-align: center;
-					background: $lightBlue;
-					margin: 0.2rem 0;
-					color: $white; 
-					&:first-child{
-						border-top-left-radius: 0.1rem;
-						border-bottom-left-radius: 0.1rem;
-					}
-					&:last-child{
-						border-top-right-radius: 0.1rem;
-						border-bottom-right-radius: 0.1rem;
-					}
-					&.current{
-						background: $blue;
-					}
-				}
-			}
-		}
 	}
 </style>
