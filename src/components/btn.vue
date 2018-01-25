@@ -108,21 +108,30 @@
     	}
     	&.orangesm{
     		width: 1.28rem;
+    		height: 0.64rem;
+    		line-height: 0.64rem;
     		background: #cc7727;
+    		font-size: $fs24;
     		&.current{
     			background: #cc833f;
     		}
     	}
     	&.bluesm{
     		width: 1.28rem;
+    		height: 0.64rem;
+    		line-height: 0.64rem;
     		background: #4d5e80;
+    		font-size: $fs24;
     		&.current{
     			background: #56647f;
     		}
     	}
     	&.greensm{
     		width: 1.28rem;
+    		height: 0.64rem;
+    		line-height: 0.64rem;
     		background: #6f7d52;
+    		font-size: $fs24;
     		&.current{
     			background: #88966b;
     		}

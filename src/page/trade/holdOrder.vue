@@ -3,7 +3,7 @@
 		<div class="nav">
 			<ul>
 				<template v-for="(v, index) in navList">
-					<li>{{v}}</li>
+					<li :class="{current: currentNum == index}">{{v}}</li>
 				</template>
 			</ul>
 		</div>
@@ -39,17 +39,23 @@
 	.nav{
 		width: 7.5rem;
 		height: 0.8rem;
-		padding-left: 0.3rem;
-		overflow-y: auto;
+		padding: 0 0.3rem;
+		border-bottom: 0.01rem solid $black;
+		overflow-x: auto;
 		ul{
-			width: 7.8rem;
+			width: 8rem;
+			overflow: hidden;
 			li{
 				float: left;
 				height: 0.8rem;
 				line-height: 0.8rem;
-				margin-right: 0.4rem;
+				margin-right: 0.35rem;
+				font-size: $fs28;
 				&:last-child{
 					margin-right: 0;
+				}
+				&.current{
+					color: $blue;
 				}
 			}
 		}

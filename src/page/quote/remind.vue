@@ -90,7 +90,7 @@
 				<div class="row">
 					<span class="type">提醒频率</span>
 					<div class="fr" @touchstart="setRemindEvent">
-						<span>{{remindList.remindFrequency | operateFrequency}}</span>
+						<span>{{defaultFrequency | operateFrequency}}</span>
 						<i class="icon icon_arrow"></i>
 					</div>
 				</div>
@@ -110,7 +110,7 @@
 				<ul>
 					<li><span>提醒频率</span></li>
 					<template v-for="v in remindFrequency">
-						<li :class="{current: v.status == remindList.remindFrequency}" @touchstart="chooseRemindEvent(v.status)"><span>{{v.name}}</span></li>
+						<li :class="{current: v.status == defaultFrequency}" @touchstart="chooseRemindEvent(v.status)"><span>{{v.name}}</span></li>
 					</template>
 				</ul>
 			</div>
@@ -141,11 +141,12 @@
 				}],
 				remindWays: [{
 					name: '短信提醒',
-					status: 0,
+					status: 1,
 				},{
 					name: '通知提醒',
-					status: 0,
+					status: 1,
 				}],
+				defaultFrequency: '1',
 				shadeShow: false,
 				isOptional: false,
 				daysHight: '',
@@ -263,7 +264,7 @@
 			chooseRemindEvent: function(val){
 				$(".select_cont").css({bottom: -3.5 + 'rem'});
 				this.shadeShow = false;
-				this.remindList.remindFrequency = val;
+				this.defaultFrequency = val;
 			},
 			getPriceByKline: function(){
 				let data = {
@@ -347,7 +348,7 @@
 					'decreaseSwitch': this.remindList.todayFallRangePointIsOpen,
 					'isBreakHighestPriceSwitch': this.remindList.todayBreakHighestPriceIsOpen,
 					'isBreakLowestPriceSwitch': this.remindList.todayBreakLowestPriceIsOpen,
-					'remindFrequency': this.remindList.remindFrequency,
+					'remindFrequency': this.defaultFrequency,
 					
 				}
 				pro.fetch('post', '/quoteTrader/saveRemindInfo', datas, headers).then((res) => {
@@ -389,10 +390,15 @@
 				}
 				pro.fetch('post', '/quoteTrader/getByIdAndCommodityNo', datas, headers).then((res) => {
 					if(res.success == true && res.code == 1){
+						console.log(res.data);
 						this.remindList = res.data;
 						this.commodityName = this.remindList.commodityName;
 						//提醒方式
 						let rmindWays = this.remindList.remindWay.split(',');
+						if(rmindWays.length > 1){
+							this.remindWays[0].status = 0;
+							this.remindWays[1].status = 0;
+						}
 						rmindWays.forEach((o, i) => {
 							if(o == '1'){
 								this.remindWays[0].status = 1;
@@ -400,6 +406,10 @@
 								this.remindWays[1].status = 1;
 							}
 						});
+						//提醒频率
+						if(this.remindList){
+							this.defaultFrequency = this.remindList.remindFrequency;
+						}
 					}
 				}).catch((err) => {
 					Toast({message: err.data.message, position: 'bottom', duration: 2000});
