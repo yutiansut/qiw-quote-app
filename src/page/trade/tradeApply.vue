@@ -2,61 +2,64 @@
 	<div id="tradeApply">
 		<div class="choose">
 			<div class="p_left">选择融资本金(本金越多，可持仓手数越多)</div>
-			<div id="picture">
-				<!--<mt-range v-model="rangeValue" :barHeight="10">
-				  <div slot="start">0</div>
-				  <div slot="end">100</div>
-				</mt-range>-->
-				<input type="range" />
+			<div class="picture">
+				<p><span>{{financing}}</span>元</p>
+				<mt-range v-model="rangeValue" :barHeight="5" :min="this.startMin" :max="this.startMax" class="range"></mt-range>
+				<ul class="section">
+					<li><span>{{startMin}}</span>元</li>
+					<li><span>{{startMax}}</span>元</li>
+				</ul>
 			</div>
 			<div class="p_left">选择融倍数，（倍数越多，可持仓手数越多）</div>
-			<!--<div class="picture">
-				<mt-range v-model="rangeValue">
-				  <div slot="start">0</div>
-				  <div slot="end">100</div>
-				</mt-range>
-			</div>-->
+			<div class="picture1">
+				<p><span>{{times}}倍</span></p>
+				<mt-range v-model="rangeValue1" :barHeight="5" :min="0" :max="100" :step="5" class="range"></mt-range>
+				<ul class="section1">
+					<li><span>0</span>倍</li>
+					<li><span>100</span>倍</li>
+				</ul>
+			</div>
 			<div class="black"></div>
 			<div class="commodity">
 				<ul>
 					<li>融资金额</li>
-					<li>3000元</li>
+					<li>{{financing}}元</li>
 				</ul>
 				<ul>
 					<li>总操盘资金</li>
-					<li>5540元</li>
+					<li>{{totalMoney}}元</li>
 				</ul>
 				<ul>
 					<li>亏损平仓线</li>
-					<li>5850元</li>
+					<li>{{lossLine}}元</li>
 				</ul>
 			</div>
 			<div class="p_left">可交易品种（一个账号可交易多个品种）</div>
 			<div class="handle">
-				<ul v-for="n in 6">
+				<ul v-for="k in tradableList">
 					<li>
-						<span>国际原油</span>
-						<p>CL1706</p>
+						<span>{{k.commodityName}}</span>
+						<p>{{k.commodityNo}}</p>
 					</li>
 					<li>
-						<span>10000</span>
-						<p>美元/手</p>
+						<span>{{k.describe}}</span>
+						<p>{{k.currencyNo | changeCurrency}}/手</p>
 					</li>
 				</ul>
 			</div>
 			<div class="black"></div>
 			<div class="warn">
 				<ul>
-					<li>提交申请时请仔细阅读<span>《期货融资合作协议》</span><span>操盘细则</span></li>
+					<li>提交申请时请仔细阅读<span>《期货融资合作协议》</span><span>《操盘细则》</span></li>
 					<li>如遇问题请咨询客服：400-852-8008</li>
 				</ul>
 			</div>
 			<div class="bt">
 				<ul>
 					<li>
-						支付：<span>3000.00</span>元
+						支付：<span>{{payMoney}}</span>元
 					</li>
-					<li>
+					<li @click="clickBtn">
 						立即支付
 					</li>
 				</ul>
@@ -75,34 +78,95 @@
 		components:{TabBar},
 		data(){
 			return{
-				rangeValue:50,
+				rangeValue:0,
 				tabs:[require("../../assets/images/quotation_02.png"),require("../../assets/images/mockTrading_01.png"),
 				require("../../assets/images/information_02.png"),require("../../assets/images/mine_02.png")],
-				selected:"模拟交易"
+				selected:"模拟交易",
+				tradableList:"",
+				financing:"",
+				times:0,
+				rangeValue1:0,
+				startMin:0,
+				startMax:0,
+				totalMoney:'',
+				lossScale:"",
+				lossLine:'',
+				rate:"",
+				payMoney:0,
+				isLogin:false,
+				isPresentedgive:true,
+				balance:""
 			}
 		},
 		methods:{
-			getParameters:function(){
-				var headers = {
-					token : this.userInfo.token,
-					secret : this.userInfo.secret
-				}
+			//获取基础配置信息
+			getParameters:function(headers){
 				pro.fetch("post","/futureManage/getApplyData","",headers).then((res)=>{
-					console.log("res==="+JSON.stringify(res));
+					console.log("res==="+JSON.stringify(res.data.balance))
+					if(res.code == 1 && res.success == true){
+						this.tradableList = res.data.tradableList;
+						this.lossScale = res.data.lossScale;
+						this.lossLine = this.rangeValue*this.lossScale + this.rangeValue*this.rangeValue1;
+						this.rate = res.data.rate;
+						if(res.data.balance != '' && res.data.balance > 3){
+							this.startMax = res.data.balance*this.rate;
+							this.balance = res.data.balance;
+						}else if(res.data.balance != '' && res.data.balance < 3 || res.data.balance == 3){
+							this.startMax = 10000;
+						}
+					}
 				}).catch((err)=>{
-					console.log("err==="+JSON.stringify(err));
-				})
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
+					}else if(data.code == -9999){
+						this.$toast({message:'登录超时，请重新登录',duration: 2000});
+						this.$router.push({path:"/login"});
+					}else{
+						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
+					}
+				});
+			},
+			clickBtn:function(){
+				if(this.isLogin == false){
+					console.log("您还没有登录")
+				}else{
+					if(this.isPresentedgive == false){
+						
+					}else{
+						if(this.payMoney > this.balance){
+							console.log("去充值");
+						}else{
+							console.log("去支付");
+						}
+					}
+				}
 			}
 		},
 		mounted:function(){
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+			this.financing = this.rangeValue;
+			this.totalMoney = this.rangeValue + this.rangeValue*this.rangeValue1;
+			this.payMoney = this.rangeValue/100;
+			this.startMin = 300;
+			this.rangeValue = 300;
 			if(this.userInfo == ''){
-				this.showLoginIn = false;
-				this.showNotLogin = true;
+				//未登录
+				console.log("未登录");
+				this.startMax = 1000;
+				this.isLogin = false;
+				var headers = ""
+				this.getParameters(headers);
 			}else{
-				this.showLoginIn = true;
-				this.showNotLogin = false;
-				this.getParameters();
+				//已登录
+				console.log("一登录")
+				this.isLogin = true;
+				var headers = {
+					token : this.userInfo.token,
+					secret : this.userInfo.secret
+				}
+				this.getParameters(headers);
+				
 			}
 		},
 		activated: function(){
@@ -111,7 +175,40 @@
 		},
 		watch:{
 			rangeValue:function(){
-				console.log(this.rangeValue)
+				this.financing = this.rangeValue;
+				this.totalMoney = this.rangeValue + this.rangeValue*this.rangeValue1;
+				this.lossLine = this.rangeValue*this.lossScale + this.rangeValue*this.rangeValue1;
+				this.payMoney = this.rangeValue/100;
+//				console.log(this.rangeValue)
+			},
+			rangeValue1:function(){
+				this.times = this.rangeValue1;
+				this.totalMoney = this.rangeValue + this.rangeValue*this.rangeValue1;
+				this.lossLine = this.rangeValue*this.lossScale + this.rangeValue*this.rangeValue1;
+//				console.log(this.rangeValue1)
+			},
+		},
+		filters:{
+			changeCurrency:function(e){
+				switch (e){
+					case 'USD':
+						return "美元"
+						break;
+					case 'EUR':
+					 	return "欧元"
+						break;
+					case 'HKD-HKFE':
+						return "港币"
+						break;
+					case 'CNY':
+						return "人民币"
+						break;
+					case 'JPY':
+						return "日元"
+						break;
+					default:
+						break;
+				}
 			}
 		}
 	}
@@ -133,18 +230,68 @@
 				text-indent: 0.3rem;
 				border-bottom: 1px solid $black;
 			}
-			#picture{
+			.picture{
 				float: left;
-				/*display: none;*/
 				width: 100%;
 				height: 1.8rem;
 				background-color: $bg;
-				input{
-					background-color: #13161b;
-					border: 1px solid $yellow;
-					width: 100%;
-					height: 0.3rem;
-					border-radius: 0.15rem;
+				p{
+					text-align: center;
+					margin: 0.3rem 0 0;
+					color:$yellow;
+					span{
+						font-size: $fs36;
+						margin-right: 0.1rem;
+						font-weight: 600;
+					}
+				}
+				.section{
+					width: 90%;
+					margin: auto;
+					li{
+						font-size: $fs28;
+						float: left;
+						width: 50%;
+						color: $yellow;
+						&:nth-child(2){
+							text-align: right;
+							color: $white;
+						}
+					}
+				}
+			}
+			.range{
+					width: 90%;
+					margin: auto;
+				}
+			.picture1{
+				float: left;
+				width: 100%;
+				height: 1.8rem;
+				background-color: $bg;
+				p{
+					text-align: center;
+					margin: 0.3rem 0 0;
+					color:$blue;
+					span{
+						font-size: $fs36;
+						margin-right: 0.1rem;
+						font-weight: 600;
+					}
+				}
+				.section1{
+					width: 90%;
+					margin: auto;
+					li{
+						font-size: $fs28;
+						float: left;
+						width: 50%;
+						color: $blue;
+						&:nth-child(2){
+							text-align: right;
+							color: $white;
+						}
+					}
 				}
 			}
 			.black{
@@ -191,10 +338,22 @@
 						padding-top: 0.16rem;
 						border-bottom: 1px solid $black;
 						border-right: 1px solid $black;
+						padding-top: 0.06rem;
 						&:nth-child(1){
 							height: 0.8rem;
 							background-color: $lightBlue;
-							color: #bdcdee;
+							color: #ccddff;
+							span{
+								align-items: auto;
+								/*line-height: 0.2rem;*/
+								font-size: 0.24rem;
+								height: 0.4rem;
+							}
+							p{
+								height: 0.4rem;
+								font-size: 0.2rem;
+								line-height: 0.4rem;
+							}
 						}
 						&:nth-child(2){
 							height: 0.8rem;
@@ -206,7 +365,7 @@
 			.warn{
 				width: 100%;
 				float: left;
-				height: 1.6rem;
+				height: 3.6rem;
 				ul{
 					padding: 0 0.3rem;
 					width: 100%;
@@ -224,7 +383,7 @@
 			}
 			.bt{
 				position: fixed;
-				bottom: 1.1rem;
+				bottom: 1rem;
 				width: 100%;
 				height: 1rem;
 				border-top: 1px solid $black;
@@ -238,7 +397,7 @@
 					&:nth-child(1){
 						width: 68%;
 						span{
-							color: $white;
+							color: $orange;
 							font-size: $fs40;
 							margin: 0 0.1rem;
 						}

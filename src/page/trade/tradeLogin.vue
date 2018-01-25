@@ -63,6 +63,7 @@
 <style scoped lang="scss">
 	@import "../../assets/css/common.scss";
 	header{
+		z-index:1000;
 		position: fixed;
 		top: 0;
 		left: 0;
