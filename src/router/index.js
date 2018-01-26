@@ -37,8 +37,6 @@ import newsDetails from"../page/account/newsDetails.vue"
 import recharge from"../page/account/recharge.vue"
 import myFinance from"../page/account/myFinance/myFinance.vue"
 import financeDetails from"../page/account/myFinance/financeDetails.vue"
-import schemeDetails from"../page/account/myFinance/schemeDetails.vue"
-import historyRecords from"../page/account/myFinance/historyRecords.vue"
 import addMargin from"../page/account/myFinance/addMargin.vue"
 import information_details from "../page/information/information_details.vue"
 import information_search from "../page/information/information_search.vue"
@@ -162,16 +160,7 @@ export default new Router({
 		component:myFinance
 	},{
 		path:'/financeDetails',
-		component:financeDetails,
-		children:[
-			{
-				path:"/financeDetails/schemeDetails",
-				component:schemeDetails
-			},{
-				path:"/financeDetails/historyRecords",
-				component:historyRecords
-			}
-		]
+		component:financeDetails
 	},{
 		path:'/addMargin',
 		component:addMargin,

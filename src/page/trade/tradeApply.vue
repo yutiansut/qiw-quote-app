@@ -4,7 +4,7 @@
 			<div class="p_left">选择融资本金(本金越多，可持仓手数越多)</div>
 			<div class="picture">
 				<p><span>{{financing}}</span>元</p>
-				<mt-range v-model="rangeValue" :barHeight="5" :min="this.startMin" :max="this.startMax" class="range"></mt-range>
+				<mt-range v-model="rangeValue" :barHeight="5" :min="this.startMin" :max="this.startMax" class="range" :disabled="disabled"></mt-range>
 				<ul class="section">
 					<li><span>{{startMin}}</span>元</li>
 					<li><span>{{startMax}}</span>元</li>
@@ -73,6 +73,7 @@
 <script>
 	import TabBar from "../../components/TabBar.vue"
 	import pro from "../../assets/js/common.js"
+	import { MessageBox } from 'mint-ui';
 	export default{
 		name:"tradeApply",
 		components:{TabBar},
@@ -95,14 +96,54 @@
 				payMoney:0,
 				isLogin:false,
 				isPresentedgive:true,
-				balance:""
+				balance:"",
+				rechargeMoney:"",
+				disabled:false,
+				activityType:0,
+				//是否使用过注册奖励申请方案，默认为true
+				isUseActivity:true
 			}
 		},
 		methods:{
+			//已领取状态下去获取是否使用状态
+			getNewActivity:function(headers){
+				pro.fetch("post","/futureManage/getPresent",{type:1},headers).then((res)=>{}).catch((err)=>{
+					var data = err.data ;
+					if(data == undefined){
+						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
+					}else if(data.data == false){
+						this.isUseActivity = false;
+						this.disabled = true;
+						this.rangeValue = 10000
+					}
+				})
+			},
+			//获取是否领取过1w新手资金
+			GetActivity:function(headers){
+				pro.fetch("post","/account/getBasicMsg","",headers).then((res)=>{
+					console.log("res=="+JSON.stringify(res))
+					if(res.code == 1 && res.success == true){
+						this.isPresentedgive = res.data.isGetActivity;
+						if(res.data.isGetActivity == true){
+							this.getNewActivity(headers);
+						}
+					}
+				}).catch((err)=>{
+					var data = err.data ;
+					if(data == undefined){
+						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
+					}else if(data.code == -9999){
+						this.$toast({message:'登录超时，请重新登录',duration: 2000});
+						this.$router.push({path:"/login"});
+					}else{
+						this.$toast({message:data.message,duration: 2000});
+					}
+				})
+			},
 			//获取基础配置信息
 			getParameters:function(headers){
 				pro.fetch("post","/futureManage/getApplyData","",headers).then((res)=>{
-					console.log("res==="+JSON.stringify(res.data.balance))
+//					console.log("res==="+JSON.stringify(res.data.balance))
 					if(res.code == 1 && res.success == true){
 						this.tradableList = res.data.tradableList;
 						this.lossScale = res.data.lossScale;
@@ -114,6 +155,7 @@
 						}else if(res.data.balance != '' && res.data.balance < 3 || res.data.balance == 3){
 							this.startMax = 10000;
 						}
+//						this.balance = 100;
 					}
 				}).catch((err)=>{
 					var data = err.data;
@@ -123,24 +165,79 @@
 						this.$toast({message:'登录超时，请重新登录',duration: 2000});
 						this.$router.push({path:"/login"});
 					}else{
-						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
+						this.$toast({message:data.message,duration: 2000});
 					}
 				});
 			},
 			clickBtn:function(){
+				//未登录
 				if(this.isLogin == false){
-					console.log("您还没有登录")
+					MessageBox.confirm("您还未登录平台账户，赶紧去登录吧","提示",{confirmButtonText:"去登录",}).then(action=>{
+					this.$router.push({path:"/login"});
+					}).catch(err=>{});
+				//已登录
 				}else{
+					//未领取过新手礼包
 					if(this.isPresentedgive == false){
-						
-					}else{
+						MessageBox.alert("恭喜小主，您有1w的操盘金体验未领取，赶紧领取吧！","提示",{confirmButtonText:"去领取"}).then(action => {
+							console.log("999999999")
+						});
+					}
+					//领取过新手礼包
+					else{
+						//余额不足
 						if(this.payMoney > this.balance){
-							console.log("去充值");
-						}else{
-							console.log("去支付");
+//							console.log("去充值");
+							this.rechargeMoney = this.payMoney - this.balance;
+							MessageBox.confirm("余额不足：您还差"+this.rechargeMoney+"元，先去充值吧","提示",{confirmButtonText:"去充值",}).then(action=>{
+//								console.log("去充值咯");
+								this.$router.push({path:"/recharge"});
+							}).catch(err=>{});
+						}
+						//余额充足
+						else{
+//							console.log("去支付");
+							MessageBox.confirm("确认支付"+this.payMoney+"元，申请一个融资方案","提示",{confirmButtonText:"确认",}).then(action=>{
+//								console.log("去支付咯");
+								this.apply(this.activityType);
+							}).catch(err=>{});
 						}
 					}
 				}
+			},
+			//支付申请
+			apply:function(activityType){
+				var data = {
+					traderFund:this.totalMoney,
+					forceLine:this.lossLine,
+					multiple:this.rangeValue1,
+					financeBond:this.financing,
+					financeMoney:this.financing*this.rangeValue1,
+					activityType:activityType
+				}
+				var head = {
+					token : this.userInfo.token,
+					secret : this.userInfo.secret
+				}
+//				console.log("data======"+JSON.stringify(data))
+				pro.fetch("post","/futureManage/openAccount",data,head).then((res)=>{
+					if(res.code == 1 && res.success == true){
+						this.$toast({message:'申请成功',duration: 2000});
+						this.$router.push({path:"/applySuccess"});
+					}
+				}).catch((err)=>{
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
+					}else if(data.success == false){
+						//领取未使用
+						this.$toast({message:'',duration: 2000});
+						
+					}else if(data.success == true){
+						//领取已使用
+						this.$toast({message:data.message,duration: 2000});
+					}
+				})	
 			}
 		},
 		mounted:function(){
@@ -152,21 +249,22 @@
 			this.rangeValue = 300;
 			if(this.userInfo == ''){
 				//未登录
-				console.log("未登录");
+//				console.log("未登录");
 				this.startMax = 1000;
 				this.isLogin = false;
 				var headers = ""
 				this.getParameters(headers);
 			}else{
 				//已登录
-				console.log("一登录")
+//				console.log("一登录")
 				this.isLogin = true;
 				var headers = {
 					token : this.userInfo.token,
 					secret : this.userInfo.secret
 				}
+//				console.log("headers==="+JSON.stringify(headers))
 				this.getParameters(headers);
-				
+				this.GetActivity(headers);
 			}
 		},
 		activated: function(){
@@ -216,6 +314,7 @@
 
 <style scoped lang="scss">
 	@import "../../assets/css/common.scss";
+	
 	#tradeApply{
 		width: 7.5rem;
 		.choose{
