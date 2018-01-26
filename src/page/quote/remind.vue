@@ -153,6 +153,7 @@
 				hightPrice: '--',
 				daysLow: '',
 				lowPrice: '--',
+				remindId: '',
 			}
 		},
 		computed: {
@@ -335,8 +336,9 @@
 					secret: this.userInfo.secret
 				}
 				var datas = {
+					'id': this.remindId,
 					'commodityNo': this.currentNo,
-					'commodityName': this.commodityName,
+					'commodityName': this.orderTemplist[this.currentNo].CommodityName,
 					'remindType': _remindWays.join(','),
 					'risePoint': this.remindList.lastPriceOverSomePrice,
 					'risePointSwitch': this.remindList.lastPriceOverSomePriceIsOpen,
@@ -358,6 +360,7 @@
 							setTimeout(() => {
 								this.$router.go(-1);
 							}, 1000);
+							console.log(this.$parent);
 						}else{
 							let info = {
 								'exchangeNo': this.orderTemplist[this.currentNo].ExchangeNo,
@@ -389,26 +392,30 @@
 					'commodityNo': this.currentNo,
 				}
 				pro.fetch('post', '/quoteTrader/getByIdAndCommodityNo', datas, headers).then((res) => {
-					if(res.success == true && res.code == 1){
-						console.log(res.data);
-						this.remindList = res.data;
-						this.commodityName = this.remindList.commodityName;
-						//提醒方式
-						let rmindWays = this.remindList.remindWay.split(',');
-						if(rmindWays.length > 1){
-							this.remindWays[0].status = 0;
-							this.remindWays[1].status = 0;
-						}
-						rmindWays.forEach((o, i) => {
-							if(o == '1'){
-								this.remindWays[0].status = 1;
-							}else if(o == '2'){
-								this.remindWays[1].status = 1;
+					console.log(res);
+					if(res.success == true){
+						if(res.code == 1){
+							this.remindList = res.data;
+							this.remindId = this.remindList.id; 
+							//提醒方式
+							let rmindWays = this.remindList.remindWay.split(',');
+							if(rmindWays.length >= 1){
+								this.remindWays[0].status = 0;
+								this.remindWays[1].status = 0;
 							}
-						});
-						//提醒频率
-						if(this.remindList){
-							this.defaultFrequency = this.remindList.remindFrequency;
+							rmindWays.forEach((o, i) => {
+								if(o == '1'){
+									this.remindWays[0].status = 1;
+								}else if(o == '2'){
+									this.remindWays[1].status = 1;
+								}
+							});
+							//提醒频率
+							if(this.remindList){
+								this.defaultFrequency = this.remindList.remindFrequency;
+							}
+						}else{
+							this.remindList = [];
 						}
 					}
 				}).catch((err) => {
