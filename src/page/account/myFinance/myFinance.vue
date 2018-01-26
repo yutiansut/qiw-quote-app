@@ -29,7 +29,7 @@
 						<!--方案列表-->
 						<li></li>
 						<li>
-							<span>{{k.applyTime | showTime}} ></span>
+							<span>{{k.applyTime}} ></span>
 						</li>
 					</ul>
 				</div>
@@ -60,57 +60,58 @@
 			return{
 				exist:true,
 				none:false,
-				list:[{
-					id:123456789,
-					applyTime:1516355568000,
-					financmoney:200,
-					tradeDeposit:500,
-					totalTradeFund:500,
-					lossCloseoutLine:300,
-					state:1,
-					tradeprofitandloss:1213
-				},
-				{
-					id:135151315,
-					applyTime:1516223258000,
-					financmoney:100,
-					tradeDeposit:400,
-					totalTradeFund:400,
-					lossCloseoutLine:200,
-					state:4,
-					tradeprofitandloss:300
-				},
-				{
-					id:65151351,
-					applyTime:1321358258000,
-					financmoney:153,
-					tradeDeposit:6511,
-					totalTradeFund:64864,
-					lossCloseoutLine:1518,
-					state:1,
-					tradeprofitandloss:31516
-				},
-				{
-					id:61848919818,
-					applyTime:1512358258000,
-					financmoney:55757,
-					tradeDeposit:5857,
-					totalTradeFund:58587,
-					lossCloseoutLine:58578,
-					state:3,
-					tradeprofitandloss:5578
-				},
-				{
-					id:8757,
-					applyTime:1516123258000,
-					financmoney:58757,
-					tradeDeposit:5757,
-					totalTradeFund:22424,
-					lossCloseoutLine:2767867,
-					state:2,
-					tradeprofitandloss:7635424
-					}
-				]	
+				list:''
+//				list:[{
+//					id:123456789,
+//					applyTime:1516355568000,
+//					financmoney:200,
+//					tradeDeposit:500,
+//					totalTradeFund:500,
+//					lossCloseoutLine:300,
+//					state:1,
+//					tradeprofitandloss:1213
+//				},
+//				{
+//					id:135151315,
+//					applyTime:1516223258000,
+//					financmoney:100,
+//					tradeDeposit:400,
+//					totalTradeFund:400,
+//					lossCloseoutLine:200,
+//					state:4,
+//					tradeprofitandloss:300
+//				},
+//				{
+//					id:65151351,
+//					applyTime:1321358258000,
+//					financmoney:153,
+//					tradeDeposit:6511,
+//					totalTradeFund:64864,
+//					lossCloseoutLine:1518,
+//					state:1,
+//					tradeprofitandloss:31516
+//				},
+//				{
+//					id:61848919818,
+//					applyTime:1512358258000,
+//					financmoney:55757,
+//					tradeDeposit:5857,
+//					totalTradeFund:58587,
+//					lossCloseoutLine:58578,
+//					state:3,
+//					tradeprofitandloss:5578
+//				},
+//				{
+//					id:8757,
+//					applyTime:1516123258000,
+//					financmoney:58757,
+//					tradeDeposit:5757,
+//					totalTradeFund:22424,
+//					lossCloseoutLine:2767867,
+//					state:2,
+//					tradeprofitandloss:7635424
+//					}
+//				]	
 			}
 		},
 		methods:{
@@ -130,25 +131,19 @@
 				pro.fetch("post","/futureManage/getProgramList",data,headers).then((res)=>{
 					console.log("res=="+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
-//						this.list = res.data.list;
+						this.list = res.data.list;
 //						console.log("this.list=="+this.list)
-//						if(this.list == undefined){
-//							this.none=true;
-//							this.exist=false;
-//						}else{
-//							this.none=false;
-//							this.exist=true
-//						}
+						if(this.list == undefined){
+							this.none=true;
+							this.exist=false;
+						}else{
+							this.none=false;
+							this.exist=true
+						}
 					}
 				}).catch((err)=>{
 					console.log("res=="+JSON.stringify(err))
 				})
-			}
-		},
-		filters:{
-			showTime:function(e){
-				var a = pro.getDate("y-m-d h:i:s",e);
-				return a;
 			}
 		},
 		mounted:function(){

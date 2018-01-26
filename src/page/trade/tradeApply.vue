@@ -100,40 +100,33 @@
 				rechargeMoney:"",
 				disabled:false,
 				activityType:0,
+				//是否使用过注册奖励申请方案，默认为true
+				isUseActivity:true
 			}
 		},
 		methods:{
-			//获取方案列表判断是否使用过注册奖金申请方案
+			//已领取状态下去获取是否使用状态
 			getNewActivity:function(headers){
-				pro.fetch("post","/futureManage/getProgramList",{pageNo:"",pageSize:""},headers).then((res)=>{
-//					console.log("res=="+JSON.stringify(res));
-					if(res.code == 1 && res.success == true){
-						if(res.data.list == undefined){
-//							console.log("您还未申请过方案");
-							this.disabled = true;
-							this.rangeValue = 10000;
-							this.activityType = 1;
-						}
-					}
-				}).catch((err)=>{
-//					console.log("err==="+JSON.stringify(err))
+				pro.fetch("post","/futureManage/getPresent",{type:1},headers).then((res)=>{}).catch((err)=>{
 					var data = err.data ;
 					if(data == undefined){
 						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
-					}else if(data.code == -9999){
-						this.$toast({message:'登录超时，请重新登录',duration: 2000});
-						this.$router.push({path:"/login"});
-					}else{
-						this.$toast({message:data.message,duration: 2000});
+					}else if(data.data == false){
+						this.isUseActivity = false;
+						this.disabled = true;
+						this.rangeValue = 10000
 					}
 				})
 			},
 			//获取是否领取过1w新手资金
 			GetActivity:function(headers){
 				pro.fetch("post","/account/getBasicMsg","",headers).then((res)=>{
+					console.log("res=="+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
-//						console.log("res.data.isGetActivity=="+res.data.isGetActivity);
 						this.isPresentedgive = res.data.isGetActivity;
+						if(res.data.isGetActivity == true){
+							this.getNewActivity(headers);
+						}
 					}
 				}).catch((err)=>{
 					var data = err.data ;
@@ -181,17 +174,13 @@
 				if(this.isLogin == false){
 					MessageBox.confirm("您还未登录平台账户，赶紧去登录吧","提示",{confirmButtonText:"去登录",}).then(action=>{
 					this.$router.push({path:"/login"});
-//						console.log("去登录咯");
-					}).catch(err=>{
-//						console.log("不想登录");
-					});
+					}).catch(err=>{});
 				//已登录
 				}else{
 					//未领取过新手礼包
 					if(this.isPresentedgive == false){
-//						console.log("2222222")
 						MessageBox.alert("恭喜小主，您有1w的操盘金体验未领取，赶紧领取吧！","提示",{confirmButtonText:"去领取"}).then(action => {
-//							console.log("999999999")
+							console.log("999999999")
 						});
 					}
 					//领取过新手礼包
@@ -203,9 +192,7 @@
 							MessageBox.confirm("余额不足：您还差"+this.rechargeMoney+"元，先去充值吧","提示",{confirmButtonText:"去充值",}).then(action=>{
 //								console.log("去充值咯");
 								this.$router.push({path:"/recharge"});
-							}).catch(err=>{
-//								console.log("不想充值咯");
-							});
+							}).catch(err=>{});
 						}
 						//余额充足
 						else{
@@ -213,9 +200,7 @@
 							MessageBox.confirm("确认支付"+this.payMoney+"元，申请一个融资方案","提示",{confirmButtonText:"确认",}).then(action=>{
 //								console.log("去支付咯");
 								this.apply(this.activityType);
-							}).catch(err=>{
-//								console.log("不想支付");
-							});
+							}).catch(err=>{});
 						}
 					}
 				}
@@ -244,10 +229,12 @@
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
-					}else if(data.code == -9999){
-						this.$toast({message:'登录超时，请重新登录',duration: 2000});
-						this.$router.push({path:"/login"});
-					}else{
+					}else if(data.success == false){
+						//领取未使用
+						this.$toast({message:'',duration: 2000});
+						
+					}else if(data.success == true){
+						//领取已使用
 						this.$toast({message:data.message,duration: 2000});
 					}
 				})	
@@ -278,7 +265,6 @@
 //				console.log("headers==="+JSON.stringify(headers))
 				this.getParameters(headers);
 				this.GetActivity(headers);
-				this.getNewActivity(headers);
 			}
 		},
 		activated: function(){
