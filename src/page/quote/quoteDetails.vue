@@ -389,8 +389,7 @@
 							name: o.CommodityNo,
 							type: 'line',
 				            data: price,
-				            lineStyle: {normal: {width: 1,color: "#ffffff"}},
-							itemStyle: {normal: {color: "#ffffff"}},
+				            lineStyle: {normal: {width: 1}},
 							symbolSize: 2,
 						}
 						arr.push(obj);
