@@ -14,16 +14,10 @@
 				<div class="state" @click="toDetails(k.id)">
 					<ul>
 						<!--方案列表-->
-						<li class="state_1" v-if="k.state == 1">
+						<li class="state_2" v-if="k.state == 1">
 							<i></i>
 						</li>
-						<li class="state_2" v-else-if="k.state == 2">
-							<i></i>
-						</li>
-						<li class="state_3" v-else-if="k.state == 3">
-							<i></i>
-						</li>
-						<li class="state_4" v-else-if="k.state == 4">
+						<li class="state_4" v-else-if="k.state == 2">
 							<i></i>
 						</li>
 						<!--方案列表-->
@@ -61,57 +55,6 @@
 				exist:true,
 				none:false,
 				list:''
-//				list:[{
-//					id:123456789,
-//					applyTime:1516355568000,
-//					financmoney:200,
-//					tradeDeposit:500,
-//					totalTradeFund:500,
-//					lossCloseoutLine:300,
-//					state:1,
-//					tradeprofitandloss:1213
-//				},
-//				{
-//					id:135151315,
-//					applyTime:1516223258000,
-//					financmoney:100,
-//					tradeDeposit:400,
-//					totalTradeFund:400,
-//					lossCloseoutLine:200,
-//					state:4,
-//					tradeprofitandloss:300
-//				},
-//				{
-//					id:65151351,
-//					applyTime:1321358258000,
-//					financmoney:153,
-//					tradeDeposit:6511,
-//					totalTradeFund:64864,
-//					lossCloseoutLine:1518,
-//					state:1,
-//					tradeprofitandloss:31516
-//				},
-//				{
-//					id:61848919818,
-//					applyTime:1512358258000,
-//					financmoney:55757,
-//					tradeDeposit:5857,
-//					totalTradeFund:58587,
-//					lossCloseoutLine:58578,
-//					state:3,
-//					tradeprofitandloss:5578
-//				},
-//				{
-//					id:8757,
-//					applyTime:1516123258000,
-//					financmoney:58757,
-//					tradeDeposit:5757,
-//					totalTradeFund:22424,
-//					lossCloseoutLine:2767867,
-//					state:2,
-//					tradeprofitandloss:7635424
-//					}
-//				]	
 			}
 		},
 		methods:{
@@ -121,8 +64,8 @@
 			},
 			getUserInfo:function(){
 				var data = {
-					pageNo:"",
-					pageSize:""
+					pageNo:1,
+					pageSize:20
 				}
 				var headers = {
 					token : this.userInfo.token,
@@ -142,18 +85,23 @@
 						}
 					}
 				}).catch((err)=>{
-					console.log("res=="+JSON.stringify(err))
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
+					}else if(data.code == -9999){
+						this.$toast({message:'登录超时，请重新登录',duration: 2000});
+						this.$router.push({path:"/login"});
+					}else{
+						this.$toast({message:data.message,duration: 2000});
+					}
 				})
 			}
 		},
 		mounted:function(){
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 			if(this.userInfo == ''){
-				this.showLoginIn = false;
-				this.showNotLogin = true;
+				//未登录
 			}else{
-				this.showLoginIn = true;
-				this.showNotLogin = false;
 				this.getUserInfo();
 			}
 		},
