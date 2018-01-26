@@ -34,7 +34,7 @@
 					</ul>
 					<ul>
 						<li>融资保证金：<span>{{tradeDeposit}}元</span></li>
-						<li><mt-button class="btn2">追加保证金</mt-button></li>
+						<li><mt-button class="btn2" @click.native="addMargin">追加保证金</mt-button></li>
 					</ul>
 					<ul>
 						<li>融资金额：<span>{{financMoney | financMoneyChange}}元</span></li>
@@ -51,7 +51,7 @@
 						</li>
 					</ul>
 					<div class="btn1">
-						<btn className="bluelg" name="申请终结方案"></btn>
+						<btn className="bluelg" name="申请终结方案" @click.native="end"></btn>
 					</div>
 				</div>
 				<div class="end" v-show="showEnd">
@@ -152,18 +152,51 @@
 			}
 		},
 		methods:{
+			end:function(){
+				var headers = {
+					token : this.userInfo.token,
+					secret : this.userInfo.secret
+				}
+				pro.fetch("post","/futureManage/endProgram",{id:this.id},headers).then((res)=>{
+					if(res.code == 1 && res.success == true){
+						this.$toast({message:"终结成功",duration: 1000});
+					}
+				}).catch((err)=>{
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
+					}else{
+						if(data.code == -9999){
+							this.$toast({message:"认证失败，请重新登录",duration: 1000});
+							this.$router.push({path:"/login"});
+						}
+						else{
+							this.$toast({message:data.message,duration: 1000});
+						}
+					}
+				})
+			},
+			addMargin:function(){
+				this.$router.push({path:"/addMargin",query:{id:this.id}});
+			},
 			change:function(e){
 				var index = $(e.currentTarget).index();
-				$(".nav li").removeClass("current");
-				$(".nav li").eq(index).addClass("current");
 				switch (index){
 					case 0:
+						$(".nav li").removeClass("current");
+						$(".nav li").eq(index).addClass("current");
 						this.showSchemeDetails = true;
 						this.showHistoryRecords = false;
 						break;
 					case 1:
-						this.showHistoryRecords = true;
-						this.showSchemeDetails = false;
+						if(this.showcp = true){
+							this.$toast({message:'方案在操盘中，暂无历史成交记录',duration: 2000});	
+						}else{
+							this.showHistoryRecords = true;
+							this.showSchemeDetails = false;
+							$(".nav li").removeClass("current");
+							$(".nav li").eq(index).addClass("current");
+						}
 						break;
 					default:
 						break;
@@ -194,14 +227,31 @@
 						this.tradeprofitandloss=res.data.program.tradeprofitandloss,
 						this.state=res.data.program.state,
 						this.rate=res.data.program.rate
+						if(res.data.program.state == 1){
+							this.showcp = true;
+							this.showEnd = false;
+						}else if(res.data.program.state == 2){
+							this.showcp = false;
+							this.showEnd = true;
+						}
 					}
 				}).catch((err)=>{
-					console.log("res==="+JSON.stringify(err));
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
+					}else{
+						if(data.code == -9999){
+							this.$toast({message:"认证失败，请重新登录",duration: 1000});
+							this.$router.push({path:"/login"});
+						}
+						else{
+							this.$toast({message:data.message,duration: 1000});
+						}
+					}
 				})
 			}
 		},
 		mounted:function(){
-//			this.$router.push({path:"/financeDetails/schemeDetails"})
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 			this.id = this.$route.query.id;
 			console.log(this.userInfo);
