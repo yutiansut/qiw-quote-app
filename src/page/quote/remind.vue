@@ -392,7 +392,6 @@
 					'commodityNo': this.currentNo,
 				}
 				pro.fetch('post', '/quoteTrader/getByIdAndCommodityNo', datas, headers).then((res) => {
-					console.log(res);
 					if(res.success == true){
 						if(res.code == 1){
 							this.remindList = res.data;

@@ -12,27 +12,35 @@
 			quoteSocket(){
 				return this.$store.state.quoteSocket;
 			},
+			commodityOrder(){
+				return this.$store.state.market.commodityOrder;
+			},
 			currentdetail(){
 				return this.$store.state.market.currentdetail;
-			}
+			},
+			orderTemplist(){
+				return this.$store.state.market.orderTemplist;
+			},
 		},
 		watch: {
 			currentdetail: function(n, o){
 				if(n != undefined && n != null && n != ''){
-					let data = {
-						Method: "QryHistory",
-						Parameters:{
-							ExchangeNo: this.currentdetail.ExchangeNo,
-							CommodityNo: this.currentdetail.CommodityNo,
-							ContractNo: this.currentdetail.MainContract,
-							HisQuoteType: 0,
-							BeginTime: "",
-							EndTime: "",
-							Count: 0
-						}
-					};
 					this.$store.state.isshow.isfens = true;
-					this.quoteSocket.send(JSON.stringify(data));
+					this.commodityOrder.forEach((v, k) => {
+						let data = {
+							Method: "QryHistory",
+							Parameters:{
+								ExchangeNo: this.orderTemplist[v.commodityNo].ExchangeNo,
+								CommodityNo: v.commodityNo,
+								ContractNo: this.orderTemplist[v.commodityNo].MainContract,
+								HisQuoteType: 0,
+								BeginTime: "",
+								EndTime: "",
+								Count: 0
+							}
+						};
+						this.quoteSocket.send(JSON.stringify(data));
+					});
 				}
 			}
 		},
@@ -41,6 +49,7 @@
 			$("#fens").css('height', h/10*6.9 + 'rem');
 			$("#volume").css('height', h/10*3 + 'rem');
 			if(this.currentdetail.CommodityNo != undefined){
+				this.$store.state.isshow.isfens = true;
 				let data = {
 					Method: "QryHistory",
 					Parameters:{
@@ -53,7 +62,6 @@
 						Count: 0
 					}
 				};
-				this.$store.state.isshow.isfens = true;
 				this.quoteSocket.send(JSON.stringify(data));
 			}
 		}

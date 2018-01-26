@@ -52,6 +52,7 @@ var market = {
 //			url_real: "ws://192.168.0.232:6102",   //测试地址
 //			url_real: "ws://139.196.176.60:6101",  //正式地址
 			model: "1", // 实盘：0；	模拟盘：1
+			
 			client_source: "N_WEB",	// 客户端渠道
 //			username: "00004",		// 账号(新模拟盘——000008、直达实盘——000140、易盛模拟盘——Q517029969)
 //			password: "YTEyMzQ1Ng==" 	// 密码：base64密文(明文：a123456——YTEyMzQ1Ng==     888888——ODg4ODg4	 74552102——NzQ1NTIxMDI=		123456=MTIzNDU2)
@@ -788,22 +789,38 @@ export default new Vuex.Store({
 				}
 			}
 			fens.setOption(state.market.option1);
-			volume.setOption(state.market.option2);
+			volume.setOption(state.market.option2, true);
 			fens.resize();
 			volume.resize();
 		},
 		//设置分时图数据
-		setfensoption: function(state) {
+		setfensoption: function(state, arr) {
 			var echarts = require('echarts/lib/echarts');
 			var vol = [],
 				price = [],
 				time = [];
 			var dosizeL = state.market.currentdetail.DotSize;
-			state.market.jsonData.Parameters.Data.forEach(function(e) {
-				vol.push(e[6]);
-				time.push(e[0].split(' ')[1].split(':')[0] + ':' + e[0].split(' ')[1].split(':')[1]);
-				price.push(e[1]);
-			});
+//			console.log(state.market.jsonData); 
+//			console.log(state.market.jsonData[state.market.currentNo]);
+			if(state.market.jsonData[state.market.currentNo] != undefined){
+				state.market.jsonData[state.market.currentNo].Parameters.Data.forEach(function(e) {
+					vol.push(e[6]);
+					time.push(e[0].split(' ')[1].split(':')[0] + ':' + e[0].split(' ')[1].split(':')[1]);
+					price.push(e[1]);
+				});
+			}
+			let optionDatas = [{
+				name: state.market.currentNo,
+	            type: 'line',
+	            data: price,
+	            lineStyle: {normal: {width: 1,color: "#ffffff"}},
+				itemStyle: {normal: {color: "#ffffff"}},
+				symbolSize: 2,
+	        },];
+	        //判断是否有外界传入数据
+	        if(arr != undefined && arr != null && arr != ''){
+	        	optionDatas = optionDatas.concat(arr);
+	        }
 			state.market.option1 = {
 				grid: {
 					x: 50,
@@ -812,7 +829,6 @@ export default new Vuex.Store({
 					y2: 20
 				},
 				color: ['#edf07c'],
-				tooltip: {},
 				xAxis: [{
 					type: 'category',
 					position: 'bottom',
@@ -850,10 +866,10 @@ export default new Vuex.Store({
 					axisLabel: {
 						margin: 3,
 						formatter: function(a) {
+							console.log(789);
+							console.log(a);
 							a = +a;
-							return isFinite(a) ?
-								echarts.format.addCommas(+a / 10000) :
-								'';
+							return isFinite(a) ? echarts.format.addCommas(+a / 10000) : '';
 						},
 						textStyle: {
 							fontSize: 10
@@ -912,12 +928,12 @@ export default new Vuex.Store({
 					},
 					formatter: function(params) {
 						var time = params[0].name;
-						var val = parseFloat(params[0].value).toFixed(dosizeL);
-						if(time == null || time == "") {
-							return
-						}
-						var html = '时间:' + time + '<br/>' +
-							'价格: ' + val + '<br/>';
+//						var val = parseFloat(params[0].value).toFixed(dosizeL);
+						if(time == null || time == "") return;
+						var html = '时间:' + time + '<br/>';
+						params.forEach((o, i) => {
+							html += o.seriesName + '价格: ' + o.value + '<br/>';
+						});
 						return html;
 					},
 				},
@@ -965,50 +981,7 @@ export default new Vuex.Store({
 						}
 					}
 				}],
-				series: {
-					type: 'line',
-					data: price,
-					label: {
-						normal: {
-							show: false,
-							position: 'inside'
-						},
-					},
-					lineStyle: {
-						normal: {
-							width: 1,
-							color: "#ffffff"
-						}
-					},
-					itemStyle: {
-						normal: {
-							color: "#ffffff"
-						}
-					},
-					symbolSize: 2,
-					markLine: {
-						symbol: ['none', 'none'],
-						clickable: false,
-						lineStyle: {
-							normal: {
-								width: 1,
-								color: "#ffffff"
-							}
-						},
-						data: [{
-								name: '标线2起点',
-								value: 45.36,
-								xAxis: "1",
-								yAxis: -1
-							}, // 当xAxis或yAxis为数值轴时，不管传入是什么，都被理解为数值后做空间位置换算
-							{
-								name: '标线2终点',
-								xAxis: "2",
-								yAxis: 100
-							}
-						]
-					},
-				}
+				series: optionDatas
 			};
 		},
 	},
@@ -2194,46 +2167,46 @@ export default new Vuex.Store({
 									context.state.market.CacheLastQuote.shift();
 								}
 								//更新分时图
-								if(context.state.isshow.isfensshow == true && context.state.isshow.isfens == true) {
-									var arr = [], arr1, arr2, arr3, arr4;
-									context.state.market.charttimetime = new Date();
-									context.state.market.charttimems = context.state.market.charttimetime.getTime();
-									context.state.market.charttime = context.state.market.charttimems - context.state.market.charttimems2;
-									if(context.state.market.charttime >= 1000 || context.state.market.charttimetemp >= 1000) {
-										arr = [];
-										arr[0] = JSON.parse(evt.data).Parameters.DateTimeStamp;
-										arr[1] = JSON.parse(evt.data).Parameters.LastPrice;
-										arr[2] = JSON.parse(evt.data).Parameters.OpenPrice;
-										arr[3] = JSON.parse(evt.data).Parameters.LowPrice;
-										arr[4] = JSON.parse(evt.data).Parameters.HighPrice;
-										arr[5] = JSON.parse(evt.data).Parameters.Position;
-										arr[6] = JSON.parse(evt.data).Parameters.LastVolume;
-										arr1 = JSON.parse(evt.data).Parameters.DateTimeStamp.split(' ');
-										arr2 = arr1[1].split(':'); //最新时间
-										arr3 = context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1][0].split(' ');
-										arr4 = arr3[1].split(':'); //历史时间
-										if(arr2[1] == arr4[1]) {
-											var time = context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1][0];
-											var vol = parseInt(context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1][6]) + parseInt(arr[6]);
-											context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1] = arr;
-											context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1][0] = time;
-											context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1][6] = vol;
-										}else{
-//											context.state.market.jsonData.Parameters.Data.shift();
-											context.state.market.jsonData.Parameters.Data.push(arr);
-										}
-										context.commit('setfensoption');
-										context.commit('drawfens', {
-											id1: 'fens',
-											id2: 'volume'
-										});
-										context.state.market.charttimetemp = 0;
-									} else {
-										context.state.market.charttimetemp += context.state.market.charttime;
-									}
-									context.state.market.charttimetime2 = new Date();
-									context.state.market.charttimems2 = context.state.market.charttimetime2.getTime();
-								}
+//								if(context.state.isshow.isfensshow == true && context.state.isshow.isfens == true) {
+//									var arr = [], arr1, arr2, arr3, arr4;
+//									context.state.market.charttimetime = new Date();
+//									context.state.market.charttimems = context.state.market.charttimetime.getTime();
+//									context.state.market.charttime = context.state.market.charttimems - context.state.market.charttimems2;
+//									if(context.state.market.charttime >= 1000 || context.state.market.charttimetemp >= 1000) {
+//										arr = [];
+//										arr[0] = JSON.parse(evt.data).Parameters.DateTimeStamp;
+//										arr[1] = JSON.parse(evt.data).Parameters.LastPrice;
+//										arr[2] = JSON.parse(evt.data).Parameters.OpenPrice;
+//										arr[3] = JSON.parse(evt.data).Parameters.LowPrice;
+//										arr[4] = JSON.parse(evt.data).Parameters.HighPrice;
+//										arr[5] = JSON.parse(evt.data).Parameters.Position;
+//										arr[6] = JSON.parse(evt.data).Parameters.LastVolume;
+//										arr1 = JSON.parse(evt.data).Parameters.DateTimeStamp.split(' ');
+//										arr2 = arr1[1].split(':'); //最新时间
+//										arr3 = context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1][0].split(' ');
+//										arr4 = arr3[1].split(':'); //历史时间
+//										if(arr2[1] == arr4[1]) {
+//											var time = context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1][0];
+//											var vol = parseInt(context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1][6]) + parseInt(arr[6]);
+//											context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1] = arr;
+//											context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1][0] = time;
+//											context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1][6] = vol;
+//										}else{
+////											context.state.market.jsonData.Parameters.Data.shift();
+//											context.state.market.jsonData.Parameters.Data.push(arr);
+//										}
+//										context.commit('setfensoption');
+//										context.commit('drawfens', {
+//											id1: 'fens',
+//											id2: 'volume'
+//										});
+//										context.state.market.charttimetemp = 0;
+//									} else {
+//										context.state.market.charttimetemp += context.state.market.charttime;
+//									}
+//									context.state.market.charttimetime2 = new Date();
+//									context.state.market.charttimems2 = context.state.market.charttimetime2.getTime();
+//								}
 								//更新闪电图
 								if(context.state.isshow.islightshow == true && context.state.isshow.islight == true) {
 									context.state.market.jsonTow = JSON.parse(evt.data);
@@ -2449,7 +2422,7 @@ export default new Vuex.Store({
 				} else if(context.state.wsjsondata.Method == "OnRspQryHistory") { // 历史行情
 					let data = JSON.parse(evt.data);
 					if(data.Parameters.HisQuoteType == 0){
-						context.state.market.jsonData = data;
+						context.state.market.jsonData[data.Parameters.CommodityNo] = data;
 						if(context.state.isshow.isfens == true){
 							context.commit('setfensoption');
 							context.commit('drawfens', {

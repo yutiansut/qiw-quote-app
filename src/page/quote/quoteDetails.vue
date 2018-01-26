@@ -81,7 +81,7 @@
 							</div>
 							<ul v-show="!noContrast">
 								<template v-for="(v, index) in parameters">
-									<li :class="{current: v.check == 1}" v-if="v.CommodityNo != currentNo">
+									<li :class="{current: v.check == 1}" @touchstart="addContrast(v.CommodityNo)" v-if="v.CommodityNo != currentNo">
 										<div class="name fl">
 											<span>{{v.CommodityName}}</span>
 											<span>{{v.CommodityNo + v.MainContract}}</span>
@@ -227,6 +227,7 @@
 </template>
 
 <script>
+	import { mapMutations,mapActions } from 'vuex'
 	import pro from '../../assets/js/common.js'
 	import { Toast } from 'mint-ui';
 	import fens from './fens.vue'
@@ -258,6 +259,10 @@
 				optionalList: [],
 				remindShow: false,
 				shadeShow: false,
+				id: {
+					id1: 'fens',
+					id2: 'volume'	
+				}
 			}
 		},
 		computed: {
@@ -281,6 +286,9 @@
 			},
 			tradeParameters(){
 				return this.$store.state.market.tradeParameters;
+			},
+			jsonData(){
+				return this.$store.state.market.jsonData;
 			}
 		},
 		filters:{
@@ -308,6 +316,9 @@
 			}
 		},
 		methods: {
+			...mapMutations([
+				'setfensoption', 'drawfens'
+			]),
 			goBackEvent: function(){
 				this.$router.go(-1);
 				this.chartsShow = false;
@@ -353,6 +364,41 @@
 					this.$router.push({path: '/remind', query: {isOptional: this.optionalIconShow}});
 				}
 			},
+			addContrast: function(index){
+				if(this.currentChartsNum != 1){
+					Toast({message: '只能在分时添加对比', position: 'bottom', duration: 2000});
+					return;
+				}
+				this.parameters.forEach((o, i) => {
+					if(o.CommodityNo == index){
+						if(o.check == 0){
+							o.check = 1;
+						}else{
+							o.check = 0;
+						}
+					}
+				});
+				let arr = [];
+				this.parameters.forEach((o, i) => {
+					if(o.check == 1){
+						let price = [];
+						this.jsonData[o.CommodityNo].Parameters.Data.forEach((v, k) => {
+							price.push(v[1]);
+						});
+						let obj = {
+							name: o.CommodityNo,
+							type: 'line',
+				            data: price,
+				            lineStyle: {normal: {width: 1,color: "#ffffff"}},
+							itemStyle: {normal: {color: "#ffffff"}},
+							symbolSize: 2,
+						}
+						arr.push(obj);
+					}
+				});
+				this.setfensoption(arr);
+				this.drawfens(this.id);
+			},
 			menuEvent: function(index){
 				this.currentChartsNum = index;
 				switch(index){
@@ -381,6 +427,9 @@
 				this.$store.state.isshow.isfensshow = false;
 				this.$store.state.isshow.isklineshow = false;
 				this.$store.state.isshow.islightshow = false;
+				this.parameters.forEach((o, i) => {
+					o.check = 0;
+				});
 			},
 			addOptional: function(){
 				if(this.userInfo == undefined){
@@ -444,6 +493,7 @@
 				}
 				arr.push(obj);
 				this.currentNo = obj.commodityNo;    //当前合约
+				this.$store.state.market.currentNo = obj.commodityNo;
 				//对比合约
 				let contrast = obj.contrast;
 				if(contrast == '' || contrast == undefined){
@@ -459,7 +509,6 @@
 						arr.push(a);
 					});
 				}
-				
 				this.$store.state.market.Parameters = [];
 				this.$store.state.market.tradeParameters = [];
 				this.$store.state.market.commodityOrder = [];
