@@ -10,43 +10,43 @@
 		</mt-header>
 		<div id="container">
 			<ul class="nav">
-				<li @click="next" class="current" >融资方案明细</li>
-				<li @click="next">历史成交记录</li>
+				<li @click="change" class="current" >融资方案明细</li>
+				<li @click="change">历史成交记录</li>
 			</ul>
 			<div id="schemeDetails" v-show="showSchemeDetails">
 				<div class="cp" v-show="showcp">
 					<ul>
-						<li>交易账号：<span>000000</span></li>
+						<li>交易账号：<span>{{account}}</span></li>
 						<li>
 							<mt-button class="btn2">立即交易</mt-button>
 						</li>
 					</ul>
 					<ul>
-						<li>交易密码：<span>000000</span></li>
+						<li>交易密码：<span>{{accountPassword}}</span></li>
 						<li></li>
 					</ul>
 					<div class="black"></div>
 					<ul>
-						<li>方案申请时间：<span>2017-12-25 19:25</span></li>
+						<li>方案申请时间：<span>{{applyTime}}</span></li>
 						<li>
 							
 						</li>
 					</ul>
 					<ul>
-						<li>融资保证金：<span>10000元</span></li>
+						<li>融资保证金：<span>{{tradeDeposit}}元</span></li>
 						<li><mt-button class="btn2">追加保证金</mt-button></li>
 					</ul>
 					<ul>
-						<li>融资金额：<span>10000元</span></li>
+						<li>融资金额：<span>{{financMoney | financMoneyChange}}元</span></li>
 						<li>
 						</li>
 					</ul>
 					<ul>
-						<li>总操盘资金：<span>20000元</span></li>
+						<li>总操盘资金：<span>{{totalTradeFund}}元</span></li>
 						<li></li>
 					</ul>
 					<ul>
-						<li>亏损平仓线：<span>10000元</span></li>
+						<li>亏损平仓线：<span>{{lossCloseoutLine}}元</span></li>
 						<li>
 						</li>
 					</ul>
@@ -60,19 +60,19 @@
 					</div>
 					<div class="black"></div>
 					<ul>
-						<li>结算金额：<span>+10000元</span></li>
-						<li>交易手续费：<span>178元</span></li>
+						<li>结算金额：<span>+{{clearmoney}}元</span></li>
+						<li>交易手续费：<span>{{tradefee}}元</span></li>
 						<li>提示：<span>结算金额=操盘保证金+追加保证金+交易盈亏-交易手续费</span></li>
 					</ul>
 					<div class="black"></div>
 					<ul >
-						<li>融资保证金：<span>10000元</span></li>
-						<li>融资金额：<span>10000元</span></li>
-						<li>总操盘资金：<span>20000元</span></li>
-						<li>亏损平仓线：<span>10000元</span></li>
-						<li>方案结算时间：<span>2017-12-25 19:25</span></li>
-						<li>交易盈亏：<span>+500元</span></li>
-						<li>美元结算汇率：<span>1美元=6.9人民币</span></li>
+						<li>融资保证金：<span>{{tradeDeposit}}元</span></li>
+						<li>融资金额：<span>{{financMoney}}元</span></li>
+						<li>总操盘资金：<span>{{totalTradeFund}}元</span></li>
+						<li>亏损平仓线：<span>{{lossCloseoutLine}}元</span></li>
+						<li>方案结算时间：<span>{{endTime}}</span></li>
+						<li>交易盈亏：<span>{{tradeprofitandloss}}元</span></li>
+						<li>美元结算汇率：<span>1美元={{rate}}人民币</span></li>
 					</ul>
 					<div class="levle">
 						操盘手数
@@ -82,6 +82,7 @@
 					</ul>
 				</div>
 			</div>
+			<!--已结算历史记录-->
 			<div id="historyRecords" v-show="showHistoryRecords">
 				<div class="list_title">
 					<ul>
@@ -133,20 +134,36 @@
 				showSchemeDetails:true,
 				showHistoryRecords:false,
 				showcp:true,
-				showEnd:false
+				showEnd:false,
+				account:"交易账户",
+				accountPassword:"密码",
+				applyTime:"申请时间",
+				financMoney:"融资金额",
+				tradeDeposit:"操盘保证金",
+				totalTradeFund:"总操盘资金",
+				lossCloseoutLine:"亏损平仓线",
+				addDepositToTotal:"追加保证金金额",
+				endTime:"结算时间",
+				clearmoney:"结算金额",
+				tradefee:"交易手续费",
+				tradeprofitandloss:"交易盈亏",
+				state:"交易状态",
+				rate:"结算汇率"
 			}
 		},
 		methods:{
-			next:function(e){
+			change:function(e){
 				var index = $(e.currentTarget).index();
 				$(".nav li").removeClass("current");
 				$(".nav li").eq(index).addClass("current");
 				switch (index){
 					case 0:
-//						this.$router.push({path:"/financeDetails/schemeDetails"})
+						this.showSchemeDetails = true;
+						this.showHistoryRecords = false;
 						break;
 					case 1:
-//						this.$router.push({path:"/financeDetails/historyRecords"})
+						this.showHistoryRecords = true;
+						this.showSchemeDetails = false;
 						break;
 					default:
 						break;
@@ -160,11 +177,27 @@
 					token : this.userInfo.token,
 					secret : this.userInfo.secret
 				}
-//				pro.fetch("post","/futureManage/getProgramDetail",data,headers).then((res)=>{
-//					
-//				}).catch((err)=>{
-//					
-//				})
+				pro.fetch("post","/futureManage/getProgramDetail",data,headers).then((res)=>{
+					console.log("res==="+JSON.stringify(res));
+					if(res.code == 1 && res.success == true){
+						this.account=res.data.program.account,
+						this.accountPassword=res.data.program.accountPassword,
+						this.applyTime=res.data.program.applyTime,
+						this.financMoney=res.data.program.financMoney,
+						this.tradeDeposit=res.data.program.tradeDeposit,
+						this.totalTradeFund=res.data.program.totalTradeFund,
+						this.lossCloseoutLine=res.data.program.lossCloseoutLine,
+						this.addDepositToTotal=res.data.program.addDepositToTotal,
+						this.endTime=res.data.program.endTime,
+						this.clearmoney=res.data.program.clearmoney,
+						this.tradefee=res.data.program.tradefee,
+						this.tradeprofitandloss=res.data.program.tradeprofitandloss,
+						this.state=res.data.program.state,
+						this.rate=res.data.program.rate
+					}
+				}).catch((err)=>{
+					console.log("res==="+JSON.stringify(err));
+				})
 			}
 		},
 		mounted:function(){
@@ -182,6 +215,13 @@
 			//获取平台账户登录信息
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 			this.id = this.$route.query.id;
+		},
+		filters:{
+			financMoneyChange:function(e){
+				if(e == undefined){
+					return e = 0;
+				}
+			}
 		}
 	}
 </script>
