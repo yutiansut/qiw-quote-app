@@ -230,6 +230,7 @@
 				text-align: center;
 				font-size: $fs32;
 				&.name{
+					font-size: $fs30;
 					color: $white;
 					margin-top: 0.25rem;
 				}

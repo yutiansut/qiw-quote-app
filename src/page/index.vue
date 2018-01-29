@@ -195,5 +195,8 @@
 			right: 0.9rem;
 		}
 	}
-	
+	.cont{
+		overflow-y: auto;
+		padding-bottom: 1rem;
+	}
 </style>

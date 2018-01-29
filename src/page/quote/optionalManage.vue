@@ -67,8 +67,8 @@
 			</div>
 			<div class="col" @touchstart="deleteEvent">
 				<i class="icon icon_del"></i>
-				<span>删除</span>
-				<em>({{this.num}})</em>
+				<span :class="{grey: num == 0}">删除</span>
+				<em :class="{grey: num == 0}">({{this.num}})</em>
 			</div>
 		</div>
 	</div>
@@ -177,6 +177,10 @@
 				}
 			},
 			deleteEvent: function(){
+				if(this.num == 0){
+					Toast({message: '请选择一条自选合约', position: 'bottom', duration: 2000});
+					return;
+				}
 				if(this.userInfo == undefined) return;
 				var headers = {
 					token: this.userInfo.token,
@@ -399,6 +403,9 @@
 			}
 			.icon, span, em{
 				float: left;
+			}
+			.grey{
+				color: #7a8599;
 			}
 			em{
 				margin-left: 0.1rem;
