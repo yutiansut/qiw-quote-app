@@ -101,6 +101,7 @@
 					}else{
 						this.emptyShow = true;
 						this.contShow = false;
+						this.recommendShow = true;
 					}
 					//判断是否是自选合约
 					this.resultList.forEach((o, i) => {
