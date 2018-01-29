@@ -191,7 +191,7 @@
 		</div>
 		</template>
 		<div class="select_box">
-			<div class="bg" v-show="shadeShow"></div>
+			<div class="bg" v-show="shadeShow" @touchstart="closeSelectEvent"></div>
 			<div class="select_cont">
 				<ul>
 					<li><span>切换合约</span></li>
@@ -336,8 +336,14 @@
 			},
 			switchEvent: function(){   //打开切换合约下拉框
 				$(".select_cont").css({bottom: 0});
+				this.shadeShow = true;
+			},
+			closeSelectEvent: function(){   //关闭切换合约下拉框
+				this.shadeShow = false;
+				$(".select_cont").css({bottom: -5.3 + 'rem'});
 			},
 			selectEvent: function(obj){    //选择合约进行切换
+				this.shadeShow = false;
 				$(".select_cont").css({bottom: -5.3 + 'rem'});
 				this.$store.state.isshow.isfensshow = false;
 				this.$store.state.isshow.islightshow = false;
@@ -545,12 +551,14 @@
 				}else{
 					contrast = contrast.split(',');
 					contrast.forEach((o, i) => {
-						let a = {
-							commodityNo: o,
-							exchangeNo: this.orderTemplist[o].ExchangeNo,
-							mainContract: this.orderTemplist[o].MainContract
+						if(o != ''){
+							let a = {
+								commodityNo: o,
+								exchangeNo: this.orderTemplist[o].ExchangeNo,
+								mainContract: this.orderTemplist[o].MainContract
+							}
+							arr.push(a);
 						}
-						arr.push(a);
 					});
 				}
 				this.$store.state.market.Parameters = [];
