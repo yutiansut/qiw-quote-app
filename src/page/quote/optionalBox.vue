@@ -59,7 +59,7 @@
 						return '商品';
 						break;
 					case '2':
-						return '投指期货';
+						return '股指期货';
 						break;
 					case '3':
 						return '外汇';
