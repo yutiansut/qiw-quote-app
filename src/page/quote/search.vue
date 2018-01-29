@@ -21,8 +21,8 @@
 									<span>{{v.CommodityName}}</span>
 									<span>{{v.CommodityNo + v.MainContract}}</span>
 								</div>
-								<i class="icon icon_check" v-show="v.isOptional == undefined" @touchstart="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract)"></i>
-								<i class="icon" v-show="v.isOptional != undefined" :class="{icon_check: v.isOptional == 0, icon_checked: v.isOptional == 1}" @touchstart="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract)"></i>
+								<i class="icon icon_check" v-show="v.isOptional == undefined" @touchstart="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract, v.id)"></i>
+								<i class="icon" v-show="v.isOptional != undefined" :class="{icon_check: v.isOptional == 0, icon_checked: v.isOptional == 1}" @touchstart="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract, v.id)"></i>
 							</li>
 						</template>
 					</ul>
@@ -110,6 +110,7 @@
 								if(o.CommodityNo == v.commodityNo){
 									o.isOptional = 1;
 									o.contrast = v.contrast;
+									o.id = v.id;
 								}
 							});
 						}
@@ -162,33 +163,50 @@
 					Toast({message: err.data.message, position: 'bottom', duration: 2000});
 				});
 			},
-			addOptional: function(key,exchangeNo,commodityNo,contractNo){
+			addOptional: function(key,exchangeNo,commodityNo,contractNo,id){
 				if(this.userInfo == undefined){
 					Toast({message: '请先登录平台', position: 'bottom', duration: 2000});
 					return;
 				}
-				if(key == 1) return;
 				var headers = {
 					token: this.userInfo.token,
 					secret: this.userInfo.secret
 				}
-				var datas = {
-					'exchangeNo': exchangeNo,
-					'commodityNo': commodityNo,
-					'contractNo': contractNo,
-				}
-				pro.fetch('post', '/quoteTrader/userAddCommodity', datas, headers).then((res) => {
-					if(res.success == true && res.code == 1){
-						Toast({message: '自选添加成功', position: 'bottom', duration: 2000});
-						this.resultList.forEach((o, i) => {
-							if(o.CommodityNo == commodityNo){
-								o.isOptional = 1;
-							}
-						});
+				if(key == 1){   //删除自选
+					var _datas = {
+						id: id
 					}
-				}).catch((err) => {
-					Toast({message: err.data.message, position: 'bottom', duration: 2000});
-				});
+					pro.fetch('post', '/quoteTrader/userRemoveCommodity', _datas, headers).then((res) => {
+						if(res.success == true && res.code == 1){
+							Toast({message: '自选删除成功', position: 'bottom', duration: 2000});
+							this.resultList.forEach((o, i) => {
+								if(o.CommodityNo == commodityNo){
+									o.isOptional = 0;
+								}
+							});
+						}
+					}).catch((err) => {
+						Toast({message: err.data.message, position: 'bottom', duration: 2000});
+					});
+				}else{   //添加自选
+					var datas = {
+						'exchangeNo': exchangeNo,
+						'commodityNo': commodityNo,
+						'contractNo': contractNo,
+					}
+					pro.fetch('post', '/quoteTrader/userAddCommodity', datas, headers).then((res) => {
+						if(res.success == true && res.code == 1){
+							Toast({message: '自选添加成功', position: 'bottom', duration: 2000});
+							this.resultList.forEach((o, i) => {
+								if(o.CommodityNo == commodityNo){
+									o.isOptional = 1;
+								}
+							});
+						}
+					}).catch((err) => {
+						Toast({message: err.data.message, position: 'bottom', duration: 2000});
+					});
+				}
 			}
 		},
 		mounted: function(){
