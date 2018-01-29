@@ -157,7 +157,9 @@
 					token : this.userInfo.token,
 					secret : this.userInfo.secret
 				}
+				console.log(this.id)
 				pro.fetch("post","/futureManage/endProgram",{id:this.id},headers).then((res)=>{
+					console.log("res========_____________"+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						this.$toast({message:"终结成功",duration: 1000});
 					}
@@ -252,19 +254,25 @@
 			}
 		},
 		mounted:function(){
-			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
-			this.id = this.$route.query.id;
-			console.log(this.userInfo);
-			if(this.userInfo == ''){
-				console.log("1111")
-			}else{
-				this.getDetails();
-			}
+//			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+//			this.id = this.$route.query.id;
+//			console.log(this.userInfo);
+//			if(this.userInfo == ''){
+//				console.log("1111")
+//			}else{
+//				this.getDetails();
+//			}
 		},
 		activated: function(){
 			//获取平台账户登录信息
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 			this.id = this.$route.query.id;
+			if(this.userInfo == ''){
+				//console.log("未登录")
+			}else{
+				//console.log("一登录")
+				this.getDetails();
+			}
 		},
 		filters:{
 			financMoneyChange:function(e){

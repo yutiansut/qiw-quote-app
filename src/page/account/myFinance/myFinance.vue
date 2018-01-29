@@ -98,16 +98,16 @@
 			}
 		},
 		mounted:function(){
+//			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+		},
+		activated: function(){
+			//获取平台账户登录信息
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 			if(this.userInfo == ''){
 				//未登录
 			}else{
 				this.getUserInfo();
 			}
-		},
-		activated: function(){
-			//获取平台账户登录信息
-			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 		}
 	}
 </script>
