@@ -26,15 +26,15 @@
 		data(){
 			return{
 				message:this.selected,
-				 atabs:this.tabs
+				atabs:this.tabs
 			}
 		},
 		props:['selected','tabs'],
+		activated:function(){
+			this.message=this.selected;
+		},
 		watch:{
 			 message: function (val,oldVal) {
-			 	console.log("val==="+val);
-			 	console.log("oldval=="+oldVal);
-			 	console.log("selected==="+this.selected);
 	            switch(val){
 	                case '行情':
 	                    this.$router.push({path:'/index'});

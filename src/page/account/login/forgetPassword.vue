@@ -33,7 +33,7 @@
 </template>
 
 <script>
-	import codeDialog from "../components/codeDialog.vue"
+	import codeDialog from "../../../components/codeDialog.vue"
 	export default{
 		name:"forgetPassword",
 		components : {codeDialog},
@@ -105,12 +105,12 @@
 </script>
 
 <style scoped lang="scss">
-	@import "../assets/css/common.scss";
+	@import "../../../assets/css/common.scss";
 	#forgetPassword{
 		width: 7.5rem;
 	}
 	#back{
-		background: url(../assets/images/back_icon.png) no-repeat;
+		background: url(../../../assets/images/back_icon.png) no-repeat;
 		display: inline-block;
 		width: 0.24rem;
 		height: 0.32rem;
@@ -128,7 +128,7 @@
 			position: relative;
 			&:nth-child(1){
 				i{
-					background: url(../assets/images/regisiter_icon.png);
+					background: url(../../../assets/images/regisiter_icon.png);
 					background-size: 100% 100%;
 					position: absolute;
 					top: 0.48rem;
@@ -140,7 +140,7 @@
 			}
 			&:nth-child(2){
 				i{
-					background: url(../assets/images/verification_icon.png);
+					background: url(../../../assets/images/verification_icon.png);
 					background-size: 100% 100%;
 					position: absolute;
 					top: 0.48rem;
@@ -191,7 +191,7 @@
 		position: fixed;
 		bottom: 0.8rem;
 		i{
-			background:url(../assets/images/wechat_02.png);
+			background:url(../../../assets/images/wechat_02.png);
 			display: inline-block;
 			width:0.88rem;
 			height: 0.88rem;
