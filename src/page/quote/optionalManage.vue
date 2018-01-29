@@ -3,7 +3,7 @@
 		<header>
 			<i class="icon icon_back" @touchstart="goBackEvent"></i>
 			<h1>自选管理</h1>
-			<span>完成</span>
+			<span @touchstart="saveNumEvent">完成</span>
 		</header>
 		<div class="main">
 			<div class="search_box">
@@ -24,7 +24,7 @@
 				<ul class="cont">
 					<draggable v-model="optionalList">
 					    <transition-group>
-					      <li v-for="v in optionalList" :key="v.CommodityName">
+					      <li v-for="v in optionalList" :key="v.CommodityName" :id="v.id" :orderNum="v.orderNum">
 					        <i class="icon" :class="{icon_check: v.check == 0, icon_checked: v.check == 1}" @touchstart="checkEvent(v.check, v.CommodityNo)"></i>
 							<div class="name">
 								<span>{{v.CommodityName}}</span>
@@ -40,22 +40,6 @@
 					      </li>
 					    </transition-group>
 					</draggable>
-					<!--<template v-for="(v, index) in parameters">
-						<li>
-							<i class="icon" :class="{icon_check: v.check == 0, icon_checked: v.check == 1}" @touchstart="checkEvent(v.check, v.CommodityNo)"></i>
-							<div class="name">
-								<span>{{v.CommodityName}}</span>
-								<span>{{v.CommodityNo + v.MainContract}}</span>
-							</div>
-							<div class="price">
-								<span>{{v.LastQuotation.LastPrice | fixNum(v.DotSize)}}</span>
-								<span>{{v.LastQuotation.DateTimeStamp | operateTime}}</span>
-							</div>
-							<div class="drag">
-								<i class="icon icon_drag"></i>
-							</div>
-						</li>
-					</template>-->
 				</ul>
 			</div>
 		</div>
@@ -97,7 +81,6 @@
 				return this.$store.state.quoteSocket;
 			},
 			parameters(){
-				this.optionalList = this.$store.state.market.Parameters;
 				return this.$store.state.market.Parameters;
 			},
 			userInfo(){
@@ -203,6 +186,28 @@
 					Toast({message: err.data.message, position: 'bottom', duration: 2000});
 				});
 			},
+			saveNumEvent: function(){
+				if(this.userInfo == undefined) return;
+				var headers = {
+					token: this.userInfo.token,
+					secret: this.userInfo.secret
+				}
+				let datas = [];
+				$.each($(".list .cont li"), function(i, o) {
+					let obj = {
+						id: $(o).attr('id'),
+						orderNum: $(o).attr('orderNum')
+					}
+					datas.push(obj);
+				});
+				pro.fetch('post', '/quoteTrader/userSort', datas, headers).then((res) => {
+					if(res.success == true && res.code == 1){
+						
+					}
+				}).catch((err) => {
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
+				});
+			},
 			getCommodityList: function(){
 				if(this.userInfo == undefined) return;
 				var headers = {
@@ -230,7 +235,8 @@
 			}
 		},
 		mounted: function(){
-			
+			//自选列表赋初值
+			this.optionalList = this.parameters;
 		},
 		activated: function(){
 			//重新请求自选合约列表

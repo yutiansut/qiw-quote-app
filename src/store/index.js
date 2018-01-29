@@ -2058,7 +2058,7 @@ export default new Vuex.Store({
 								o.isRecommend = v.isRecommend;
 								o.commodityType = v.commodityType;
 								o.contrast = v.contrast;
-								o.sortNum = v.sortNum;
+								o.orderNum = v.orderNum;
 								o.id = v.id;
 								o.check = 0;
 							}
