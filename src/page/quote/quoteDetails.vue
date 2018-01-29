@@ -211,7 +211,7 @@
       		<mt-tab-item class="col" @touchstart.native="addRemind" style="background-color:#2d3340;">
 		        <img slot="icon" v-show="!remindShow" src="../../assets/images/remind.png">
 		        <img slot="icon" v-show="remindShow" src="../../assets/images/remind_01.png">
-		        <span>提醒</span>
+		        <span :class="{current: remindShow == true}">提醒</span>
 		    </mt-tab-item>
       		<mt-tab-item class="col" @touchstart.native="addOptional" style="background-color:#2d3340;">  
 		        <img slot="icon" v-show="!optionalIconShow" src="../../assets/images/add_optional.png">
@@ -477,6 +477,26 @@
 					Toast({message: err.data.message, position: 'bottom', duration: 2000});
 				});
 			},
+			getRemindInfo: function(){
+				var headers = {
+					token: this.userInfo.token,
+					secret: this.userInfo.secret
+				}
+				var datas = {
+					'commodityNo': this.currentNo,
+				}
+				pro.fetch('post', '/quoteTrader/getByIdAndCommodityNo', datas, headers).then((res) => {
+					if(res.success == true){
+						if(res.code == 1){
+							this.remindShow = true;
+						}else{
+							this.remindShow = false;
+						}
+					}
+				}).catch((err) => {
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
+				});
+			},
 			operateData: function(val){
 				//渲染画图
 				this.chartsShow = true;
@@ -538,7 +558,10 @@
 			this.getUserCommodityList();
 			//重组数据
 			this.operateData();
+			//判断是否设置提醒
+			this.getRemindInfo();
 //			console.log(this.parameters);
+
 		}
 	}
 </script>
