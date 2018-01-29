@@ -35,15 +35,23 @@
 			<div id="black"></div>
 			<div id="account_info">
 				<ul>
-					<li>
+					<li v-if="this.isLogin == true">
 						<span>可用资金</span>
 						<span>{{balance}}元</span>
 					</li>
+					<li v-else-if="this.isLogin == false">
+						<span>可用资金</span>
+						<span>--</span>
+					</li>
 				</ul>
 				<ul>
-					<li>
+					<li v-if="this.isLogin == true">
 						<span>账户余额</span>
 						<span>{{accountMoney}}元</span>
+					</li>
+					<li v-if="this.isLogin == false">
+						<span>账户余额</span>
+						<span>--</span>
 					</li>
 				</ul>
 			</div>

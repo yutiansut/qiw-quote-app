@@ -35,8 +35,8 @@
 </template>
 
 <script>
-	import pro from "../assets/js/common.js"
-	import codeDialog from "../components/codeDialog.vue"
+	import pro from "../../../assets/js/common.js"
+	import codeDialog from "../../../components/codeDialog.vue"
 	export default{
 		name:'login',
 		components : {codeDialog},
@@ -207,12 +207,12 @@
 </script>
 
 <style scoped lang="scss">
-	@import "../assets/css/common.scss";
+	@import "../../../assets/css/common.scss";
 	#login{
 		width: 7.5rem;
 	}
 	#back{
-		background: url(../assets/images/back_icon.png) no-repeat;
+		background: url(../../../assets/images/back_icon.png) no-repeat;
 		display: inline-block;
 		width: 0.24rem;
 		height: 0.32rem;
@@ -228,7 +228,7 @@
 			position: relative;
 			&:nth-child(1){
 				i{
-					background: url(../assets/images/regisiter_icon.png);
+					background: url(../../../assets/images/regisiter_icon.png);
 					background-size: 100% 100%;
 					position: absolute;
 					top: 0.48rem;
@@ -240,7 +240,7 @@
 			}
 			&:nth-child(2){
 				i{
-					background: url(../assets/images/password_icon.png);
+					background: url(../../../assets/images/password_icon.png);
 					background-size: 100% 100%;
 					position: absolute;
 					top: 0.48rem;
@@ -269,7 +269,7 @@
 			height: 0.24rem;
 			top: 0.5rem;
 			right: 0.6rem;
-			background: url(../assets/images/eye_icon.png);
+			background: url(../../../assets/images/eye_icon.png);
 			background-size: 100% 100%;
 		}
 		.eye1{
@@ -278,7 +278,7 @@
 			height: 0.24rem;
 			top: 0.5rem;
 			right: 0.6rem;
-			background: url(../assets/images/eyeopen_icon.png);
+			background: url(../../../assets/images/eyeopen_icon.png);
 			background-size: 100% 100%;
 		}
 		#toForgetPassword{
@@ -312,7 +312,7 @@
 			bottom: 0.3rem;
 			width: 100%;
 			i{
-				background:url(../assets/images/wechat_02.png);
+				background:url(../../../assets/images/wechat_02.png);
 				display: inline-block;
 				width:0.88rem;
 				height: 0.88rem;
