@@ -14,6 +14,23 @@ import trade from "../page/trade.vue"
 import hasLogin from "../page/trade/hasLogin.vue"
 import tradeApply from "../page/trade/tradeApply.vue"
 import applySuccess from "../page/trade/applySuccess.vue"
+import cl from "../page/role/cl.vue"
+import cn from '../page/role/cn.vue'
+import es from '../page/role/es.vue'
+import fdax from '../page/role/fdax.vue'
+import fdxm from '../page/role/fdxm.vue'
+import gc from '../page/role/gc.vue'
+import hg from '../page/role/hg.vue'
+import hhi from '../page/role/hhi.vue'
+import hsi from '../page/role/hsi.vue'
+import mch from '../page/role/mch.vue'
+import mhi from '../page/role/mhi.vue'
+import ng from '../page/role/ng.vue'
+import nk from '../page/role/nk.vue'
+import nq from '../page/role/nq.vue'
+import qm from '../page/role/qm.vue'
+import si from '../page/role/si.vue'
+import ym from '../page/role/ym.vue'
 
 
 
@@ -103,11 +120,61 @@ export default new Router({
 	},{
 		path: '/applySuccess',
 		component: applySuccess
-	}
+	},{
+		path: '/cl',
+		component: cl
+	},{
+		path: '/cn',
+		component: cn
+	},{
+		path: '/es',
+		component: es
+	},{
+		path: '/fdax',
+		component: fdax
+	},{
+		path: '/fdxm',
+		component: fdxm
+	},{
+		path: '/gc',
+		component: gc
+	},{
+		path: '/hg',
+		component: hg
+	},{
+		path: '/hhi',
+		component: hhi
+	},{
+		path: '/hsi',
+		component: hsi
+	},{
+		path: '/mch',
+		component: mch
+	},{
+		path: '/mhi',
+		component: mhi
+	},{
+		path: '/ng',
+		component: ng
+	},{
+		path: '/nk',
+		component: nk
+	},{
+		path: '/nq',
+		component: nq
+	},{
+		path: '/qm',
+		component: qm
+	},{
+		path: '/si',
+		component: si
+	},{
+		path: '/ym',
+		component: ym
+	},
 	
 	
-	
-	,{
+	{
 		path:'/login',
 		component:login
 	},{

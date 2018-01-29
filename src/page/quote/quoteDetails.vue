@@ -11,7 +11,7 @@
 					</div>
 					<i class="icon icon_triangle"></i>
 				</div>
-				<button>规则</button>
+				<button @touchstart="toRole">规则</button>
 			</header>
 			<div class="main">
 				<div class="details">
@@ -352,6 +352,12 @@
 				//判断是否自选
 				this.getUserCommodityList();
 			},
+			toRole: function(){
+				if(this.currentNo){
+					var p = this.currentNo.toString().toLowerCase();
+				}
+				this.$router.push({path: '/' + p});
+			},
 			addRemind: function(){
 				this.chartsShow = false;
 				this.$store.state.isshow.isfensshow = false;
@@ -394,11 +400,9 @@
 							this.parameters.forEach((o, i) => {
 								if(o.check == 1){
 									let price = [];
-									console.log(o.scale);
 									this.jsonData[o.CommodityNo].Parameters.Data.forEach((v, k) => {
 										price.push(v[1]*o.scale);
 									});
-									console.log(price);
 									let obj = {
 										name: o.CommodityNo,
 										type: 'line',
