@@ -369,34 +369,55 @@
 					Toast({message: '只能在分时添加对比', position: 'bottom', duration: 2000});
 					return;
 				}
-				this.parameters.forEach((o, i) => {
-					if(o.CommodityNo == index){
-						if(o.check == 0){
-							o.check = 1;
+				let headers = {
+					token: this.userInfo.token,
+					secret: this.userInfo.secret
+				}
+				let datas = {
+					commodityNoA: this.currentNo,
+					commodityNoB: index
+				}
+				pro.fetch('post', '/quoteTrader/getScale', datas, headers).then((res) => {
+					if(res.success == true){
+						if(res.code == 1){
+							this.parameters.forEach((o, i) => {
+								if(o.CommodityNo == index){
+									o.scale = res.data.scale;
+									if(o.check == 0){
+										o.check = 1;
+									}else{
+										o.check = 0;
+									}
+								}
+							});
+							let arr = [];
+							this.parameters.forEach((o, i) => {
+								if(o.check == 1){
+									let price = [];
+									console.log(o.scale);
+									this.jsonData[o.CommodityNo].Parameters.Data.forEach((v, k) => {
+										price.push(v[1]*o.scale);
+									});
+									console.log(price);
+									let obj = {
+										name: o.CommodityNo,
+										type: 'line',
+							            data: price,
+							            lineStyle: {normal: {width: 1}},
+										symbolSize: 2,
+									}
+									arr.push(obj);
+								}
+							});
+							this.setfensoption(arr);
+							this.drawfens(this.id);
 						}else{
-							o.check = 0;
+							Toast({message: res.message, position: 'bottom', duration: 2000});
 						}
 					}
+				}).catch((err) => {
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
 				});
-				let arr = [];
-				this.parameters.forEach((o, i) => {
-					if(o.check == 1){
-						let price = [];
-						this.jsonData[o.CommodityNo].Parameters.Data.forEach((v, k) => {
-							price.push(v[1]);
-						});
-						let obj = {
-							name: o.CommodityNo,
-							type: 'line',
-				            data: price,
-				            lineStyle: {normal: {width: 1}},
-							symbolSize: 2,
-						}
-						arr.push(obj);
-					}
-				});
-				this.setfensoption(arr);
-				this.drawfens(this.id);
 			},
 			menuEvent: function(index){
 				this.currentChartsNum = index;
