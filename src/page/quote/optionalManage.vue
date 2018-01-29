@@ -63,7 +63,7 @@
 			<div class="col" @touchstart="checkAllEvemt">
 				<i class="icon icon_radio"></i>
 				<i class="icon icon_radios" v-show="checkedShow"></i>
-				<span>全选</span>
+				<span>{{checkedName}}</span>
 			</div>
 			<div class="col" @touchstart="deleteEvent">
 				<i class="icon icon_del"></i>
@@ -85,6 +85,7 @@
 		data(){
 			return{
 				checkedShow: false,
+				checkedName: '全选',
 				optionalList: [],
 				num: 0,
 				id: '',
@@ -157,12 +158,14 @@
 			checkAllEvemt: function(){
 				if(this.checkedShow == false){
 					this.checkedShow = true;
+					this.checkedName = '取消全选';
 					this.num = this.parameters.length;
 					this.parameters.forEach((o, i) => {
 						o.check = 1;
 					});
 				}else{
 					this.checkedShow = false;
+					this.checkedName = '全选';
 					this.num = 0;
 					this.parameters.forEach((o, i) => {
 						o.check = 0;
