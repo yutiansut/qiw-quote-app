@@ -15,7 +15,7 @@
 					<li>功能建议</li>
 					<li>行情相关</li>
 					<li>其他</li>-->
-					<li v-for="(k,index) in choose" @click="check(index,$event)" :class="{current:current1 == index}">{{k.name}}</li>
+					<li v-for="(k,index) in choose" @click="check(index,$event)" :class="{current:current1 == index}">{{k.label}}</li>
 				</ul>
 			</div>
 			<div class="title_lev2">
@@ -44,15 +44,18 @@
 		components:{btn},
 		data(){
 			return{
-				choose:[{name:"程序bug"},{name:"功能建议"},{name:"行情相关"},{name:"其他"}],
+				choose:"",
 				current1:0,
 				phone:"",
-				suggest:""
+				suggest:"",
+				typeArr:[1,2,3,4],
+				type:1
 			}
 		},
 		methods:{
 			check:function(index,e){
 				this.current1 = index;
+				this.type = this.typeArr[index];
 			},
 			submit:function(){
 				if(this.suggest == ''){
@@ -60,31 +63,46 @@
 				}else if(this.phone == ''){
 					this.$toast({message: '请正确填写联系方式',duration: 1000});
 				}else{
-					console.log("suggest=="+this.suggest);
-//					var data = {
-//						
-//					}
-//					pro.fetch("post","/",data,headers).then((res)={
-//						if(res.code == 1 && res.success == true){
-							
-//							this.$toast({message: '提交成功',duration: 1000});
-//						}
-//					}).catch((err)=>{
-//						var data = err.data;
-//						if(data == undefined){
-//							this.$toast({message: '网络不给力，请稍后重试',duration: 1000});
-//						}else{
-//							this.$toast({message:data.message,duration: 1000});
-//						}
-//					})
+//					console.log("suggest=="+this.suggest);
+					var data = {
+						type:this.type,
+						content:this.suggest,
+						contact:this.phone
+					}
+//					console.log("data=="+JSON.stringify(data))
+					pro.fetch("post","/others/getFeedbackType",data,'').then((res)=>{
+//						console.log("res==="+JSON.stringify(res));
+						if(res.code == 1 && res.success == true){
+							this.suggest = '';
+							this.phone = '';
+							this.$toast({message: '提交成功',duration: 1000});
+						}
+					}).catch((err)=>{
+//						console.log("err==="+JSON.stringify(err));
+						var data = err.data;
+						if(data == undefined){
+							this.$toast({message: '网络不给力，请稍后重试',duration: 1000});
+						}else{
+							this.$toast({message:data.message,duration: 1000});
+						}
+					})
 				}
 			},
 			getinfo:function(){
-//				pro.fetch("post","/",data,headers).then((res)=>{
-//				
-//				}).catch((err)=>{
-//				
-//				})
+				pro.fetch("post","/others/getFeedbackType",{},{}).then((res)=>{
+					console.log("res===="+JSON.stringify(res))
+					if(res.code == 1 && res.success == true){
+						this.choose = res.data;
+					}
+				}).catch((err)=>{
+					console.log("err===="+JSON.stringify(err))
+//					var data = err.data;
+//					if(data == undefined){
+//						this.$toast({message: '网络不给力，请稍后重试',duration: 1000});
+//					}else{
+//						this.$toast({message:data.message,duration: 1000});
+//					}
+				})
 			}
 		},
 		mounted:function(){

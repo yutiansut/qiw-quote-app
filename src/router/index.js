@@ -42,7 +42,7 @@ import information_details from "../page/information/information_details.vue"
 import information_search from "../page/information/information_search.vue"
 import service from "../page/account/service.vue"
 import payWays from "../page/account/payWays.vue"
-
+import newbieTask from "../page/account/newbieTask.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -176,6 +176,9 @@ export default new Router({
 	},{
 		path:'/payWays',
 		component:payWays
+	},{
+		path:"/newbieTask",
+		component:newbieTask
 	}
 	]
 })
