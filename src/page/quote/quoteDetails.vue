@@ -760,6 +760,8 @@
 					}
 				}
 				.contrast_list{
+					height: 3.16rem;
+					overflow: hidden;
 					.empty{
 						height: 3.16rem;
 						line-height: 3.16rem;

@@ -34,7 +34,7 @@
 			<div class="cont">
 				<div class="row">
 					<span class="type">价格上涨到</span>
-					<input type="text" class="ipt_lg" v-model="remindList.lastPriceOverSomePrice" />
+					<input type="number" class="ipt_lg" v-model="remindList.lastPriceOverSomePrice" />
 					<div class="switch lastPriceUp" @touchstart="switchEvent" :class="{current: remindList.lastPriceOverSomePriceIsOpen == 1}">
 							<i class="icon icon_zero"></i>
 						</transition>
@@ -42,26 +42,26 @@
 				</div>
 				<div class="row">
 					<span class="type">最近</span>
-					<input type="text" class="ipt_sm" v-model="daysHight" />
+					<input type="number" class="ipt_sm" v-model="daysHight" />
 					<span>天最高价</span>
 					<b>{{hightPrice}}</b>
 				</div>
 				<div class="row">
 					<span class="type">价格下跌到</span>
-					<input type="text" class="ipt_lg" v-model="remindList.lastPriceUnderSomePrice" />
+					<input type="number" class="ipt_lg" v-model="remindList.lastPriceUnderSomePrice" />
 					<div class="switch lastPriceDown" @touchstart="switchEvent" :class="{current: remindList.lastPriceUnderSomePriceIsOpen == 1}">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
 				<div class="row">
 					<span class="type">最近</span>
-					<input type="text" class="ipt_sm" v-model="daysLow" />
+					<input type="number" class="ipt_sm" v-model="daysLow" />
 					<span>天最低价</span>
 					<b>{{lowPrice}}</b>
 				</div>
 				<div class="row">
 					<span class="type">当日涨幅超过</span>
-					<input type="text" class="ipt_sm" v-model="remindList.todayRiseRangePoint" />
+					<input type="number" class="ipt_sm" v-model="remindList.todayRiseRangePoint" />
 					<span>%</span>
 					<div class="switch changeUp" @touchstart="switchEvent" :class="{current: remindList.todayRiseRangePointIsOpen == 1}">
 						<i class="icon icon_zero"></i>
@@ -69,7 +69,7 @@
 				</div>
 				<div class="row">
 					<span class="type">当日跌幅超过</span>
-					<input type="text" class="ipt_sm" v-model="remindList.todayFallRangePoint" />
+					<input type="number" class="ipt_sm" v-model="remindList.todayFallRangePoint" />
 					<span>%</span>
 					<div class="switch changeDown" @touchstart="switchEvent" :class="{current: remindList.todayFallRangePointIsOpen == 1}">
 						<i class="icon icon_zero"></i>
@@ -154,6 +154,7 @@
 				daysLow: '',
 				lowPrice: '--',
 				remindId: '',
+				intReg: /^[1-9]\d*$/,
 			}
 		},
 		computed: {
@@ -195,10 +196,10 @@
 		},
 		watch: {
 			daysHight: function(n, o){
-				console.log(n);
 				if(n == '') return;
-				if(n == 0){
+				if(this.intReg.test(n) == false){
 					Toast({message: '请输入天数', position: 'bottom', duration: 1000});
+					this.daysHight = '';
 					this.hightPrice = '--';
 				}else if(n > 30){
 					Toast({message: '天数最多为30天', position: 'bottom', duration: 1000});
@@ -213,14 +214,14 @@
 						if(o == undefined) return;
 						arr.push(o[4]);
 					});
-					console.log(arr);
 					this.hightPrice = pro.getMaximin(arr, "max");
 				}
 			},
 			daysLow: function(n, o){
 				if(n == '') return;
-				if(n == 0){
+				if(this.intReg.test(n) == false){
 					Toast({message: '请输入天数', position: 'bottom', duration: 1000});
+					this.daysLow = '';
 					this.lowPrice = '--';
 				}else if(n > 30){
 					Toast({message: '天数最多为30天', position: 'bottom', duration: 1000});

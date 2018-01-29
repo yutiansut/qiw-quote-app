@@ -99,52 +99,7 @@ var market = {
 		//行情数据格式
 		jsonTow: {
 			"Method": "OnRtnQuote",
-			"Parameters": {
-				"AskPrice1": 44.92,
-				"AskPrice2": 44.93,
-				"AskPrice3": 44.94,
-				"AskPrice4": 44.95,
-				"AskPrice5": 44.96,
-				"AskQty1": 15,
-				"AskQty2": 37,
-				"AskQty3": 35,
-				"AskQty4": 33,
-				"AskQty5": 61,
-				"AveragePrice": 0,
-				"BidPrice1": 44.91,
-				"BidPrice2": 44.9,
-				"BidPrice3": 44.89,
-				"BidPrice4": 44.88,
-				"BidPrice5": 44.87,
-				"BidQty1": 28,
-				"BidQty2": 47,
-				"BidQty3": 38,
-				"BidQty4": 90,
-				"BidQty5": 33,
-				"ChangeRate": 0.402324541797049,
-				"ChangeValue": 0.1799999999999997,
-				"ClosingPrice": 0,
-				"CommodityNo": "CL",
-				"ContractNo": "1708",
-				"DateTimeStamp": "2017-06-29 11:40:36",
-				"ExchangeNo": "NYMEX",
-				"HighPrice": 45.03,
-				"LastPrice": 44.92,
-				"LastVolume": 1,
-				"LimitDownPrice": 0,
-				"LimitUpPrice": 0,
-				"LowPrice": 44.75,
-				"OpenPrice": 44.89,
-				"Position": 541143,
-				"PreClosingPrice": 0,
-				"PrePosition": 0,
-				"PreSettlePrice": 44.74,
-				"SettlePrice": 0,
-				"TotalAskQty": 0,
-				"TotalBidQty": 0,
-				"TotalTurnover": 0,
-				"TotalVolume": 26287
-			}
+			"Parameters": {}
 		},
 		chartHeight: '',
 		//绘制分时的设置
@@ -328,6 +283,7 @@ export default new Vuex.Store({
 		},
 		//设置闪电图数据
 		setlightDate: function(state) {
+			state.market.jsonTow.Parameters = state.market.currentdetail.LastQuotation;
 			var TimeLength = state.market.lightChartTime.time.length;
 			state.market.lightChartTime.price.push(state.market.jsonTow.Parameters.LastPrice.toFixed(state.market.currentdetail.DotSize));
 			state.market.lightChartTime.time.push((state.market.jsonTow.Parameters.DateTimeStamp).split(" ")[1]);
