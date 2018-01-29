@@ -9,10 +9,11 @@
 			<div id="loginIn" v-show="showLoginIn">
 				<ul>
 					<li>
-						<i></i>
+						<i v-show="loginVisitor"></i>
+						<img v-bind:src="this.wxHeadimgurl" alt="" />
 					</li>
 					<li>
-						<span v-show="nickname">杨威利</span>
+						<span v-show="nickname">{{wxNickname}}</span>
 						<p>{{mobile}}</p>
 					</li>
 				</ul>
@@ -69,7 +70,7 @@
 						</li>
 					</ul>
 					<ul>
-						<li @click="tonext">
+						<li @click="toPersonalSet">
 							<i></i>
 							<span>个人设置</span>
 						</li>
@@ -135,14 +136,15 @@
 				//冻结资金
           		freeze: '',
           		//可以资金
-          		balance: '',
+          		balance: 0,
           		//微信昵称
           		wxNickname: "",
           		//支付宝账户
-          		aliaccount: "" ,
+          		aliaccount: 0 ,
           		accountMoney:0,
-          		phone:""
-
+          		phone:"",
+          		isLogin:false,
+          		loginVisitor:true
 			}
 		},
 		methods:{
@@ -152,20 +154,29 @@
 			toLogin:function(){
 				this.$router.push({path:'/login'});
 			},
-			tonext:function(){
-				this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
-				if(this.userInfo == ''){
+			toPersonalSet:function(){
+				if(this.isLogin==true){
+					this.$router.push({path:'/personalSet',query:{phone:this.phone,wxNickname:this.wxNickname}});
+				}else{
 					this.$toast({message:"您还未登录，请先登录",duration: 2000});
 					this.$router.push({path:'/login'});
-				}else{
-					this.$router.push({path:'/personalSet',query:{phone:this.phone,wxNickname:this.wxNickname}});
 				}
 			},
 			toMoney:function(){
-				this.$router.push({path:'/moneyDetails'});
+				if(this.isLogin==true){
+					this.$router.push({path:'/moneyDetails'});
+				}else{
+					this.$toast({message:"您还未登录，请先登录",duration: 2000});
+					this.$router.push({path:'/login'});
+				}
 			},
 			toRealName:function(){
-				this.$router.push({path:'/realName'});
+				if(this.isLogin==true){
+					this.$router.push({path:'/realName'});
+				}else{
+					this.$toast({message:"您还未登录，请先登录",duration: 2000});
+					this.$router.push({path:'/login'});
+				}
 			},
 			toFeedBack:function(){
 				this.$router.push({path:'/feedBack'});
@@ -180,7 +191,12 @@
 				this.$router.push({path:'/recharge'});
 			},
 			toMyFinance:function(){
-				this.$router.push({path:'/myFinance'});	
+				if(this.isLogin==true){
+					this.$router.push({path:'/myFinance'});
+				}else{
+					this.$toast({message:"您还未登录，请先登录",duration: 2000});
+					this.$router.push({path:'/login'});
+				}
 			},
 			//获取用户信息
 			getUserInfo:function(){
@@ -196,20 +212,24 @@
 						this.mobile = phoneNumber.substr(0, 3) + '****' + phoneNumber.substr(7);
 						this.phone=res.data.mobile;
 						this.isRealNameAuth = res.data.isRealNameAuth;
-						this.wxHeadimgurl=res.data.wxHeadimgurl;
 		          		this.freeze=res.data.freeze;
 		          		this.balance=res.data.balance;
 		          		this.aliaccount= res.data.aliaccount;
 		          		this.wxNickname = res.data.wxNickname;
 //		          		this.accountMoney = Number(this.balance)+Number(this.this.freeze);
 						if(res.data.wxNickname ==''){
-							this.nickname = false
+							this.nickname = false;
+							this.wxNickname = "游客";
 						}else{
-							this.nickname = true
+							this.nickname = true;
+						}
+						if(res.data.wxHeadimgurl != ''){
+							this.wxHeadimgurl = res.data.wxHeadimgurl;
+							this.loginVisitor = false
 						}
 					}
 				}).catch((err)=>{
-					console.log("err==0"+JSON.stringify(err))
+//					console.log("err==0"+JSON.stringify(err))
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
@@ -226,22 +246,24 @@
 			}
 		},
 		mounted:function(){
-			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
-			console.log(this.userInfo);
-			if(this.userInfo == ''){
-				this.showLoginIn = false;
-				this.showNotLogin = true;
-				console.log("1111")
-			}else{
-				this.showLoginIn = true;
-				this.showNotLogin = false;
-				console.log("22222")
-				this.getUserInfo();
-			}
 		},
 		activated: function(){
 			//获取平台账户登录信息
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+			if(this.userInfo == ''){
+				this.showLoginIn = false;
+				this.showNotLogin = true;
+//				console.log("未登录")
+				this.aliaccount = 0 ;
+				this.balance = 0;
+				this.isLogin = false
+			}else{
+				this.showLoginIn = true;
+				this.showNotLogin = false;
+//				console.log("一登录")
+				this.isLogin = true;
+				this.getUserInfo();
+			}
 		}
 	}
 </script>
@@ -312,6 +334,13 @@
 					li{
 						i{
 							background: url(../assets/images/wechat_head.png);
+							width: 0.8rem;
+							height: 0.8rem;
+							display: block;
+							background-size: 100% 100%;
+							margin-top: 0.3rem;
+						}
+						img{
 							width: 0.8rem;
 							height: 0.8rem;
 							display: block;

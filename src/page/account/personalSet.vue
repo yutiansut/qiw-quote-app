@@ -55,7 +55,7 @@
 			exit:function(){
 				localStorage.removeItem('user');
 				localStorage.removeItem('weixinUser');
-				this.$router.push({path:"/index"});
+				this.$router.push({path:"/account"});
 			}
 		},
 		mounted:function(){
