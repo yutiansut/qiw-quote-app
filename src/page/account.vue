@@ -87,7 +87,7 @@
 					</li>
 				</ul>
 				<ul>
-					<li>
+					<li @click="toNewbieTask">
 						<i></i>
 						<span>新手任务</span>
 					</li>
@@ -177,6 +177,9 @@
 					this.$toast({message:"您还未登录，请先登录",duration: 2000});
 					this.$router.push({path:'/login'});
 				}
+			},
+			toNewbieTask:function(){
+				this.$router.push({path:"/newbieTask"});
 			},
 			toFeedBack:function(){
 				this.$router.push({path:'/feedBack'});
