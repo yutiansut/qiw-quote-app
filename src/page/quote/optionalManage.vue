@@ -121,7 +121,10 @@
 				if(n != undefined){
 					if(this.checkedShow == true){
 						n.forEach((o, i) => {
-							if(o.check == 0) this.checkedShow = false;
+							if(o.check == 0){
+								this.checkedShow = false;
+								this.checkedName = '全选';
+							}
 						});
 					}else{
 						n.forEach((o, i) => {
@@ -129,6 +132,7 @@
 						});
 						if(num == 0){
 							this.checkedShow = true;
+							this.checkedName = '取消全选';
 						}
 					}
 				}
