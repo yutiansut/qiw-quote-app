@@ -549,6 +549,7 @@
 				if(contrast == '' || contrast == undefined){
 					this.noContrast = true;
 				}else{
+					this.noContrast = false;
 					contrast = contrast.split(',');
 					contrast.forEach((o, i) => {
 						if(o != ''){
