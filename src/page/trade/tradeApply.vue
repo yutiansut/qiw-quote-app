@@ -108,12 +108,14 @@
 			//已领取状态下去获取是否使用状态
 			getNewActivity:function(headers){
 				pro.fetch("post","/futureManage/getPresent",{type:1},headers).then((res)=>{}).catch((err)=>{
+//					console.log("errrrrrrrrrrrrrrrrrrrrrrr===="+JSON.stringify(err))
 					var data = err.data ;
 					if(data == undefined){
 						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
 					}else if(data.data == false){
 						this.isUseActivity = false;
 						this.disabled = true;
+						this.activityType = 1;
 						this.rangeValue = 10000
 					}
 				})
@@ -121,7 +123,7 @@
 			//获取是否领取过1w新手资金
 			GetActivity:function(headers){
 				pro.fetch("post","/account/getBasicMsg","",headers).then((res)=>{
-					console.log("res=="+JSON.stringify(res))
+//					console.log("res=="+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
 						this.isPresentedgive = res.data.isGetActivity;
 						if(res.data.isGetActivity == true){
@@ -143,7 +145,7 @@
 			//获取基础配置信息
 			getParameters:function(headers){
 				pro.fetch("post","/futureManage/getApplyData","",headers).then((res)=>{
-//					console.log("res==="+JSON.stringify(res.data.balance))
+//					console.log("res==="+JSON.stringify(res.data.balance));
 					if(res.code == 1 && res.success == true){
 						this.tradableList = res.data.tradableList;
 						this.lossScale = res.data.lossScale;
@@ -152,7 +154,7 @@
 						if(res.data.balance != '' && res.data.balance > 3){
 							this.startMax = res.data.balance*this.rate;
 							this.balance = res.data.balance;
-						}else if(res.data.balance != '' && res.data.balance < 3 || res.data.balance == 3){
+						}else if(res.data.balance < 3 || res.data.balance == 3){
 							this.startMax = 10000;
 						}
 //						this.balance = 100;
@@ -219,22 +221,20 @@
 					token : this.userInfo.token,
 					secret : this.userInfo.secret
 				}
-//				console.log("data======"+JSON.stringify(data))
+				console.log("data======"+JSON.stringify(data))
 				pro.fetch("post","/futureManage/openAccount",data,head).then((res)=>{
+					console.log("11111111111111111"+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
 						this.$toast({message:'申请成功',duration: 2000});
 						this.$router.push({path:"/applySuccess"});
 					}
 				}).catch((err)=>{
+					console.log("err111111111111111111=="+JSON.stringify(err))
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
-					}else if(data.success == false){
+					}else{
 						//领取未使用
-						this.$toast({message:'',duration: 2000});
-						
-					}else if(data.success == true){
-						//领取已使用
 						this.$toast({message:data.message,duration: 2000});
 					}
 				})	
