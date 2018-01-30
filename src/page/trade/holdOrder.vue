@@ -3,7 +3,7 @@
 		<div class="nav">
 			<ul>
 				<template v-for="(v, index) in navList">
-					<li :class="{current: currentNum == index}">{{v}}</li>
+					<li :class="{current: currentNum == index}" @tap="navEvent(index)">{{v}}</li>
 				</template>
 			</ul>
 		</div>
@@ -15,9 +15,15 @@
 
 <script>
 	import position from "./position.vue"
+	import hangOrder from "./hangOrder.vue"
+	import entrust from "./entrust.vue"
+	import condition from "./condition.vue"
+	import stopOrder from "./stopOrder.vue"
+	import todayOrder from "./todayOrder.vue"
+	import historyOrder from "./historyOrder.vue"
 	export default{
 		name: "holdOrder",
-		components: {position},
+		components: {position, hangOrder, entrust, condition, stopOrder, todayOrder, historyOrder},
 		data(){
 			return{
 				navList: ['持仓','挂单', '委托', '条件单', '止损单', '当日成交', '历史成交'],
@@ -26,7 +32,32 @@
 			}
 		},
 		methods: {
-			
+			navEvent: function(index){
+				this.currentNum = index;
+				switch (index){
+					case 0:
+						this.currentView = 'position';
+						break;
+					case 1:
+						this.currentView = 'hangOrder';
+						break;
+					case 2:
+						this.currentView = 'entrust';
+						break;
+					case 3:
+						this.currentView = 'condition';
+						break;
+					case 4:
+						this.currentView = 'stopOrder';
+						break;
+					case 5:
+						this.currentView = 'todayOrder';
+						break;
+					case 6:
+						this.currentView = 'historyOrder';
+						break;
+				}
+			},
 		},
 		mounted: function(){
 			

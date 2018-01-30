@@ -1,5 +1,5 @@
 <template>
-	<div id="position" class="list">
+	<div id="historyOrder" class="list">
 		<ul>
 			<li>
 				<div class="list_title">
@@ -58,7 +58,7 @@
 <script>
 	import btn from "../../components/btn.vue"
 	export default{
-		name: "position",
+		name: "historyOrder",
 		components: {btn},
 		data(){
 			return{
