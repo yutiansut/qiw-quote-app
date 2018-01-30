@@ -4,7 +4,7 @@
 			<div class="p_left">选择融资本金(本金越多，可持仓手数越多)</div>
 			<div class="picture">
 				<p><span>{{financing}}</span>元</p>
-				<mt-range v-model="rangeValue" :barHeight="5" :min="this.startMin" :max="this.startMax" class="range" :disabled="disabled"></mt-range>
+				<mt-range v-model="rangeValue" :barHeight="10" :min="this.startMin" :max="this.startMax" id="range" :disabled="disabled"></mt-range>
 				<ul class="section">
 					<li><span>{{startMin}}</span>元</li>
 					<li><span>{{startMax}}</span>元</li>
@@ -13,7 +13,7 @@
 			<div class="p_left">选择融倍数，（倍数越多，可持仓手数越多）</div>
 			<div class="picture1">
 				<p><span>{{times}}倍</span></p>
-				<mt-range v-model="rangeValue1" :barHeight="5" :min="0" :max="100" :step="5" class="range"></mt-range>
+				<mt-range v-model="rangeValue1" :barHeight="10" :min="0" :max="100" :step="5" id="range1"></mt-range>
 				<ul class="section1">
 					<li><span>0</span>倍</li>
 					<li><span>100</span>倍</li>
