@@ -166,6 +166,7 @@
 				});
 			},
 			addOptional: function(key,exchangeNo,commodityNo,contractNo,id){
+				console.log(key);
 				let userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 				if(userInfo == undefined){
 					Toast({message: '请先登录平台', position: 'bottom', duration: 1000});
@@ -203,6 +204,7 @@
 							this.resultList.forEach((o, i) => {
 								if(o.CommodityNo == commodityNo){
 									o.isOptional = 1;
+									o.id = res.data.id;
 								}
 							});
 						}
