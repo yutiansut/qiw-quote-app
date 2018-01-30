@@ -5,6 +5,7 @@
 			<div class="picture">
 				<p><span>{{financing}}</span>元</p>
 				<mt-range v-model="rangeValue" :barHeight="10" :min="this.startMin" :max="this.startMax" id="range" :disabled="disabled"></mt-range>
+				<div class="bkg"></div>
 				<ul class="section">
 					<li><span>{{startMin}}</span>元</li>
 					<li><span>{{startMax}}</span>元</li>
@@ -14,6 +15,7 @@
 			<div class="picture1">
 				<p><span>{{times}}倍</span></p>
 				<mt-range v-model="rangeValue1" :barHeight="10" :min="0" :max="100" :step="5" id="range1"></mt-range>
+				<div class="bkg1"></div>
 				<ul class="section1">
 					<li><span>0</span>倍</li>
 					<li><span>100</span>倍</li>
@@ -241,31 +243,6 @@
 			}
 		},
 		mounted:function(){
-//			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
-//			this.financing = this.rangeValue;
-//			this.totalMoney = this.rangeValue + this.rangeValue*this.rangeValue1;
-//			this.payMoney = this.rangeValue/100;
-//			this.startMin = 300;
-//			this.rangeValue = 300;
-//			if(this.userInfo == ''){
-//				//未登录
-////				console.log("未登录");
-//				this.startMax = 1000;
-//				this.isLogin = false;
-//				var headers = ""
-//				this.getParameters(headers);
-//			}else{
-//				//已登录
-////				console.log("一登录")
-//				this.isLogin = true;
-//				var headers = {
-//					token : this.userInfo.token,
-//					secret : this.userInfo.secret
-//				}
-////				console.log("headers==="+JSON.stringify(headers))
-//				this.getParameters(headers);
-//				this.GetActivity(headers);
-//			}
 		},
 		activated: function(){
 			//获取平台账户登录信息
@@ -294,6 +271,16 @@
 				this.getParameters(headers);
 				this.GetActivity(headers);
 			}
+			var screenPhone=screen.width;
+			if(screenPhone == 320){
+				$(".bkg").css("top","0.83rem").css("height","0.34rem");
+//				$(".mt-range-content").css("margin-right","0.5rem");
+				$(".bkg1").css("top","0.83rem").css("height","0.34rem");
+			}else if(screenPhone==375){
+				$(".bkg").css("top","0.79rem").css("height","0.33rem");
+				$(".bkg1").css("top","0.79rem").css("height","0.33rem");
+			}
+			console.log("screenPhone==="+screenPhone)
 		},
 		watch:{
 			rangeValue:function(){
@@ -354,6 +341,7 @@
 				border-bottom: 1px solid $black;
 			}
 			.picture{
+				position: relative;
 				float: left;
 				width: 100%;
 				height: 1.8rem;
@@ -382,12 +370,21 @@
 						}
 					}
 				}
-			}
-			.range{
-					width: 90%;
-					margin: auto;
+				.bkg{
+					width: 6.4rem;
+					height: 0.3rem;
+					/*margin: auto;*/
+					border: 1px solid #ffd400;
+					position: absolute;
+					top:0.77rem;
+					left: 0.55rem;
+					border-radius: 0.15rem;
+					z-index: 1;
+					box-shadow:-0 0.5rem 0 #12141a inset;
 				}
+			}
 			.picture1{
+				position: relative;
 				float: left;
 				width: 100%;
 				height: 1.8rem;
@@ -415,6 +412,18 @@
 							color: $white;
 						}
 					}
+				}
+				.bkg1{
+					width: 6.4rem;
+					height: 0.3rem;
+					/*margin: auto;*/
+					border: 1px solid $blue;
+					position: absolute;
+					top:0.77rem;
+					left: 0.55rem;
+					border-radius: 0.15rem;
+					z-index: 1;
+					box-shadow:-0 0.5rem 0 #12141a inset;
 				}
 			}
 			.black{
