@@ -157,7 +157,7 @@
 			border-radius: 0 !important;
 			outline: none;
 			height: 0.9rem;
-			width: 100%;
+			width:6.9rem;
 			border-bottom: 1px solid #505664;
 			text-indent: 1rem;
 			color: $white;

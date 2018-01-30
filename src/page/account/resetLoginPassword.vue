@@ -143,7 +143,7 @@
 				outline: none;
 				border-radius: 0.1rem;
 				height: 0.88rem;
-				width: 6.6rem;
+				width: 6.9rem;
 				text-indent: 1rem;
 				color: $white;
 				margin-top: 0.3rem;

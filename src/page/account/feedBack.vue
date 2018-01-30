@@ -189,7 +189,7 @@
 			border-bottom:1px solid #12141a;
 			height: 1.5rem;
 			input{
-				width: 6.6rem;
+				width: 6.9rem;
 				height: 0.9rem;
 				margin-top: 0.3rem;
 				border: 1px solid #12141a;

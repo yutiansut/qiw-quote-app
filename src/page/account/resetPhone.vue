@@ -248,10 +248,10 @@
 					i{
 						position: absolute;
 						top: 0.34rem;
-						right: 0;
+						right: 0.02rem;
 						display: block;
 						width: 1.7rem;
-						height: 0.88rem;
+						height: 0.8rem;
 						background-color: $titleBlue;
 						text-align: center;
 						line-height: 0.88rem;
@@ -279,7 +279,7 @@
 				outline: none;
 				border-radius: 0.1rem;
 				height: 0.88rem;
-				width: 6.6rem;
+				width: 6.9rem;
 				text-indent: 0.2rem;
 				color: $white;
 				margin-top: 0.3rem;
