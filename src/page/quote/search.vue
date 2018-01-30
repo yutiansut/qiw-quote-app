@@ -166,7 +166,9 @@
 				});
 			},
 			addOptional: function(key,exchangeNo,commodityNo,contractNo,id){
-				if(this.userInfo == undefined){
+				console.log(key);
+				let userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+				if(userInfo == undefined){
 					Toast({message: '请先登录平台', position: 'bottom', duration: 1000});
 					return;
 				}
@@ -176,6 +178,7 @@
 				}
 				if(key == 1){   //删除自选
 					var _datas = {id: id};
+					console.log(999);
 					MessageBox.confirm("确定删除自选？","提示").then(action=>{
 						pro.fetch('post', '/quoteTrader/userRemoveCommodity', _datas, headers).then((res) => {
 							if(res.success == true && res.code == 1){
