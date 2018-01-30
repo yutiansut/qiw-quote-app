@@ -189,7 +189,6 @@
 							Toast({message: err.data.message, position: 'bottom', duration: 1000});
 						});
 					}).catch(err=>{});
-					
 				}else{   //添加自选
 					var datas = {
 						'exchangeNo': exchangeNo,
