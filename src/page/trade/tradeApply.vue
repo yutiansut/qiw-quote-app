@@ -275,10 +275,10 @@
 			if(screenPhone == 320){
 				$(".bkg").css("top","0.83rem").css("height","0.34rem");
 //				$(".mt-range-content").css("margin-right","0.5rem");
-				$(".bkg1").css("top","0.82rem").css("height","0.34rem");
+				$(".bkg1").css("top","0.83rem").css("height","0.34rem");
 			}else if(screenPhone==375){
 				$(".bkg").css("top","0.79rem").css("height","0.33rem");
-				$(".bkg1").css("top","0.78rem").css("height","0.33rem");
+				$(".bkg1").css("top","0.79rem").css("height","0.33rem");
 			}
 			console.log("screenPhone==="+screenPhone)
 		},
@@ -419,7 +419,7 @@
 					/*margin: auto;*/
 					border: 1px solid $blue;
 					position: absolute;
-					top:0.76rem;
+					top:0.77rem;
 					left: 0.55rem;
 					border-radius: 0.15rem;
 					z-index: 1;
