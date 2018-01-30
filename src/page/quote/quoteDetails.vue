@@ -773,28 +773,29 @@
 						border-bottom: 0.01rem solid $black;
 					}
 					li{
-						height: 0.63rem;
+						/*height: 0.63rem;*/
 						overflow: hidden;
 						border-bottom: 0.01rem solid $black;
-						padding: 0 0.05rem;
+						padding: 0.05rem;
 						&.current{
 							background: #1b1f26;
 						}
 						.name{
-							width: 1.35rem;
-							height: 0.63rem;
+							width: 1.2rem;
 							overflow: hidden;
 							span{
 								display: block;
 								font-size: 0.2rem;
 								&:first-child{
 									color: $white;
-									margin: 0.07rem 0 0.05rem 0;
+									margin: 0.05rem 0;
 								}
 							}
 						}
 						p{
 							float: left;
+							display: flex;
+							align-items: center;
 							width: 0.75rem;
 							line-height: 0.64rem;
 							font-size: 0.2rem;
