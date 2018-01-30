@@ -49,7 +49,7 @@
 				<i class="icon icon_radios" v-show="checkedShow"></i>
 				<span>{{checkedName}}</span>
 			</div>
-			<div class="col" @tap="deleteEvent">
+			<div class="col" @click="deleteEvent">
 				<i class="icon icon_del"></i>
 				<span :class="{grey: num == 0}">删除</span>
 				<em :class="{grey: num == 0}">({{this.num}})</em>
@@ -62,6 +62,7 @@
 	import pro from '../../assets/js/common.js'
 	import { Toast } from 'mint-ui'
 	import draggable from 'vuedraggable'
+	import { MessageBox } from 'mint-ui';
 	export default {
 		name: 'optionalManage',
 		components: {draggable,
@@ -165,26 +166,28 @@
 					return;
 				}
 				if(this.userInfo == undefined) return;
-				var headers = {
-					token: this.userInfo.token,
-					secret: this.userInfo.secret
-				}
-				let arr = [];
-				this.parameters.forEach((o, i) => {
-					if(o.check == 1) arr.push(o.id);
-				});
-				this.id = arr.join(',');
-				let datas = {id: this.id};
-				pro.fetch('post', '/quoteTrader/userRemoveCommodity', datas, headers).then((res) => {
-					if(res.success == true && res.code == 1){
-						Toast({message: '删除成功', position: 'bottom', duration: 2000});
-						this.num = 0;
-						//重新请求自选合约列表
-						this.getCommodityList();
+				MessageBox.confirm("确定删除自选？","提示").then(action=>{
+					var headers = {
+						token: this.userInfo.token,
+						secret: this.userInfo.secret
 					}
-				}).catch((err) => {
-					Toast({message: err.data.message, position: 'bottom', duration: 2000});
-				});
+					let arr = [];
+					this.parameters.forEach((o, i) => {
+						if(o.check == 1) arr.push(o.id);
+					});
+					this.id = arr.join(',');
+					let datas = {id: this.id};
+					pro.fetch('post', '/quoteTrader/userRemoveCommodity', datas, headers).then((res) => {
+						if(res.success == true && res.code == 1){
+							Toast({message: '删除成功', position: 'bottom', duration: 2000});
+							this.num = 0;
+							//重新请求自选合约列表
+							this.getCommodityList();
+						}
+					}).catch((err) => {
+						Toast({message: err.data.message, position: 'bottom', duration: 2000});
+					});
+				}).catch(err=>{});
 			},
 			saveNumEvent: function(){
 				if(this.userInfo == undefined) return;
