@@ -185,7 +185,6 @@
 //					openId:"oRrdQt-T23iJ8wjd-PaCt_WoMefw"
 				}
 				pro.fetch("post","/loginAndRegister/wxLogin",data,"").then(function(res){
-					console.log("res"+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						var userData = {'username':this.phone,'password':Base64.encode(this.pwd),'token':res.data.token,'secret':res.data.secret};
 						localStorage.setItem("user", JSON.stringify(userData));
