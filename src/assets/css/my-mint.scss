@@ -36,12 +36,14 @@
 }
 //以上部分为取消确认框
 #range{
-    width: 90%;
+    width: 6.3rem;
     margin: auto;
+    z-index: 100;
 }
 #range1{
-    width: 90%;
+    width: 6.3rem;
     margin: auto;
+    z-index: 100;
 }
 #range .mt-range-progress{
     background-color: #ffd400;
@@ -55,13 +57,17 @@
 #range .mt-range-thumb{
     background: url(../images/tradeApply_01.png);
     background-size: 100% 100%;
+    width: 0.56rem;
+    height: 0.56rem;
+    display: block;
 }
-
-
 #range1 .mt-range-progress{
     border-radius: 0.1rem 0 0 0.1rem;
 }
 #range1 .mt-range-thumb{
     background: url(../images/tradeApply_02.png);
     background-size: 100% 100%;
+     width: 0.56rem;
+    height: 0.56rem;
+    display: block;
 }
