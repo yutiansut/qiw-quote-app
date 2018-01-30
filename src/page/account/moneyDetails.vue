@@ -16,7 +16,7 @@
 					</li>
 				</ul>
 			</div>
-			<mt-loadmore :bottom-method="loadBottom"  ref="loadmore" :auto-fill="false">
+			<mt-loadmore :bottom-method="loadBottom"  ref="loadmore" :auto-fill="false" :top-method="loadTop">
 				<div class="list" v-for="k in this.moneyDetails">
 					<div class="black"></div>
 					<div class="details">
@@ -52,14 +52,19 @@
 			return{
 				moneyDetails:"",
 				total:'',
-				pageno:1,
-				pagesize:1
+				pageno:"",
+				pagesize:''
 			}
 		},
 		methods:{
+			//下拉刷新
+			loadTop:function(){
+//				console.log("11111111");
+				this.getMoneyDetail(1,20);
+			},
 			//加载更多
 			loadBottom:function(){
-				this.pagesize+=1;
+				this.pagesize+=20;
 				var pagesize1 = this.pagesize
 				this.getMoneyDetail("",pagesize1);
 			},
@@ -73,22 +78,19 @@
 					secret : this.userInfo.secret
 				}
 				pro.fetch("post","/account /getMoneyDetail",data,headers).then((res)=>{
-					console.log("res==="+JSON.stringify(res));
+//					console.log("res==="+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						this.total = res.data;
 						this.moneyDetails=res.data.inAndOutDetaiList.list;
 					}
 				}).catch((err)=>{
-					console.log("err==="+JSON.stringify(err));
+//					console.log("err==="+JSON.stringify(err));
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
 					}else{
 						this.$toast({message:data.message,duration: 2000});
 					}
-					
-					
-					
 				})
 			}
 		},
@@ -104,7 +106,7 @@
 		activated: function(){
 			//获取平台账户登录信息
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
-			this.getMoneyDetail();
+			this.getMoneyDetail(1,20);
 		}
 	}
 </script>
@@ -144,6 +146,7 @@
 			}
 		}
 		.list{
+			overflow: auto;
 			.black{
 				width: 100%;
 				height: 0.2rem;
