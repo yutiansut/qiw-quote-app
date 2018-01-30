@@ -21,8 +21,8 @@
 									<span>{{v.CommodityName}}</span>
 									<span>{{v.CommodityNo + v.MainContract}}</span>
 								</div>
-								<i class="icon icon_check" v-show="v.isOptional == undefined" @tap="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract, v.id)"></i>
-								<i class="icon" v-show="v.isOptional != undefined" :class="{icon_check: v.isOptional == 0, icon_checked: v.isOptional == 1}" @tap="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract, v.id)"></i>
+								<!--<i class="icon icon_check" v-show="v.isOptional == undefined" @tap="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract, v.id)"></i>-->
+								<i class="icon" :class="{icon_check: v.isOptional == 0, icon_checked: v.isOptional == 1}" @tap="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract, v.id)"></i>
 							</li>
 						</template>
 					</ul>
@@ -81,6 +81,7 @@
 		watch: {
 			searchCont: function(n, o){
 				if(n != ''){
+					this.getUserCommodityList();
 					this.resultShow = true;
 					this.resultList = [];
 					this.totalList.forEach((o, i) => {
@@ -297,7 +298,7 @@
 			.cont{
 				li{
 					height: 0.96rem;
-					padding: 0 0.3rem;
+					padding: 0 0.17rem 0.3rem;
 					border-bottom: 0.01rem solid $black;
 					.col{
 						float: left;
@@ -312,14 +313,14 @@
 					}
 					.icon{
 						float: right;
-						width: 0.24rem;
+						width: 0.5rem;
 						height: 0.96rem;
 						&.icon_check{
-							background: url(../../assets/images/check.png) no-repeat center 0.36rem;
+							background: url(../../assets/images/check.png) no-repeat 0.13rem 0.36rem;
 							background-size: 0.24rem 0.24rem;
 						}
 						&.icon_checked{
-							background: url(../../assets/images/checked.png) no-repeat center 0.36rem;
+							background: url(../../assets/images/checked.png) no-repeat 0.13rem 0.36rem;
 							background-size: 0.24rem 0.24rem;
 						}
 					}

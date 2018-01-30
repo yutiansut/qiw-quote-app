@@ -462,6 +462,7 @@
 				});
 			},
 			addOptional: function(){
+				if(this.optionalIconShow == true) return;
 				if(this.userInfo == undefined){
 					Toast({message: '请先登录平台', position: 'bottom', duration: 2000});
 					return;
