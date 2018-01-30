@@ -133,13 +133,14 @@
 				this.$store.state.account.isLogin = false;
 				this.currentNum = 1;
 				this.currentView = 'market';
-				this.setShow = false;
-				this.$store.state.market.Parameters = [];
-				this.$store.state.market.commodityOrder = [];
-				this.$store.state.market.commodityOrder = this.marketList[0].list;
-				this.marketList[0].list.forEach((o, i) => {
-					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
-				});
+				window.location.reload();
+//				this.setShow = false;
+//				this.$store.state.market.Parameters = [];
+//				this.$store.state.market.commodityOrder = [];
+//				this.$store.state.market.commodityOrder = this.marketList[0].list;
+//				this.marketList[0].list.forEach((o, i) => {
+//					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+//				});
 			}
 		}
 	}
