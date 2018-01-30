@@ -34,4 +34,34 @@
     background-color: #ff5533;
     color: white;
 }
-//以上部分为取消确认框样式覆盖
+//以上部分为取消确认框
+#range{
+    width: 90%;
+    margin: auto;
+}
+#range1{
+    width: 90%;
+    margin: auto;
+}
+#range .mt-range-progress{
+    background-color: #ffd400;
+    border-radius: 0.1rem 0 0 0.1rem;
+}
+.mt-range-runway{
+    border-top-color: #171a20;
+    border-bottom-color: 1px solid #ffd400;
+    border-radius: 0 0.1rem 0.1rem 0;
+}
+#range .mt-range-thumb{
+    background: url(../images/tradeApply_01.png);
+    background-size: 100% 100%;
+}
+
+
+#range1 .mt-range-progress{
+    border-radius: 0.1rem 0 0 0.1rem;
+}
+#range1 .mt-range-thumb{
+    background: url(../images/tradeApply_02.png);
+    background-size: 100% 100%;
+}
