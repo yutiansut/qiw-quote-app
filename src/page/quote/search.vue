@@ -22,7 +22,7 @@
 									<span>{{v.CommodityNo + v.MainContract}}</span>
 								</div>
 								<!--<i class="icon icon_check" v-show="v.isOptional == undefined" @tap="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract, v.id)"></i>-->
-								<i class="icon" :class="{icon_check: v.isOptional == 0, icon_checked: v.isOptional == 1}" @tap="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract, v.id)"></i>
+								<i class="icon" :class="{icon_check: v.isOptional == 0, icon_checked: v.isOptional == 1}" @click="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract, v.id)"></i>
 							</li>
 						</template>
 					</ul>
@@ -166,19 +166,17 @@
 				});
 			},
 			addOptional: function(key,exchangeNo,commodityNo,contractNo,id){
-				console.log(key);
 				let userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 				if(userInfo == undefined){
 					Toast({message: '请先登录平台', position: 'bottom', duration: 1000});
 					return;
 				}
 				var headers = {
-					token: this.userInfo.token,
-					secret: this.userInfo.secret
+					token: userInfo.token,
+					secret: userInfo.secret
 				}
 				if(key == 1){   //删除自选
 					var _datas = {id: id};
-					console.log(999);
 					MessageBox.confirm("确定删除自选？","提示").then(action=>{
 						pro.fetch('post', '/quoteTrader/userRemoveCommodity', _datas, headers).then((res) => {
 							if(res.success == true && res.code == 1){
