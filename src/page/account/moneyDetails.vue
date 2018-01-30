@@ -80,6 +80,15 @@
 					}
 				}).catch((err)=>{
 					console.log("err==="+JSON.stringify(err));
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
+					}else{
+						this.$toast({message:data.message,duration: 2000});
+					}
+					
+					
+					
 				})
 			}
 		},

@@ -357,6 +357,7 @@
 							display: block;
 							background-size: 100% 100%;
 							margin-top: 0.3rem;
+							border-radius: 0.4rem;
 						}
 						&:nth-child(1){
 							
