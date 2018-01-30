@@ -47,6 +47,7 @@
 		},
 		methods:{
 			toResetPhone:function(){
+				console.log("this.phone"+this.phone)
 				this.$router.push({path:"/resetPhone",query:{phone:this.phone}})
 			},
 			toResetPassword:function(){
@@ -59,6 +60,7 @@
 			}
 		},
 		mounted:function(){
+			this.phone = this.$route.query.phone;
 		},
 		activited:function(){
 			this.phone = this.$route.query.phone;

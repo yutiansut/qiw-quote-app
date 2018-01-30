@@ -196,13 +196,13 @@
 		mounted:function(){
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 			this.phone = this.$route.query.phone;
+			console.log("this.phone===="+this.phone)
 			var phone = this.$route.query.phone;
 			this.mobile = phone.substr(0, 3) + '****' + phone.substr(7);
 		},
 		activited:function(){
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 			this.phone = this.$route.query.phone
-			this.wxNickname = this.$route.query.wxNickname
 		}
 	}
 </script>
