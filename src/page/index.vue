@@ -4,11 +4,11 @@
 		<header>
 			<div class="tab">
 				<template v-for="(v, index) in tabList">
-					<span :class="{current: currentNum == index}" @touchstart="tavEvent(index)">{{v}}</span>
+					<span :class="{current: currentNum == index}" @tap="tavEvent(index)">{{v}}</span>
 				</template>
 			</div>
-			<i class="icon icon_search" @touchstart="toSearch"></i>
-			<i class="icon icon_set" v-show="setShow" @touchstart="toOptionalManage"></i>
+			<i class="icon icon_search" @tap="toSearch"></i>
+			<i class="icon icon_set" v-show="setShow" @tap="toOptionalManage"></i>
 		</header>
 		<div class="cont" v-if="isInit">
 			<components :is="currentView"></components>
@@ -197,6 +197,6 @@
 	}
 	.cont{
 		overflow-y: auto;
-		padding-bottom: 1rem;
+		padding-bottom: 1.3rem;
 	}
 </style>

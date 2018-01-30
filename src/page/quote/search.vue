@@ -4,7 +4,7 @@
 			<div class="search">
 				<i class="icon icon_search"></i>
 				<input type="text" placeholder="搜索合约代码/简称" v-model="searchCont" />
-				<span @touchstart="toIndex">取消</span>
+				<span @tap="toIndex">取消</span>
 			</div>
 		</div>
 		<div class="main">
@@ -17,12 +17,12 @@
 					<ul>
 						<template v-for="(v, index) in resultList">
 							<li>
-								<div class="col" @touchstart="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo, v.contrast)">
+								<div class="col" @tap="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo, v.contrast)">
 									<span>{{v.CommodityName}}</span>
 									<span>{{v.CommodityNo + v.MainContract}}</span>
 								</div>
-								<i class="icon icon_check" v-show="v.isOptional == undefined" @touchstart="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract, v.id)"></i>
-								<i class="icon" v-show="v.isOptional != undefined" :class="{icon_check: v.isOptional == 0, icon_checked: v.isOptional == 1}" @touchstart="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract, v.id)"></i>
+								<i class="icon icon_check" v-show="v.isOptional == undefined" @tap="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract, v.id)"></i>
+								<i class="icon" v-show="v.isOptional != undefined" :class="{icon_check: v.isOptional == 0, icon_checked: v.isOptional == 1}" @tap="addOptional(v.isOptional, v.ExchangeNo, v.CommodityNo, v.MainContract, v.id)"></i>
 							</li>
 						</template>
 					</ul>
@@ -34,7 +34,7 @@
 				<div class="recommend">
 					<ul>
 						<template v-for="(v,index) in recommendList">
-							<li @touchstart="quickSearchEvent(v.label)">{{v.label}}</li>
+							<li @tap="quickSearchEvent(v.label)">{{v.label}}</li>
 						</template>
 					</ul>
 				</div>

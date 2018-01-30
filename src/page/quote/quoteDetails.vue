@@ -3,15 +3,15 @@
 		<template v-for="(v, index) in parameters">
 		<div v-if="v.CommodityNo == currentNo">
 			<header>
-				<i class="icon icon_back" @touchstart="goBackEvent"></i>
-				<div class="title" @touchstart="switchEvent">
+				<i class="icon icon_back" @tap="goBackEvent"></i>
+				<div class="title" @tap="switchEvent">
 					<div class="name fl">
 						<span>{{v.CommodityName}}</span>
 						<span>{{v.CommodityNo + v.MainContract}}</span>
 					</div>
 					<i class="icon icon_triangle"></i>
 				</div>
-				<button @touchstart="toRole">规则</button>
+				<button @tap="toRole">规则</button>
 			</header>
 			<div class="main">
 				<div class="details">
@@ -81,7 +81,7 @@
 							</div>
 							<ul v-show="!noContrast">
 								<template v-for="(v, index) in parameters">
-									<li :class="{current: v.check == 1}" @touchstart="addContrast(v.CommodityNo)" v-if="v.CommodityNo != currentNo">
+									<li :class="{current: v.check == 1}" @tap="addContrast(v.CommodityNo)" v-if="v.CommodityNo != currentNo">
 										<div class="name fl">
 											<span>{{v.CommodityName}}</span>
 											<span>{{v.CommodityNo + v.MainContract}}</span>
@@ -99,7 +99,7 @@
 					<div class="title">
 						<div class="title_box">
 							<template v-for="(key,index) in chartsList">
-								<span :class="{current: currentChartsNum == index}" @touchstart="menuEvent(index)">{{key}}</span>
+								<span :class="{current: currentChartsNum == index}" @tap="menuEvent(index)">{{key}}</span>
 							</template>
 						</div>
 					</div>
@@ -110,7 +110,7 @@
 						<div class="cont_right fl">
 							<div class="tab_title">
 								<template v-for="(o, index) in tabList">
-									<span :class="{current: currentNum == index}" @touchstart="tabEvent(index)">{{o}}</span>
+									<span :class="{current: currentNum == index}" @tap="tabEvent(index)">{{o}}</span>
 								</template>
 							</div>
 							<div class="tab_cont">
@@ -191,12 +191,12 @@
 		</div>
 		</template>
 		<div class="select_box">
-			<div class="bg" v-show="shadeShow" @touchstart="closeSelectEvent"></div>
+			<div class="bg" v-show="shadeShow" @tap="closeSelectEvent"></div>
 			<div class="select_cont">
 				<ul>
 					<li><span>切换合约</span></li>
 					<template v-for="(v, index) in commodityAll">
-						<li @touchstart="selectEvent(v)">
+						<li @tap="selectEvent(v)">
 							<span>{{v.commodityName}}&nbsp;&nbsp;{{v.commodityNo + v.contractNo}}</span>
 						</li>
 					</template>
@@ -208,12 +208,12 @@
 			    <img slot="icon" src="../../assets/images/mockTrading_02.png">  
 			    <span>模拟交易</span>
 			</mt-tab-item>
-      		<mt-tab-item class="col" @touchstart.native="addRemind" style="background-color:#2d3340;">
+      		<mt-tab-item class="col" @tap.native="addRemind" style="background-color:#2d3340;">
 		        <img slot="icon" v-show="!remindShow" src="../../assets/images/remind.png">
 		        <img slot="icon" v-show="remindShow" src="../../assets/images/remind_01.png">
 		        <span :class="{current: remindShow == true}">提醒</span>
 		    </mt-tab-item>
-      		<mt-tab-item class="col" @touchstart.native="addOptional" style="background-color:#2d3340;">  
+      		<mt-tab-item class="col" @tap.native="addOptional" style="background-color:#2d3340;">  
 		        <img slot="icon" v-show="!optionalIconShow" src="../../assets/images/add_optional.png">
 		        <img slot="icon" v-show="optionalIconShow" src="../../assets/images/add_optional_01.png">
 		        <span :class="{current: optionalIconShow == true}">{{optionalName}}</span>

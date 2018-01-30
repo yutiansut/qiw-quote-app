@@ -3,7 +3,7 @@
 		<nav>
 			<div class="nav_box">
 				<template v-for="(v,index) in tabList">
-					<span :class="{current: currentNum == index}" @touchstart="tabEvent(index)">{{v}}</span>
+					<span :class="{current: currentNum == index}" @tap="tabEvent(index)">{{v}}</span>
 				</template>
 			</div>
 		</nav>
@@ -13,10 +13,10 @@
 					<div class="name"><span>名称</span></div>
 					<span>价格</span>
 					<span>成交量</span>
-					<span @touchstart="switchEvent">{{changeRateName}}<i class="icon icon_switch"></i></span>
+					<span @tap="switchEvent">{{changeRateName}}<i class="icon icon_switch"></i></span>
 				</li>
 				<template v-for="(v, index) in parameters">
-					<li @touchstart="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo, v.contrast)">
+					<li @tap="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo, v.contrast)">
 						<div class="name">
 							<em>{{v.CommodityName}}</em>
 							<em>{{v.CommodityNo + v.MainContract}}</em>
@@ -30,15 +30,15 @@
 			</ul>
 		</div>
 		<div class="add_optional">
-			<div class="box" @touchstart="addOptional">
+			<div class="box" @tap="addOptional">
 				<i class="icon icon_add"></i>
 				<span>添加自选</span>
 			</div>
 		</div>
 		<div class="btn_box">
-			<!--<i class="icon icon_rotate" @touchstart="rotateEvent"></i>-->
-			<i class="icon icon_box" @touchstart="switchBox"></i>
-			<i class="icon icon_btn" @touchstart="btnEvent"></i>
+			<!--<i class="icon icon_rotate" @tap="rotateEvent"></i>-->
+			<i class="icon icon_box" @tap="switchBox"></i>
+			<i class="icon icon_btn" @tap="btnEvent"></i>
 		</div>
 	</div>
 </template>

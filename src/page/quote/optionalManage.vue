@@ -1,15 +1,15 @@
 <template>
 	<div id="optionalManage">
 		<header>
-			<i class="icon icon_back" @touchstart="goBackEvent"></i>
+			<i class="icon icon_back" @tap="goBackEvent"></i>
 			<h1>自选管理</h1>
-			<span @touchstart="saveNumEvent">完成</span>
+			<span @tap="saveNumEvent">完成</span>
 		</header>
 		<div class="main">
 			<div class="search_box">
 				<div class="search">
 					<i class="icon icon_search"></i>
-					<input type="text" placeholder="搜索并添加合约" @touchstart="toSearch" />
+					<input type="text" placeholder="搜索并添加合约" @tap="toSearch" />
 				</div>
 			</div>
 			<div class="list">
@@ -25,7 +25,7 @@
 					<draggable v-model="optionalList">
 					    <transition-group>
 					      <li v-for="v in optionalList" :key="v.CommodityName" :id="v.id" :orderNum="v.orderNum">
-					        <i class="icon" :class="{icon_check: v.check == 0, icon_checked: v.check == 1}" @touchstart="checkEvent(v.check, v.CommodityNo)"></i>
+					        <i class="icon" :class="{icon_check: v.check == 0, icon_checked: v.check == 1}" @tap="checkEvent(v.check, v.CommodityNo)"></i>
 							<div class="name">
 								<span>{{v.CommodityName}}</span>
 								<span>{{v.CommodityNo + v.MainContract}}</span>
@@ -44,12 +44,12 @@
 			</div>
 		</div>
 		<div class="tools">
-			<div class="col" @touchstart="checkAllEvemt">
+			<div class="col" @tap="checkAllEvemt">
 				<i class="icon icon_radio"></i>
 				<i class="icon icon_radios" v-show="checkedShow"></i>
 				<span>{{checkedName}}</span>
 			</div>
-			<div class="col" @touchstart="deleteEvent">
+			<div class="col" @tap="deleteEvent">
 				<i class="icon icon_del"></i>
 				<span :class="{grey: num == 0}">删除</span>
 				<em :class="{grey: num == 0}">({{this.num}})</em>
@@ -193,18 +193,18 @@
 					secret: this.userInfo.secret
 				}
 				let arr = [];
+				let len = $(".list .cont li").length;
 				$.each($(".list .cont li"), function(i, o) {
 					let obj = {
 						id: $(o).attr('id'),
-						orderNum: $(o).attr('orderNum')
+						orderNum: len - i
 					}
 					arr.push(obj);
 				});
 				var datas = {data: JSON.stringify(arr)};
-				console.log(datas);
 				pro.fetch('post', '/quoteTrader/userSort', datas, headers).then((res) => {
 					if(res.success == true && res.code == 1){
-						
+						Toast({message: '排序成功', position: 'bottom', duration: 2000});
 					}
 				}).catch((err) => {
 					Toast({message: err.data.message, position: 'bottom', duration: 2000});

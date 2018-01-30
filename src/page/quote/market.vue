@@ -3,13 +3,13 @@
 		<nav>
 			<div class="nav_box">
 				<template v-for="(v, index) in typeList">
-					<span :class="{current: currentNum == index}" @touchstart="clickEvent(index)">{{v.name}}</span>
+					<span :class="{current: currentNum == index}" @tap="clickEvent(index)">{{v.name}}</span>
 				</template>
 			</div>
 		</nav>
 		<div class="recommend">
 			<template v-for="(v, index) in parameters">
-				<div class="col" v-show="v.isRecommend == '1'" @touchstart="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo, v.contrast)">
+				<div class="col" v-show="v.isRecommend == '1'" @tap="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo, v.contrast)">
 					<span class="name">{{v.CommodityName}}</span>
 					<span :class="{red: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.LastPrice | fixNum(v.DotSize)}}<i class="icon icon_arrow" :class="{up: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, down: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}"></i></span>
 					<span :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeRate | fixNumTwo}}%&nbsp;&nbsp;<em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeValue | fixNum(v.DotSize)}}</span>
@@ -22,10 +22,10 @@
 					<div class="name"><span>名称</span></div>
 					<span>价格</span>
 					<span>成交量</span>
-					<span @touchstart="switchEvent">{{changeRateName}}<i class="icon icon_switch"></i></span>
+					<span @tap="switchEvent">{{changeRateName}}<i class="icon icon_switch"></i></span>
 				</li>
 				<template v-for="(v, index) in parameters">
-					<li @touchstart="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo, v.contrast)">
+					<li @tap="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo, v.contrast)">
 						<div class="name">
 							<em>{{v.CommodityName}}</em>
 							<em>{{v.CommodityNo + v.MainContract}}</em>

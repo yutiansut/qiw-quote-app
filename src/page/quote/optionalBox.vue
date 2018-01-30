@@ -5,11 +5,11 @@
 				<div class="type">
 					<div class="title">
 						<span>{{v.name | operateData}}</span>
-						<i class="icon" :class="{icon_show: v.status == 1, icon_hide: v.status == 0}" @touchstart="switchEvent(v.status, v.name)"></i>
+						<i class="icon" :class="{icon_show: v.status == 1, icon_hide: v.status == 0}" @tap="switchEvent(v.status, v.name)"></i>
 					</div>
 					<div class="recommend" v-show="v.status == 1">
 						<template v-for="(o, k) in parameters">
-							<div class="col" v-if="v.name == o.commodityType" @touchstart="toQuoteDetails(o.CommodityNo, o.MainContract, o.ExchangeNo, o.contrast)">
+							<div class="col" v-if="v.name == o.commodityType" @tap="toQuoteDetails(o.CommodityNo, o.MainContract, o.ExchangeNo, o.contrast)">
 								<span class="name">{{o.CommodityName}}</span>
 								<span :class="{red: o.LastQuotation.LastPrice > o.LastQuotation.PreSettlePrice, green: o.LastQuotation.LastPrice < o.LastQuotation.PreSettlePrice}">{{o.LastQuotation.LastPrice | fixNum(o.DotSize)}}<i class="icon icon_arrow" :class="{up: o.LastQuotation.LastPrice > o.LastQuotation.PreSettlePrice, down: o.LastQuotation.LastPrice < o.LastQuotation.PreSettlePrice}"></i></span>
 								<span :class="{green: o.LastQuotation.ChangeRate < 0, red: o.LastQuotation.ChangeRate > 0}"><em v-show="o.LastQuotation.ChangeRate > 0">+</em>{{o.LastQuotation.ChangeRate | fixNumTwo}}%&nbsp;&nbsp;<em v-show="o.LastQuotation.ChangeRate > 0">+</em>{{o.LastQuotation.ChangeValue | fixNum(o.DotSize)}}</span>
@@ -19,12 +19,12 @@
 				</div>
 			</template>
 			<div class="add_optional">
-				<div class="box" @touchstart="addOptional">
+				<div class="box" @tap="addOptional">
 					<i class="icon icon_add"></i>
 					<span>添加自选</span>
 				</div>
 			</div>
-			<div class="icon icon_list" @touchstart="switchList"></div>
+			<div class="icon icon_list" @tap="switchList"></div>
 		</div>
 	</div>
 </template>

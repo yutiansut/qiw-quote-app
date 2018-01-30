@@ -3,7 +3,7 @@
 		<template v-for="(v, index) in parameters">
 		<div v-if="v.CommodityNo == currentNo">
 		<header>
-			<i class="icon icon_back" @touchstart="goBackEvent"></i>
+			<i class="icon icon_back" @tap="goBackEvent"></i>
 			<div class="title">
 				<div class="name fl">
 					<span>{{v.CommodityName}}</span>
@@ -21,7 +21,7 @@
 				<div class="row">
 					<span>提醒方式</span>
 					<template v-for="(v, index) in remindWays">
-						<div class="reminda_ways fl" @touchstart="checkEvent(index)">
+						<div class="reminda_ways fl" @tap="checkEvent(index)">
 							<i class="icon" :class="{icon_checked: v.status == 1, icon_check: v.status == 0}"></i>
 							<span>{{v.name}}</span>
 						</div>
@@ -35,7 +35,7 @@
 				<div class="row">
 					<span class="type">价格上涨到</span>
 					<input type="number" class="ipt_lg" v-model="remindList.lastPriceOverSomePrice" />
-					<div class="switch lastPriceUp" @touchstart="switchEvent" :class="{current: remindList.lastPriceOverSomePriceIsOpen == 1}">
+					<div class="switch lastPriceUp" @tap="switchEvent" :class="{current: remindList.lastPriceOverSomePriceIsOpen == 1}">
 							<i class="icon icon_zero"></i>
 						</transition>
 					</div>
@@ -49,7 +49,7 @@
 				<div class="row">
 					<span class="type">价格下跌到</span>
 					<input type="number" class="ipt_lg" v-model="remindList.lastPriceUnderSomePrice" />
-					<div class="switch lastPriceDown" @touchstart="switchEvent" :class="{current: remindList.lastPriceUnderSomePriceIsOpen == 1}">
+					<div class="switch lastPriceDown" @tap="switchEvent" :class="{current: remindList.lastPriceUnderSomePriceIsOpen == 1}">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
@@ -63,7 +63,7 @@
 					<span class="type">当日涨幅超过</span>
 					<input type="number" class="ipt_sm" v-model="remindList.todayRiseRangePoint" />
 					<span>%</span>
-					<div class="switch changeUp" @touchstart="switchEvent" :class="{current: remindList.todayRiseRangePointIsOpen == 1}">
+					<div class="switch changeUp" @tap="switchEvent" :class="{current: remindList.todayRiseRangePointIsOpen == 1}">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
@@ -71,25 +71,25 @@
 					<span class="type">当日跌幅超过</span>
 					<input type="number" class="ipt_sm" v-model="remindList.todayFallRangePoint" />
 					<span>%</span>
-					<div class="switch changeDown" @touchstart="switchEvent" :class="{current: remindList.todayFallRangePointIsOpen == 1}">
+					<div class="switch changeDown" @tap="switchEvent" :class="{current: remindList.todayFallRangePointIsOpen == 1}">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
 				<div class="row">
 					<span class="type">突破当日最高价</span>
-					<div class="switch breakHightPrice" @touchstart="switchEvent" :class="{current: remindList.todayBreakHighestPriceIsOpen == 1}">
+					<div class="switch breakHightPrice" @tap="switchEvent" :class="{current: remindList.todayBreakHighestPriceIsOpen == 1}">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
 				<div class="row">
 					<span class="type">突破当日最低价</span>
-					<div class="switch breakLowPrice" @touchstart="switchEvent" :class="{current: remindList.todayBreakLowestPriceIsOpen == 1}">
+					<div class="switch breakLowPrice" @tap="switchEvent" :class="{current: remindList.todayBreakLowestPriceIsOpen == 1}">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
 				<div class="row">
 					<span class="type">提醒频率</span>
-					<div class="fr" @touchstart="setRemindEvent">
+					<div class="fr" @tap="setRemindEvent">
 						<span>{{defaultFrequency | operateFrequency}}</span>
 						<i class="icon icon_arrow"></i>
 					</div>
@@ -99,7 +99,7 @@
 				</div>
 			</div>
 			<div class="btn_box">
-				<btn name="完成" className="bluelg" @touchstart.native="saveEvent"></btn>
+				<btn name="完成" className="bluelg" @tap.native="saveEvent"></btn>
 			</div>
 		</div>
 		</div>
@@ -110,7 +110,7 @@
 				<ul>
 					<li><span>提醒频率</span></li>
 					<template v-for="v in remindFrequency">
-						<li :class="{current: v.status == defaultFrequency}" @touchstart="chooseRemindEvent(v.status)"><span>{{v.name}}</span></li>
+						<li :class="{current: v.status == defaultFrequency}" @tap="chooseRemindEvent(v.status)"><span>{{v.name}}</span></li>
 					</template>
 				</ul>
 			</div>

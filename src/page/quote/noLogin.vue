@@ -3,8 +3,8 @@
 		<div class="main">
 			<p>你还未登录指数天下账号哟</p>
 			<div class="btn_box">
-				<btn name="注册" className="bluemd" @touchstart.native="toRegister"></btn>
-				<btn name="登录" className="orangemd" @touchstart.native="toLogin"></btn>
+				<btn name="注册" className="bluemd" @tap.native="toRegister"></btn>
+				<btn name="登录" className="orangemd" @tap.native="toLogin"></btn>
 			</div>
 		</div>
 	</div>
