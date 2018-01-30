@@ -198,7 +198,7 @@
 		li{
 			width: 7.5rem;
 			height: 1.2rem;
-			padding: 0 0.3rem;
+			/*padding: 0 0.3rem;*/
 			position: relative;
 			&:nth-child(1){
 				i{
@@ -206,7 +206,7 @@
 					background-size: 100% 100%;
 					position: absolute;
 					top: 0.48rem;
-					left: 0.28rem;	
+					left: 0.58rem;	
 					display: inline-block;
 					width: 0.42rem;
 					height: 0.42rem;
@@ -218,7 +218,7 @@
 					background-size: 100% 100%;
 					position: absolute;
 					top: 0.48rem;
-					left: 0.28rem;	
+					left: 0.58rem;	
 					display: inline-block;
 					width: 0.42rem;
 					height: 0.42rem;
@@ -230,7 +230,7 @@
 					background-size: 100% 100%;
 					position: absolute;
 					top: 0.48rem;
-					left: 0.28rem;	
+					left: 0.58rem;	
 					display: inline-block;
 					width: 0.42rem;
 					height: 0.42rem;
@@ -238,9 +238,9 @@
 			}
 		}
 		.input1{
+			margin-left: 0.3rem;
 			border-radius: none;
 			background-color: $bg;
-			
 			height: 0.9rem;
 			width: 6.9rem;
 			border-bottom: 1px solid #505664;
@@ -264,7 +264,7 @@
 			width: 0.4rem;
 			height: 0.24rem;
 			top: 0.5rem;
-			right: 0.3rem;
+			right: 0.6rem;
 			background: url(../../../assets/images/eye_icon.png);
 			background-size: 100% 100%;
 		}

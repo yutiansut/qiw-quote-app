@@ -223,7 +223,7 @@
 		margin-top: 1rem;
 		padding-top: 0.5rem;
 		li{
-			padding: 0 0.3rem;
+			/*padding: 0 0.3rem;*/
 			height: 1.2rem;
 			position: relative;
 			&:nth-child(1){
@@ -251,6 +251,7 @@
 				}
 			}
 			.input1{
+				margin-left: 0.3rem;
 				background-color: $bg;
 				border: none;
 				outline: none;

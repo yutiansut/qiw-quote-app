@@ -172,7 +172,7 @@
 			border-radius: 0 !important;
 			outline: none;
 			height: 0.9rem;
-			width: 6.6rem;
+			width: 6.9rem;
 			border-bottom: 1px solid #505664;
 			text-indent: 1rem;
 			color: $white;
@@ -231,13 +231,13 @@
 		width: 100%;
 		position: fixed;
 		bottom: 0.8rem;
+		text-align: center;
 		i{
 			background:url(../../../assets/images/wechat_02.png);
 			display: inline-block;
 			width:0.88rem;
 			height: 0.88rem;
 			background-size: 100% 100%;
-			
 		}
 	}
 </style>
