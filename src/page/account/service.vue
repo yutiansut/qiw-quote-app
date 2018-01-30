@@ -20,11 +20,11 @@
 			}
 		},
 		computed: {
-//			userInfo: function(){
-//				return this.$store.state.account;
-//			},
+			userInfo: function(){
+				return this.$store.state.account;
+			},
 			iframe: function() {
-				return  /*this.PATH + */'http://test.www.vs.com/topic/consistentBeauty/consistentbeauty.html?phone=' + this.$store.state.account.phone + '&userName=' + this.$store.state.account.username;
+				return  /*this.PATH + */'http://www.vs.com/topic/consistentBeauty/consistentbeauty.html?phone=' + this.$store.state.account.phone + '&userName=' + this.$store.state.account.username;
 			}
 		},
 		methods:{

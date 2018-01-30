@@ -1,8 +1,8 @@
 <template>
 	<div id="customerServices">
 		<mt-header title="客服" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
-		  	<router-link to="/account" slot="left">
-		    	<i id="back"></i>
+		  	<router-link to="" slot="left">
+		    	<!--<i id="back" @click="backTo"></i>-->
 		  	</router-link>
 		</mt-header>
 		<div id="container">
@@ -34,7 +34,7 @@
 		},
 		methods:{
 			callphone:function(){
-				console.log("111111")
+//				console.log("111111")
 				window.location.href = 'tel://' + 4008528008;
 			},
 			call:function(){
