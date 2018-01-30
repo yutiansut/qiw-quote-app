@@ -46,6 +46,7 @@
 <script>
 	import pro from '../../assets/js/common.js'
 	import { Toast } from 'mint-ui';
+	import { MessageBox } from 'mint-ui';
 	export default {
 		name: 'search',
 		components: {
@@ -130,7 +131,7 @@
 						this.recommendList = res.data;
 					}
 				}).catch((err) => {
-					Toast({message: err.data.message, position: 'bottom', duration: 2000});
+					Toast({message: err.data.message, position: 'bottom', duration: 1000});
 				});
 			},
 			toIndex: function(){
@@ -160,12 +161,12 @@
 						this.optionalList = res.data;
 					}
 				}).catch((err) => {
-					Toast({message: err.data.message, position: 'bottom', duration: 2000});
+					Toast({message: err.data.message, position: 'bottom', duration: 1000});
 				});
 			},
 			addOptional: function(key,exchangeNo,commodityNo,contractNo,id){
 				if(this.userInfo == undefined){
-					Toast({message: '请先登录平台', position: 'bottom', duration: 2000});
+					Toast({message: '请先登录平台', position: 'bottom', duration: 1000});
 					return;
 				}
 				var headers = {
@@ -173,21 +174,22 @@
 					secret: this.userInfo.secret
 				}
 				if(key == 1){   //删除自选
-					var _datas = {
-						id: id
-					}
-					pro.fetch('post', '/quoteTrader/userRemoveCommodity', _datas, headers).then((res) => {
-						if(res.success == true && res.code == 1){
-							Toast({message: '自选删除成功', position: 'bottom', duration: 2000});
-							this.resultList.forEach((o, i) => {
-								if(o.CommodityNo == commodityNo){
-									o.isOptional = 0;
-								}
-							});
-						}
-					}).catch((err) => {
-						Toast({message: err.data.message, position: 'bottom', duration: 2000});
-					});
+					var _datas = {id: id};
+					MessageBox.confirm("确定删除自选？","提示").then(action=>{
+						pro.fetch('post', '/quoteTrader/userRemoveCommodity', _datas, headers).then((res) => {
+							if(res.success == true && res.code == 1){
+								Toast({message: '自选删除成功', position: 'bottom', duration: 1000});
+								this.resultList.forEach((o, i) => {
+									if(o.CommodityNo == commodityNo){
+										o.isOptional = 0;
+									}
+								});
+							}
+						}).catch((err) => {
+							Toast({message: err.data.message, position: 'bottom', duration: 1000});
+						});
+					}).catch(err=>{});
+					
 				}else{   //添加自选
 					var datas = {
 						'exchangeNo': exchangeNo,
@@ -196,7 +198,7 @@
 					}
 					pro.fetch('post', '/quoteTrader/userAddCommodity', datas, headers).then((res) => {
 						if(res.success == true && res.code == 1){
-							Toast({message: '自选添加成功', position: 'bottom', duration: 2000});
+							Toast({message: '自选添加成功', position: 'bottom', duration: 1000});
 							this.resultList.forEach((o, i) => {
 								if(o.CommodityNo == commodityNo){
 									o.isOptional = 1;
@@ -204,7 +206,7 @@
 							});
 						}
 					}).catch((err) => {
-						Toast({message: err.data.message, position: 'bottom', duration: 2000});
+						Toast({message: err.data.message, position: 'bottom', duration: 1000});
 					});
 				}
 			}
