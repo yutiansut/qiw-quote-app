@@ -151,7 +151,7 @@
 	.bg {
 		z-index: 101;
 		background-color: #0e1014;
-		opacity: 1;
+		opacity: 0.6;
 	}
 	#codeDialog{
 		width: 7.5rem;

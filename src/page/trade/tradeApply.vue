@@ -174,7 +174,7 @@
 			clickBtn:function(){
 				//未登录
 				if(this.isLogin == false){
-					MessageBox.confirm("您还未登录平台账户，赶紧去登录吧","提示",{confirmButtonText:"去登录",}).then(action=>{
+					MessageBox.confirm("您还未登录平台账户，赶紧去登录吧!","提示",{confirmButtonText:"去登录",}).then(action=>{
 					this.$router.push({path:"/login"});
 					}).catch(err=>{});
 				//已登录
@@ -191,7 +191,7 @@
 						if(this.payMoney > this.balance){
 //							console.log("去充值");
 							this.rechargeMoney = this.payMoney - this.balance;
-							MessageBox.confirm("余额不足：您还差"+this.rechargeMoney+"元，先去充值吧","提示",{confirmButtonText:"去充值",}).then(action=>{
+							MessageBox.confirm("余额不足：您还差"+this.rechargeMoney+"元，先去充值吧!","提示",{confirmButtonText:"去充值",}).then(action=>{
 //								console.log("去充值咯");
 								this.$router.push({path:"/recharge"});
 							}).catch(err=>{});
@@ -199,7 +199,7 @@
 						//余额充足
 						else{
 //							console.log("去支付");
-							MessageBox.confirm("确认支付"+this.payMoney+"元，申请一个融资方案","提示",{confirmButtonText:"确认",}).then(action=>{
+							MessageBox.confirm("确认支付"+this.payMoney+"元，申请一个融资方案?","提示",{confirmButtonText:"确认",}).then(action=>{
 //								console.log("去支付咯");
 								this.apply(this.activityType);
 							}).catch(err=>{});
@@ -241,6 +241,34 @@
 			}
 		},
 		mounted:function(){
+//			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+//			this.financing = this.rangeValue;
+//			this.totalMoney = this.rangeValue + this.rangeValue*this.rangeValue1;
+//			this.payMoney = this.rangeValue/100;
+//			this.startMin = 300;
+//			this.rangeValue = 300;
+//			if(this.userInfo == ''){
+//				//未登录
+////				console.log("未登录");
+//				this.startMax = 1000;
+//				this.isLogin = false;
+//				var headers = ""
+//				this.getParameters(headers);
+//			}else{
+//				//已登录
+////				console.log("一登录")
+//				this.isLogin = true;
+//				var headers = {
+//					token : this.userInfo.token,
+//					secret : this.userInfo.secret
+//				}
+////				console.log("headers==="+JSON.stringify(headers))
+//				this.getParameters(headers);
+//				this.GetActivity(headers);
+//			}
+		},
+		activated: function(){
+			//获取平台账户登录信息
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 			this.financing = this.rangeValue;
 			this.totalMoney = this.rangeValue + this.rangeValue*this.rangeValue1;
@@ -266,10 +294,6 @@
 				this.getParameters(headers);
 				this.GetActivity(headers);
 			}
-		},
-		activated: function(){
-			//获取平台账户登录信息
-			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 		},
 		watch:{
 			rangeValue:function(){

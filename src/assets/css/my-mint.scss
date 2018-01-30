@@ -1,6 +1,37 @@
-.mint-msgbox {
-//      background-color: red;
-    }
-    .mint-msgbox-btn{
-//      background-color: green;
-    }
+.mint-msgbox{
+    background-color: #242933;
+    width: 80%;
+    height: 3.4rem;
+    border-radius: 0.1rem;
+}
+.mint-msgbox-title{
+    color: #a3b1cc;
+    font-size: 0.28rem;
+}
+.mint-msgbox-header{
+    border-bottom: 1px solid #12141a;
+    height: 0.9rem;
+    line-height: 0.9rem;
+    padding: 0;
+}
+.mint-msgbox-content{
+    height: 1.6rem;
+    border-bottom: 1px solid #12141a ;
+    font-size: 0.24rem;
+}
+.mint-msgbox-message{
+    color: white;
+}
+.mint-msgbox-btns{
+    height: 0.9rem;
+}
+.mint-msgbox-cancel {
+    background-color: #363d4d;
+    border-right: 1px solid #12141a;
+    color: white;
+}
+.mint-msgbox-confirm {
+    background-color: #ff5533;
+    color: white;
+}
+//以上部分为取消确认框样式覆盖
