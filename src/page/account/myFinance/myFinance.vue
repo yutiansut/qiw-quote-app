@@ -9,35 +9,37 @@
 		 	</router-link>
 		</mt-header>
 		<div id="container" v-show="exist">
-			<div class="list" v-for="(k,index) in list">
-				<div id="black"></div>
-				<div class="state" @click="toDetails(k.id)">
-					<ul>
-						<!--方案列表-->
-						<li class="state_2" v-if="k.state == 1">
-							<i></i>
-						</li>
-						<li class="state_4" v-else-if="k.state == 2">
-							<i></i>
-						</li>
-						<!--方案列表-->
-						<li></li>
-						<li>
-							<span>{{k.applyTime}} ></span>
-						</li>
-					</ul>
+			<mt-loadmore :bottom-method="loadBottom"  ref="loadmore" :auto-fill="false" :top-method="loadTop">
+				<div class="list" v-for="(k,index) in list">
+					<div id="black"></div>
+					<div class="state" @click="toDetails(k.id)">
+						<ul>
+							<!--方案列表-->
+							<li class="state_2" v-if="k.state == 1">
+								<i></i>
+							</li>
+							<li class="state_4" v-else-if="k.state == 2">
+								<i></i>
+							</li>
+							<!--方案列表-->
+							<li></li>
+							<li>
+								<span>{{k.applyTime}} ></span>
+							</li>
+						</ul>
+					</div>
+					<div class="info">
+						<ul>
+							<li>融资保证金：<span>{{k.tradeDeposit}}</span>元</li>
+							<li>总操盘资金：<span>{{k.totalTradeFund}}</span>元</li>
+						</ul>
+						<ul>
+							<li>融资金额：<span>{{k.financmoney}}</span>元</li>
+							<li>亏损平仓线：<span>{{k.lossCloseoutLine}}</span>元</li>
+						</ul>
+					</div>
 				</div>
-				<div class="info">
-					<ul>
-						<li>融资保证金：<span>{{k.tradeDeposit}}</span>元</li>
-						<li>总操盘资金：<span>{{k.totalTradeFund}}</span>元</li>
-					</ul>
-					<ul>
-						<li>融资金额：<span>{{k.financmoney}}</span>元</li>
-						<li>亏损平仓线：<span>{{k.lossCloseoutLine}}</span>元</li>
-					</ul>
-				</div>
-			</div>
+			</mt-loadmore>
 		</div>
 		<div id="none" v-show="none">
 			<p>暂无融资记录，快去申请吧！</p>
@@ -54,25 +56,38 @@
 			return{
 				exist:true,
 				none:false,
-				list:''
+				list:'',
+				pageNo:'',
+				pageSize:20
 			}
 		},
 		methods:{
+			//下拉刷新
+			loadTop:function(){
+//				console.log("11111111");
+				this.getUserInfo(1,20);
+			},
+			//加载更多
+			loadBottom:function(){
+				this.pagesize+=20;
+				var pagesize1 = this.pagesize
+				this.getUserInfo("",pagesize1);
+			},
 			toDetails:function(a){
-				console.log("id==="+a)
+//				console.log("id==="+a)
 				this.$router.push({path:"/financeDetails",query:{id:a}});
 			},
-			getUserInfo:function(){
+			getUserInfo:function(pageNo,pageSize){
 				var data = {
-					pageNo:1,
-					pageSize:20
+					pageNo:pageNo,
+					pageSize:pageSize
 				}
 				var headers = {
 					token : this.userInfo.token,
 					secret : this.userInfo.secret
 				}
 				pro.fetch("post","/futureManage/getProgramList",data,headers).then((res)=>{
-					console.log("res=="+JSON.stringify(res))
+//					console.log("res=="+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
 						this.list = res.data.list;
 //						console.log("this.list=="+this.list)
@@ -106,7 +121,7 @@
 			if(this.userInfo == ''){
 				//未登录
 			}else{
-				this.getUserInfo();
+				this.getUserInfo(1,20);
 			}
 		}
 	}

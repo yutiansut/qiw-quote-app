@@ -1,8 +1,8 @@
 <template>
 	<div id="addMargin">
 		<mt-header title="追加保证金" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem;border-bottom: 1px solid #12141a;line-height: 1rem;">
-		  	<router-link to="/financeDetails" slot="left">
-		    	<i id="back"></i>
+		  	<router-link to="" slot="left">
+		    	<i id="back" @tap="back"></i>
 		  	</router-link>
 		    <router-link to="/customerServices" slot="right">
 		    	<mt-button style="font-size: 0.24rem;color: #9ba8c2;">客服</mt-button>
@@ -53,6 +53,10 @@
 			}
 		},
 		methods:{
+			back:function(){
+//				console.log("111111111111")
+				this.$router.push({path:"/financeDetails",query:{id:this.id}})
+			},
 			add:function(){
 				if(this.addMoney == ''){
 					this.$toast({message:"请输入追加保证金金额",duration: 1000});
@@ -142,20 +146,26 @@
 			}
 		},
 		mounted:function(){
+//			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+//			this.id = this.$route.query.id;
+////			console.log(this.userInfo);
+//			if(this.userInfo == ''){
+//				console.log("1111")
+//			}else{
+//				this.getUserInfo();
+//				this.getCnyToUsdRate();
+//			}
+		},
+		activated: function(){
+			//获取平台账户登录信息
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 			this.id = this.$route.query.id;
-//			console.log(this.userInfo);
 			if(this.userInfo == ''){
 				console.log("1111")
 			}else{
 				this.getUserInfo();
 				this.getCnyToUsdRate();
 			}
-		},
-		activated: function(){
-			//获取平台账户登录信息
-			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
-			this.id = this.$route.query.id;
 		},
 		watch:{
 			addMoney:function(a){
