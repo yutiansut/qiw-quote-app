@@ -226,6 +226,7 @@
 							res.data.forEach((o, i) => {
 								this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 							});
+							this.optionalList = this.parameters;
 						}else{
 							this.optionalList = [];
 							this.checkedShow = false;
@@ -258,6 +259,7 @@
 		position: fixed;
 		top: 0;
 		left: 0;
+		z-index: 1;
 		h1{
 			width: 6.9rem;
 			height: 1rem;
@@ -290,6 +292,7 @@
 		.search_box{
 			width: 7.5rem;
 			height: 0.96rem;
+			background: $bg;
 			border-bottom: 0.01rem solid $black;
 			padding: 0.16rem 0.3rem;
 			.search{
