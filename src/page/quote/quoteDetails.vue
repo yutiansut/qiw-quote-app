@@ -781,7 +781,7 @@
 							background: #1b1f26;
 						}
 						.name{
-							width: 1.2rem;
+							width: 1.35rem;
 							height: 0.63rem;
 							overflow: hidden;
 							span{
