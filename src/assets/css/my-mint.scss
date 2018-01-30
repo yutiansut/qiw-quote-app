@@ -71,3 +71,10 @@
     height: 0.56rem;
     display: block;
 }
+//客服弹出
+ #btmTop .mint-actionsheet-listitem{
+    
+    &:nth-child(1){
+        border-bottom: none;
+    }
+}

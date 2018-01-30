@@ -17,7 +17,8 @@
 		</div>
 		<mt-actionsheet
 		  :actions="arr"
-		  v-model="sheetVisible">
+		  v-model="sheetVisible"
+		  id="btmTop">
 		</mt-actionsheet>
 	</div>
 </template>
@@ -65,7 +66,7 @@
 		width: 100%;
 		margin-top: 1rem;
 		.cell{
-			padding-left: 0.1rem;
+			margin-left: 0.1rem;
 			background-color: $bg;
 			color: $fontBlue;
 			border-bottom:1px solid #12141a;
