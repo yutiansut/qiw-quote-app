@@ -192,14 +192,16 @@
 					token: this.userInfo.token,
 					secret: this.userInfo.secret
 				}
-				let datas = [];
+				let arr = [];
 				$.each($(".list .cont li"), function(i, o) {
 					let obj = {
 						id: $(o).attr('id'),
 						orderNum: $(o).attr('orderNum')
 					}
-					datas.push(obj);
+					arr.push(obj);
 				});
+				var datas = {data: JSON.stringify(arr)};
+				console.log(datas);
 				pro.fetch('post', '/quoteTrader/userSort', datas, headers).then((res) => {
 					if(res.success == true && res.code == 1){
 						
