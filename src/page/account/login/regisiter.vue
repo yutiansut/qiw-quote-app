@@ -34,7 +34,7 @@
 				<i @click="getWechatId"></i>
 			</div>
 			<div id="to">
-				<p>注册即代表阅读并同意<a>《指数天下用户协议》</a></p>
+				<p>注册即代表阅读并同意<a @click="toProtocol">《指数天下用户协议》</a></p>
 			</div>
 		</div>
 		<codeDialog ref="codeDialog" type="register"></codeDialog>
@@ -79,8 +79,11 @@
 			}
 		},
 		methods:{
+			toProtocol:function(){
+				this.$router.push({path:"/userRegistrationProtocol"});
+			},
 			toLogin:function(){
-				this.$router.push({path:"/login"})
+				this.$router.push({path:"/login"});
 			},
 			eyeEvent:function(e){
 				if(this.showEye == true){

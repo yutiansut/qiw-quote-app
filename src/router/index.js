@@ -60,6 +60,7 @@ import information_search from "../page/information/information_search.vue"
 import service from "../page/account/service.vue"
 import payWays from "../page/account/payWays.vue"
 import newbieTask from "../page/account/newbieTask.vue"
+import userRegistrationProtocol from "../page/account/login/userRegistrationProtocol.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -246,6 +247,9 @@ export default new Router({
 	},{
 		path:"/newbieTask",
 		component:newbieTask
+	},{
+		path:"/userRegistrationProtocol",
+		component:userRegistrationProtocol
 	}
 	]
 })

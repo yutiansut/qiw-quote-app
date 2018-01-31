@@ -184,8 +184,8 @@
 				position: absolute;
 				left: 0.2rem;
 				top: 0.2rem;
-				width: 2.4rem;
-				height: 0.75rem;
+				width: 2.7rem;
+				height: 0.9rem;
 				border: 1px solid #12141a;
 				border-radius: 0.1rem;
 				color: $white;
