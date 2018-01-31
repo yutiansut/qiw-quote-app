@@ -46,11 +46,11 @@
 				</ul>
 				<ul>
 					<li v-if="this.isLogin == true">
-						<span>账户余额</span>
+						<span>总资产</span>
 						<span>{{accountMoney}}元</span>
 					</li>
 					<li v-if="this.isLogin == false">
-						<span>账户余额</span>
+						<span>总资产</span>
 						<span>--</span>
 					</li>
 				</ul>

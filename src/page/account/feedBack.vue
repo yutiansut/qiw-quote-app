@@ -29,7 +29,7 @@
 				请填写您的联系方式
 			</div>
 			<div class="phone">
-				<input type="text" placeholder="手机号或者微信号" v-model="phone"/>
+				<input type="text" placeholder="手机号、微信号或电子邮箱" v-model="phone"/>
 			</div>
 			<btn className="bluelg" name="提交" class="btn" @click.native="submit"></btn>
 		</div>
