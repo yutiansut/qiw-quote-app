@@ -23,7 +23,8 @@
 			</div>
 			<div class="content">
 				<!--<input type="text" placeholder="您可以留下您的意见或者建议，谢谢"/>-->
-				<textarea  cols="30" rows="10" placeholder="您可要留下您的意见或者建议，谢谢" v-model="suggest"></textarea>
+				<!--<textarea  cols="30" rows="10" placeholder="您可要留下您的意见或者建议，谢谢" v-model="suggest"></textarea>-->
+				<input type="text" placeholder="您可要留下您的意见或者建议，谢谢" v-model="suggest" />
 			</div>
 			<div class="title_lev2">
 				请填写您的联系方式
@@ -172,7 +173,7 @@
 		.content{
 			width: 100%;
 			height: 2.4rem;
-			textarea{
+			input{
 				width: 100%;
 				height: 2.4rem;
 				background-color: $bg;
