@@ -884,15 +884,20 @@ export default new Vuex.Store({
 						var time = params[0].name;
 						if(time == null || time == "") return;
 						var html = '时间:' + time + '<br/>';
-						params.forEach((o, i) => {
-							state.market.scale.forEach((v, k) => {
-								if(o.seriesName == v.commodityNo){
-									html += o.seriesName + '价格: ' + parseFloat(o.value*v.scale).toFixed(state.market.orderTemplist[v.commodityNo].DotSize) + '<br/>';
-								}else{
-									html += o.seriesName + '价格: ' + o.value + '<br/>';
-								}
+						if(params.length == 1){
+							html += params[0].seriesName + '价格: ' + params[0].value + '<br/>';
+						}else{
+							params.forEach((o, i) => {
+								state.market.scale.forEach((v, k) => {
+									if(o.seriesName == v.commodityNo){
+										html += o.seriesName + '价格: ' + parseFloat(o.value*v.scale).toFixed(state.market.orderTemplist[v.commodityNo].DotSize) + '<br/>';
+									}else{
+										html += o.seriesName + '价格: ' + o.value + '<br/>';
+									}
+								});
 							});
-						});
+						}
+						
 						return html;
 					},
 				},
