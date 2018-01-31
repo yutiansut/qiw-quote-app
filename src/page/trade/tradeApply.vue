@@ -61,7 +61,7 @@
 					<li>
 						支付：<span>{{payMoney}}</span>元
 					</li>
-					<li @click="clickBtn">
+					<li @click="clickBtn" id="btnnnn">
 						立即支付
 					</li>
 				</ul>
@@ -158,6 +158,7 @@
 							this.balance = res.data.balance;
 						}else if(res.data.balance < 3 || res.data.balance == 3){
 							this.startMax = 10000;
+							$("#btnnnn").html("立即充值");
 						}
 //						this.balance = 100;
 					}
@@ -197,7 +198,7 @@
 							this.rechargeMoney = this.payMoney - this.balance;
 							MessageBox.confirm("余额不足：您还差"+this.rechargeMoney+"元，先去充值吧!","提示",{confirmButtonText:"去充值",}).then(action=>{
 //								console.log("去充值咯");
-								this.$router.push({path:"/recharge"});
+								this.$router.push({path:"/recharge",query:{rechargeMoney:this.rechargeMoney}});
 							}).catch(err=>{});
 						}
 						//余额充足
@@ -225,15 +226,15 @@
 					token : this.userInfo.token,
 					secret : this.userInfo.secret
 				}
-				console.log("data======"+JSON.stringify(data))
+//				console.log("data======"+JSON.stringify(data))
 				pro.fetch("post","/futureManage/openAccount",data,head).then((res)=>{
-					console.log("11111111111111111"+JSON.stringify(res))
+//					console.log("11111111111111111"+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
 						this.$toast({message:'申请成功',duration: 2000});
 						this.$router.push({path:"/applySuccess"});
 					}
 				}).catch((err)=>{
-					console.log("err111111111111111111=="+JSON.stringify(err))
+//					console.log("err111111111111111111=="+JSON.stringify(err))
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});

@@ -60,10 +60,14 @@
 					secret : this.userInfo.secret
 				}
 				pro.fetch("post","/account/getBasicMsg","",headers).then((res)=>{
-					console.log("res==="+JSON.stringify(res))
+//					console.log("res==="+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
 						this.accountMoney = res.data.balance;
-						this.totalMoney = res.data.balance;
+						if(this.rechargeMoney!=undefined){
+							this.totalMoney = Number(this.accountMoney)+Number(this.rechargeMoney);
+						}else{
+							this.totalMoney = this.accountMoney;
+						}
 						this.phone = res.data.mobile;
 					}
 				}).catch((err)=>{
@@ -84,21 +88,19 @@
 		},
 		mounted:function(){
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
-			console.log(this.userInfo);
-			if(this.userInfo == ''){
-				this.showLoginIn = false;
-				this.showNotLogin = true;
-				console.log("1111")
-			}else{
-				this.showLoginIn = true;
-				this.showNotLogin = false;
-				console.log("22222")
-				this.getUserInfo();
-			}
 		},
 		activated: function(){
 			//获取平台账户登录信息
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+			this.rechargeMoney = this.$route.query.rechargeMoney;
+			if(this.userInfo == ''){
+				this.showLoginIn = false;
+				this.showNotLogin = true;
+			}else{
+				this.showLoginIn = true;
+				this.showNotLogin = false;
+				this.getUserInfo();
+			}
 		}
 	}
 </script>

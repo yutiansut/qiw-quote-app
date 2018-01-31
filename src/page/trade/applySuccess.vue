@@ -29,6 +29,18 @@
 			return{
 				
 			}
+		},
+		methods:{
+			toFinance:function(){
+				setTimeout(function(){
+					this.$router.push({path:"/myFinance"});
+				}.bind(this),5000)
+			}
+		},
+		mounted:function(){
+		},
+		activated:function(){
+			this.toFinance();
 		}
 	}
 </script>
