@@ -71,7 +71,7 @@
 						contact:this.phone
 					}
 //					console.log("data=="+JSON.stringify(data))
-					pro.fetch("post","/others/getFeedbackType",data,'').then((res)=>{
+					pro.fetch("post","/others/submitFeedback",data,'').then((res)=>{
 //						console.log("res==="+JSON.stringify(res));
 						if(res.code == 1 && res.success == true){
 							this.suggest = '';
