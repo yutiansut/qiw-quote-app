@@ -411,6 +411,7 @@
 							type: 'line',
 				            data: price,
 				            lineStyle: {normal: {width: 1, color: color[i - 1]}},
+				            itemStyle: {normal: {color: color[i - 1]}},
 							symbolSize: 2,
 						}
 						arr.push(obj);
@@ -533,6 +534,8 @@
 				});
 			},
 			operateData: function(val){
+				//清空对比合约数据
+				this.$store.state.market.contrastData = [];
 				//渲染画图
 				this.chartsShow = true;
 				this.currentChartsNum = 1;
