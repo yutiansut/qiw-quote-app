@@ -10,7 +10,7 @@
 				<ul>
 					<li>
 						<i v-show="loginVisitor"></i>
-						<img v-bind:src="this.wxHeadimgurl" alt="" />
+						<img v-bind:src="this.wxHeadimgurl" alt="" v-show="loginWX"/>
 					</li>
 					<li>
 						<span v-show="nickname">{{wxNickname}}</span>
@@ -156,7 +156,8 @@
           		isLogin:false,
           		loginVisitor:true,
           		isGetActivity:false,
-          		isRealNameAuth:false
+          		isRealNameAuth:false,
+          		loginWX:false
 			}
 		},
 		methods:{
@@ -246,6 +247,7 @@
 						if(res.data.wxHeadimgurl != ''){
 							this.wxHeadimgurl = res.data.wxHeadimgurl;
 							this.loginVisitor = false
+							this.loginWX = true
 						}
 						this.isGetActivity = res.data.isGetActivity;
 						this.isRealNameAuth = res.data.isRealNameAuth;
