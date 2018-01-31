@@ -48,6 +48,8 @@
 					this.$toast({message:"充值金额不能为空",duration: 1000});
 				}else if(this.rechargeReg.test(this.rechargeReg) == true){
 					this.$toast({message:"充值金额格式错误",duration: 1000});
+				}else if(this.rechargeReg<3){
+					this.$toast({message:"最小充值金额为3元",duration: 1000});
 				}else{
 					this.$router.push({path:"/payWays",query:{phone:this.phone,money:this.rechargeMoney}});
 				}

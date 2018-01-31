@@ -184,7 +184,8 @@
 					//未领取过新手礼包
 					if(this.isPresentedgive == false){
 						MessageBox.alert("恭喜小主，您有1w的操盘金体验未领取，赶紧领取吧！","提示",{confirmButtonText:"去领取"}).then(action => {
-							console.log("999999999")
+							console.log("999999999");
+							this.$router.push({path:"/newbieTask"});
 						});
 					}
 					//领取过新手礼包
