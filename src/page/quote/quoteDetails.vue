@@ -400,10 +400,11 @@
 				});
 				let color = ['#5ca1e6', '#d9b816', '#e66b2e', '#b673e6', '#d99a6c'];
 				let arr = [];
+				this.$store.state.market.scale = [];
 				this.parameters.forEach((o, i) => {
 					if(o.check == 1){
 						let price = [];
-						this.jsonData[o.CommodityNo].Parameters.Data.forEach((v, k) => {
+						this.jsonData[o.CommodityNo].Parameters.Data.forEach((v) => {
 							price.push(parseFloat(v[1]/o.scale).toFixed(this.orderTemplist[this.currentNo].DotSize));
 						});
 						let obj = {
@@ -415,7 +416,6 @@
 							symbolSize: 2,
 						}
 						arr.push(obj);
-						this.$store.state.market.scale = [];
 						let scale = {
 							commodityNo: o.CommodityNo,
 							scale: o.scale

@@ -773,8 +773,17 @@ export default new Vuex.Store({
 				itemStyle: {normal: {color: "#ffffff"}},
 				symbolSize: 2,
 	        },];
+	        
 	        //判断是否有外界传入数据
 	        if(arr != undefined && arr != null && arr != ''){
+	        	arr.forEach((o, i) => {
+	        		let len = price.length - o.data.length;
+	        		if(len > 0){
+	        			for(let i = 0; i < len; i++){
+	        				o.data.unshift('');
+	        			}
+	        		}
+	        	});
 	        	optionDatas = optionDatas.concat(arr);
 	        }
 			state.market.option1 = {
@@ -887,17 +896,16 @@ export default new Vuex.Store({
 						if(params.length == 1){
 							html += params[0].seriesName + '价格: ' + params[0].value + '<br/>';
 						}else{
+							html += params[0].seriesName + '价格: ' + params[0].value + '<br/>';
 							params.forEach((o, i) => {
 								state.market.scale.forEach((v, k) => {
 									if(o.seriesName == v.commodityNo){
 										html += o.seriesName + '价格: ' + parseFloat(o.value*v.scale).toFixed(state.market.orderTemplist[v.commodityNo].DotSize) + '<br/>';
-									}else{
-										html += o.seriesName + '价格: ' + o.value + '<br/>';
 									}
 								});
+								
 							});
 						}
-						
 						return html;
 					},
 				},
