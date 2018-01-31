@@ -106,6 +106,7 @@ var market = {
 		option1: {},   //成交量
 		option2: {},   //价格
 		scale: [],     //比例
+		contrastData: [],   //对比合约数据
 		//绘制K线的设置
 		option3: {},   //价格
 		option4: {},   //成交量
@@ -757,8 +758,6 @@ export default new Vuex.Store({
 				price = [],
 				time = [];
 			var dosizeL = state.market.currentdetail.DotSize;
-//			console.log(state.market.jsonData); 
-//			console.log(state.market.jsonData[state.market.currentNo]);
 			if(state.market.jsonData[state.market.currentNo] != undefined){
 				state.market.jsonData[state.market.currentNo].Parameters.Data.forEach(function(e) {
 					vol.push(e[6]);
@@ -885,8 +884,6 @@ export default new Vuex.Store({
 						var time = params[0].name;
 						if(time == null || time == "") return;
 						var html = '时间:' + time + '<br/>';
-						console.log(params);
-						console.log(state.market.scale);
 						params.forEach((o, i) => {
 							state.market.scale.forEach((v, k) => {
 								if(o.seriesName == v.commodityNo){
@@ -2129,46 +2126,46 @@ export default new Vuex.Store({
 									context.state.market.CacheLastQuote.shift();
 								}
 								//更新分时图
-//								if(context.state.isshow.isfensshow == true && context.state.isshow.isfens == true) {
-//									var arr = [], arr1, arr2, arr3, arr4;
-//									context.state.market.charttimetime = new Date();
-//									context.state.market.charttimems = context.state.market.charttimetime.getTime();
-//									context.state.market.charttime = context.state.market.charttimems - context.state.market.charttimems2;
-//									if(context.state.market.charttime >= 1000 || context.state.market.charttimetemp >= 1000) {
-//										arr = [];
-//										arr[0] = JSON.parse(evt.data).Parameters.DateTimeStamp;
-//										arr[1] = JSON.parse(evt.data).Parameters.LastPrice;
-//										arr[2] = JSON.parse(evt.data).Parameters.OpenPrice;
-//										arr[3] = JSON.parse(evt.data).Parameters.LowPrice;
-//										arr[4] = JSON.parse(evt.data).Parameters.HighPrice;
-//										arr[5] = JSON.parse(evt.data).Parameters.Position;
-//										arr[6] = JSON.parse(evt.data).Parameters.LastVolume;
-//										arr1 = JSON.parse(evt.data).Parameters.DateTimeStamp.split(' ');
-//										arr2 = arr1[1].split(':'); //最新时间
-//										arr3 = context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1][0].split(' ');
-//										arr4 = arr3[1].split(':'); //历史时间
-//										if(arr2[1] == arr4[1]) {
-//											var time = context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1][0];
-//											var vol = parseInt(context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1][6]) + parseInt(arr[6]);
-//											context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1] = arr;
-//											context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1][0] = time;
-//											context.state.market.jsonData.Parameters.Data[context.state.market.jsonData.Parameters.Data.length - 1][6] = vol;
-//										}else{
-////											context.state.market.jsonData.Parameters.Data.shift();
-//											context.state.market.jsonData.Parameters.Data.push(arr);
-//										}
-//										context.commit('setfensoption');
-//										context.commit('drawfens', {
-//											id1: 'fens',
-//											id2: 'volume'
-//										});
-//										context.state.market.charttimetemp = 0;
-//									} else {
-//										context.state.market.charttimetemp += context.state.market.charttime;
-//									}
-//									context.state.market.charttimetime2 = new Date();
-//									context.state.market.charttimems2 = context.state.market.charttimetime2.getTime();
-//								}
+								if(context.state.isshow.isfensshow == true && context.state.isshow.isfens == true) {
+									var arr = [], arr1, arr2, arr3, arr4;
+									context.state.market.charttimetime = new Date();
+									context.state.market.charttimems = context.state.market.charttimetime.getTime();
+									context.state.market.charttime = context.state.market.charttimems - context.state.market.charttimems2;
+									if(context.state.market.charttime >= 1000 || context.state.market.charttimetemp >= 1000) {
+										arr = [];
+										arr[0] = JSON.parse(evt.data).Parameters.DateTimeStamp;
+										arr[1] = JSON.parse(evt.data).Parameters.LastPrice;
+										arr[2] = JSON.parse(evt.data).Parameters.OpenPrice;
+										arr[3] = JSON.parse(evt.data).Parameters.LowPrice;
+										arr[4] = JSON.parse(evt.data).Parameters.HighPrice;
+										arr[5] = JSON.parse(evt.data).Parameters.Position;
+										arr[6] = JSON.parse(evt.data).Parameters.LastVolume;
+										arr1 = JSON.parse(evt.data).Parameters.DateTimeStamp.split(' ');
+										arr2 = arr1[1].split(':'); //最新时间
+										arr3 = context.state.market.jsonData[context.state.market.currentNo].Parameters.Data[context.state.market.jsonData[context.state.market.currentNo].Parameters.Data.length - 1][0].split(' ');
+										arr4 = arr3[1].split(':'); //历史时间
+										if(arr2[1] == arr4[1]) {
+											var time = context.state.market.jsonData[context.state.market.currentNo].Parameters.Data[context.state.market.jsonData[context.state.market.currentNo].Parameters.Data.length - 1][0];
+											var vol = parseInt(context.state.market.jsonData[context.state.market.currentNo].Parameters.Data[context.state.market.jsonData[context.state.market.currentNo].Parameters.Data.length - 1][6]) + parseInt(arr[6]);
+											context.state.market.jsonData[context.state.market.currentNo].Parameters.Data[context.state.market.jsonData[context.state.market.currentNo].Parameters.Data.length - 1] = arr;
+											context.state.market.jsonData[context.state.market.currentNo].Parameters.Data[context.state.market.jsonData[context.state.market.currentNo].Parameters.Data.length - 1][0] = time;
+											context.state.market.jsonData[context.state.market.currentNo].Parameters.Data[context.state.market.jsonData[context.state.market.currentNo].Parameters.Data.length - 1][6] = vol;
+										}else{
+//											context.state.market.jsonData.Parameters.Data.shift();
+											context.state.market.jsonData[context.state.market.currentNo].Parameters.Data.push(arr);
+										}
+										context.commit('setfensoption', context.state.market.contrastData);
+										context.commit('drawfens', {
+											id1: 'fens',
+											id2: 'volume'
+										});
+										context.state.market.charttimetemp = 0;
+									} else {
+										context.state.market.charttimetemp += context.state.market.charttime;
+									}
+									context.state.market.charttimetime2 = new Date();
+									context.state.market.charttimems2 = context.state.market.charttimetime2.getTime();
+								}
 								//更新闪电图
 								if(context.state.isshow.islightshow == true && context.state.isshow.islight == true) {
 									context.state.market.jsonTow = JSON.parse(evt.data);
