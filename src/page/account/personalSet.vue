@@ -61,19 +61,19 @@
 		},
 		mounted:function(){
 			this.phone = this.$route.query.phone;
-		},
-		activited:function(){
-			this.phone = this.$route.query.phone;
 			this.wxNickname = this.$route.query.wxNickname;
 			var phonenum = this.$route.query.phone;
-			this.wxNickname = this.$route.query.wxNickname;
 			this.mobile = phonenum.substr(0, 3) + '****' + phonenum.substr(7);
-//			console.log("this.wxNickname===="+this.wxNickname)
-			if(this.wxNickname == ""){
+			if(this.wxNickname == undefined){
 				this.showNickname= false
 			}else{
 				this.showNickname= true
 			}
+			console.log(this.wxNickname);
+		},
+		activited:function(){
+			this.phone = this.$route.query.phone;
+			this.wxNickname = this.$route.query.wxNickname;
 		}
 	}
 </script>
