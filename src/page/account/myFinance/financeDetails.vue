@@ -37,7 +37,7 @@
 						<li><mt-button class="btn2" @click.native="addMargin">追加保证金</mt-button></li>
 					</ul>
 					<ul>
-						<li>融资金额：<span>{{financMoney | financMoneyChange}}元</span></li>
+						<li>融资金额：<span>{{financMoney}}元</span></li>
 						<li>
 						</li>
 					</ul>
@@ -46,7 +46,7 @@
 						<li></li>
 					</ul>
 					<ul>
-						<li>亏损平仓线：<span>{{lossCloseoutLine}}元</span></li>
+						<li>亏损平仓线：<span>{{lossCloseOutLine}}元</span></li>
 						<li>
 						</li>
 					</ul>
@@ -69,7 +69,7 @@
 						<li>融资保证金：<span>{{tradeDeposit}}元</span></li>
 						<li>融资金额：<span>{{financMoney}}元</span></li>
 						<li>总操盘资金：<span>{{totalTradeFund}}元</span></li>
-						<li>亏损平仓线：<span>{{lossCloseoutLine}}元</span></li>
+						<li>亏损平仓线：<span>{{lossCloseOutLine}}元</span></li>
 						<li>方案结算时间：<span>{{endTime}}</span></li>
 						<li>交易盈亏：<span>{{tradeprofitandloss}}元</span></li>
 						<li>美元结算汇率：<span>1美元={{rate}}人民币</span></li>
@@ -141,7 +141,7 @@
 				financMoney:"融资金额",
 				tradeDeposit:"操盘保证金",
 				totalTradeFund:"总操盘资金",
-				lossCloseoutLine:"亏损平仓线",
+				lossCloseOutLine:"亏损平仓线",
 				addDepositToTotal:"追加保证金金额",
 				endTime:"结算时间",
 				clearmoney:"结算金额",
@@ -221,7 +221,7 @@
 						this.financMoney=res.data.program.financMoney,
 						this.tradeDeposit=res.data.program.tradeDeposit,
 						this.totalTradeFund=res.data.program.totalTradeFund,
-						this.lossCloseoutLine=res.data.program.lossCloseoutLine,
+						this.lossCloseOutLine=res.data.program.lossCloseOutLine,
 						this.addDepositToTotal=res.data.program.addDepositToTotal,
 						this.endTime=res.data.program.endTime,
 						this.clearmoney=res.data.program.clearmoney,
@@ -272,13 +272,6 @@
 			}else{
 				//console.log("一登录")
 				this.getDetails();
-			}
-		},
-		filters:{
-			financMoneyChange:function(e){
-				if(e == undefined){
-					return e = 0;
-				}
 			}
 		}
 	}

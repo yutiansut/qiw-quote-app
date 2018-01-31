@@ -52,7 +52,7 @@
 			<div class="black"></div>
 			<div class="warn">
 				<ul>
-					<li>提交申请时请仔细阅读<span>《期货融资合作协议》</span><span>《操盘细则》</span></li>
+					<li>提交申请时请仔细阅读<span @click="toAgreement">《期货融资合作协议》</span><span @click="toTradersRules">《操盘细则》</span></li>
 					<li>如遇问题请咨询客服：400-852-8008</li>
 				</ul>
 			</div>
@@ -107,6 +107,12 @@
 			}
 		},
 		methods:{
+			toTradersRules:function(){
+				this.$router.push({path:"/tradersRules"});
+			},
+			toAgreement:function(){
+				this.$router.push({path:"/agreement"});
+			},
 			//已领取状态下去获取是否使用状态
 			getNewActivity:function(headers){
 				pro.fetch("post","/futureManage/getPresent",{type:1},headers).then((res)=>{}).catch((err)=>{
@@ -155,14 +161,17 @@
 						this.lossScale = res.data.lossScale;
 						this.lossLine = this.rangeValue*this.lossScale + this.rangeValue*this.rangeValue1;
 						this.rate = res.data.rate;
-						if(res.data.balance != '' && res.data.balance > 3){
-							this.startMax = res.data.balance*this.rate;
-							this.balance = res.data.balance;
-						}else if(res.data.balance < 3 || res.data.balance == 3){
-							this.startMax = 10000;
-							$("#btnnnn").html("立即充值");
+						if(this.isPresentedgive == true){
+							if(res.data.balance != '' && res.data.balance > 3){
+								this.startMax = res.data.balance*this.rate;
+								this.balance = res.data.balance;
+							}else if(res.data.balance < 3 || res.data.balance == 3){
+								this.startMax = 10000;
+								this.balance = res.data.balance;
+								$("#btnnnn").html("立即充值");
+							}
 						}
-//						this.balance = 100;
+						
 					}
 				}).catch((err)=>{
 					var data = err.data;

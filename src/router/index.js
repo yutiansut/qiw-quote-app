@@ -61,6 +61,8 @@ import service from "../page/account/service.vue"
 import payWays from "../page/account/payWays.vue"
 import newbieTask from "../page/account/newbieTask.vue"
 import userRegistrationProtocol from "../page/account/login/userRegistrationProtocol.vue"
+import agreement from "../page/trade/agreement.vue"
+import tradersRules from "../page/trade/tradersRules.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -250,6 +252,12 @@ export default new Router({
 	},{
 		path:"/userRegistrationProtocol",
 		component:userRegistrationProtocol
+	},{
+		path:"/agreement",
+		component:agreement
+	},{
+		path:"/tradersRules",
+		component:tradersRules
 	}
 	]
 })
