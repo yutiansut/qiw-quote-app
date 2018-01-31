@@ -8,7 +8,7 @@
 		<img src="../../assets/images/newbieTask_01.png"/>
 		<div id="container">
 			<span class="t2">活动内容</span>
-			<p>指数天下全新版本上线，即日起，所有用户均可享受<span>免费领取10000模拟币</span>福利，模拟比可用于指数天下App内所有品种交易</p>
+			<p>指数天下全新版本上线，即日起，所有用户均可享受<span>免费领取10000模拟币</span>福利，模拟币可用于指数天下App内所有品种交易</p>
 			<span class="t2">活动规则</span>
 			<p>
 				1、活动期间：长期，结束时间以平台公告为准；<br>
@@ -113,9 +113,11 @@
 			//获取平台账户登录信息
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 			if(this.userInfo == ''){
-//				console.log("未登录")
+				console.log("未登录");
+				this.notGet = false;
+				this.geted = true;
 			}else{
-//				console.log("一登录")
+				console.log("一登录")
 				this.isLonin = true;
 				//获取是否领取过
 				this.isGet();

@@ -4,7 +4,7 @@
 			<div class="p_left">选择融资本金(本金越多，可持仓手数越多)</div>
 			<div class="picture">
 				<p><span>{{financing}}</span>元</p>
-				<mt-range v-model="rangeValue" :barHeight="10" :min="this.startMin" :max="this.startMax" id="range" :disabled="disabled"></mt-range>
+				<mt-range v-model="rangeValue" :barHeight="10" :min="this.startMin" :max="this.startMax" id="range" :disabled="disabled" :step="100"></mt-range>
 				<div class="bkg"></div>
 				<ul class="section">
 					<li><span>{{startMin}}</span>元</li>
@@ -14,7 +14,7 @@
 			<div class="p_left">选择融倍数，（倍数越多，可持仓手数越多）</div>
 			<div class="picture1">
 				<p><span>{{times}}倍</span></p>
-				<mt-range v-model="rangeValue1" :barHeight="10" :min="0" :max="100" :step="5" id="range1"></mt-range>
+				<mt-range v-model="rangeValue1" :barHeight="10" :min="0" :max="100" :step="1" id="range1"></mt-range>
 				<div class="bkg1"></div>
 				<ul class="section1">
 					<li><span>0</span>倍</li>
@@ -61,7 +61,7 @@
 					<li>
 						支付：<span>{{payMoney}}</span>元
 					</li>
-					<li @click="clickBtn">
+					<li @click="clickBtn" id="btnnnn">
 						立即支付
 					</li>
 				</ul>
@@ -130,6 +130,8 @@
 						this.isPresentedgive = res.data.isGetActivity;
 						if(res.data.isGetActivity == true){
 							this.getNewActivity(headers);
+						}else{
+							$("#btnnnn").html("领取体验金");
 						}
 					}
 				}).catch((err)=>{
@@ -158,6 +160,7 @@
 							this.balance = res.data.balance;
 						}else if(res.data.balance < 3 || res.data.balance == 3){
 							this.startMax = 10000;
+							$("#btnnnn").html("立即充值");
 						}
 //						this.balance = 100;
 					}
@@ -197,7 +200,7 @@
 							this.rechargeMoney = this.payMoney - this.balance;
 							MessageBox.confirm("余额不足：您还差"+this.rechargeMoney+"元，先去充值吧!","提示",{confirmButtonText:"去充值",}).then(action=>{
 //								console.log("去充值咯");
-								this.$router.push({path:"/recharge"});
+								this.$router.push({path:"/recharge",query:{rechargeMoney:this.rechargeMoney}});
 							}).catch(err=>{});
 						}
 						//余额充足
@@ -225,15 +228,15 @@
 					token : this.userInfo.token,
 					secret : this.userInfo.secret
 				}
-				console.log("data======"+JSON.stringify(data))
+//				console.log("data======"+JSON.stringify(data))
 				pro.fetch("post","/futureManage/openAccount",data,head).then((res)=>{
-					console.log("11111111111111111"+JSON.stringify(res))
+//					console.log("11111111111111111"+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
 						this.$toast({message:'申请成功',duration: 2000});
 						this.$router.push({path:"/applySuccess"});
 					}
 				}).catch((err)=>{
-					console.log("err111111111111111111=="+JSON.stringify(err))
+//					console.log("err111111111111111111=="+JSON.stringify(err))
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
