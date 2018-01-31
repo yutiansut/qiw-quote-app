@@ -431,24 +431,30 @@
 				switch(index){
 					case 0:
 						this.currentChartsView = 'light';
+						this.$store.state.market.contrastData = [];
 						break;
 					case 1:
 						this.currentChartsView = 'fens';
 						break;
 					case 2:
 						this.currentChartsView = 'klineOne';
+						this.$store.state.market.contrastData = [];
 						break;
 					case 3:
 						this.currentChartsView = 'klineFive';
+						this.$store.state.market.contrastData = [];
 						break;
 					case 4:
 						this.currentChartsView = 'klineFifteen';
+						this.$store.state.market.contrastData = [];
 						break;
 					case 5:
 						this.currentChartsView = 'klineThirty';
+						this.$store.state.market.contrastData = [];
 						break;
 					case 6:
 						this.currentChartsView = 'klineDay';
+						this.$store.state.market.contrastData = [];
 						break;
 				}
 				this.$store.state.isshow.isfensshow = false;

@@ -2369,8 +2369,8 @@ export default new Vuex.Store({
 									}
 									context.commit('setklineoption');
 									context.commit('drawkline', {
-										id1: 'kliness',
-										id2: 'kliness_volume'
+										id1: 'kline',
+										id2: 'kline_volume'
 									});
 								}
 							}
