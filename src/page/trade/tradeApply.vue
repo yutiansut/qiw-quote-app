@@ -161,6 +161,7 @@
 								this.balance = res.data.balance;
 							}else if(res.data.balance < 3 || res.data.balance == 3){
 								this.startMax = 10000;
+								this.balance = res.data.balance;
 								$("#btnnnn").html("立即充值");
 							}
 						}
