@@ -105,6 +105,7 @@ var market = {
 		//绘制分时的设置
 		option1: {},   //成交量
 		option2: {},   //价格
+		scale: [],     //比例
 		//绘制K线的设置
 		option3: {},   //价格
 		option4: {},   //成交量
@@ -822,8 +823,6 @@ export default new Vuex.Store({
 					axisLabel: {
 						margin: 3,
 						formatter: function(a) {
-							console.log(789);
-							console.log(a);
 							a = +a;
 							return isFinite(a) ? echarts.format.addCommas(+a / 10000) : '';
 						},
@@ -884,11 +883,18 @@ export default new Vuex.Store({
 					},
 					formatter: function(params) {
 						var time = params[0].name;
-//						var val = parseFloat(params[0].value).toFixed(dosizeL);
 						if(time == null || time == "") return;
 						var html = '时间:' + time + '<br/>';
+						console.log(params);
+						console.log(state.market.scale);
 						params.forEach((o, i) => {
-							html += o.seriesName + '价格: ' + o.value + '<br/>';
+							state.market.scale.forEach((v, k) => {
+								if(o.seriesName == v.commodityNo){
+									html += o.seriesName + '价格: ' + parseFloat(o.value*v.scale).toFixed(state.market.orderTemplist[v.commodityNo].DotSize) + '<br/>';
+								}else{
+									html += o.seriesName + '价格: ' + o.value + '<br/>';
+								}
+							});
 						});
 						return html;
 					},
