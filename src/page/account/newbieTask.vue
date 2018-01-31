@@ -86,8 +86,8 @@
 					pro.fetch("post","/futureManage/getPresent",data,headers).then((res)=>{
 						if(res.code == 1 && res.success == true){
 							this.$toast({message:"恭喜您，领取成功",duration: 1000});	
-							this.notGet = false;
-							this.geted = true;
+							this.notGet = true;
+							this.geted = false;
 						}
 					}).catch((err)=>{
 						var data = err.data;
