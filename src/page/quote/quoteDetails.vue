@@ -398,6 +398,7 @@
 					}
 					
 				});
+				let color = ['#5ca1e6', '#d9b816', '#e66b2e', '#b673e6', '#d99a6c'];
 				let arr = [];
 				this.parameters.forEach((o, i) => {
 					if(o.check == 1){
@@ -409,7 +410,7 @@
 							name: o.CommodityNo,
 							type: 'line',
 				            data: price,
-				            lineStyle: {normal: {width: 1}},
+				            lineStyle: {normal: {width: 1, color: color[i - 1]}},
 							symbolSize: 2,
 						}
 						arr.push(obj);
@@ -421,6 +422,7 @@
 						this.$store.state.market.scale.push(scale);
 					}
 				});
+				this.$store.state.market.contrastData = arr;
 				this.setfensoption(arr);
 				this.drawfens(this.id);
 			},
