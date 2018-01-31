@@ -147,7 +147,7 @@
 			//获取基础配置信息
 			getParameters:function(headers){
 				pro.fetch("post","/futureManage/getApplyData","",headers).then((res)=>{
-//					console.log("res==="+JSON.stringify(res.data.balance));
+					console.log("res==="+JSON.stringify(res.data));
 					if(res.code == 1 && res.success == true){
 						this.tradableList = res.data.tradableList;
 						this.lossScale = res.data.lossScale;
@@ -174,6 +174,7 @@
 				});
 			},
 			clickBtn:function(){
+				console.log("this.balance========"+this.balance)
 				//未登录
 				if(this.isLogin == false){
 					MessageBox.confirm("您还未登录平台账户，赶紧去登录吧!","提示",{confirmButtonText:"去登录",}).then(action=>{
@@ -244,6 +245,7 @@
 			}
 		},
 		mounted:function(){
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 		},
 		activated: function(){
 			//获取平台账户登录信息
@@ -269,7 +271,7 @@
 					secret : this.userInfo.secret
 				}
 //				console.log("headers==="+JSON.stringify(headers))
-				this.getParameters("");
+				this.getParameters(headers);
 				this.GetActivity(headers);
 			}
 			var screenPhone=screen.width;
@@ -281,7 +283,6 @@
 				$(".bkg").css("top","0.79rem").css("height","0.33rem");
 				$(".bkg1").css("top","0.79rem").css("height","0.33rem");
 			}
-			console.log("screenPhone==="+screenPhone)
 		},
 		watch:{
 			rangeValue:function(){
