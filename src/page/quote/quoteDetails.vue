@@ -381,53 +381,48 @@
 					Toast({message: '只能在分时添加对比', position: 'bottom', duration: 2000});
 					return;
 				}
-				let headers = {
-					token: this.userInfo.token,
-					secret: this.userInfo.secret
-				}
-				let datas = {
-					commodityNoA: this.currentNo,
-					commodityNoB: index
-				}
-				pro.fetch('post', '/quoteTrader/getScale', datas, headers).then((res) => {
-					if(res.success == true){
-						if(res.code == 1){
-							this.parameters.forEach((o, i) => {
-								if(o.CommodityNo == index){
-									o.scale = res.data.scale;
-									if(o.check == 0){
-										o.check = 1;
-									}else{
-										o.check = 0;
-									}
-								}
-							});
-							let arr = [];
-							this.parameters.forEach((o, i) => {
-								if(o.check == 1){
-									let price = [];
-									this.jsonData[o.CommodityNo].Parameters.Data.forEach((v, k) => {
-										price.push(v[1]*o.scale);
-									});
-									let obj = {
-										name: o.CommodityNo,
-										type: 'line',
-							            data: price,
-							            lineStyle: {normal: {width: 1}},
-										symbolSize: 2,
-									}
-									arr.push(obj);
-								}
-							});
-							this.setfensoption(arr);
-							this.drawfens(this.id);
+				var currentOrderPrice, contrastOrderPrice, scale;
+				this.parameters.forEach((o, i) => {
+					if(o.CommodityNo == this.currentNo){
+						currentOrderPrice = o.LastQuotation.PreSettlePrice;
+					}
+					if(o.CommodityNo == index){
+						contrastOrderPrice = o.LastQuotation.PreSettlePrice;
+						scale = parseFloat(contrastOrderPrice/currentOrderPrice).toFixed(4);
+						o.scale = scale;
+						if(o.check == 0){
+							o.check = 1;
 						}else{
-							Toast({message: res.message, position: 'bottom', duration: 2000});
+							o.check = 0;
 						}
 					}
-				}).catch((err) => {
-					Toast({message: err.data.message, position: 'bottom', duration: 2000});
+					
 				});
+				let arr = [];
+				this.parameters.forEach((o, i) => {
+					if(o.check == 1){
+						let price = [];
+						this.jsonData[o.CommodityNo].Parameters.Data.forEach((v, k) => {
+							price.push(parseFloat(v[1]/o.scale).toFixed(this.orderTemplist[this.currentNo].DotSize));
+						});
+						let obj = {
+							name: o.CommodityNo,
+							type: 'line',
+				            data: price,
+				            lineStyle: {normal: {width: 1}},
+							symbolSize: 2,
+						}
+						arr.push(obj);
+						this.$store.state.market.scale = [];
+						let scale = {
+							commodityNo: o.CommodityNo,
+							scale: o.scale
+						}
+						this.$store.state.market.scale.push(scale);
+					}
+				});
+				this.setfensoption(arr);
+				this.drawfens(this.id);
 			},
 			menuEvent: function(index){
 				this.currentChartsNum = index;
