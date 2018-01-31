@@ -130,6 +130,8 @@
 						this.isPresentedgive = res.data.isGetActivity;
 						if(res.data.isGetActivity == true){
 							this.getNewActivity(headers);
+						}else{
+							$("#btnnnn").html("领取体验金");
 						}
 					}
 				}).catch((err)=>{

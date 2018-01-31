@@ -30,7 +30,7 @@
 		data(){
 			return{
 				rechargeMoney:"",
-				rechargeReg:/^[0-9]*$/,
+				rechargeReg:/^[0-9]+([.][0-9]+)?$/,
 				accountMoney:"",
 				totalMoney:"",
 				phone:""
@@ -44,11 +44,12 @@
 		},
 		methods:{
 			recharge:function(){
-				if(this.rechargeMoney == ''){
+				console.log("this.rechargeMoney====="+this.rechargeMoney)
+				if(this.rechargeMoney == undefined){
 					this.$toast({message:"充值金额不能为空",duration: 1000});
-				}else if(this.rechargeReg.test(this.rechargeReg) == true){
+				}else if(this.rechargeReg.test(this.rechargeMoney) == false){
 					this.$toast({message:"充值金额格式错误",duration: 1000});
-				}else if(this.rechargeReg<3){
+				}else if(this.rechargeMoney<3){
 					this.$toast({message:"最小充值金额为3元",duration: 1000});
 				}else{
 					this.$router.push({path:"/payWays",query:{phone:this.phone,money:this.rechargeMoney}});
@@ -63,7 +64,7 @@
 //					console.log("res==="+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
 						this.accountMoney = res.data.balance;
-						if(this.rechargeMoney!=undefined){
+						if(this.rechargeMoney!='' && this.rechargeMoney!=undefined){
 							this.totalMoney = Number(this.accountMoney)+Number(this.rechargeMoney);
 						}else{
 							this.totalMoney = this.accountMoney;
@@ -93,6 +94,9 @@
 			//获取平台账户登录信息
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 			this.rechargeMoney = this.$route.query.rechargeMoney;
+			if(this.rechargeMoney == undefined){
+				this.rechargeMoney = ''
+			}
 			if(this.userInfo == ''){
 				this.showLoginIn = false;
 				this.showNotLogin = true;
