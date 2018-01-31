@@ -77,9 +77,9 @@
 							this.suggest = '';
 							this.phone = '';
 							this.$toast({message: '提交成功',duration: 1000});
+							this.$router.push({path:"/account"});
 						}
 					}).catch((err)=>{
-//						console.log("err==="+JSON.stringify(err));
 						var data = err.data;
 						if(data == undefined){
 							this.$toast({message: '网络不给力，请稍后重试',duration: 1000});
@@ -91,18 +91,18 @@
 			},
 			getinfo:function(){
 				pro.fetch("post","/others/getFeedbackType",{},{}).then((res)=>{
-					console.log("res===="+JSON.stringify(res))
+//					console.log("res===="+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
 						this.choose = res.data;
 					}
 				}).catch((err)=>{
-					console.log("err===="+JSON.stringify(err))
-//					var data = err.data;
-//					if(data == undefined){
-//						this.$toast({message: '网络不给力，请稍后重试',duration: 1000});
-//					}else{
-//						this.$toast({message:data.message,duration: 1000});
-//					}
+//					console.log("err===="+JSON.stringify(err))
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message: '网络不给力，请稍后重试',duration: 1000});
+					}else{
+						this.$toast({message:data.message,duration: 1000});
+					}
 				})
 			}
 		},

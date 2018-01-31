@@ -96,7 +96,8 @@
 				</ul>
 				<ul>
 					<li @click="toNewbieTask">
-						<i></i>
+						<i class="newpeople_1" v-if="this.isGetActivity == true"></i>
+						<i class="newpeople_2" v-else="this.isGetActivity == false"></i>
 						<span>新手任务</span>
 					</li>
 				</ul>
@@ -153,7 +154,9 @@
           		accountMoney:0,
           		phone:"",
           		isLogin:false,
-          		loginVisitor:true
+          		loginVisitor:true,
+          		isGetActivity:false,
+          		isRealNameAuth:false
 			}
 		},
 		methods:{
@@ -181,7 +184,11 @@
 			},
 			toRealName:function(){
 				if(this.isLogin==true){
-					this.$router.push({path:'/realName'});
+					if(this.isRealNameAuth==true){
+						this.$toast({message:"您已通过实名认证",duration: 2000});
+					}else{
+						this.$router.push({path:'/realName'});
+					}
 				}else{
 					this.$toast({message:"您还未登录，请先登录",duration: 2000});
 					this.$router.push({path:'/login'});
@@ -240,6 +247,8 @@
 							this.wxHeadimgurl = res.data.wxHeadimgurl;
 							this.loginVisitor = false
 						}
+						this.isGetActivity = res.data.isGetActivity;
+						this.isRealNameAuth = res.data.isRealNameAuth;
 					}
 				}).catch((err)=>{
 //					console.log("err==0"+JSON.stringify(err))
@@ -513,10 +522,18 @@
 					}
 				}
 				&:nth-child(2){
-					i{
+					.newpeople_1{
 						background: url(../assets/images/account/newpeople_icon.png);
 						display: block;
 						width: 0.4rem;
+						height: 0.4rem;
+						background-size: 100% 100%;
+						margin-left: 0.28rem;
+					}
+					.newpeople_2{
+						background: url(../assets/images/account/newpeople_icon1.png);
+						display: block;
+						width: 0.54rem;
 						height: 0.4rem;
 						background-size: 100% 100%;
 						margin-left: 0.28rem;
