@@ -258,7 +258,7 @@
 				this.startMax = 1000;
 				this.isLogin = false;
 				var headers = ""
-				this.getParameters(headers);
+				this.getParameters("");
 			}else{
 				//已登录
 //				console.log("一登录")
@@ -268,7 +268,7 @@
 					secret : this.userInfo.secret
 				}
 //				console.log("headers==="+JSON.stringify(headers))
-				this.getParameters(headers);
+				this.getParameters("");
 				this.GetActivity(headers);
 			}
 			var screenPhone=screen.width;
