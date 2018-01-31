@@ -52,7 +52,7 @@
 			<div class="black"></div>
 			<div class="warn">
 				<ul>
-					<li>提交申请时请仔细阅读<span @click="toAgreement">《期货融资合作协议》</span><span>《操盘细则》</span></li>
+					<li>提交申请时请仔细阅读<span @click="toAgreement">《期货融资合作协议》</span><span @click="toTradersRules">《操盘细则》</span></li>
 					<li>如遇问题请咨询客服：400-852-8008</li>
 				</ul>
 			</div>
@@ -107,6 +107,9 @@
 			}
 		},
 		methods:{
+			toTradersRules:function(){
+				this.$router.push({path:"/tradersRules"});
+			},
 			toAgreement:function(){
 				this.$router.push({path:"/agreement"});
 			},

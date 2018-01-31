@@ -112,7 +112,7 @@
 		background-size: 100% 100%;
 	}
 	#agreement{
-    	width: 100%;
+    	width: 7.5rem;
     	overflow: hidden;
     	padding-top: 1rem;
     	.page_cont{
