@@ -155,14 +155,16 @@
 						this.lossScale = res.data.lossScale;
 						this.lossLine = this.rangeValue*this.lossScale + this.rangeValue*this.rangeValue1;
 						this.rate = res.data.rate;
-						if(res.data.balance != '' && res.data.balance > 3){
-							this.startMax = res.data.balance*this.rate;
-							this.balance = res.data.balance;
-						}else if(res.data.balance < 3 || res.data.balance == 3){
-							this.startMax = 10000;
-							$("#btnnnn").html("立即充值");
+						if(this.isPresentedgive == true){
+							if(res.data.balance != '' && res.data.balance > 3){
+								this.startMax = res.data.balance*this.rate;
+								this.balance = res.data.balance;
+							}else if(res.data.balance < 3 || res.data.balance == 3){
+								this.startMax = 10000;
+								$("#btnnnn").html("立即充值");
+							}
 						}
-//						this.balance = 100;
+						
 					}
 				}).catch((err)=>{
 					var data = err.data;
