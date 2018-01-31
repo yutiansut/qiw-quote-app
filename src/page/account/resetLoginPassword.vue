@@ -9,19 +9,19 @@
 			<ul>
 				<li>
 					<i></i>
-					<input type="password" class="input1" placeholder="原密码" v-model="oldPassword"/>
+					<input type="password" class="input1" placeholder="旧密码" v-model="oldPassword"/>
 				</li>
 			</ul>
 			<ul>
 				<li>
 					<i></i>
-					<input type="password" class="input1" placeholder="输入新密码(6-12位)" v-model="newPassword"/>
+					<input type="password" class="input1" placeholder="新密码(6-16位数字加字母)" v-model="newPassword"/>
 				</li>
 			</ul>
 			<ul>
 				<li>
 					<i></i>
-					<input type="password" class="input1" placeholder="确认新密码" v-model="newPassword1"/>
+					<input type="password" class="input1" placeholder="确认新密码(6-16位数字加字母)" v-model="newPassword1"/>
 				</li>
 			</ul>
 			<mt-button class="btn" @click.native="confirm">完成</mt-button>
@@ -50,11 +50,11 @@
 				}else if(this.newPassword1 == ''){
 					this.$toast({message:"请输入确认密码",duration: 2000});
 				}else if(this.pwdReg.test(this.oldPassword)== false){
-					this.$toast({message:"原密码格式错误，请重新输入",duration: 2000});
+					this.$toast({message:"请输入6-16位数字加字母的密码",duration: 2000});
 				}else if(this.pwdReg.test(this.newPassword)== false){
-					this.$toast({message:"新密码格式错误，请重新输入",duration: 2000});
+					this.$toast({message:"请输入6-16位数字加字母的密码",duration: 2000});
 				}else if(this.pwdReg.test(this.newPassword1)== false){
-					this.$toast({message:"确认密码格式不正确，请重新输入",duration: 2000});
+					this.$toast({message:"请输入6-16位数字加字母的密码",duration: 2000});
 				}else if(this.newPassword!=this.newPassword1){
 					this.$toast({message:"两次密码输入不一致，请重新输入",duration: 2000});
 				}

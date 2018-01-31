@@ -75,7 +75,7 @@
 						}else{
 							this.$toast({message:data.message,duration: 1000});
 						}
-					})
+					}.bind(this))
 				}
 			}
 		},

@@ -40,7 +40,7 @@
 	                    this.$router.push({path:'/index'});
 	                break;
 	                case '模拟交易':
-	                    this.$router.push({path:'/trade'});
+	                    this.$router.push({path:'/tradeLogin/tradeApply'});
 	                break;
 	                case '资讯':
 	                    this.$router.push({path:'/information'});

@@ -46,11 +46,11 @@
 				</ul>
 				<ul>
 					<li v-if="this.isLogin == true">
-						<span>账户余额</span>
+						<span>总资产</span>
 						<span>{{accountMoney}}元</span>
 					</li>
 					<li v-if="this.isLogin == false">
-						<span>账户余额</span>
+						<span>总资产</span>
 						<span>--</span>
 					</li>
 				</ul>
@@ -147,6 +147,7 @@
           		balance: 0,
           		//微信昵称
           		wxNickname: "",
+          		wxNickTruename:"",
           		//支付宝账户
           		aliaccount: 0 ,
           		accountMoney:0,
@@ -164,7 +165,7 @@
 			},
 			toPersonalSet:function(){
 				if(this.isLogin==true){
-					this.$router.push({path:'/personalSet',query:{phone:this.phone,wxNickname:this.wxNickname}});
+					this.$router.push({path:'/personalSet',query:{phone:this.phone,wxNickname:this.wxNickTruename}});
 				}else{
 					this.$toast({message:"您还未登录，请先登录",duration: 2000});
 					this.$router.push({path:'/login'});
@@ -227,6 +228,7 @@
 		          		this.balance=res.data.balance;
 		          		this.aliaccount= res.data.aliaccount;
 		          		this.wxNickname = res.data.wxNickname;
+		          		this.wxNickTruename = res.data.wxNickname;
 //		          		this.accountMoney = Number(this.balance)+Number(this.this.freeze);
 						if(res.data.wxNickname ==''){
 							this.nickname = false;
