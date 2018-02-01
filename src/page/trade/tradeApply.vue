@@ -121,10 +121,12 @@
 					if(data == undefined){
 						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
 					}else if(data.data == false){
+//						console.log("已领取为使用")
 						this.isUseActivity = false;
 						this.disabled = true;
 						this.activityType = 1;
-						this.rangeValue = 10000
+						this.rangeValue = 10000;
+						this.startMax = 10000;
 					}
 				})
 			},
@@ -135,9 +137,12 @@
 					if(res.code == 1 && res.success == true){
 						this.isPresentedgive = res.data.isGetActivity;
 						if(res.data.isGetActivity == true){
+//							console.log("已领取11111111111111");
 							this.getNewActivity(headers);
 						}else{
+//							console.log("未领取555555555555555555");
 							$("#btnnnn").html("领取体验金");
+							this.startMax = 10000;
 						}
 					}
 				}).catch((err)=>{
@@ -155,7 +160,7 @@
 			//获取基础配置信息
 			getParameters:function(headers){
 				pro.fetch("post","/futureManage/getApplyData","",headers).then((res)=>{
-					console.log("res==="+JSON.stringify(res.data));
+//					console.log("res==="+JSON.stringify(res.data));
 					if(res.code == 1 && res.success == true){
 						this.tradableList = res.data.tradableList;
 						this.lossScale = res.data.lossScale;
@@ -168,7 +173,10 @@
 							}else if(res.data.balance < 3 || res.data.balance == 3){
 								this.startMax = 10000;
 								this.balance = res.data.balance;
-								$("#btnnnn").html("立即充值");
+								if(this.userInfo != ''){
+//									console.log("已经登录");
+									$("#btnnnn").html("立即充值");
+								}
 							}
 						}
 						
@@ -186,7 +194,7 @@
 				});
 			},
 			clickBtn:function(){
-				console.log("this.balance========"+this.balance)
+//				console.log("this.balance========"+this.balance)
 				//未登录
 				if(this.isLogin == false){
 					MessageBox.confirm("您还未登录平台账户，赶紧去登录吧!","提示",{confirmButtonText:"去登录",}).then(action=>{
@@ -197,7 +205,7 @@
 					//未领取过新手礼包
 					if(this.isPresentedgive == false){
 						MessageBox.alert("恭喜小主，您有1w的操盘金体验未领取，赶紧领取吧！","提示",{confirmButtonText:"去领取"}).then(action => {
-							console.log("999999999");
+//							console.log("999999999");
 							this.$router.push({path:"/newbieTask"});
 						});
 					}
@@ -333,6 +341,10 @@
 						break;
 				}
 			}
+		},
+		$route:function(to,from){
+			console.log(to);
+			console.log(from);
 		}
 	}
 </script>
