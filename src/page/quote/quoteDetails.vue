@@ -403,9 +403,17 @@
 				this.$store.state.market.scale = [];
 				this.parameters.forEach((o, i) => {
 					if(o.check == 1){
-						let price = [];
-						this.jsonData[o.CommodityNo].Parameters.Data.forEach((v) => {
-							price.push(parseFloat(v[1]/o.scale).toFixed(this.orderTemplist[this.currentNo].DotSize));
+						let price = [], len = '';
+						this.jsonData[this.currentNo].Parameters.Data.forEach((j, h) => {
+							price.push('');
+						});
+						this.jsonData[this.currentNo].Parameters.Data.forEach((j, h) => {
+							this.jsonData[o.CommodityNo].Parameters.Data.forEach((v) => {
+								if(j[0] == v[0]){
+									price[h] = parseFloat(v[1]/o.scale).toFixed(this.orderTemplist[this.currentNo].DotSize);
+//									price.push(parseFloat(v[1]/o.scale).toFixed(this.orderTemplist[this.currentNo].DotSize));
+								}
+							});
 						});
 						let obj = {
 							name: o.CommodityNo,

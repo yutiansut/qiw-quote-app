@@ -786,6 +786,15 @@ export default new Vuex.Store({
 	        
 	        //判断是否有外界传入数据
 	        if(arr != undefined && arr != null && arr != ''){
+//	        	arr.forEach((o, i) => {
+//	        		let len = price.length - o.data.length;
+//	        		if(len > 0){
+//	        			for(let i = 0; i < len; i++){
+//	        				o.data.unshift('');
+//	        			}
+//	        		}
+//	        	});
+				
 	        	optionDatas = optionDatas.concat(arr);
 	        }
 			state.market.option1 = {
