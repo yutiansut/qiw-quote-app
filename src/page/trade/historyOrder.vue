@@ -39,30 +39,6 @@
 					<span class="status green">51.03</span>
 				</div>
 			</li>
-			<li>
-				<div class="list_cont">
-					<div class="name">
-						<em>日经225</em>
-						<em>CNQ16</em>
-					</div>
-					<span class="num">1</span>
-					<span class="type">买</span>
-					<span class="price red">51.03</span>
-					<span class="status green">51.03</span>
-				</div>
-			</li>
-			<li>
-				<div class="list_cont">
-					<div class="name">
-						<em>日经225</em>
-						<em>CNQ16</em>
-					</div>
-					<span class="num">1</span>
-					<span class="type">买</span>
-					<span class="price red">51.03</span>
-					<span class="status green">51.03</span>
-				</div>
-			</li>
 		</ul>
 	</div>
 </template>

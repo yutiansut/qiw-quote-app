@@ -364,6 +364,7 @@
 						token: this.userInfo.token,
 						secret: this.userInfo.secret
 					}
+					
 					var datas = {
 						'id': this.remindId,
 						'commodityNo': this.currentNo,
@@ -375,7 +376,7 @@
 						'losePointSwitch': this.remindList.lastPriceUnderSomePriceIsOpen,
 						'increase': this.remindList.todayRiseRangePoint,
 						'increaseSwitch': this.remindList.todayRiseRangePointIsOpen,
-						'decrease': this.remindList.todayFallRangePoint,
+						'decrease': -this.remindList.todayFallRangePoint,
 						'decreaseSwitch': this.remindList.todayFallRangePointIsOpen,
 						'isBreakHighestPriceSwitch': this.remindList.todayBreakHighestPriceIsOpen,
 						'isBreakLowestPriceSwitch': this.remindList.todayBreakLowestPriceIsOpen,
@@ -389,7 +390,6 @@
 								setTimeout(() => {
 									this.$router.go(-1);
 								}, 1000);
-								console.log(this.$parent);
 							}else{
 								let info = {
 									'exchangeNo': this.orderTemplist[this.currentNo].ExchangeNo,
