@@ -98,21 +98,21 @@
 						<li>交易手续费</li>
 					</ul>
 				</div>
-				<div class="list_title_row list_title" v-for="(n,index) in 5">
+				<div class="list_title_row list_title" v-for="(k,index) in this.endData">
 					<ul>
 						<li>{{index}}</li>
 						<li>
-							<p>2017-12-25</p>
-							<span>18:06:06</span>
+							<p>{{k.tradeDatetime}}</p>
+							<span>{{k.tradeDatetime}}</span>
 						</li>
-						<li>客户编号</li>
-						<li>币种</li>
-						<li>港交所</li>
-						<li>国际原油</li>
-						<li>买</li>
-						<li>20.00</li>
-						<li>0.200</li>
-						<li>20..00</li>
+						<li>{{k.userNo}}</li>
+						<li>{{k.currencyNo}}</li>
+						<li>{{k.exchangeNo}}</li>
+						<li>{{k.commodityNo}}</li>
+						<li>{{k.direction}}</li>
+						<li>{{k.tradePrice}}</li>
+						<li>{{k.hedgeProfit}}</li>
+						<li>{{k.tradeFee}}</li>
 					</ul>
 				</div>
 			</div>
@@ -150,7 +150,8 @@
 				state:"交易状态",
 				rate:"结算汇率",
 				tradeNum:'',
-				showDetails:false
+				showDetails:false,
+				endData:""
 			}
 		},
 		methods:{
@@ -160,11 +161,48 @@
 					secret : this.userInfo.secret
 				}
 				pro.fetch("post","/futureManage/endProgram",{id:this.id},headers).then((res)=>{
-					console.log("res========_____________"+JSON.stringify(res));
+//					console.log("res========_____________"+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						this.$toast({message:"终结成功",duration: 1000});
+						this.showDetails = true;
+						this.showcp = false;
+						this.showEnd = true;
+						this.getEndInfo();
 					}
 				}).catch((err)=>{
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
+					}else{
+						if(data.code == -9999){
+							this.$toast({message:"认证失败，请重新登录",duration: 1000});
+							this.$router.push({path:"/login"});
+						}
+						else{
+							this.$toast({message:data.message,duration: 1000});
+						}
+					}
+				})
+			},
+			getEndInfo:function(){
+				var headers = {
+					token : this.userInfo.token,
+					secret : this.userInfo.secret
+				}
+				console.log(this.id)
+				console.log(headers)
+				pro.fetch("post","/futureManage/getHistoryTrade",{id:this.id},headers).then((res)=>{
+					console.log("历史历史"+JSON.stringify(res));
+					if(res.code == 1 && res.success){
+						console.log(res.data);
+						if(res.data!=undefined){
+							this.endData = res.data
+						}else{
+							
+						}
+					}
+				}).catch((err)=>{
+					console.log("历史历史11111111111"+JSON.stringify(err));
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
@@ -210,7 +248,7 @@
 					secret : this.userInfo.secret
 				}
 				pro.fetch("post","/futureManage/getProgramDetail",data,headers).then((res)=>{
-					console.log("res==="+JSON.stringify(res));
+//					console.log("res==="+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						this.account=res.data.program.account,
 						this.accountPassword=res.data.program.accountPassword,
@@ -232,9 +270,9 @@
 						}else if(res.data.program.state == 2){
 							this.showcp = false;
 							this.showEnd = true;
-						}
-						if(res.data.program.state == 2){
 							this.tradeNum = res.data.tradeNum;
+							this.showDetails = true;
+							this.getEndInfo();
 						}
 					}
 				}).catch((err)=>{
@@ -254,7 +292,7 @@
 			}
 		},
 		mounted:function(){
-//			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 //			this.id = this.$route.query.id;
 //			console.log(this.userInfo);
 //			if(this.userInfo == ''){
