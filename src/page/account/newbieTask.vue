@@ -4,6 +4,9 @@
 		  	<router-link to="/account" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
+		  	<router-link to="customerServices" slot="right">
+		    	<mt-button style="font-size: 0.24rem;color: #9ba8c2;">客服</mt-button>
+		 	</router-link>
 		</mt-header>
 		<img src="../../assets/images/newbieTask_01.png"/>
 		<div id="container">
@@ -44,7 +47,7 @@
 					secret : this.userInfo.secret
 				}
 				pro.fetch("post","/account/getBasicMsg","",headers).then((res)=>{
-					console.log("res====="+JSON.stringify(res));
+//					console.log("res====="+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						this.isgetPresent = res.data.isGetActivity
 						if(res.data.isGetActivity){
@@ -113,11 +116,11 @@
 			//获取平台账户登录信息
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 			if(this.userInfo == ''){
-				console.log("未登录");
+//				console.log("未登录");
 				this.notGet = false;
 				this.geted = true;
 			}else{
-				console.log("一登录")
+//				console.log("一登录")
 				this.isLonin = true;
 				//获取是否领取过
 				this.isGet();

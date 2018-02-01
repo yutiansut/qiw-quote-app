@@ -4,7 +4,7 @@
 		  	<router-link to="/account" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
-		    <router-link to="/tradeLogin/tradeApply" slot="right">
+		    <router-link to="customerServices" slot="right">
 		    	<mt-button style="font-size: 0.24rem;color: #9ba8c2;">客服</mt-button>
 		 	</router-link>
 		</mt-header>
@@ -96,7 +96,8 @@
 					//登录请求
 					var info = {
 						mobile:this.phone,
-						password:this.password
+						password:this.password,
+						clientId:""
 					};
 					pro.fetch('post', '/loginAndRegister/mobileLogin',info, "").then(function(res){
 						console.log(res)

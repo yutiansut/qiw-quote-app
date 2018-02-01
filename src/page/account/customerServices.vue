@@ -2,7 +2,7 @@
 	<div id="customerServices">
 		<mt-header title="客服" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
 		  	<router-link to="" slot="left">
-		    	<!--<i id="back" @click="backTo"></i>-->
+		    	<i id="back" @click="backRounter"></i>
 		  	</router-link>
 		</mt-header>
 		<div id="container">
@@ -29,12 +29,14 @@
 		data(){
 			return{
 				sheetVisible:false,
-				arr:[{name:"400-852-8008"},{name:"工作日08:00-24:00,周末09:00-17:00"},{name:"拨打",method:this.callphone}]
+				arr:[{name:"400-852-8008"},{name:"工作日08:00-24:00,周末09:00-17:00"},{name:"拨打",method:this.callphone}],
 			}
 		},
 		methods:{
+			backRounter:function(){
+				this.$router.back(-1)
+			},
 			callphone:function(){
-//				console.log("111111")
 				window.location.href = 'tel://' + 4008528008;
 			},
 			call:function(){
@@ -42,7 +44,6 @@
 			},
 			online:function(){
 				this.$router.push({path:'/service'})
-//				this.$router.push({path:'/myFinance'});	
 			}
 		}
 	}

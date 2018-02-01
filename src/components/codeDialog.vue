@@ -68,7 +68,8 @@
 						var data = {
 							mobile: this.info.loginName,
 							password: this.info.password,
-							imgCode: this.code
+							imgCode: this.code,
+							clientId:""
 						};
 						pro.fetch("post",'/loginAndRegister/mobileLogin',data,"").then(function(){
 							if(res.success == true && res.code == 1){
