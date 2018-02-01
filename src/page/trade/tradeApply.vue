@@ -266,6 +266,39 @@
 		},
 		mounted:function(){
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+			this.financing = this.rangeValue;
+			this.totalMoney = this.rangeValue + this.rangeValue*this.rangeValue1;
+			this.payMoney = this.rangeValue/100;
+			this.startMin = 300;
+			this.rangeValue = 300;
+			if(this.userInfo == ''){
+				//未登录
+//				console.log("未登录");
+				this.startMax = 1000;
+				this.isLogin = false;
+				var headers = ""
+				this.getParameters("");
+			}else{
+				//已登录
+//				console.log("一登录")
+				this.isLogin = true;
+				var headers = {
+					token : this.userInfo.token,
+					secret : this.userInfo.secret
+				}
+//				console.log("headers==="+JSON.stringify(headers))
+				this.getParameters(headers);
+				this.GetActivity(headers);
+			}
+			var screenPhone=screen.width;
+			if(screenPhone == 320){
+				$(".bkg").css("top","0.83rem").css("height","0.34rem");
+//				$(".mt-range-content").css("margin-right","0.5rem");
+				$(".bkg1").css("top","0.83rem").css("height","0.34rem");
+			}else if(screenPhone==375){
+				$(".bkg").css("top","0.79rem").css("height","0.33rem");
+				$(".bkg1").css("top","0.79rem").css("height","0.33rem");
+			}
 		},
 		activated: function(){
 			//获取平台账户登录信息

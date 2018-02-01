@@ -10,8 +10,8 @@
 				<div class="list" v-for="k in this.newList">
 					<ul @click="toNewDetails(k.id)">
 						<li>{{k.time}}</li>
-						<li v-if="k.isNewRecord == true">{{k.title}}</li>
-						<li v-else="k.isNewRecord == false" class="current">{{k.title}}</li>
+						<li>{{k.title}}</li>
+						<!--<li v-else="k.isNewRecord == false" class="current">{{k.title}}</li>-->
 					</ul>
 				</div>
 				<!--<div class="list">
@@ -49,6 +49,7 @@
 //					console.log("res==="+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						this.newList = res.data.list;
+						console.log("this.newList========"+this.newList)
 						if(res.data.list == ''){
 							this.exist = false;
 							this.none = true;
@@ -71,7 +72,11 @@
 				})
 			},
 			toNewDetails:function(a){
-				this.$router.push({path:"/newsDetails",query:{id:a}});
+				var newsId = [{id:a}];
+				localStorage.setItem("NEWSID",JSON.stringify(newsId));
+//				var id1 = localStorage.getItem("NEWSID");
+//				console.log("id11111111111111"+id1)
+//				this.$router.push({path:"/newsDetails",query:{id:a}});
 			}
 		},
 		mounted:function(){
@@ -79,6 +84,8 @@
 		},
 		activated:function(){
 			this.getNewList();
+			var id1 = localStorage.getItem("NEWSID");
+			console.log("id11111111111111"+id1)
 		}
 	}
 </script>

@@ -32,26 +32,26 @@
 				}
 				console.log(JSON.stringify(data));
 				pro.fetch("post","/others/getNotice",data,"").then((res)=>{
-					console.log("res==="+JSON.stringify(res));
+//					console.log("res==="+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						this.title = res.data.title;
 						this.content = res.data.content;
 						this.time = res.data.time;
 					}
 				}).catch((err)=>{
-					console.log("err==="+JSON.stringify(err));
-//					var data = err.data;
-//					if(data == undefined){
-//						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
-//					}else{
-//						if(data.code == -9999){
-//							this.$toast({message:"认证失败，请重新登录",duration: 1000});
-//							this.$router.push({path:"/login"});
-//						}
-//						else{
-//							this.$toast({message:data.message,duration: 1000});
-//						}
-//					}
+//					console.log("err==="+JSON.stringify(err));
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
+					}else{
+						if(data.code == -9999){
+							this.$toast({message:"认证失败，请重新登录",duration: 1000});
+							this.$router.push({path:"/login"});
+						}
+						else{
+							this.$toast({message:data.message,duration: 1000});
+						}
+					}
 				})
 			}
 		},
