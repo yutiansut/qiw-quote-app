@@ -4,7 +4,7 @@
 		  	<router-link to="/account" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
-		    <router-link to="/account" slot="right">
+		    <router-link to="/tradersRules" slot="right">
 		    	<mt-button style="font-size: 0.24rem;color: #9ba8c2;">规则</mt-button>
 		 	</router-link>
 		</mt-header>
@@ -43,7 +43,7 @@
 		</div>
 		<div id="none" v-show="none">
 			<p>暂无融资记录，快去申请吧！</p>
-			<mt-button class="btn">立即申请</mt-button>
+			<mt-button class="btn" @click="toTradeApply">立即申请</mt-button>
 		</div>
 	</div>
 </template>
@@ -62,6 +62,9 @@
 			}
 		},
 		methods:{
+			toTradeApply:function(){
+				this.$router.push({path:"/tradeLogin/tradeApply"})
+			},
 			//下拉刷新
 			loadTop:function(){
 //				console.log("11111111");

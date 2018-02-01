@@ -1,8 +1,8 @@
 <template>
 	<div id="tradersRules">
 		<mt-header title="期货操盘规则" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem;border-bottom: 1px solid #12141a;line-height: 1rem;">
-		  	<router-link to="/tradeLogin/tradeApply" slot="left">
-		    	<i id="back"></i>
+		  	<router-link to="" slot="left">
+		    	<i id="back"  @click="backRounter"></i>
 		  	</router-link>
 		</mt-header>
 		<div class="page_cont">
@@ -174,6 +174,11 @@
 		data(){
 			return{
 				
+			}
+		},
+		methods:{
+			backRounter:function(){
+				this.$router.back(-1)
 			}
 		}
 	}
