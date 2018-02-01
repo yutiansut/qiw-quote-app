@@ -40,7 +40,12 @@
 	                    this.$router.push({path:'/index'});
 	                break;
 	                case '模拟交易':
-	                    this.$router.push({path:'/tradeLogin'});
+	                	let tradeUser = localStorage.tradeUser ? JSON.parse(localStorage.tradeUser) : '';
+	                	if(tradeUser == ''){
+	                		this.$router.push({path:'/tradeLogin'});
+	                	}else{
+	                		this.$router.push({path:'/trade'});
+	                	}
 	                break;
 	                case '资讯':
 	                    this.$router.push({path:'/information'});
