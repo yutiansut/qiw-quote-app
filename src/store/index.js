@@ -773,17 +773,19 @@ export default new Vuex.Store({
 				itemStyle: {normal: {color: "#ffffff"}},
 				symbolSize: 2,
 	        },];
+	        let optionxAxis = [{
+				type: 'category',
+				position: 'bottom',
+				boundaryGap: true,
+				axisTick: {onGap: false},
+				splitLine: {show: false},
+				axisLabel: {textStyle: {fontSize: 10,}},
+				axisLine: {lineStyle: {color: '#8392A5'}},
+				data: time
+			}];
 	        
 	        //判断是否有外界传入数据
 	        if(arr != undefined && arr != null && arr != ''){
-	        	arr.forEach((o, i) => {
-	        		let len = price.length - o.data.length;
-	        		if(len > 0){
-	        			for(let i = 0; i < len; i++){
-	        				o.data.unshift('');
-	        			}
-	        		}
-	        	});
 	        	optionDatas = optionDatas.concat(arr);
 	        }
 			state.market.option1 = {
@@ -794,28 +796,7 @@ export default new Vuex.Store({
 					y2: 20
 				},
 				color: ['#edf07c'],
-				xAxis: [{
-					type: 'category',
-					position: 'bottom',
-					boundaryGap: true,
-					axisTick: {
-						onGap: false
-					},
-					splitLine: {
-						show: false
-					},
-					axisLabel: {
-						textStyle: {
-							fontSize: 10,
-						}
-					},
-					axisLine: {
-						lineStyle: {
-							color: '#8392A5'
-						}
-					},
-					data: time
-				}],
+				xAxis: optionxAxis,
 				yAxis: [{
 					type: 'value',
 					name: '成交量(万)',
