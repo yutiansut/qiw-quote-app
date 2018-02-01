@@ -10,9 +10,9 @@
 		</mt-header>
 		<div id="container" v-show="exist">
 			<mt-loadmore :bottom-method="loadBottom"  ref="loadmore" :auto-fill="false" :top-method="loadTop">
-				<div class="list" v-for="(k,index) in list">
+				<div class="list" v-for="(k,index) in list" @click="toDetails(k.id)">
 					<div id="black"></div>
-					<div class="state" @click="toDetails(k.id)">
+					<div class="state">
 						<ul>
 							<!--方案列表-->
 							<li class="state_2" v-if="k.state == 1">
@@ -34,8 +34,8 @@
 							<li>总操盘资金：<span>{{k.totalTradeFund}}</span>元</li>
 						</ul>
 						<ul>
-							<li>融资金额：<span>{{k.financmoney}}</span>元</li>
-							<li>亏损平仓线：<span>{{k.lossCloseoutLine}}</span>元</li>
+							<li>融资金额：<span>{{k.financMoney}}</span>元</li>
+							<li>亏损平仓线：<span>{{k.lossCloseOutLine}}</span>元</li>
 						</ul>
 					</div>
 				</div>
@@ -90,7 +90,7 @@
 					secret : this.userInfo.secret
 				}
 				pro.fetch("post","/futureManage/getProgramList",data,headers).then((res)=>{
-//					console.log("res=="+JSON.stringify(res))
+					console.log("res=="+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
 						this.list = res.data.list;
 //						console.log("this.list=="+this.list)
