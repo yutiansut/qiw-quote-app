@@ -106,10 +106,12 @@
 				&:nth-child(1){
 					height: 0.65rem;
 					line-height: 0.65rem;
+					font-size: $fs24;
 				}
 				&:nth-child(2){
 					padding-bottom: 0.1rem;
 					line-height: 0.4rem;
+					font-size: $fs28;
 				}
 			}
 		}

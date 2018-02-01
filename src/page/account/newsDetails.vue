@@ -6,7 +6,7 @@
 		  	</router-link>
 		</mt-header>
 		<div id="container">
-			<h1>{{title}}</h1>
+			<p>{{title}}</p>
 			<span>{{time}}</span>
 			<p>{{content}}</p>
 		</div>
@@ -82,11 +82,6 @@
 		width: 100%;
 		margin-top: 1rem;
 		padding: 0 0.3rem;
-		h1{
-			font-size: $fs32;
-			color: $white;
-			line-height: 0.6rem;
-		}
 		span{
 			color: $fontBlueTitle;
 			font-size: $fs24;
@@ -94,9 +89,18 @@
 			font-weight: 500;
 		}
 		p{
-			color: $fontBlue;
-			font-size: $fs28;
-			line-height: 0.4rem;
+			&:nth-child(1){
+				font-size: $fs32;
+				color: $white;
+				line-height: 0.6rem;
+				font-weight: 600;
+			}
+			&:nth-child(2){
+				color: $fontBlue;
+				font-size: $fs28;
+				line-height: 0.4rem;
+			}
+			
 		}
 	}
 	
