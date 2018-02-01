@@ -86,38 +86,39 @@
 			<div id="historyRecords" v-show="showHistoryRecords">
 				<div class="list_title">
 					<ul>
-						<li>序号</li>
-						<li>成交时间</li>
-						<li>客户编号</li>
-						<li>币种</li>
-						<li>交易所</li>
-						<li>品种</li>
-						<li>买/卖方向</li>
-						<li>成交价</li>
-						<li>平仓盈亏</li>
-						<li>交易手续费</li>
-					</ul>
-				</div>
-				<div class="list_title_row list_title" v-for="(k,index) in this.endData">
-					<ul>
-						<li>{{index}}</li>
 						<li>
-							<p>{{k.tradeDatetime}}</p>
-							<span>{{k.tradeDatetime}}</span>
+							<span>序号</span>
+							<span>成交时间</span>
+							<span>客户编号</span>
+							<span>币种</span>
+							<span>交易所</span>
+							<span>品种</span>
+							<span>买/卖方向</span>
+							<span>成交价</span>
+							<span>平仓盈亏</span>
+							<span>交易手续费</span>
 						</li>
-						<li>{{k.userNo}}</li>
-						<li>{{k.currencyNo}}</li>
-						<li>{{k.exchangeNo}}</li>
-						<li>{{k.commodityNo}}</li>
-						<li>{{k.direction}}</li>
-						<li>{{k.tradePrice}}</li>
-						<li>{{k.hedgeProfit}}</li>
-						<li>{{k.tradeFee}}</li>
+						<template v-for="(k,index) in this.endData">
+							<li>
+								<span>{{index+1}}</span>
+								<span>
+									{{k.tradeDatetime | changeTime("y-m-d")}}<br>
+									<label>{{k.tradeDatetime | changeTime("h-m-s")}}</label>
+								</span>
+								<span>{{k.userNo}}</span>
+								<span>{{k.currencyNo}}</span>
+								<span>{{k.exchangeNo}}</span>
+								<span>{{k.commodityNo}}</span>
+								<span>{{k.direction}}</span>
+								<span>{{k.tradePrice}}</span>
+								<span>{{k.hedgeProfit}}</span>
+								<span>{{k.tradeFee}}</span>
+							</li>
+							
+						</template>
 					</ul>
 				</div>
 			</div>
-			
-			
 		</div>
 	</div>
 </template>
@@ -290,13 +291,6 @@
 		},
 		mounted:function(){
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
-//			this.id = this.$route.query.id;
-//			console.log(this.userInfo);
-//			if(this.userInfo == ''){
-//				console.log("1111")
-//			}else{
-//				this.getDetails();
-//			}
 		},
 		activated: function(){
 			//获取平台账户登录信息
@@ -307,6 +301,17 @@
 			}else{
 				//console.log("一登录")
 				this.getDetails();
+			}
+		},
+		filters:{
+			changeTime: function(e, format) {
+				var a = e.split(" ");
+				if(format == "y-m-d"){
+					return a[0];
+				}else{
+					return a[1];
+				}
+				
 			}
 		}
 	}
@@ -436,44 +441,40 @@
 		}
 		/*历史记录*/
 		#historyRecords{
-				width: 7.5rem;
-				color:$fontBlue;
-			}
+			width: 7.5rem;
 			.list_title{
 				width: 100%;
-				background-color:$titleBlue;
 				overflow-x: scroll;
-				height: 0.8rem;
 				border-bottom: 1px solid #12141a;
 				ul{
+					width: 20.6rem;
+					display: block;
+					padding: 0 0.3rem;
+					
 					li{
-						line-height: 0.8rem;
+						border-bottom: 1px solid #12141a;
+						text-align: center;
+						line-height: 0.4rem;
 						height: 0.8rem;
-						float: left;
-						width: 1.5rem;
-						text-align: left;
 						&:nth-child(1){
-							text-indent: 0.3rem;
+							line-height: 0.8rem;
+							span{
+								color: $fontBlue;
+							}
+						}
+						span{
+							color: $white;
+							float: left;
+							width: 2rem;
+							display: block;
+							overflow: hidden;
+							label{
+								color:$fontBlue;
+							}
 						}
 					}
 				}
 			}
-			.list_title_row{
-				color: $white;
-				ul{
-					li{
-						&:nth-child(2){
-							text-align: center;
-							display: flex;
-							flex-direction: column;
-							line-height: 0.4rem;
-							padding-right: 0.1rem;
-						}
-					}
-				}
-				span{
-					color:$fontBlue;
-				}
-			}
+		}
 	}
 </style>
