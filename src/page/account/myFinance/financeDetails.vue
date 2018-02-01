@@ -192,17 +192,14 @@
 				console.log(this.id)
 				console.log(headers)
 				pro.fetch("post","/futureManage/getHistoryTrade",{id:this.id},headers).then((res)=>{
-					console.log("历史历史"+JSON.stringify(res));
+//					console.log("历史历史"+JSON.stringify(res));
 					if(res.code == 1 && res.success){
-						console.log(res.data);
 						if(res.data!=undefined){
 							this.endData = res.data
-						}else{
-							
 						}
 					}
 				}).catch((err)=>{
-					console.log("历史历史11111111111"+JSON.stringify(err));
+//					console.log("历史历史11111111111"+JSON.stringify(err));
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
