@@ -4,8 +4,8 @@
 			<li>
 				<div class="list_title">
 					<span class="name">合约名称</span>
-					<span class="num">持仓数量</span>
-					<span class="type">买/卖</span>
+					<span class="num">多空</span>
+					<span class="type">手数</span>
 					<span class="price">持仓均价</span>
 					<span class="status">浮动盈亏</span>
 				</div>

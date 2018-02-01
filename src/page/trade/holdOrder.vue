@@ -26,7 +26,7 @@
 		components: {position, hangOrder, entrust, condition, stopOrder, todayOrder, historyOrder},
 		data(){
 			return{
-				navList: ['持仓','挂单', '委托', '条件单', '止损单', '当日成交', '历史成交'],
+				navList: ['持仓','挂单', '委托', '止损单', '条件单', '当日成交', '历史成交'],
 				currentNum: 0,
 				currentView: 'position',
 			}
@@ -45,10 +45,10 @@
 						this.currentView = 'entrust';
 						break;
 					case 3:
-						this.currentView = 'condition';
+						this.currentView = 'stopOrder';
 						break;
 					case 4:
-						this.currentView = 'stopOrder';
+						this.currentView = 'condition';
 						break;
 					case 5:
 						this.currentView = 'todayOrder';

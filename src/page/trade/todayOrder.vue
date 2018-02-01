@@ -4,10 +4,10 @@
 			<li>
 				<div class="list_title">
 					<span class="name">合约名称</span>
-					<span class="num">持仓数量</span>
-					<span class="type">买/卖</span>
-					<span class="price">持仓均价</span>
-					<span class="status">浮动盈亏</span>
+					<span class="num">买卖</span>
+					<span class="type">成交价</span>
+					<span class="price">成交量</span>
+					<span class="status">成交时间</span>
 				</div>
 			</li>
 			<li class="current">
