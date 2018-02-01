@@ -48,14 +48,30 @@
 			let h = this.$parent.chartsHight;
 			$("#fens").css('height', h/10*6.9 + 'rem');
 			$("#volume").css('height', h/10*3 + 'rem');
-			if(this.currentdetail.CommodityNo != undefined){
-				this.$store.state.isshow.isfens = true;
+//			if(this.currentdetail.CommodityNo != undefined){
+//				this.$store.state.isshow.isfens = true;
+//				let data = {
+//					Method: "QryHistory",
+//					Parameters:{
+//						ExchangeNo: this.currentdetail.ExchangeNo,
+//						CommodityNo: this.currentdetail.CommodityNo,
+//						ContractNo: this.currentdetail.MainContract,
+//						HisQuoteType: 0,
+//						BeginTime: "",
+//						EndTime: "",
+//						Count: 0
+//					}
+//				};
+//				this.quoteSocket.send(JSON.stringify(data));
+//			}
+			this.$store.state.isshow.isfens = true;
+			this.commodityOrder.forEach((v, k) => {
 				let data = {
 					Method: "QryHistory",
 					Parameters:{
-						ExchangeNo: this.currentdetail.ExchangeNo,
-						CommodityNo: this.currentdetail.CommodityNo,
-						ContractNo: this.currentdetail.MainContract,
+						ExchangeNo: this.orderTemplist[v.commodityNo].ExchangeNo,
+						CommodityNo: v.commodityNo,
+						ContractNo: this.orderTemplist[v.commodityNo].MainContract,
 						HisQuoteType: 0,
 						BeginTime: "",
 						EndTime: "",
@@ -63,7 +79,7 @@
 					}
 				};
 				this.quoteSocket.send(JSON.stringify(data));
-			}
+			});
 		}
 	}
 </script>
