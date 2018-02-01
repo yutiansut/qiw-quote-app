@@ -1,6 +1,6 @@
 <template>
 	<div id="forgetPassword">
-		<mt-header title="获取验证码" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
+		<mt-header title="找回密码" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
 		  	<router-link to="/login" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
