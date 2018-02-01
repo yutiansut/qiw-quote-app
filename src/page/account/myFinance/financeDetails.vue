@@ -60,8 +60,8 @@
 					</div>
 					<div class="black"></div>
 					<ul>
-						<li>结算金额：<span>+{{clearmoney}}元</span></li>
-						<li>交易手续费：<span>{{tradefee}}元</span></li>
+						<li>结算金额：<span>+{{clearMoney}}元</span></li>
+						<li>交易手续费：<span>{{tradeFee}}元</span></li>
 						<li>提示：<span>结算金额=操盘保证金+追加保证金+交易盈亏-交易手续费</span></li>
 					</ul>
 					<div class="black"></div>
@@ -71,14 +71,14 @@
 						<li>总操盘资金：<span>{{totalTradeFund}}元</span></li>
 						<li>亏损平仓线：<span>{{lossCloseOutLine}}元</span></li>
 						<li>方案结算时间：<span>{{endTime}}</span></li>
-						<li>交易盈亏：<span>{{tradeprofitandloss}}元</span></li>
+						<li>交易盈亏：<span>{{tradeProfitAndLoss}}元</span></li>
 						<li>美元结算汇率：<span>1美元={{rate}}人民币</span></li>
 					</ul>
 					<div class="levle">
 						操盘手数
 					</div>
 					<ul class="handle">
-						<li v-for="n in 10">富时A50 <span>1手</span></li>
+						<li v-for="(val,key,index) in this.tradeNum">{{key}}&nbsp;&nbsp;<span>{{val}}&nbsp;&nbsp;手</span></li>
 					</ul>
 				</div>
 			</div>
@@ -144,11 +144,12 @@
 				lossCloseOutLine:"亏损平仓线",
 				addDepositToTotal:"追加保证金金额",
 				endTime:"结算时间",
-				clearmoney:"结算金额",
-				tradefee:"交易手续费",
-				tradeprofitandloss:"交易盈亏",
+				clearMoney:"结算金额",
+				tradeFee:"交易手续费",
+				tradeProfitAndLoss:"交易盈亏",
 				state:"交易状态",
-				rate:"结算汇率"
+				rate:"结算汇率",
+				tradeNum:''
 			}
 		},
 		methods:{
@@ -157,7 +158,6 @@
 					token : this.userInfo.token,
 					secret : this.userInfo.secret
 				}
-				console.log(this.id)
 				pro.fetch("post","/futureManage/endProgram",{id:this.id},headers).then((res)=>{
 					console.log("res========_____________"+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
@@ -224,9 +224,9 @@
 						this.lossCloseOutLine=res.data.program.lossCloseOutLine,
 						this.addDepositToTotal=res.data.program.addDepositToTotal,
 						this.endTime=res.data.program.endTime,
-						this.clearmoney=res.data.program.clearmoney,
-						this.tradefee=res.data.program.tradefee,
-						this.tradeprofitandloss=res.data.program.tradeprofitandloss,
+						this.clearMoney=res.data.program.clearMoney,
+						this.tradeFee=res.data.program.tradeFee,
+						this.tradeProfitAndLoss=res.data.program.tradeProfitAndLoss,
 						this.state=res.data.program.state,
 						this.rate=res.data.program.rate
 						if(res.data.program.state == 1){
@@ -235,6 +235,9 @@
 						}else if(res.data.program.state == 2){
 							this.showcp = false;
 							this.showEnd = true;
+						}
+						if(res.data.program.state == 2){
+							this.tradeNum = res.data.tradeNum;
 						}
 					}
 				}).catch((err)=>{
