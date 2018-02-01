@@ -11,7 +11,7 @@
 		<div id="container">
 			<ul class="nav">
 				<li @click="change" class="current" >融资方案明细</li>
-				<li @click="change">历史成交记录</li>
+				<li @click="change" v-show="showDetails">历史成交记录</li>
 			</ul>
 			<div id="schemeDetails" v-show="showSchemeDetails">
 				<div class="cp" v-show="showcp">
@@ -149,7 +149,8 @@
 				tradeProfitAndLoss:"交易盈亏",
 				state:"交易状态",
 				rate:"结算汇率",
-				tradeNum:''
+				tradeNum:'',
+				showDetails:false
 			}
 		},
 		methods:{
@@ -191,14 +192,10 @@
 						this.showHistoryRecords = false;
 						break;
 					case 1:
-						if(this.showcp = true){
-							this.$toast({message:'方案在操盘中，暂无历史成交记录',duration: 2000});	
-						}else{
-							this.showHistoryRecords = true;
-							this.showSchemeDetails = false;
-							$(".nav li").removeClass("current");
-							$(".nav li").eq(index).addClass("current");
-						}
+						this.showHistoryRecords = true;
+						this.showSchemeDetails = false;
+						$(".nav li").removeClass("current");
+						$(".nav li").eq(index).addClass("current");
 						break;
 					default:
 						break;

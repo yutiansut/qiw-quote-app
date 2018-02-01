@@ -237,7 +237,7 @@
 		          		this.aliaccount= res.data.aliaccount;
 		          		this.wxNickname = res.data.wxNickname;
 		          		this.wxNickTruename = res.data.wxNickname;
-//		          		this.accountMoney = Number(this.balance)+Number(this.this.freeze);
+		          		this.accountMoney = Number(this.balance)+Number(this.freeze);
 						if(res.data.wxNickname ==''){
 							this.nickname = false;
 							this.wxNickname = "游客";
