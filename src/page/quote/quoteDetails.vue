@@ -304,7 +304,7 @@
 		},
 		watch: {
 			parameters: function(n, o){
-				if(n.length > 1){
+				if(n.length >= 1){
 					this.parameters.forEach((o, i) => {
 						if(o.CommodityNo == this.currentNo){
 							this.$store.state.market.currentdetail = o;
