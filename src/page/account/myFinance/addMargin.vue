@@ -2,7 +2,7 @@
 	<div id="addMargin">
 		<mt-header title="追加保证金" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem;border-bottom: 1px solid #12141a;line-height: 1rem;">
 		  	<router-link to="" slot="left">
-		    	<i id="back" @click="back"></i>
+		    	<i id="back" @click="backtoto"></i>
 		  	</router-link>
 		    <router-link to="/customerServices" slot="right">
 		    	<mt-button style="font-size: 0.24rem;color: #9ba8c2;">客服</mt-button>
@@ -53,7 +53,7 @@
 			}
 		},
 		methods:{
-			back:function(){
+			backtoto:function(){
 				this.$router.back(-1);
 			},
 			add:function(){

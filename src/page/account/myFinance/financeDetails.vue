@@ -447,7 +447,7 @@
 				overflow-x: scroll;
 				border-bottom: 1px solid #12141a;
 				ul{
-					width: 15.6rem;
+					width: 20.6rem;
 					display: block;
 					padding: 0 0.3rem;
 					
@@ -465,7 +465,7 @@
 						span{
 							color: $white;
 							float: left;
-							width: 1.5rem;
+							width: 2rem;
 							display: block;
 							overflow: hidden;
 							label{
