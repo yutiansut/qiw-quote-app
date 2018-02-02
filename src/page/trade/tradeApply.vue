@@ -4,7 +4,7 @@
 			<div class="p_left">选择融资本金(本金越多，可持仓手数越多)</div>
 			<div class="picture">
 				<p><span>{{financing}}</span>元</p>
-				<mt-range v-model="rangeValue" :barHeight="10" :min="this.startMin" :max="this.startMax" id="range" :disabled="disabled" :step="stepMoney"></mt-range>
+				<mt-range v-model="rangeValue" :barHeight="10" :min="this.startMin" :max="this.startMax" id="range" :disabled="disabled" :step="100"></mt-range>
 				<div class="bkg"></div>
 				<ul class="section">
 					<li><span>{{startMin}}</span>元</li>
@@ -145,7 +145,7 @@
 //							console.log("未领取555555555555555555");
 							$("#btnnnn").html("领取体验金");
 							this.startMax = 10000;
-							this.stepMoney = (this.startMax-300)/100;
+							this.stepMoney = 100/(this.startMax-300);
 						}
 					}
 				}).catch((err)=>{
@@ -171,12 +171,12 @@
 						this.rate = res.data.rate;
 						if(this.isPresentedgive == true){
 							if(res.data.balance != '' && res.data.balance > 3){
-								this.startMax = res.data.balance*this.rate;
+								this.startMax = Number(res.data.balance*this.rate).toFixed(2);
 								this.balance = res.data.balance;
-								this.stepMoney = (this.startMax-300)/100;
+								this.stepMoney = 100/(this.startMax-300);
 							}else if(res.data.balance < 3 || res.data.balance == 3){
 								this.startMax = 10000;
-								this.stepMoney = (this.startMax-300)/100;
+								this.stepMoney = 100/(this.startMax-300);
 								this.balance = res.data.balance;
 								if(this.userInfo != ''){
 //									console.log("已经登录");
@@ -280,7 +280,7 @@
 				//未登录
 //				console.log("未登录");
 				this.startMax = 1000;
-				this.stepMoney = (this.startMax-300)/100;
+				this.stepMoney = 100/(this.startMax-300);
 				this.isLogin = false;
 				var headers = ""
 				this.getParameters("");
@@ -318,7 +318,7 @@
 				//未登录
 //				console.log("未登录");
 				this.startMax = 1000;
-				this.stepMoney = (this.startMax-300)/100;
+				this.stepMoney = 100/(this.startMax-300);
 				this.isLogin = false;
 				var headers = ""
 				this.getParameters("");
@@ -349,6 +349,7 @@
 				this.financing = this.rangeValue;
 				this.totalMoney = this.rangeValue + this.rangeValue*this.rangeValue1;
 				this.lossLine = this.rangeValue*this.lossScale + this.rangeValue*this.rangeValue1;
+				this.lossLine = Number(this.lossLine).toFixed(2);
 				this.payMoney = this.rangeValue/100;
 //				console.log(this.rangeValue)
 			},
