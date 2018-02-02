@@ -47,7 +47,7 @@
 		},
 		methods:{
 			toResetPhone:function(){
-				console.log("this.phone"+this.phone)
+//				console.log("this.phone"+this.phone)
 				this.$router.push({path:"/resetPhone",query:{phone:this.phone}})
 			},
 			toResetPassword:function(){
@@ -64,12 +64,11 @@
 			this.wxNickname = this.$route.query.wxNickname;
 			var phonenum = this.$route.query.phone;
 			this.mobile = phonenum.substr(0, 3) + '****' + phonenum.substr(7);
-			if(this.wxNickname == undefined){
+			if(this.wxNickname == undefined || this.wxNickname==""){
 				this.showNickname= false
 			}else{
 				this.showNickname= true
 			}
-			console.log(this.wxNickname);
 		},
 		activited:function(){
 			this.phone = this.$route.query.phone;

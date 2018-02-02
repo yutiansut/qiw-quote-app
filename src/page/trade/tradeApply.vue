@@ -4,7 +4,7 @@
 			<div class="p_left">选择融资本金(本金越多，可持仓手数越多)</div>
 			<div class="picture">
 				<p><span>{{financing}}</span>元</p>
-				<mt-range v-model="rangeValue" :barHeight="10" :min="this.startMin" :max="this.startMax" id="range" :disabled="disabled" :step="100"></mt-range>
+				<mt-range v-model="rangeValue" :barHeight="10" :min="this.startMin" :max="this.startMax" id="range" :disabled="disabled" :step="stepMoney"></mt-range>
 				<div class="bkg"></div>
 				<ul class="section">
 					<li><span>{{startMin}}</span>元</li>
@@ -103,7 +103,8 @@
 				disabled:false,
 				activityType:0,
 				//是否使用过注册奖励申请方案，默认为true
-				isUseActivity:true
+				isUseActivity:true,
+				stepMoney:100
 			}
 		},
 		methods:{
@@ -127,6 +128,7 @@
 						this.activityType = 1;
 						this.rangeValue = 10000;
 						this.startMax = 10000;
+						this.stepMoney = (this.startMax-300)/100;
 					}
 				})
 			},
@@ -143,6 +145,7 @@
 //							console.log("未领取555555555555555555");
 							$("#btnnnn").html("领取体验金");
 							this.startMax = 10000;
+							this.stepMoney = (this.startMax-300)/100;
 						}
 					}
 				}).catch((err)=>{
@@ -170,8 +173,10 @@
 							if(res.data.balance != '' && res.data.balance > 3){
 								this.startMax = res.data.balance*this.rate;
 								this.balance = res.data.balance;
+								this.stepMoney = (this.startMax-300)/100;
 							}else if(res.data.balance < 3 || res.data.balance == 3){
 								this.startMax = 10000;
+								this.stepMoney = (this.startMax-300)/100;
 								this.balance = res.data.balance;
 								if(this.userInfo != ''){
 //									console.log("已经登录");
@@ -275,6 +280,7 @@
 				//未登录
 //				console.log("未登录");
 				this.startMax = 1000;
+				this.stepMoney = (this.startMax-300)/100;
 				this.isLogin = false;
 				var headers = ""
 				this.getParameters("");
@@ -312,6 +318,7 @@
 				//未登录
 //				console.log("未登录");
 				this.startMax = 1000;
+				this.stepMoney = (this.startMax-300)/100;
 				this.isLogin = false;
 				var headers = ""
 				this.getParameters("");

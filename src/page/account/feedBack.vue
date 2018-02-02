@@ -59,10 +59,13 @@
 			},
 			submit:function(){
 				if(this.suggest == ''){
-					this.$toast({message: '内容至少输入5个字',duration: 1000});
+					this.$toast({message: '内容不能为空',duration: 1000});
 				}else if(this.phone == ''){
 					this.$toast({message: '请正确填写联系方式',duration: 1000});
-				}else{
+				}else if(this.suggest.length<5){
+					this.$toast({message: '内容至少输入5个字符',duration: 1000});
+				}
+				else{
 //					console.log("suggest=="+this.suggest);
 					var data = {
 						type:this.type,
