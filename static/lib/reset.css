@@ -24,7 +24,7 @@ table {
 ul, ol, li {
  	list-style: none;
 }
-input, button, select, textarea {
+input, button, select {
     font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, sans-serif; 
     vertical-align: middle;
     outline: none;
@@ -84,10 +84,14 @@ a:link, a:visited{
 	text-decoration: none;
 }
 *{
-  -webkit-touch-callout:none; /*系统默认菜单被禁用*/
-  -webkit-user-select:none; /*webkit浏览器*/
-  -khtml-user-select:none; /*早期浏览器*/
-  -moz-user-select:none;/*火狐*/
-  -ms-user-select:none; /*IE10*/
-  user-select:none;
+	-webkit-touch-callout:none; /*系统默认菜单被禁用*/
+	/*-webkit-user-select:none; webkit浏览器*/
+	-khtml-user-select:none; /*早期浏览器*/
+	-moz-user-select:none;/*火狐*/
+	-ms-user-select:none; /*IE10*/
+	user-select:none;
+}
+*:not(input,textarea) { 
+	-webkit-touch-callout: none; 
+	/*-webkit-user-select: none;*/ 
 }
