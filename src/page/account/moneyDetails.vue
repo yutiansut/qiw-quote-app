@@ -9,10 +9,10 @@
 			<div id="info">
 				<ul>
 					<li>
-						收入:&nbsp;<span>{{total.inItems}}</span>笔<i>{{total.inMoney}}</i>元
+						收入:&nbsp;<span>{{total.inItems}}</span>笔<i>{{total.inMoney | fixMoney}}</i>元
 					</li>
 					<li>
-						支出:&nbsp;<span>{{total.outItems}}</span>笔<i>{{total.outMoney}}</i>元
+						支出:&nbsp;<span>{{total.outItems}}</span>笔<i>{{total.outMoney | fixMoney}}</i>元
 					</li>
 				</ul>
 			</div>
@@ -98,6 +98,10 @@
 			showTime:function(e){
 				var a = pro.getDate("y-m-d h:i:s",e);
 				return a;
+			},
+			fixMoney:function(e){
+				var b = Number(e).toFixed(2);
+				return b;
 			}
 		},
 		mounted:function(){
