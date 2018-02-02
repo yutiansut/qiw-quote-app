@@ -1,14 +1,12 @@
 <template>
 	<div id="addMargin">
-		<mt-header title="追加保证金" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem;border-bottom: 1px solid #12141a;line-height: 1rem;">
-		  	<router-link to="" slot="left">
-		    	<i id="back" @click="backRounter"></i>
-		  	</router-link>
-		    <router-link to="/customerServices" slot="right">
-		    	<mt-button style="font-size: 0.24rem;color: #9ba8c2;">客服</mt-button>
-		 	</router-link>
-		</mt-header>
+		<div id="head">
+			<i id="back" @click="backRounter"></i>
+			<h1>追加保证金</h1>
+			<span @click="toCustomer">客服</span>
+		</div>
 		<div id="container">
+			
 			<div class="ipt">
 				<input type="text" placeholder="追加金额 请输入充值金额" v-model="addMoney"/>
 			</div>
@@ -53,6 +51,9 @@
 			}
 		},
 		methods:{
+			toCustomer:function(){
+				this.$router.push({path:"/customerServices"});
+			},
 			backRounter:function(){
 				this.$router.back(-1);
 			},
@@ -181,13 +182,31 @@
 		width: 7.5rem;
 		color:$fontBlue ;
 	}
-	#back{
-		background: url(../../../assets/images/back_icon.png) no-repeat;
-		display: inline-block;
-		width: 0.24rem;
-		height: 0.32rem;
-		background-size: 100% 100%;
+	#head{
+		padding: 0 0.3rem;
+		background-color: #242933;
+		width: 100%;
+		height: 1rem;
+		line-height: 1rem;
+		border-bottom: 1px solid #12141a;
+		position: fixed;
+		top: 0;
+		display: flex;
+		justify-content: space-between;
+		h1{
+			color: $white;
+			font-size: $fs32;
+		}
+		#back{
+			background: url(../../../assets/images/back_icon.png) no-repeat;
+			display: inline-block;
+			width: 0.24rem;
+			height: 0.32rem;
+			background-size: 100% 100%;
+			margin-top: 0.3rem;
+		}
 	}
+	
 	#container{
 		width: 100%;
 		margin-top: 1rem;

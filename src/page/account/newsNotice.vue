@@ -36,7 +36,8 @@
 			return{
 				exist:true,
 				none:false,
-				newList:""
+				newList:"",
+				arr:[{id1:"00002"},{id1:"111111111111111111"},{id1:"00001"},{id1:"00005"}]
 			}
 		},
 		methods:{
@@ -49,7 +50,17 @@
 //					console.log("res==="+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						this.newList = res.data.list;
-						console.log("this.newList========"+this.newList)
+						for(var a in this.newList){
+							for(var i in this.arr){
+								if(this.arr[i].id1 == this.newList[a].id){
+									this.newList[a].b="true";
+								}else{
+									this.newList[a].b="false";
+								}
+							}
+						}
+						console.log(this.newList)
+//						console.log("this.newList====="+this.newList);
 						if(res.data.list == ''){
 							this.exist = false;
 							this.none = true;
@@ -85,7 +96,7 @@
 		activated:function(){
 			this.getNewList();
 			var id1 = localStorage.getItem("NEWSID");
-			console.log("id11111111111111"+id1)
+//			console.log("id11111111111111"+JSON.stringify(id1))
 		}
 	}
 </script>
