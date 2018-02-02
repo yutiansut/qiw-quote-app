@@ -22,7 +22,6 @@
 				反馈内容
 			</div>
 			<div class="content">
-				<!--<input type="text" placeholder="您可以留下您的意见或者建议，谢谢"/>-->
 				<textarea  cols="30" rows="10" placeholder="您可要留下您的意见或者建议，谢谢" v-model="suggest"></textarea>
 				<!--<input type="text" placeholder="您可要留下您的意见或者建议，谢谢" v-model="suggest" />-->
 			</div>
@@ -60,10 +59,13 @@
 			},
 			submit:function(){
 				if(this.suggest == ''){
-					this.$toast({message: '内容至少输入5个字',duration: 1000});
+					this.$toast({message: '内容不能为空',duration: 1000});
 				}else if(this.phone == ''){
 					this.$toast({message: '请正确填写联系方式',duration: 1000});
-				}else{
+				}else if(this.suggest.length<5){
+					this.$toast({message: '内容至少输入5个字符',duration: 1000});
+				}
+				else{
 //					console.log("suggest=="+this.suggest);
 					var data = {
 						type:this.type,
@@ -182,7 +184,6 @@
 				color: $white;
 				text-indent: 0.3rem;
 				font-size: $fs28;
-				:not(input,textarea) { -webkit-user-select: none; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-touch-callout: none; -webkit-text-size-adjust: none; }
 			}
 		}
 		.phone{
