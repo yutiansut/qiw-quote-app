@@ -5,10 +5,8 @@
 		<header>
 			<i class="icon icon_back" @tap="goBackEvent"></i>
 			<div class="title">
-				<div class="name fl">
-					<span>{{v.CommodityName}}</span>
-					<span>{{v.CommodityNo + v.MainContract}}</span>
-				</div>
+				<span>{{v.CommodityName}}</span>
+				<span>{{v.CommodityNo + v.MainContract}}</span>
 			</div>
 		</header>
 		<div class="main">
@@ -34,8 +32,9 @@
 			<div class="cont">
 				<div class="row">
 					<span class="type">价格上涨到</span>
-					<input type="text" class="ipt_lg" v-model="remindList.lastPriceOverSomePrice" />
-					<div class="switch lastPriceUp" @tap="switchEvent" :class="{current: remindList.lastPriceOverSomePriceIsOpen == 1}">
+					<input type="text" class="ipt_lg" v-model="risePoint" v-show="risePointSwitch == 1" />
+					<input type="text" class="ipt_lg" v-model="risePoint" readonly="readonly" v-show="risePointSwitch == 0" />
+					<div class="switch lastPriceUp" @tap="switchEvent" :class="{current: risePointSwitch == 1}">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
@@ -47,8 +46,9 @@
 				</div>
 				<div class="row">
 					<span class="type">价格下跌到</span>
-					<input type="text" class="ipt_lg" v-model="remindList.lastPriceUnderSomePrice" />
-					<div class="switch lastPriceDown" @tap="switchEvent" :class="{current: remindList.lastPriceUnderSomePriceIsOpen == 1}">
+					<input type="text" class="ipt_lg" v-model="losePoint" v-show="losePointSwitch == 1" />
+					<input type="text" class="ipt_lg" v-model="losePoint" readonly="readonly" v-show="losePointSwitch == 0" />
+					<div class="switch lastPriceDown" @tap="switchEvent" :class="{current: losePointSwitch == 1}">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
@@ -60,29 +60,31 @@
 				</div>
 				<div class="row">
 					<span class="type">当日涨幅超过</span>
-					<input type="text" class="ipt_sm" v-model="remindList.todayRiseRangePoint" />
+					<input type="text" class="ipt_sm" v-model="increase" v-show="increaseSwitch == 1" />
+					<input type="text" class="ipt_sm" v-model="increase" readonly="readonly" v-show="increaseSwitch == 0" />
 					<span>%</span>
-					<div class="switch changeUp" @tap="switchEvent" :class="{current: remindList.todayRiseRangePointIsOpen == 1}">
+					<div class="switch changeUp" @tap="switchEvent" :class="{current: increaseSwitch == 1}">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
 				<div class="row">
 					<span class="type">当日跌幅超过</span>
-					<input type="text" class="ipt_sm" v-model="remindList.todayFallRangePoint" />
+					<input type="text" class="ipt_sm" v-model="decrease" v-show="decreaseSwitch == 1" />
+					<input type="text" class="ipt_sm" v-model="decrease" readonly="readonly" v-show="decreaseSwitch == 0" />
 					<span>%</span>
-					<div class="switch changeDown" @tap="switchEvent" :class="{current: remindList.todayFallRangePointIsOpen == 1}">
+					<div class="switch changeDown" @tap="switchEvent" :class="{current: decreaseSwitch == 1}">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
 				<div class="row">
 					<span class="type">突破当日最高价</span>
-					<div class="switch breakHightPrice" @tap="switchEvent" :class="{current: remindList.todayBreakHighestPriceIsOpen == 1}">
+					<div class="switch breakHightPrice" @tap="switchEvent" :class="{current: isBreakHighestPriceSwitch == 1}">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
 				<div class="row">
 					<span class="type">突破当日最低价</span>
-					<div class="switch breakLowPrice" @tap="switchEvent" :class="{current: remindList.todayBreakLowestPriceIsOpen == 1}">
+					<div class="switch breakLowPrice" @tap="switchEvent" :class="{current: isBreakLowestPriceSwitch == 1}">
 						<i class="icon icon_zero"></i>
 					</div>
 				</div>
@@ -98,7 +100,7 @@
 				</div>
 			</div>
 			<div class="btn_box">
-				<btn name="完成" className="bluelg" @tap.native="saveEvent"></btn>
+				<btn name="完成" className="bluelg" @click.native="saveEvent"></btn>
 			</div>
 		</div>
 		</div>
@@ -121,6 +123,7 @@
 	import btn from "../../components/btn.vue"
 	import pro from '../../assets/js/common.js'
 	import { Toast } from 'mint-ui';
+	import { MessageBox } from 'mint-ui';
 	export default {
 		name: 'remind',
 		components: {btn, },
@@ -155,6 +158,19 @@
 				remindId: '',
 				intReg: /^[1-9]\d*$/,
 				floatReg: /^(([1-9]\d*)|0)(\.\d{1,4})?$/,
+				risePoint: '',   //上涨位
+				risePointSwitch: 0,   //上涨位开关
+				losePoint: '',   //下跌位
+				losePointSwitch: 0,   //下跌位开关
+				increase: '',   //涨幅
+				increaseSwitch: 0,    //涨幅开关
+				decrease: '',   //跌幅
+				decreaseSwitch: 0,  //跌幅开关
+				isBreakHighestPriceSwitch: 0,   //突破当日最高价开关
+				isBreakLowestPriceSwitch: 0,    //突破当日最低价开关
+				remindMsg: '是否添加提醒？',
+				remindMsgSuccess: '提醒设置成功',
+				
 			}
 		},
 		computed: {
@@ -195,6 +211,18 @@
 			}
 		},
 		watch: {
+			risePointSwitch: function(n, o){
+				if(n && n == 0) this.risePoint = '';
+			},
+			losePointSwitch: function(n, o){
+				if(n && n == 0) this.losePoint = '';
+			},
+			increaseSwitch: function(n, o){
+				if(n && n == 0) this.increase = '';
+			},
+			decreaseSwitch: function(n, o){
+				if(n && n == 0) this.decrease = '';
+			},
 			daysHight: function(n, o){
 				if(n == '') return;
 				if(this.intReg.test(n) == false){
@@ -289,129 +317,134 @@
 					obj.removeClass('current');
 					obj.css({'left': 0, 'background': '#525866'});
 					if($(e.currentTarget).hasClass('lastPriceUp')){
-						this.remindList.lastPriceOverSomePriceIsOpen = '0';
+						this.risePointSwitch = '0';
 					}else if($(e.currentTarget).hasClass('lastPriceDown')){
-						this.remindList.lastPriceUnderSomePriceIsOpen = '0';
+						this.losePointSwitch = '0';
 					}else if($(e.currentTarget).hasClass('changeUp')){
-						this.remindList.todayRiseRangePointIsOpen = '0';
+						this.increaseSwitch = '0';
 					}else if($(e.currentTarget).hasClass('changeDown')){
-						this.remindList.todayFallRangePointIsOpen = '0';
+						this.decreaseSwitch = '0';
 					}else if($(e.currentTarget).hasClass('breakHightPrice')){
-						this.remindList.todayBreakHighestPriceIsOpen = '0';
+						this.isBreakHighestPriceSwitch = '0';
 					}else if($(e.currentTarget).hasClass('breakLowPrice')){
-						this.remindList.todayBreakLowestPriceIsOpen = '0';
+						this.isBreakLowestPriceSwitch = '0';
 					}
 				}else{
 					obj.addClass('current');
 					obj.css({'left': 0.48+'rem', 'background': '#00a1f2'});
 					if($(e.currentTarget).hasClass('lastPriceUp')){
-						this.remindList.lastPriceOverSomePriceIsOpen = '1';
+						this.risePointSwitch = '1';
 					}else if($(e.currentTarget).hasClass('lastPriceDown')){
-						this.remindList.lastPriceUnderSomePriceIsOpen = '1';
+						this.losePointSwitch = '1';
 					}else if($(e.currentTarget).hasClass('changeUp')){
-						this.remindList.todayRiseRangePointIsOpen = '1';
+						this.increaseSwitch = '1';
 					}else if($(e.currentTarget).hasClass('changeDown')){
-						this.remindList.todayFallRangePointIsOpen = '1';
+						this.decreaseSwitch = '1';
 					}else if($(e.currentTarget).hasClass('breakHightPrice')){
-						this.remindList.todayBreakHighestPriceIsOpen = '1';
+						this.isBreakHighestPriceSwitch = '1';
 					}else if($(e.currentTarget).hasClass('breakLowPrice')){
-						this.remindList.todayBreakLowestPriceIsOpen = '1';
+						this.isBreakLowestPriceSwitch = '1';
 					}
 				}
 			},
 			saveEvent: function(){
-				if(this.remindList.lastPriceOverSomePrice == undefined || this.remindList.lastPriceOverSomePrice == ''
-					&& this.remindList.lastPriceUnderSomePrice == undefined || this.remindList.lastPriceUnderSomePrice == ''
-					&& this.remindList.todayRiseRangePoint == undefined || this.remindList.todayRiseRangePoint == ''
-					&& this.remindList.todayFallRangePoint == undefined || this.remindList.todayFallRangePoint == ''
-					&& this.remindList.todayBreakHighestPriceIsOpen == undefined || this.remindList.todayBreakHighestPriceIsOpen == ''
-					&& this.remindList.todayBreakLowestPriceIsOpen == undefined || this.remindList.todayBreakLowestPriceIsOpen == ''){
-					Toast({message: '请先完善提醒信息', position: 'bottom', duration: 1000});
-					return;
-				}
-				if(this.remindList.lastPriceOverSomePrice != '' && this.remindList.lastPriceOverSomePrice != undefined && this.floatReg.test(this.remindList.lastPriceOverSomePrice) == false){
+				if(this.risePoint != undefined && this.risePoint != 0 && this.floatReg.test(this.risePoint) == false){
 					Toast({message: '请输入上涨价格', position: 'bottom', duration: 1000});
-					this.remindList.lastPriceOverSomePrice = '';
-				}else if(this.remindList.lastPriceUnderSomePrice != '' && this.remindList.lastPriceUnderSomePrice != undefined  && this.floatReg.test(this.remindList.lastPriceUnderSomePrice) == false){
-					Toast({message: '请输入下跌价格', position: 'bottom', duration: 1000});
-					this.remindList.lastPriceUnderSomePrice = '';
-				}else if(this.remindList.todayRiseRangePoint != '' && this.remindList.todayRiseRangePoint != undefined && this.floatReg.test(this.remindList.todayRiseRangePoint) == false){
-					Toast({message: '请输入涨幅', position: 'bottom', duration: 1000});
-					this.remindList.todayRiseRangePoint = '';
-				}else if(this.remindList.todayFallRangePoint != '' && this.remindList.todayFallRangePoint != undefined && this.floatReg.test(this.remindList.todayFallRangePoint) == false){
-					Toast({message: '请输入跌幅', position: 'bottom', duration: 1000});
-					this.remindList.todayFallRangePoint = '';
-				}else if(this.daysHight != '' && this.intReg.test(this.daysHight) == false){
-					Toast({message: '天数格式错误', position: 'bottom', duration: 1000});
-					this.daysHight = '';
-				}else if(this.daysLow != '' && this.intReg.test(this.daysLow) == false){
-					Toast({message: '天数格式错误', position: 'bottom', duration: 1000});
-					this.daysLow = '';
-				}else{
-					//是否自选
-					this.isOptional = this.$route.query.isOptional;
-					//提醒方式
-					let _remindWays = [];
-					this.remindWays.forEach((o, i) => {
-						if(o.name == '短信提醒' && o.status == 1){
-							_remindWays.push(1);
-						}
-						if(o.name == '通知提醒' && o.status == 1){
-							_remindWays.push(2);
-						}
-					});
-					var headers = {
-						token: this.userInfo.token,
-						secret: this.userInfo.secret
-					}
-					
-					var datas = {
-						'id': this.remindId,
-						'commodityNo': this.currentNo,
-						'commodityName': this.orderTemplist[this.currentNo].CommodityName,
-						'remindType': _remindWays.join(','),
-						'risePoint': this.remindList.lastPriceOverSomePrice,
-						'risePointSwitch': this.remindList.lastPriceOverSomePriceIsOpen,
-						'losePoint': this.remindList.lastPriceUnderSomePrice,
-						'losePointSwitch': this.remindList.lastPriceUnderSomePriceIsOpen,
-						'increase': this.remindList.todayRiseRangePoint,
-						'increaseSwitch': this.remindList.todayRiseRangePointIsOpen,
-						'decrease': -this.remindList.todayFallRangePoint,
-						'decreaseSwitch': this.remindList.todayFallRangePointIsOpen,
-						'isBreakHighestPriceSwitch': this.remindList.todayBreakHighestPriceIsOpen,
-						'isBreakLowestPriceSwitch': this.remindList.todayBreakLowestPriceIsOpen,
-						'remindFrequency': this.defaultFrequency,
-						
-					}
-					pro.fetch('post', '/quoteTrader/saveRemindInfo', datas, headers).then((res) => {
-						if(res.success == true && res.code == 1){
-							if(this.isOptional == true){
-								Toast({message: '提醒设置成功', position: 'bottom', duration: 1000});
-								setTimeout(() => {
-									this.$router.go(-1);
-								}, 1000);
-							}else{
-								let info = {
-									'exchangeNo': this.orderTemplist[this.currentNo].ExchangeNo,
-									'commodityNo': this.currentNo,
-									'contractNo': this.orderTemplist[this.currentNo].MainContract,
-								}
-								pro.fetch('post', '/quoteTrader/userAddCommodity', info, headers).then((res) => {
-									if(res.success == true && res.code == 1){
-										Toast({message: '提醒设置成功，已将该合约添加到自选', position: 'bottom', duration: 1000});
-										setTimeout(() => {
-											this.$router.go(-1);
-										}, 1000);
-									}
-								}).catch((err) => {
-									Toast({message: err.data.message, position: 'bottom', duration: 1000});
-								});
-							}
-						}
-					}).catch((err) => {
-						Toast({message: err.data.message, position: 'bottom', duration: 2000});
-					});
+					this.risePoint = ''; return;
 				}
+				if(this.losePoint != undefined && this.losePoint != 0  && this.floatReg.test(this.losePoint) == false){
+					Toast({message: '请输入下跌价格', position: 'bottom', duration: 1000});
+					this.losePoint = ''; return;
+				}
+				if(this.increase != undefined && this.increase != 0  && this.floatReg.test(this.increase) == false){
+					Toast({message: '请输入涨幅', position: 'bottom', duration: 1000});
+					this.increase = ''; return;
+				}
+				if(this.decrease != undefined && this.decrease != 0  && this.floatReg.test(this.decrease) == false){
+					Toast({message: '请输入跌幅', position: 'bottom', duration: 1000});
+					this.decrease = ''; return;
+				}
+				if(this.daysHight != '' && this.intReg.test(this.daysHight) == false){
+					Toast({message: '天数格式错误', position: 'bottom', duration: 1000});
+					this.daysHight = ''; return;
+				}
+				if(this.daysLow != '' && this.intReg.test(this.daysLow) == false){
+					Toast({message: '天数格式错误', position: 'bottom', duration: 1000});
+					this.daysLow = ''; return;
+				}
+				if(this.risePoint == '' || this.risePoint == undefined
+					&& this.losePoint == '' || this.losePoint == undefined
+					&& this.increase == '' || this.increase == undefined
+					&& this.decrease == '' || this.decrease == undefined
+					&& this.isBreakHighestPriceSwitch == '0' 
+					&& this.isBreakLowestPriceSwitch == '0'){
+					this.remindMsg = '提醒不完善，是否添加提醒？';
+					this.remindMsgSuccess = '提醒删除成功';
+				}
+				//是否自选
+				this.isOptional = this.$route.query.isOptional;
+				//提醒方式
+				let _remindWays = [];
+				this.remindWays.forEach((o, i) => {
+					if(o.name == '短信提醒' && o.status == 1){
+						_remindWays.push(1);
+					}
+					if(o.name == '通知提醒' && o.status == 1){
+						_remindWays.push(2);
+					}
+				});
+				var headers = {
+					token: this.userInfo.token,
+					secret: this.userInfo.secret
+				}
+				var datas = {
+					'id': this.remindId,
+					'commodityNo': this.currentNo,
+					'commodityName': this.orderTemplist[this.currentNo].CommodityName,
+					'remindType': _remindWays.join(','),
+					'risePoint': this.risePoint,
+					'risePointSwitch': this.risePointSwitch,
+					'losePoint': this.losePoint,
+					'losePointSwitch': this.losePointSwitch,
+					'increase': this.increase,
+					'increaseSwitch': this.increaseSwitch,
+					'decrease': -this.decrease,
+					'decreaseSwitch': this.decreaseSwitch,
+					'isBreakHighestPriceSwitch': this.isBreakHighestPriceSwitch,
+					'isBreakLowestPriceSwitch': this.isBreakLowestPriceSwitch,
+					'remindFrequency': this.defaultFrequency,
+					
+				}
+				MessageBox.confirm(this.remindMsg,"提示").then(action=>{
+					pro.fetch('post', '/quoteTrader/saveRemindInfo', datas, headers).then((res) => {
+					if(res.success == true && res.code == 1){
+						if(this.isOptional == true){
+							Toast({message: '提醒设置成功', position: 'bottom', duration: 1000});
+							setTimeout(() => {
+								this.$router.go(-1);
+							}, 1000);
+						}else{
+							let info = {
+								'exchangeNo': this.orderTemplist[this.currentNo].ExchangeNo,
+								'commodityNo': this.currentNo,
+								'contractNo': this.orderTemplist[this.currentNo].MainContract,
+							}
+							pro.fetch('post', '/quoteTrader/userAddCommodity', info, headers).then((res) => {
+								if(res.success == true && res.code == 1){
+									Toast({message: '提醒设置成功，已将该合约添加到自选', position: 'bottom', duration: 1000});
+									setTimeout(() => {
+										this.$router.go(-1);
+									}, 1000);
+								}
+							}).catch((err) => {
+								Toast({message: err.data.message, position: 'bottom', duration: 1000});
+							});
+						}
+					}
+				}).catch((err) => {
+					Toast({message: err.data.message, position: 'bottom', duration: 2000});
+				});
+				}).catch(err=>{});
 			},
 			getRemindInfo: function(){
 				var headers = {
@@ -425,7 +458,7 @@
 					if(res.success == true){
 						if(res.code == 1){
 							this.remindList = res.data;
-							this.remindId = this.remindList.id; 
+							this.remindId = this.remindList.id;
 							//提醒方式
 							let rmindWays = this.remindList.remindWay.split(',');
 							if(rmindWays.length >= 1){
@@ -440,9 +473,29 @@
 								}
 							});
 							//提醒频率
-							if(this.remindList){
-								this.defaultFrequency = this.remindList.remindFrequency;
+							this.defaultFrequency = this.remindList.remindFrequency;
+							//上涨位
+							this.risePoint = this.remindList.lastPriceOverSomePrice;
+							//上涨位开关
+							this.risePointSwitch = this.remindList.lastPriceOverSomePriceIsOpen;
+							//下跌位
+							this.losePoint = this.remindList.lastPriceUnderSomePrice;
+							//下跌位开关
+							this.losePointSwitch = this.remindList.lastPriceUnderSomePriceIsOpen;
+							//涨幅
+							this.increase = this.remindList.todayRiseRangePoint;
+							//涨幅开关
+							this.increaseSwitch = this.remindList.todayRiseRangePointIsOpen;
+							//跌幅
+							if(this.remindList.todayFallRangePoint < 0){
+								this.decrease = -this.remindList.todayFallRangePoint;
 							}
+							//跌幅开关
+							this.decreaseSwitch = this.remindList.todayFallRangePointIsOpen;
+							//突破当日最高价开关
+							this.isBreakHighestPriceSwitch = this.remindList.todayBreakHighestPriceIsOpen;
+							//突破当日最低价开关
+							this.isBreakLowestPriceSwitch = this.remindList.todayBreakLowestPriceIsOpen;
 						}else{
 							this.remindList = [];
 						}
@@ -471,8 +524,7 @@
 		position: fixed;
 		top: 0;
 		left: 0;
-		z-index: 1;		
-		display: flex;
+		z-index: 10;		
 		width: 7.5rem;
 		height: 1rem;
 		background: $bg;
@@ -489,12 +541,15 @@
 			left: 0.3rem;
 		}
 		.title{
-			margin: auto;
-			.name{
-				height: 1rem;
-				text-align: center;
-			}
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 7.5rem;
+			height: 1rem;
+			overflow: hidden;
+			text-align: center;
 			span{
+				width: 7.5rem;
 				display: block;
 				&:first-child{
 					color: $white;
