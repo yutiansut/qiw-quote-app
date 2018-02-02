@@ -522,7 +522,6 @@
 				});
 			},
 			getRemindInfo: function(){
-				console.log(1);
 				var headers = {
 					token: this.userInfo.token,
 					secret: this.userInfo.secret
@@ -533,8 +532,16 @@
 				pro.fetch('post', '/quoteTrader/getByIdAndCommodityNo', datas, headers).then((res) => {
 					if(res.success == true){
 						if(res.code == 1){
-							console.log(res);
-							this.remindShow = true;
+							if(res.data.lastPriceOverSomePrice != '' && res.data.lastPriceOverSomePrice != undefined
+								|| res.data.lastPriceUnderSomePrice != '' && res.data.lastPriceUnderSomePrice != undefined
+								|| res.data.todayRiseRangePoint != '' && res.data.todayRiseRangePoint != undefined
+								|| res.data.todayFallRangePoint != '' &&  res.data.todayFallRangePoint != undefined
+								|| res.data.todayBreakHighestPriceIsOpen != '0' 
+								|| res.data.todayBreakLowestPriceIsOpen != '0'){
+									this.remindShow = true;
+							}else{
+								this.remindShow = false;
+							}
 						}else{
 							this.remindShow = false;
 						}
