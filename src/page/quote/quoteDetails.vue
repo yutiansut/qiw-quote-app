@@ -522,6 +522,7 @@
 				});
 			},
 			getRemindInfo: function(){
+				console.log(1);
 				var headers = {
 					token: this.userInfo.token,
 					secret: this.userInfo.secret
@@ -532,6 +533,7 @@
 				pro.fetch('post', '/quoteTrader/getByIdAndCommodityNo', datas, headers).then((res) => {
 					if(res.success == true){
 						if(res.code == 1){
+							console.log(res);
 							this.remindShow = true;
 						}else{
 							this.remindShow = false;
