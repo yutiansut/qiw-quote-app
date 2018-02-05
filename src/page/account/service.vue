@@ -29,7 +29,7 @@
 		},
 		methods:{
 			backRounter:function(){
-				this.$router.back(-1)
+				history.go(-2);
 			}
 		}
 	}
