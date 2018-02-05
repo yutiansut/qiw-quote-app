@@ -203,6 +203,7 @@
 		},
 		mounted:function(){
 			pro.getClentId();
+			pro.toweixin();
 		}
 	}
 </script>
