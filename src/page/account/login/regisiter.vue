@@ -301,7 +301,7 @@
 			width: 0.4rem;
 			height: 0.24rem;
 			top: 0.5rem;
-			right: 0.3rem;
+			right: 0.6rem;
 			background: url(../../../assets/images/eyeopen_icon.png);
 			background-size: 100% 100%;
 		}
