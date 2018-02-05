@@ -10,8 +10,8 @@
 				<div class="list" v-for="k in this.newList">
 					<ul @click="toNewDetails(k.id,$event)">
 						<li>{{k.time}}</li>
-						<li v-if="k.b == 'false'" class="current">{{k.title}}</li>
-						<li v-else="k.b =='true'" >{{k.title}}</li>
+						<li v-if="k.isread == 'false'" class="current">{{k.title}}</li>
+						<li v-else="k.isread =='true'" >{{k.title}}</li>
 						<!--<li v-else="k.isNewRecord == false" class="current">{{k.title}}</li>-->
 					</ul>
 				</div>
@@ -51,19 +51,20 @@
 //					console.log("res==="+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						this.newList = res.data.list;
-//						console.log("this.arr==="+JSON.stringify(this.arr))
-//						if(this.arr != undefined || this.arr != null){
-//							for(var a of this.newList){
-//								for(var i of this.arr){
-//									if(i.id1 == a.id){
-//										a.b="true";
-//										break;
-//									}else{
-//										a.b="false";
-//									}
-//								}
-//							}
-//						}
+						for(var a of this.newList){
+							if(this.arr == ''){
+								a.isread="false";
+							}else{
+								for(var i of this.arr){
+									if(i.id == a.id){
+										a.isread="true";
+										break;
+									}else{
+										a.isread="false";
+									}
+								}
+							}
+						}
 //						console.log("this.newList========"+JSON.stringify(this.newList));
 						if(res.data.list == ''){
 							this.exist = false;
@@ -85,26 +86,26 @@
 					}
 				})
 			},
-			toNewDetails:function(a,e){
+			toNewDetails:function(id1,e){
 //				localStorage.removeItem("NEWSID");
-//				var newsId = {id:a};
-//				this.arr = JSON.parse(localStorage.getItem("NEWSID"));
-//				if(this.arr == null){
-//					this.arr = [];
-//					this.arr.push(newsId);
-//				}else{
-//					for(var a of this.arr){
-//						console.log(JSON.stringify(a.id));
-//						if(newsId.id != a.id){
-//							this.arr.push(newsId);
-//							break;
-//						}
-//					}
-//				}
+				var newsId = {id:id1};
+				this.arr = JSON.parse(localStorage.getItem("NEWSID"));
+				if(this.arr == null){
+					this.arr = [];
+					this.arr.push(newsId);
+				}else{
+					for(var a of this.arr){
+						console.log(JSON.stringify(a.id));
+						if(newsId.id != JSON.stringify(a.id)){
+							this.arr.push(newsId);
+							break;
+						}
+					}
+				}
 //				console.log("this.arr"+JSON.stringify(this.arr));
-//				localStorage.setItem("NEWSID",JSON.stringify(this.arr));
-//				this.$router.push({path:"/newsDetails",query:{id:a}});
-//				$(e.target).removeClass("current");
+				localStorage.setItem("NEWSID",JSON.stringify(this.arr));
+				this.$router.push({path:"/newsDetails",query:{id:id1}});
+				$(e.target).removeClass("current");
 			}
 		},
 		mounted:function(){
@@ -112,9 +113,11 @@
 		},
 		activated:function(){
 			this.arr = JSON.parse(localStorage.getItem("NEWSID"));
+			if(this.arr == null){
+				this.arr = []
+			}
+//			console.log("this.arr+++++"+JSON.stringify(this.arr)+"000000000");
 			this.getNewList();
-//			console.log("this.arr====="+JSON.stringify(this.arr));
-//			console.log("id11111111111111"+JSON.stringify(id1))
 		}
 	}
 </script>
