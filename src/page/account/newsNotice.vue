@@ -8,9 +8,10 @@
 		<div id="container">
 			<div class="exist" v-show="exist" >
 				<div class="list" v-for="k in this.newList">
-					<ul @click="toNewDetails(k.id)">
+					<ul @click="toNewDetails(k.id,$event)">
 						<li>{{k.time}}</li>
-						<li>{{k.title}}</li>
+						<li v-if="k.b == 'false'" class="current">{{k.title}}</li>
+						<li v-else="k.b =='true'" >{{k.title}}</li>
 						<!--<li v-else="k.isNewRecord == false" class="current">{{k.title}}</li>-->
 					</ul>
 				</div>
@@ -37,7 +38,7 @@
 				exist:true,
 				none:false,
 				newList:"",
-				arr:[{id1:"00002"},{id1:"111111111111111111"},{id1:"00001"},{id1:"00005"}]
+				arr:[]
 			}
 		},
 		methods:{
@@ -50,24 +51,26 @@
 //					console.log("res==="+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						this.newList = res.data.list;
-						for(var a in this.newList){
-							for(var i in this.arr){
-								if(this.arr[i].id1 == this.newList[a].id){
-									this.newList[a].b="true";
-								}else{
-									this.newList[a].b="false";
-								}
-							}
-						}
-						console.log(this.newList)
-//						console.log("this.newList====="+this.newList);
+//						console.log("this.arr==="+JSON.stringify(this.arr))
+//						if(this.arr != undefined || this.arr != null){
+//							for(var a of this.newList){
+//								for(var i of this.arr){
+//									if(i.id1 == a.id){
+//										a.b="true";
+//										break;
+//									}else{
+//										a.b="false";
+//									}
+//								}
+//							}
+//						}
+//						console.log("this.newList========"+JSON.stringify(this.newList));
 						if(res.data.list == ''){
 							this.exist = false;
 							this.none = true;
 						}
 					}
 				}).catch((err)=>{
-//					console.log("err==="+JSON.stringify(err));
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
@@ -82,20 +85,35 @@
 					}
 				})
 			},
-			toNewDetails:function(a){
-				var newsId = [{id:a}];
-				localStorage.setItem("NEWSID",JSON.stringify(newsId));
-//				var id1 = localStorage.getItem("NEWSID");
-//				console.log("id11111111111111"+id1)
+			toNewDetails:function(a,e){
+//				localStorage.removeItem("NEWSID");
+//				var newsId = {id:a};
+//				this.arr = JSON.parse(localStorage.getItem("NEWSID"));
+//				if(this.arr == null){
+//					this.arr = [];
+//					this.arr.push(newsId);
+//				}else{
+//					for(var a of this.arr){
+//						console.log(JSON.stringify(a.id));
+//						if(newsId.id != a.id){
+//							this.arr.push(newsId);
+//							break;
+//						}
+//					}
+//				}
+//				console.log("this.arr"+JSON.stringify(this.arr));
+//				localStorage.setItem("NEWSID",JSON.stringify(this.arr));
 //				this.$router.push({path:"/newsDetails",query:{id:a}});
+//				$(e.target).removeClass("current");
 			}
 		},
 		mounted:function(){
 //			this.getNewList();
 		},
 		activated:function(){
+			this.arr = JSON.parse(localStorage.getItem("NEWSID"));
 			this.getNewList();
-			var id1 = localStorage.getItem("NEWSID");
+//			console.log("this.arr====="+JSON.stringify(this.arr));
 //			console.log("id11111111111111"+JSON.stringify(id1))
 		}
 	}
