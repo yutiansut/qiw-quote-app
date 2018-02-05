@@ -24,9 +24,9 @@
 					<span class="status green">51.03</span>
 				</div>
 				<div class="tools">
-					<btn name="平仓" className="orangesm"></btn>
-					<btn name="反手" className="bluesm"></btn>
-					<btn name="止损止盈" className="greensm"></btn>
+					<btn name="暂停" className="orangesm"></btn>
+					<btn name="修改" className="bluesm" @tap.native="editEvent"></btn>
+					<btn name="删除" className="greensm"></btn>
 				</div>
 			</li>
 			<li>
@@ -54,20 +54,24 @@
 				</div>
 			</li>
 		</ul>
+		<conditionTime ref="conditionTime"></conditionTime>
 	</div>
 </template>
 
 <script>
 	import btn from "../../components/btn.vue"
+	import conditionTime from "./conditionTime.vue"
 	export default{
 		name: "condition",
-		components: {btn},
+		components: {btn, conditionTime},
 		data(){
 			return{
 			}
 		},
 		methods: {
-			
+			editEvent: function(){
+				this.$refs.conditionTime.show = true;
+			}
 		},
 		mounted: function(){
 			

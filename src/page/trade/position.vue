@@ -24,7 +24,7 @@
 				<div class="tools">
 					<btn name="平仓" className="orangesm"></btn>
 					<btn name="反手" className="bluesm" @tap.native="backTrade"></btn>
-					<btn name="止损止盈" className="greensm"></btn>
+					<btn name="止损止盈" className="greensm" @tap.native="stopMoney"></btn>
 				</div>
 			</li>
 			<li>
@@ -52,16 +52,18 @@
 				</div>
 			</li>
 		</ul>
+		<editOrder ref="editOrder"></editOrder>
 		<stopMoneyAlert ref="stopMoneyAlert"></stopMoneyAlert>
 	</div>
 </template>
 
 <script>
 	import btn from "../../components/btn.vue"
+	import editOrder from "./editOrder.vue"
 	import stopMoneyAlert from "./stopMoneyAlert.vue"
 	export default{
 		name: "position",
-		components: {btn, stopMoneyAlert},
+		components: {btn, editOrder, stopMoneyAlert},
 		data(){
 			return{
 				
@@ -69,6 +71,9 @@
 		},
 		methods: {
 			backTrade: function(){   //反手
+				this.$refs.editOrder.show = true;
+			},
+			stopMoney: function(){   //止损止盈
 				this.$refs.stopMoneyAlert.show = true;
 			}
 		},

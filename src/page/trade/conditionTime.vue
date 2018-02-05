@@ -1,37 +1,41 @@
 <template>
-	<div id="stopMoneyAlert" v-if="show">
+	<div id="conditionTime" v-if="show">
 		<div class="bg"></div>
 		<div class="main">
-			<div class="title">
-				<ul>
-					<li class="current"><span>止损</span></li>
-					<li><span>止盈</span></li>
-				</ul>
-			</div>
+			<h1>时间条件</h1>
 			<div class="row">
 				<span>合约</span>
 				<em class="name">富时A50</em>
-				<span>多空</span>
 				<span class="percent pl">最新：<em>69.65</em></span>
 			</div>
-			<!--<div class="row">
-				<span>方式</span>
-				<div class="order fl">
-					<b>止损价</b>
-					<i class="icon icon_triangle"></i>
-				</div>
-				<input type="text" class="spe" />
-				<span class="percent">0.00%</span>
-			</div>-->
 			<div class="row">
-				<span>止盈价</span>
+				<span>时间</span>
 				<input type="text" />
-				<span class="percent">0.00%</span>
 			</div>
 			<div class="row">
+				<span>价格</span>
+				<select>
+					<option value="">附加</option>
+					<option value="">></option>
+				</select>
+				<input type="text" class="ipt" />
+			</div>
+			<div class="row">
+				<span>操作</span>
+				<select>
+					<option value="">买</option>
+					<option value="">卖</option>
+				</select>
+				<select>
+					<option value="">市价</option>
+					<option value="">对手价</option>
+				</select>
 				<span>手数</span>
-				<input type="text" />
-				<span class="percent price">止损委托价：<em>市价</em></span>
+				<input type="text" class="ipt" />
+			</div>
+			<div class="row">
+				<span>有效</span>
+				<p>当日有效</p>
 			</div>
 			<div class="btn_box">
 				<span @tap="confirmEvent">确认</span>
@@ -43,7 +47,7 @@
 
 <script>
 	export default{
-		name: "stopMoneyAlert",
+		name: "conditionTime",
 		components: {},
 		data(){
 			return{
@@ -68,35 +72,19 @@
 		top: 50%;
 		left: 50%;
 		z-index: 100;
-		margin: -2.27rem 0 0 -3rem;
+		margin: -3.15rem 0 0 -3rem;
 		width: 6rem;
-		height: 4.54rem;
+		height: 6.3rem;
 		overflow: hidden;
 		border-radius: 0.1rem;
 		background: $bg;
-		.title{
-			display: flex;
-			justify-content: center;
+		h1{
 			width: 6rem;
 			height: 0.88rem;
 			line-height: 0.88rem;
+			text-align: center;
 			font-size: $fs28;
 			border-bottom: 0.01rem solid $black;
-			li{
-				float: left;
-				width: 3rem;
-				text-align: center;
-				span{
-					display: inline-block;
-					line-height: 0.8rem;
-				}
-				&.current{
-					span{
-						border-bottom: 0.04rem solid $blue;
-						color: $blue;
-					}
-				}
-			}
 		}
 		.row{
 			width: 6rem;
@@ -117,10 +105,6 @@
 				}
 				&.pl{
 					padding-left: 0.1rem;
-				}
-				&.price{
-					padding-left: 0.25rem;
-					border-left: 0.01rem solid $black;
 				}
 				em{
 					color: $white;
@@ -147,33 +131,28 @@
 				margin: 0.12rem 0.1rem;
 				color: $white;
 				text-align: center;
-				&.spe{
-					margin: 0.12rem 0.1rem 0.12rem 0;
+				&.ipt{
+					width: 1rem;
 				}
 			}
-			.order{
-				width: 1.8rem;
-				height: 0.64rem;
-				line-height: 0.64rem;
+			select{
+				float: left;
+				width: 1rem;
+				height: 0.65rem;
+				line-height: 0.65rem;
 				background: #1b1f26;
 				border: 0.01rem solid $black;
 				border-radius: 0.1rem;
 				margin: 0.12rem 0.1rem;
 				color: $white;
+				padding-left: 0.2rem;
+			}
+			p{
+				float: left;
+				width: 5rem;
+				height: 0.88rem;
+				line-height: 0.88rem;
 				text-align: center;
-				position: relative;
-				b{
-					font-weight: normal;
-				}
-				.icon_triangle{
-					width: 0.1rem;
-					height: 0.1rem;
-					background: url(../../assets/images/account/subscript_01.png) no-repeat center center;
-					background-size: 100% 100%;
-					position: absolute;
-					bottom: 0.1rem;
-					right: 0.1rem;
-				}
 			}
 		}
 		.btn_box{
