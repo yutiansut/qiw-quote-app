@@ -27,8 +27,9 @@
 					<div class="eye" @click="eyeEvent" v-show="showEye"></div>
 					<div class="eye1" @click="eyeEvent" v-show="showNo"></div>
 				</li>
-			</ul>	
-			<mt-button class="btn" @click.native="regisiter">注册</mt-button>
+			</ul>
+			<button class="btn" @tap="regisiter">注册</button>
+			<!--<mt-button class="btn" :class="{current: show == true}" @click.native="regisiter">注册</mt-button>-->
 			<a @click="toLogin">已有账户？立即登录>></a>
 			<div id="wechat">
 				<i @click="getWechatId"></i>
@@ -57,7 +58,8 @@
 				info:"获取验证码",
 				time: 0,
 				showEye:true,
-				showNo:false
+				showNo:false,
+				show: false,
 			}
 		},
 		computed: {
@@ -130,7 +132,10 @@
 				}else if(this.pwdReg.test(this.password) == false){
 					this.$toast({message: '请输入6-16位数字加字母的密码',duration: 2000});
 				}else {
-					$(".btn").attr("disabled","disabled"); 
+//					console.log(1111);
+					if(this.show == true) return;
+					this.show = true;
+//					$(".btn").attr("disabled","disabled"); 
 					var data = {
 						mobile:this.phone,
 						password:this.password,
@@ -138,18 +143,24 @@
 						resource:"app"
 					}
 					pro.fetch("post","/loginAndRegister/register",data,"").then((res)=>{
+						console.log(9999);
 						if(res.code == 1 && res.success == true){
-							this.$toast({message:"注册成功",duration: 2000});
+//							$(".btn").attr("disabled",false);
+							this.show = false;
+							this.$toast({message:"注册成功",duration: 1000});
 							this.$router.push({path:"/account"});
 						}
 					}).catch((err)=>{
+//						console.log(err.data);
 						var data = err.data;
 						if(data == undefined){
-							this.$toast({message:"网络不给力，请稍后重试",duration: 2000});
-							$(".btn").attr("disabled",false);
+							this.$toast({message:"网络不给力，请稍后重试",duration: 1000});
+							this.show = false;
+//							$(".btn").attr("disabled",false);
 						}else{
-							this.$toast({message:data.message,duration: 2000});
-							$(".btn").attr("disabled",false);
+							this.$toast({message:data.message,duration: 1000});
+							this.show = false;
+//							$(".btn").attr("disabled",false);
 						}
 					})
 				}
@@ -282,11 +293,13 @@
 		}
 		.btn{
 			width: 6.9rem;
-			height: 0.8rem;
+			height: 0.88rem;
 			margin: 0.9rem 0.3rem 0 0.3rem;
+			border-radius: 0.1rem;
 			background-color: $blue;
 			color: $white;
 			border: none;
+			font-size: $fs32;
 		}
 		#wechat{
 			text-align: center;
