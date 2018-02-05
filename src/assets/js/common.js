@@ -174,7 +174,6 @@ pro.getClentId = function(){
 	mui.plusReady(function(){
 		var info = plus.push.getClientInfo();
 		var clientid = info.clientid;
-		console.log("clientid"+clientid+"00000000");
 		localStorage.setItem("clientid",JSON.stringify(clientid));
 	})
 }
