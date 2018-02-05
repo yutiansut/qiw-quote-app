@@ -1,8 +1,8 @@
 <template>
 	<div id="service">
 		<mt-header title="在线客服" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
-		  	<router-link to="/customerServices" slot="left">
-		    	<i id="back"></i>
+		  	<router-link to="" slot="left">
+		    	<i id="back"  @click="backRounter"></i>
 		  	</router-link>
 		</mt-header>
 		<div id="container">
@@ -28,7 +28,9 @@
 			}
 		},
 		methods:{
-			
+			backRounter:function(){
+				this.$router.back(-1)
+			}
 		}
 	}
 </script>
