@@ -18,7 +18,7 @@
 					<i></i>
 					<input type="text"  value="" placeholder="请输入验证码" class="input1" v-model="code"/>
 					<div id="code">
-						<span @click="getCode">{{volid ? info : (time + '秒')}}</span>
+						<span :class="{current: isClick == false}" @click="getCode">{{volid ? info : (time + '秒')}}</span>
 					</div>
 				</li>
 				<li>
@@ -60,6 +60,7 @@
 				showEye:true,
 				showNo:false,
 				show: false,
+				isClick: false,
 			}
 		},
 		computed: {
@@ -78,6 +79,15 @@
 			},
 			version: function(){
 				return '1.1';
+			}
+		},
+		watch: {
+			phone: function(n, o){
+				if(n && n.length == 11){
+					this.isClick = true;
+				}else{
+					this.isClick = false;
+				}
 			}
 		},
 		methods:{
@@ -99,6 +109,7 @@
 				}
 			},
 			getCode :function(e){
+				if(this.isClick == false) return;
 				if($(e.target).hasClass('current')) return false;
 				if(this.phone == ''){
 					this.$toast({message: '请输入手机号码',duration: 2000});
@@ -121,6 +132,7 @@
 				}
 			},
 			regisiter:function(){
+				if(this.show == true) return;
 				if(this.phone == ""){
 					this.$toast({message: '请输入手机号码',duration: 2000});
 				}else if(this.code == ""){
@@ -132,8 +144,7 @@
 				}else if(this.pwdReg.test(this.password) == false){
 					this.$toast({message: '请输入6-16位数字加字母的密码',duration: 2000});
 				}else {
-//					console.log(1111);
-					if(this.show == true) return;
+					console.log(1111);
 					this.show = true;
 //					$(".btn").attr("disabled","disabled"); 
 					var data = {
@@ -272,6 +283,9 @@
 			right: 0.3rem;
 			border-left: 1px solid #9ba8c2;
 			color: $white;
+			span.current{
+				color: grey;
+			}
 		}
 		.eye{
 			position: absolute;
