@@ -23,7 +23,7 @@
 				</div>
 				<div class="tools">
 					<btn name="平仓" className="orangesm"></btn>
-					<btn name="反手" className="bluesm"></btn>
+					<btn name="反手" className="bluesm" @tap.native="backTrade"></btn>
 					<btn name="止损止盈" className="greensm"></btn>
 				</div>
 			</li>
@@ -52,20 +52,25 @@
 				</div>
 			</li>
 		</ul>
+		<stopMoneyAlert ref="stopMoneyAlert"></stopMoneyAlert>
 	</div>
 </template>
 
 <script>
 	import btn from "../../components/btn.vue"
+	import stopMoneyAlert from "./stopMoneyAlert.vue"
 	export default{
 		name: "position",
-		components: {btn},
+		components: {btn, stopMoneyAlert},
 		data(){
 			return{
+				
 			}
 		},
 		methods: {
-			
+			backTrade: function(){   //反手
+				this.$refs.stopMoneyAlert.show = true;
+			}
 		},
 		mounted: function(){
 			
