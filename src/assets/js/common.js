@@ -134,20 +134,20 @@ pro.toweixin=function(){
 					for(var i in services) {
 						var service = services[i];
 						auths[service.id] = service;
-						if(~authBtns.indexOf(service.id)) {
-							var isInstalled = app.isInstalled(service.id);
+//						if(~authBtns.indexOf(service.id)) {
+//							var isInstalled = app.isInstalled(service.id);
 							//						var btn = document.createElement('div');
 							//如果微信未安装，则为不启用状态
-													btn.setAttribute('class', 'oauth-btn' + (!isInstalled && service.id === 'weixin' ? (' disabled') : ''));
-													btn.authId = service.id;
-													btn.style.backgroundImage = 'url("images/' + service.id + '.png")'
-													oauthArea.appendChild(btn);
-						}
+//													btn.setAttribute('class', 'oauth-btn' + (!isInstalled && service.id === 'weixin' ? (' disabled') : ''));
+//													btn.authId = service.id;
+//													btn.style.backgroundImage = 'url("images/' + service.id + '.png")'
+//													oauthArea.appendChild(btn);
+//						}
 					}
-					if(this1.classList.contains('disabled')) {
-						mui.toast('抱歉，您尚未安装微信，请安装后再试！');
-						return;
-					}
+//					if(this1.classList.contains('disabled')) {
+//						mui.toast('抱歉，您尚未安装微信，请安装后再试！');
+//						return;
+//					}
 					var id = "weixin"
 					var auth = auths[id];
 					auth.login(function() {
