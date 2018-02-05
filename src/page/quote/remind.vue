@@ -2,9 +2,9 @@
 	<div id="remind">
 		<template v-for="(v, index) in parameters">
 		<div v-if="v.CommodityNo == currentNo">
-		<header>
+		<header class="head">
 			<i class="icon icon_back" @tap="goBackEvent"></i>
-			<div class="title">
+			<div class="title head_title">
 				<span>{{v.CommodityName}}</span>
 				<span>{{v.CommodityNo + v.MainContract}}</span>
 			</div>
@@ -506,7 +506,15 @@
 			}
 		},
 		mounted: function(){
-			
+			$("input").bind('focus',function(){  
+	            $('.head').css('position','static');
+	            $('.main').css({'margin-top': 0});
+	            //或者$('#viewport').height($(window).height()+'px');  
+	        }).bind('blur',function(){ 
+	            $('.head').css({'position':'fixed','top':'0'});
+	            $('.main').css({'margin-top': 1.01 + 'rem'});
+	            //或者$('#viewport').height('auto');  
+	        });
 		},
 		activated: function(){
 			//获取提醒相关信息
@@ -520,13 +528,14 @@
 
 <style scoped lang="scss">
 	@import "../../assets/css/common.scss";
-	header{
+	.head{
 		position: fixed;
 		top: 0;
 		left: 0;
 		z-index: 1;		
 		width: 7.5rem;
 		height: 1rem;
+		overflow: hidden;
 		background: $bg;
 		border-bottom: 0.01rem solid $black;
 		padding: 0 0.3rem;
@@ -536,16 +545,12 @@
 			height: 1rem;
 			background: url(../../assets/images/back_icon.png) no-repeat center 0.34rem;
 			background-size: 0.24rem 0.32rem;
-			position: fixed;
-			top: 0;
+			position: absolute;
 			left: 0.3rem;
-			z-index: 10;
 		}
 		.title{
-			position: fixed;
-			top: 0;
+			position: absolute;
 			left: 0;
-			z-index: 1;
 			width: 7.5rem;
 			height: 1rem;
 			overflow: hidden;
