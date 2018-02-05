@@ -95,6 +95,9 @@
 				}else{
 					//登录请求
 					var ClientId = JSON.stringify(localStorage.getItem("clientid"));
+					if(ClientId == "null"){
+						ClientId = ""
+					}
 					var info = {
 						mobile:this.phone,
 						password:this.password,
