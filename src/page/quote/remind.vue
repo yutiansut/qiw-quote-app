@@ -547,6 +547,7 @@
 			background-size: 0.24rem 0.32rem;
 			position: absolute;
 			left: 0.3rem;
+			z-index: 10;
 		}
 		.title{
 			position: absolute;
