@@ -532,7 +532,6 @@
 		position: fixed;
 		top: 0;
 		left: 0;
-		z-index: 1;		
 		width: 7.5rem;
 		height: 1rem;
 		overflow: hidden;
@@ -547,7 +546,7 @@
 			background-size: 0.24rem 0.32rem;
 			position: absolute;
 			left: 0.3rem;
-			z-index: 10;
+			z-index: 1;
 		}
 		.title{
 			position: absolute;
