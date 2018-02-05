@@ -180,8 +180,10 @@
 			getWechatId:function(){
 				pro.toweixin();
 				var weixinInfo = JSON.parse(localStorage.weixinUser)
+				var ClientId = JSON.stringify(localStorage.getItem("clientid"));
 				var data ={
-					openId:weixinInfo.authResult.openid
+					openId:weixinInfo.authResult.openid,
+					clientId:ClientId
 				}
 				pro.fetch("post","/loginAndRegister/wxLogin",data,"").then(function(res){
 					if(res.code == 1 && res.success == true){
@@ -198,6 +200,9 @@
 					}
 				}.bind(this));
 			}
+		},
+		mounted:function(){
+			pro.getClentId();
 		}
 	}
 </script>
