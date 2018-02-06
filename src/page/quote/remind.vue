@@ -275,6 +275,16 @@
 				this.hightPrice = '--';
 				this.daysLow = '';
 				this.lowPrice = '--';
+				this.risePoint = '';
+				this.risePointSwitch = 0;
+				this.losePoint = '';
+				this.losePointSwitch = 0;
+				this.increase = ''; 
+				this.increaseSwitch = 0;  
+				this.decrease = '';
+				this.decreaseSwitch = 0;
+				this.isBreakHighestPriceSwitch = 0;
+				this.isBreakLowestPriceSwitch = 0;
 			},
 			checkEvent: function(index){
 				this.remindWays.forEach((o, i) => {
@@ -496,8 +506,6 @@
 							this.isBreakHighestPriceSwitch = this.remindList.todayBreakHighestPriceIsOpen;
 							//突破当日最低价开关
 							this.isBreakLowestPriceSwitch = this.remindList.todayBreakLowestPriceIsOpen;
-						}else{
-							this.remindList = [];
 						}
 					}
 				}).catch((err) => {
