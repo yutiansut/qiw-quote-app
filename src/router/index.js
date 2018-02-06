@@ -11,7 +11,6 @@ import quoteDetails from "../page/quote/quoteDetails.vue"
 import remind from "../page/quote/remind.vue"
 import tradeLogin from "../page/trade/tradeLogin.vue"
 import trade from "../page/trade.vue"
-import hasLogin from "../page/trade/hasLogin.vue"
 import tradeApply from "../page/trade/tradeApply.vue"
 import applySuccess from "../page/trade/applySuccess.vue"
 import cl from "../page/role/cl.vue"
@@ -117,9 +116,6 @@ export default new Router({
 				component:tradeApply
 			}
 		]
-	},{
-		path: '/hasLogin',
-		component: hasLogin
 	},{
 		path: '/applySuccess',
 		component: applySuccess

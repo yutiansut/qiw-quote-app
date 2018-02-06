@@ -1,6 +1,6 @@
 <template>
 	<div id="hasLogin">
-		<div class="bg"></div>
+		<div class="bg" @tap="hideEvent"></div>
 		<div class="cont">
 			<h1>交易账号：15182736808</h1>
 			<ul>
@@ -28,6 +28,22 @@
 		},
 		data(){
 			return{
+				show: false,
+			}
+		},
+		watch: {
+			show: function(n, o){
+				if(n && n == true){
+					$(".bg").css({'opacity': 0.5, 'z-index': 99});
+					$(".cont").css({'right': 0});
+				}
+			}
+		},
+		methods: {
+			hideEvent: function(){
+				this.show = false;
+				$(".bg").css({'opacity': 0, 'z-index': 0});
+				$(".cont").css({'right': -6.2 + 'rem'});
 			}
 		},
 		mounted: function(){
@@ -45,18 +61,20 @@
 	    left: 0;
 	    bottom: 0;
 	    right: 0;
-	    z-index: 99;
+	    z-index: 0;
 	    background: #000;
-	    opacity: 0.5;
+	    opacity: 0;
+	    transition: all .4s;
 	}
 	.cont{
 		position: fixed;
 		top: 0;
-		right: 0;
+		right: -6.2rem;
 		z-index: 100;
 		width: 6.2rem;
 		overflow: hidden;
 		background: $bg;
+		transition: all .4s;
 		h1{
 			height: 2.5rem;
 			line-height: 2.5rem;

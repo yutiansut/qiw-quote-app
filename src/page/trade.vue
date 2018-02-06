@@ -1,9 +1,10 @@
 <template>
 	<div id="trade">
-		<TabBar :selected="selected" :tabs="tabs" ></TabBar>
+		<TabBar :selected="selected" :tabs="tabs"></TabBar>
+		<hasLogin ref="hasLogin"></hasLogin>
 		<header>
 			<h1>ID:10081</h1>
-			<i class="icon icon_menu"></i>
+			<i class="icon icon_menu" @tap="menuEvent"></i>
 		</header>
 		<div class="nav">
 			<ul>
@@ -27,9 +28,10 @@
 	import tradeCenter from "./trade/tradeCenter.vue"
 	import holdOrder from "./trade/holdOrder.vue"
 	import moneyDetails from "./trade/moneyDetails.vue"
+	import hasLogin from "./trade/hasLogin.vue"
 	export default{
 		name: "trade",
-		components: {TabBar, moneyTotal, tradeCenter, holdOrder, moneyDetails},
+		components: {TabBar, moneyTotal, tradeCenter, holdOrder, moneyDetails, hasLogin},
 		data(){
 			return{
 				selected: "模拟交易",
@@ -50,6 +52,9 @@
 				}else{
 					this.currentView = 'moneyDetails';
 				}
+			},
+			menuEvent: function(){
+				this.$refs.hasLogin.show = true;
 			}
 		},
 		mounted: function(){
