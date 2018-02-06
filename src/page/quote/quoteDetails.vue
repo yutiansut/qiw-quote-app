@@ -576,6 +576,7 @@
 					this.noContrast = false;
 					contrast = contrast.split(',');
 					contrast.forEach((o, i) => {
+						if(o == obj.commodityNo) return;
 						if(o != ''){
 							let a = {
 								commodityNo: o,
