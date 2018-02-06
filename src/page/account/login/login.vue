@@ -94,10 +94,7 @@
 					this.$toast({message: '密码由6到16位字母和数字组成',duration: 2000});
 				}else{
 					//登录请求
-					var ClientId = JSON.parse(localStorage.clientid).id;;
-					if(ClientId == "null"){
-						ClientId = ""
-					}
+					var ClientId = localStorage.clientid ? JSON.parse(localStorage.clientid).id : '';
 					var info = {
 						mobile:this.phone,
 						password:this.password,
