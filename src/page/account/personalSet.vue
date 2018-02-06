@@ -60,8 +60,15 @@
 			}
 		},
 		mounted:function(){
-//			this.phone = this.$route.query.phone;
-//			this.wxNickname = this.$route.query.wxNickname;
+			this.phone = this.$route.query.phone;
+			this.wxNickname = this.$route.query.wxNickname;
+			var phonenum = this.$route.query.phone;
+			this.mobile = phonenum.substr(0, 3) + '****' + phonenum.substr(7);
+			if(this.wxNickname == undefined || this.wxNickname==""){
+				this.showNickname= false
+			}else{
+				this.showNickname= true
+			}
 		},
 		activited:function(){
 			this.phone = this.$route.query.phone;
