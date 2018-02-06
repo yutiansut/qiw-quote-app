@@ -16,21 +16,35 @@
 		name:"payWays",
 		data(){
 			return{
-				
+				token:"",
+				secret:""
 			}
 		},
 		computed: {
 			PATH: function(){
-				console.log(this.$store.getters.PATH);
 				return this.$store.getters.PATH;
 			},
 			iframe(){
 //				return 'http://pay.duokongtai.cn/app/appPayinfo?mobile='+ this.$route.query.phone +'&money='+ this.$route.query.money;
-//				console.log(PATH)
+				return "http://192.168.0.225/pay/payInfo?publickey="+this.token+"&secretkey="+this.secret+"&money="+this.$route.query.money;
 			}
 		},
 		methods:{
 			
+		},
+		mounted:function(){
+			
+		},
+		activated:function(){
+			//获取平台账户登录信息
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+			if(this.userInfo == ''){
+//				console.log("未登录")
+			}else{
+//				console.log("一登录")
+				this.token = this.userInfo.token,
+				this.secret = this.userInfo.secret
+			}
 		}
 	}
 </script>

@@ -44,7 +44,7 @@
 		},
 		methods:{
 			recharge:function(){
-				console.log("this.rechargeMoney====="+this.rechargeMoney)
+//				console.log("this.rechargeMoney====="+this.rechargeMoney)
 				if(this.rechargeMoney == undefined){
 					this.$toast({message:"充值金额不能为空",duration: 1000});
 				}else if(this.rechargeReg.test(this.rechargeMoney) == false){

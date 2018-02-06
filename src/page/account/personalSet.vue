@@ -60,6 +60,10 @@
 			}
 		},
 		mounted:function(){
+//			this.phone = this.$route.query.phone;
+//			this.wxNickname = this.$route.query.wxNickname;
+		},
+		activited:function(){
 			this.phone = this.$route.query.phone;
 			this.wxNickname = this.$route.query.wxNickname;
 			var phonenum = this.$route.query.phone;
@@ -69,10 +73,6 @@
 			}else{
 				this.showNickname= true
 			}
-		},
-		activited:function(){
-			this.phone = this.$route.query.phone;
-			this.wxNickname = this.$route.query.wxNickname;
 		}
 	}
 </script>
