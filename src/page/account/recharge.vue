@@ -89,12 +89,10 @@
 			},
 			getMinRecharge:function(){
 				pro.fetch("post","/others/getSysparam","","").then((res)=>{
-					console.log("res======"+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						this.minRecharge = res.data.minPayMoney;
 					}
 				}).catch((err)=>{
-					console.log("err======="+JSON.stringify(err));
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});

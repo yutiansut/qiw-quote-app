@@ -144,7 +144,6 @@
 				}else if(this.pwdReg.test(this.password) == false){
 					this.$toast({message: '请输入6-16位数字加字母的密码',duration: 2000});
 				}else {
-					console.log(1111);
 					this.show = true;
 //					$(".btn").attr("disabled","disabled"); 
 					var data = {
@@ -154,7 +153,7 @@
 						resource:"app"
 					}
 					pro.fetch("post","/loginAndRegister/register",data,"").then((res)=>{
-						console.log(9999);
+						console.log("res==="+JSON.stringify(res));
 						if(res.code == 1 && res.success == true){
 //							$(".btn").attr("disabled",false);
 							this.show = false;
@@ -162,7 +161,7 @@
 							this.$router.push({path:"/login"});
 						}
 					}).catch((err)=>{
-//						console.log(err.data);
+						console.log("err==="+JSON.stringify(err));
 						var data = err.data;
 						if(data == undefined){
 							this.$toast({message:"网络不给力，请稍后重试",duration: 1000});
