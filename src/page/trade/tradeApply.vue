@@ -129,11 +129,14 @@
 						this.rangeValue = 10000;
 						this.startMax = 10000;
 						this.stepMoney = (this.startMax-300)/100;
+					}else if(data.data == true){
+						this.disabled = false;
 					}
 				})
 			},
 			//获取是否领取过1w新手资金
 			GetActivity:function(headers){
+				console.log("444444444444");
 				pro.fetch("post","/account/getBasicMsg","",headers).then((res)=>{
 //					console.log("res=="+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
@@ -141,6 +144,7 @@
 						if(res.data.isGetActivity == true){
 //							console.log("已领取11111111111111");
 							this.getNewActivity(headers);
+							$("#btnnnn").html("立即支付");
 						}else{
 //							console.log("未领取555555555555555555");
 							$("#btnnnn").html("领取体验金");
@@ -162,6 +166,7 @@
 			},
 			//获取基础配置信息
 			getParameters:function(headers){
+				console.log("555555555555");
 				pro.fetch("post","/futureManage/getApplyData","",headers).then((res)=>{
 //					console.log("res==="+JSON.stringify(res.data));
 					if(res.code == 1 && res.success == true){
@@ -174,6 +179,7 @@
 								this.startMax = Number(res.data.balance*this.rate).toFixed(2);
 								this.balance = res.data.balance;
 								this.stepMoney = 100/(this.startMax-300);
+								$("#btnnnn").html("立即支付");
 							}else if(res.data.balance < 3 || res.data.balance == 3){
 								this.startMax = 10000;
 								this.stepMoney = 100/(this.startMax-300);
@@ -270,43 +276,45 @@
 			}
 		},
 		mounted:function(){
-			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
-			this.financing = this.rangeValue;
-			this.totalMoney = this.rangeValue + this.rangeValue*this.rangeValue1;
-			this.payMoney = this.rangeValue/100;
-			this.startMin = 300;
-			this.rangeValue = 300;
-			if(this.userInfo == ''){
-				//未登录
-//				console.log("未登录");
-				this.startMax = 1000;
-				this.stepMoney = 100/(this.startMax-300);
-				this.isLogin = false;
-				var headers = ""
-				this.getParameters("");
-			}else{
-				//已登录
-//				console.log("一登录")
-				this.isLogin = true;
-				var headers = {
-					token : this.userInfo.token,
-					secret : this.userInfo.secret
-				}
-//				console.log("headers==="+JSON.stringify(headers))
-				this.getParameters(headers);
-				this.GetActivity(headers);
-			}
-			var screenPhone=screen.width;
-			if(screenPhone == 320){
-				$(".bkg").css("top","0.83rem").css("height","0.34rem");
-//				$(".mt-range-content").css("margin-right","0.5rem");
-				$(".bkg1").css("top","0.83rem").css("height","0.34rem");
-			}else if(screenPhone==375){
-				$(".bkg").css("top","0.79rem").css("height","0.33rem");
-				$(".bkg1").css("top","0.79rem").css("height","0.33rem");
-			}
+			console.log("11111111")
+//			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+//			this.financing = this.rangeValue;
+//			this.totalMoney = this.rangeValue + this.rangeValue*this.rangeValue1;
+//			this.payMoney = this.rangeValue/100;
+//			this.startMin = 300;
+//			this.rangeValue = 300;
+//			if(this.userInfo == ''){
+//				//未登录
+////				console.log("未登录");
+//				this.startMax = 1000;
+//				this.stepMoney = 100/(this.startMax-300);
+//				this.isLogin = false;
+//				var headers = ""
+//				this.getParameters("");
+//			}else{
+//				//已登录
+////				console.log("一登录")
+//				this.isLogin = true;
+//				var headers = {
+//					token : this.userInfo.token,
+//					secret : this.userInfo.secret
+//				}
+////				console.log("headers==="+JSON.stringify(headers))
+//				this.getParameters(headers);
+//				this.GetActivity(headers);
+//			}
+//			var screenPhone=screen.width;
+//			if(screenPhone == 320){
+//				$(".bkg").css("top","0.83rem").css("height","0.34rem");
+////				$(".mt-range-content").css("margin-right","0.5rem");
+//				$(".bkg1").css("top","0.83rem").css("height","0.34rem");
+//			}else if(screenPhone==375){
+//				$(".bkg").css("top","0.79rem").css("height","0.33rem");
+//				$(".bkg1").css("top","0.79rem").css("height","0.33rem");
+//			}
 		},
 		activated: function(){
+			console.log("222222222222")
 			//获取平台账户登录信息
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 			this.financing = this.rangeValue;
@@ -331,8 +339,8 @@
 					secret : this.userInfo.secret
 				}
 //				console.log("headers==="+JSON.stringify(headers))
-				this.getParameters(headers);
 				this.GetActivity(headers);
+				this.getParameters(headers);
 			}
 			var screenPhone=screen.width;
 			if(screenPhone == 320){
@@ -358,7 +366,7 @@
 				this.totalMoney = this.rangeValue + this.rangeValue*this.rangeValue1;
 				this.lossLine = this.rangeValue*this.lossScale + this.rangeValue*this.rangeValue1;
 //				console.log(this.rangeValue1)
-			},
+			}
 		},
 		filters:{
 			changeCurrency:function(e){
@@ -382,10 +390,6 @@
 						break;
 				}
 			}
-		},
-		$route:function(to,from){
-			console.log(to);
-			console.log(from);
 		}
 	}
 </script>
