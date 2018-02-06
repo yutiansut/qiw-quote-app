@@ -450,6 +450,16 @@
 								Toast({message: err.data.message, position: 'bottom', duration: 1000});
 							});
 						}
+						this.risePoint = '';
+						this.risePointSwitch = 0;
+						this.losePoint = '';
+						this.losePointSwitch = 0;
+						this.increase = ''; 
+						this.increaseSwitch = 0;  
+						this.decrease = '';
+						this.decreaseSwitch = 0;
+						this.isBreakHighestPriceSwitch = 0;
+						this.isBreakLowestPriceSwitch = 0;
 					}
 				}).catch((err) => {
 					Toast({message: err.data.message, position: 'bottom', duration: 2000});
