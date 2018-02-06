@@ -16,7 +16,7 @@
 				</div>
 			</template>
 		</div>
-		<div class="list">
+		<div class="list" v-show="listShow">
 			<ul>
 				<li>
 					<div class="name"><span>名称</span></div>
@@ -59,6 +59,7 @@
 				etfList: [],   //ETF
 				changeRateShow: true,
 				changeRateName: '涨跌幅',
+				listShow: true,
 			}
 		},
 		computed: {
@@ -67,6 +68,9 @@
 			},
 			quoteSocket(){
 				return this.$store.state.quoteSocket;
+			},
+			len(){
+				return this.$store.state.market.Parameters.length;
 			}
 		},
 		filters:{
@@ -75,6 +79,11 @@
 			},
 			fixNum: function(num, dotsize){
 				return num.toFixed(dotsize);
+			}
+		},
+		watch: {
+			len: function(n, o){
+				if(n && n > 0) this.listShow = true;
 			}
 		},
 		methods: {
@@ -91,6 +100,7 @@
 				}
 			},
 			clickEvent: function(index){
+				this.listShow = false;
 				this.currentNum = index;
 				this.$store.state.market.Parameters = [];
 				this.$store.state.market.commodityOrder = [];
