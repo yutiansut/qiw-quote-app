@@ -179,11 +179,7 @@
 			getWechatId:function(){
 				pro.toweixin();
 				var weixinInfo = JSON.parse(localStorage.weixinUser)
-				var ClientId = JSON.parse(localStorage.clientid).id;;
-				var data ={
-					openId:weixinInfo.authResult.openid,
-					clientId:ClientId
-				}
+				var ClientId = localStorage.clientid ? JSON.parse(localStorage.clientid).id : '';
 				pro.fetch("post","/loginAndRegister/wxLogin",data,"").then(function(res){
 					if(res.code == 1 && res.success == true){
 						this.$toast({message:"授权登录成功",duration: 1000});
