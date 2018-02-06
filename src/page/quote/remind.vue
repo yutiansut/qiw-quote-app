@@ -500,8 +500,6 @@
 							//跌幅
 							if(this.remindList.todayFallRangePoint < 0){
 								this.decrease = -this.remindList.todayFallRangePoint;
-							}else{
-								this.decrease = this.remindList.todayFallRangePoint;
 							}
 							//跌幅开关
 							this.decreaseSwitch = this.remindList.todayFallRangePointIsOpen;
