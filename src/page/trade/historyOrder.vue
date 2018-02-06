@@ -111,6 +111,9 @@
 				padding: 0;
 			}
 		}
+		ul{
+			width: 15rem;
+		}
 		li{
 			span{
 				display: inline-block;

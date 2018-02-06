@@ -42,7 +42,7 @@
 		methods: {
 			hideEvent: function(){
 				this.show = false;
-				$(".bg").css({'opacity': 0, 'z-index': 0});
+				$(".bg").css({'opacity': 0, 'z-index': -1});
 				$(".cont").css({'right': -6.2 + 'rem'});
 			}
 		},
@@ -61,7 +61,7 @@
 	    left: 0;
 	    bottom: 0;
 	    right: 0;
-	    z-index: 0;
+	    z-index: -1;
 	    background: #000;
 	    opacity: 0;
 	    transition: all .4s;
