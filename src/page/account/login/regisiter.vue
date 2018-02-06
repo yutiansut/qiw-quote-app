@@ -159,7 +159,7 @@
 //							$(".btn").attr("disabled",false);
 							this.show = false;
 							this.$toast({message:"注册成功",duration: 1000});
-							this.$router.push({path:"/account"});
+							this.$router.push({path:"/login"});
 						}
 					}).catch((err)=>{
 //						console.log(err.data);
