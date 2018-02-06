@@ -173,7 +173,7 @@ pro.toweixin=function(){
 pro.getClentId = function(){
 	mui.plusReady(function(){
 		var info = plus.push.getClientInfo();
-		var clientid = info.clientid;
+		var clientid = {"id":info.clientid};
 		localStorage.setItem("clientid",JSON.stringify(clientid));
 	})
 }
