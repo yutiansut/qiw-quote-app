@@ -33,7 +33,8 @@
 				rechargeReg:/^[0-9]+([.][0-9]+)?$/,
 				accountMoney:"",
 				totalMoney:"",
-				phone:""
+				phone:"",
+				minRecharge:""
 			}
 		},
 		watch:{
@@ -49,8 +50,8 @@
 					this.$toast({message:"充值金额不能为空",duration: 1000});
 				}else if(this.rechargeReg.test(this.rechargeMoney) == false){
 					this.$toast({message:"充值金额格式错误",duration: 1000});
-				}else if(this.rechargeMoney<3){
-					this.$toast({message:"最小充值金额为3元",duration: 1000});
+				}else if(this.rechargeMoney<this.minRecharge){
+					this.$toast({message:"最小充值金额为"+this.minRecharge+"元",duration: 1000});
 				}else{
 					this.$router.push({path:"/payWays",query:{phone:this.phone,money:this.rechargeMoney}});
 				}
@@ -85,6 +86,26 @@
 						}
 					}
 				})
+			},
+			getMinRecharge:function(){
+				pro.fetch("post","/others/getSysparam","","").then((res)=>{
+					if(res.code == 1 && res.success == true){
+						this.minRecharge = res.data.minPayMoney;
+					}
+				}).catch((err)=>{
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
+					}else{
+						if(data.code == -9999){
+							this.$toast({message:"认证失败，请重新登录",duration: 1000});
+							this.$router.push({path:"/login"});
+						}
+						else{
+							this.$toast({message:data.message,duration: 1000});
+						}
+					}
+				})
 			}
 		},
 		mounted:function(){
@@ -98,12 +119,11 @@
 				this.rechargeMoney = ''
 			}
 			if(this.userInfo == ''){
-				this.showLoginIn = false;
-				this.showNotLogin = true;
+//				console.log("未登录");
 			}else{
-				this.showLoginIn = true;
-				this.showNotLogin = false;
+//				console.log("一登录")
 				this.getUserInfo();
+				this.getMinRecharge();
 			}
 		}
 	}
