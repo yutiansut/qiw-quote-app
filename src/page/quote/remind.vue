@@ -275,6 +275,7 @@
 				this.hightPrice = '--';
 				this.daysLow = '';
 				this.lowPrice = '--';
+				this.remindId = '';
 				this.risePoint = '';
 				this.risePointSwitch = 0;
 				this.losePoint = '';
@@ -450,16 +451,6 @@
 								Toast({message: err.data.message, position: 'bottom', duration: 1000});
 							});
 						}
-						this.risePoint = '';
-						this.risePointSwitch = 0;
-						this.losePoint = '';
-						this.losePointSwitch = 0;
-						this.increase = ''; 
-						this.increaseSwitch = 0;  
-						this.decrease = '';
-						this.decreaseSwitch = 0;
-						this.isBreakHighestPriceSwitch = 0;
-						this.isBreakLowestPriceSwitch = 0;
 					}
 				}).catch((err) => {
 					Toast({message: err.data.message, position: 'bottom', duration: 2000});
@@ -509,6 +500,8 @@
 							//跌幅
 							if(this.remindList.todayFallRangePoint < 0){
 								this.decrease = -this.remindList.todayFallRangePoint;
+							}else{
+								this.decrease = this.remindList.todayFallRangePoint;
 							}
 							//跌幅开关
 							this.decreaseSwitch = this.remindList.todayFallRangePointIsOpen;
@@ -516,6 +509,18 @@
 							this.isBreakHighestPriceSwitch = this.remindList.todayBreakHighestPriceIsOpen;
 							//突破当日最低价开关
 							this.isBreakLowestPriceSwitch = this.remindList.todayBreakLowestPriceIsOpen;
+						}else{
+							this.remindId = '';
+							this.risePoint = '';
+							this.risePointSwitch = 0;
+							this.losePoint = '';
+							this.losePointSwitch = 0;
+							this.increase = ''; 
+							this.increaseSwitch = 0;  
+							this.decrease = '';
+							this.decreaseSwitch = 0;
+							this.isBreakHighestPriceSwitch = 0;
+							this.isBreakLowestPriceSwitch = 0;
 						}
 					}
 				}).catch((err) => {
