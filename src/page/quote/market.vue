@@ -7,7 +7,7 @@
 				</template>
 			</div>
 		</nav>
-		<div class="recommend">
+		<div class="recommend" v-show="listShow">
 			<template v-for="(v, index) in parameters">
 				<div class="col" v-show="v.isRecommend == '1'" @tap="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo, v.contrast)">
 					<span class="name">{{v.CommodityName}}</span>
