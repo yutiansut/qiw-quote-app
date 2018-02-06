@@ -168,6 +168,7 @@
 						this.showDetails = true;
 						this.showcp = false;
 						this.showEnd = true;
+						this.getDetails();
 						this.getEndInfo();
 					}
 				}).catch((err)=>{
@@ -190,13 +191,11 @@
 					token : this.userInfo.token,
 					secret : this.userInfo.secret
 				}
-				console.log(this.id)
-				console.log(headers)
 				pro.fetch("post","/futureManage/getHistoryTrade",{id:this.id},headers).then((res)=>{
 //					console.log("历史历史"+JSON.stringify(res));
 					if(res.code == 1 && res.success){
 						if(res.data!=undefined){
-							this.endData = res.data
+							this.endData = res.data;
 						}
 					}
 				}).catch((err)=>{
@@ -291,6 +290,13 @@
 		},
 		mounted:function(){
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+			this.id = this.$route.query.id;
+			if(this.userInfo == ''){
+				//console.log("未登录")
+			}else{
+				//console.log("一登录")
+				this.getDetails();
+			}
 		},
 		activated: function(){
 			//获取平台账户登录信息
