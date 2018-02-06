@@ -90,10 +90,10 @@
 			},
 			tabEvent: function(index){
 				this.currentNum = index;
+				this.$store.state.market.Parameters = [];
+				this.$store.state.market.commodityOrder = [];
 				switch(index){
 					case 0:
-						this.$store.state.market.Parameters = [];
-						this.$store.state.market.commodityOrder = [];
 						if(this.contList.length > 0){
 							this.$store.state.market.commodityOrder = this.contList;
 							this.contList.forEach((o, i) => {
@@ -102,8 +102,6 @@
 						}
 						break;
 					case 1:
-						this.$store.state.market.Parameters = [];
-						this.$store.state.market.commodityOrder = [];
 						if(this.goodsList.length > 0){
 							this.$store.state.market.commodityOrder = this.goodsList;
 							this.goodsList.forEach((o, i) => {
@@ -112,8 +110,6 @@
 						}
 						break;
 					case 2:
-						this.$store.state.market.Parameters = [];
-						this.$store.state.market.commodityOrder = [];
 						if(this.stockList.length > 0){
 							this.$store.state.market.commodityOrder = this.stockList;
 							this.stockList.forEach((o, i) => {
@@ -122,8 +118,6 @@
 						}
 						break;
 					case 3:
-						this.$store.state.market.Parameters = [];
-						this.$store.state.market.commodityOrder = [];
 						if(this.foreignList.length > 0){
 							this.$store.state.market.commodityOrder = this.foreignList;
 							this.foreignList.forEach((o, i) => {
@@ -132,8 +126,6 @@
 						}
 						break;
 					case 4:
-						this.$store.state.market.Parameters = [];
-						this.$store.state.market.commodityOrder = [];
 						if(this.metalList.length > 0){
 							this.$store.state.market.commodityOrder = this.metalList;
 							this.metalList.forEach((o, i) => {
@@ -142,8 +134,6 @@
 						}
 						break;
 					case 5:
-						this.$store.state.market.Parameters = [];
-						this.$store.state.market.commodityOrder = [];
 						if(this.bondList.length > 0){
 							this.$store.state.market.commodityOrder = this.bondList;
 							this.bondList.forEach((o, i) => {
@@ -152,8 +142,6 @@
 						}
 						break;
 					case 6:
-						this.$store.state.market.Parameters = [];
-						this.$store.state.market.commodityOrder = [];
 						if(this.etfList.length > 0){
 							this.$store.state.market.commodityOrder = this.etfList;
 							this.etfList.forEach((o, i) => {

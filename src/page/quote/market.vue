@@ -92,10 +92,10 @@
 			},
 			clickEvent: function(index){
 				this.currentNum = index;
+				this.$store.state.market.Parameters = [];
+				this.$store.state.market.commodityOrder = [];
 				switch(index){
 					case 0:
-						this.$store.state.market.Parameters = [];
-						this.$store.state.market.commodityOrder = [];
 						this.$store.state.market.commodityOrder = this.goodsList.list;
 						if(this.goodsList.list.length > 0){
 							this.goodsList.list.forEach((o, i) => {
@@ -104,8 +104,6 @@
 						}
 						break;
 					case 1:
-						this.$store.state.market.Parameters = [];
-						this.$store.state.market.commodityOrder = [];
 						this.$store.state.market.commodityOrder = this.stockList.list;
 						if(this.stockList.list.length > 0){
 							this.stockList.list.forEach((o, i) => {
@@ -114,8 +112,6 @@
 						}
 						break;
 					case 2:
-						this.$store.state.market.Parameters = [];
-						this.$store.state.market.commodityOrder = [];
 						this.$store.state.market.commodityOrder = this.foreignList.list;
 						if(this.foreignList.list.length > 0){
 							this.foreignList.list.forEach((o, i) => {
@@ -124,8 +120,6 @@
 						}
 						break;
 					case 3:
-						this.$store.state.market.Parameters = [];
-						this.$store.state.market.commodityOrder = [];
 						this.$store.state.market.commodityOrder = this.metalList.list;
 						if(this.metalList.list.length > 0){
 							this.metalList.list.forEach((o, i) => {
@@ -134,8 +128,6 @@
 						}
 						break;
 					case 4:
-						this.$store.state.market.Parameters = [];
-						this.$store.state.market.commodityOrder = [];
 						this.$store.state.market.commodityOrder = this.bondList.list;
 						if(this.bondList.list.length > 0){
 							this.bondList.list.forEach((o, i) => {
@@ -144,8 +136,6 @@
 						}
 						break;
 					case 5:
-						this.$store.state.market.Parameters = [];
-						this.$store.state.market.commodityOrder = [];
 						this.$store.state.market.commodityOrder = this.etfList.list;
 						if(this.etfList.list.length > 0){
 							this.etfList.list.forEach((o, i) => {
