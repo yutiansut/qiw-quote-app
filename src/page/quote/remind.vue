@@ -111,7 +111,7 @@
 				<ul>
 					<li><span>提醒频率</span></li>
 					<template v-for="v in remindFrequency">
-						<li :class="{current: v.status == defaultFrequency}" @tap.stop="chooseRemindEvent(v.status)"><span>{{v.name}}</span></li>
+						<li :class="{current: v.status == defaultFrequency}" @click="chooseRemindEvent(v.status)"><span>{{v.name}}</span></li>
 					</template>
 				</ul>
 			</div>
@@ -358,7 +358,8 @@
 					}
 				}
 			},
-			saveEvent: function(){
+			saveEvent: function(e){
+				console.log($(e.currentTarget));
 				if(this.risePoint != undefined && this.risePoint != 0 && this.floatReg.test(this.risePoint) == false){
 					Toast({message: '请输入上涨价格', position: 'bottom', duration: 1000});
 					this.risePoint = ''; return;
@@ -725,6 +726,7 @@
 			z-index: 100;
 			width: 7.5rem;
 			height: 3.5rem;
+			overflow: hidden;
 			background: $white;
 			transition: all 0.3s;
 			li{
