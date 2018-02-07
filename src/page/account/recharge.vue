@@ -45,6 +45,7 @@
 		},
 		methods:{
 			recharge:function(){
+				console.log(typeof this.minRecharge)
 //				console.log("this.rechargeMoney====="+this.rechargeMoney)
 				if(this.rechargeMoney == undefined){
 					this.$toast({message:"充值金额不能为空",duration: 1000});
@@ -90,7 +91,7 @@
 			getMinRecharge:function(){
 				pro.fetch("post","/others/getSysparam","","").then((res)=>{
 					if(res.code == 1 && res.success == true){
-						this.minRecharge = res.data.minPayMoney;
+						this.minRecharge = Number(res.data.minPayMoney);
 					}
 				}).catch((err)=>{
 					var data = err.data;
