@@ -111,7 +111,7 @@
 				<ul>
 					<li><span>提醒频率</span></li>
 					<template v-for="v in remindFrequency">
-						<li :class="{current: v.status == defaultFrequency}" @tap="chooseRemindEvent(v.status)"><span>{{v.name}}</span></li>
+						<li :class="{current: v.status == defaultFrequency}" @tap.stop="chooseRemindEvent(v.status)"><span>{{v.name}}</span></li>
 					</template>
 				</ul>
 			</div>
