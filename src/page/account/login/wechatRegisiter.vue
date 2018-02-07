@@ -196,29 +196,29 @@
 		},
 		mounted:function(){
 			this.info = this.$route.query.weixinInfo;
-			this.headimgurl = this.$route.query.weixinInfo.userInfo.headimgurl;
-			this.nickname = this.$route.query.weixinInfo.userInfo.nickname;
-			this.openid=this.$route.query.weixinInfo.userInfo.openid;
-			this.unionid=this.$route.query.weixinInfo.userInfo.unionid;
-			this.province=this.$route.query.weixinInfo.userInfo.province;
-			this.city=this.$route.query.weixinInfo.userInfo.city;
-			this.country=this.$route.query.weixinInfo.userInfo.country;
-			this.privilege=this.$route.query.weixinInfo.userInfo.privilege;
-			this.accessToken=this.$route.query.weixinInfo.authResult.access_token;
-			this.sex=this.$route.query.weixinInfo.userInfo.sex;
+			this.headimgurl = this.$route.query.weixinInfo.headimgurl;
+			this.nickname = this.$route.query.weixinInfo.nickname;
+			this.openid=this.$route.query.weixinInfo.openid;
+			this.unionid=this.$route.query.weixinInfo.unionid;
+			this.province=this.$route.query.weixinInfo.province;
+			this.city=this.$route.query.weixinInfo.city;
+			this.country=this.$route.query.weixinInfo.country;
+			this.privilege=this.$route.query.weixinInfo.privilege;
+			this.accessToken=this.$route.query.access_token;
+			this.sex=this.$route.query.sex;
 		},
 		activited:function(){
 			this.info = this.$route.query.weixinInfo;
-			this.headimgurl = this.$route.query.weixinInfo.userInfo.headimgurl;
-			this.nickname = this.$route.query.weixinInfo.userInfo.nickname;
-			this.openid=this.$route.query.weixinInfo.userInfo.openid;
-			this.unionid=this.$route.query.weixinInfo.userInfo.unionid;
-			this.province=this.$route.query.weixinInfo.userInfo.province;
-			this.city=this.$route.query.weixinInfo.userInfo.city;
-			this.country=this.$route.query.weixinInfo.userInfo.country;
-			this.privilege=this.$route.query.weixinInfo.userInfo.privilege;
-			this.accessToken=this.$route.query.weixinInfo.authResult.access_token;
-			this.sex=this.$route.query.weixinInfo.userInfo.sex;
+			this.headimgurl = this.$route.query.weixinInfo.headimgurl;
+			this.nickname = this.$route.query.weixinInfo.nickname;
+			this.openid=this.$route.query.weixinInfo.openid;
+			this.unionid=this.$route.query.weixinInfo.unionid;
+			this.province=this.$route.query.weixinInfo.province;
+			this.city=this.$route.query.weixinInfo.city;
+			this.country=this.$route.query.weixinInfo.country;
+			this.privilege=this.$route.query.weixinInfo.privilege;
+			this.accessToken=this.$route.query.weixinInfo.access_token;
+			this.sex=this.$route.query.weixinInfo.sex;
 		}
 	}
 </script>
