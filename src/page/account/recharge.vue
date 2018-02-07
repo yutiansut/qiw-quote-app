@@ -10,7 +10,7 @@
 		</mt-header>
 		<div id="container">
 			<div class="ipt">
-				<input type="number" v-model="rechargeMoney" placeholder="充值金额  请输入充值金额"/>
+				<input type="number" v-model="rechargeMoney" placeholder="请输入充值金额"/>
 			</div>
 			<div class="title_lev2">
 				余额：<span>{{accountMoney}}</span>元
@@ -136,11 +136,11 @@
 		width: 7.5rem;
 	}
 	#back{
-		background: url(../../assets/images/back_icon.png) no-repeat;
 		display: inline-block;
-		width: 0.24rem;
-		height: 0.32rem;
-		background-size: 100% 100%;
+		width: 0.64rem;
+		height: 1rem;
+		background: url(../../assets/images/back_icon.png) no-repeat 0.15rem 0.34rem;
+		background-size: 0.24rem 0.32rem;
 	}
 	#container{
 		color:$fontBlue ;

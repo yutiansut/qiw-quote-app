@@ -103,8 +103,7 @@
 				disabled:false,
 				activityType:0,
 				//是否使用过注册奖励申请方案，默认为true
-				isUseActivity:true,
-				stepMoney:100
+				isUseAcitivity:true
 			}
 		},
 		methods:{
@@ -122,34 +121,47 @@
 					if(data == undefined){
 						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
 					}else if(data.data == false){
+						this.isUseAcitivity = false;
 //						console.log("已领取为使用")
-						this.isUseActivity = false;
 						this.disabled = true;
 						this.activityType = 1;
 						this.rangeValue = 10000;
 						this.startMax = 10000;
-						this.stepMoney = (this.startMax-300)/100;
+						$("#btnnnn").html("立即支付");
 					}else if(data.data == true){
+						this.isUseAcitivity = true;
+//						console.log("已领取，已使用");
+						this.rangeValue = 300;
 						this.disabled = false;
+//						console.log("333333333333")
+						if(this.balance > 3){
+							this.startMax = Number(this.balance*this.rate).toFixed(2);
+							$("#btnnnn").html("立即支付");
+						}else if(this.balance < 3 || this.balance == 3){
+							this.startMax = 10000;
+							$("#btnnnn").html("立即充值");
+						}
 					}
 				})
 			},
 			//获取是否领取过1w新手资金
-			GetActivity:function(headers){
-				console.log("444444444444");
+			GetActivity:function(){
+				var headers = {
+					token : this.userInfo.token,
+					secret : this.userInfo.secret
+				}
 				pro.fetch("post","/account/getBasicMsg","",headers).then((res)=>{
-//					console.log("res=="+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
 						this.isPresentedgive = res.data.isGetActivity;
 						if(res.data.isGetActivity == true){
 //							console.log("已领取11111111111111");
+							this.balance = res.data.balance;
 							this.getNewActivity(headers);
-							$("#btnnnn").html("立即支付");
 						}else{
 //							console.log("未领取555555555555555555");
 							$("#btnnnn").html("领取体验金");
 							this.startMax = 10000;
-							this.stepMoney = 100/(this.startMax-300);
+							this.disabled = false;
 						}
 					}
 				}).catch((err)=>{
@@ -164,33 +176,37 @@
 					}
 				})
 			},
-			//获取基础配置信息
-			getParameters:function(headers){
-				console.log("555555555555");
-				pro.fetch("post","/futureManage/getApplyData","",headers).then((res)=>{
+			//获取基础配置信息--未登录
+			getParameters:function(){
+				pro.fetch("post","/futureManage/getApplyData","","").then((res)=>{
 //					console.log("res==="+JSON.stringify(res.data));
 					if(res.code == 1 && res.success == true){
 						this.tradableList = res.data.tradableList;
 						this.lossScale = res.data.lossScale;
 						this.lossLine = this.rangeValue*this.lossScale + this.rangeValue*this.rangeValue1;
 						this.rate = res.data.rate;
-						if(this.isPresentedgive == true){
-							if(res.data.balance != '' && res.data.balance > 3){
-								this.startMax = Number(res.data.balance*this.rate).toFixed(2);
-								this.balance = res.data.balance;
-								this.stepMoney = 100/(this.startMax-300);
-								$("#btnnnn").html("立即支付");
-							}else if(res.data.balance < 3 || res.data.balance == 3){
-								this.startMax = 10000;
-								this.stepMoney = 100/(this.startMax-300);
-								this.balance = res.data.balance;
-								if(this.userInfo != ''){
-//									console.log("已经登录");
-									$("#btnnnn").html("立即充值");
-								}
-							}
-						}
-						
+					}
+				}).catch((err)=>{
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
+					}else if(data.code == -9999){
+						this.$toast({message:'登录超时，请重新登录',duration: 2000});
+						this.$router.push({path:"/login"});
+					}else{
+						this.$toast({message:data.message,duration: 2000});
+					}
+				});
+			},
+			//获取基础配置信息---已登录
+			getParameters1:function(){
+				pro.fetch("post","/futureManage/getApplyData","","").then((res)=>{
+//					console.log("res==="+JSON.stringify(res.data));
+					if(res.code == 1 && res.success == true){
+						this.tradableList = res.data.tradableList;
+						this.lossScale = res.data.lossScale;
+						this.lossLine = this.rangeValue*this.lossScale + this.rangeValue*this.rangeValue1;
+						this.rate = res.data.rate;
 					}
 				}).catch((err)=>{
 					var data = err.data;
@@ -222,22 +238,30 @@
 					}
 					//领取过新手礼包
 					else{
-						//余额不足
-						if(this.payMoney > this.balance){
-//							console.log("去充值");
-							this.rechargeMoney = this.payMoney - this.balance;
-							MessageBox.confirm("余额不足：您还差"+this.rechargeMoney+"元，先去充值吧!","提示",{confirmButtonText:"去充值",}).then(action=>{
-//								console.log("去充值咯");
-								this.$router.push({path:"/recharge",query:{rechargeMoney:this.rechargeMoney}});
-							}).catch(err=>{});
-						}
-						//余额充足
-						else{
-//							console.log("去支付");
+						//领取过奖金未使用
+						if(this.isUseAcitivity == false){
 							MessageBox.confirm("确认支付"+this.payMoney+"元，申请一个融资方案?","提示",{confirmButtonText:"确认",}).then(action=>{
-//								console.log("去支付咯");
-								this.apply(this.activityType);
-							}).catch(err=>{});
+	//								console.log("去支付咯");
+									this.apply(1);
+								}).catch(err=>{});
+						}else{
+						//余额不足
+							if(this.payMoney > this.balance){
+//							console.log("去充值");
+								this.rechargeMoney = this.payMoney - this.balance;
+								MessageBox.confirm("余额不足：您还差"+this.rechargeMoney+"元，先去充值吧!","提示",{confirmButtonText:"去充值",}).then(action=>{
+	//								console.log("去充值咯");
+									this.$router.push({path:"/recharge",query:{rechargeMoney:this.rechargeMoney}});
+								}).catch(err=>{});
+							}
+							//余额充足
+							else{
+	//							console.log("去支付");
+								MessageBox.confirm("确认支付"+this.payMoney+"元，申请一个融资方案?","提示",{confirmButtonText:"确认",}).then(action=>{
+	//								console.log("去支付咯");
+									this.apply(0);
+								}).catch(err=>{});
+							}
 						}
 					}
 				}
@@ -276,45 +300,8 @@
 			}
 		},
 		mounted:function(){
-			console.log("11111111")
-//			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
-//			this.financing = this.rangeValue;
-//			this.totalMoney = this.rangeValue + this.rangeValue*this.rangeValue1;
-//			this.payMoney = this.rangeValue/100;
-//			this.startMin = 300;
-//			this.rangeValue = 300;
-//			if(this.userInfo == ''){
-//				//未登录
-////				console.log("未登录");
-//				this.startMax = 1000;
-//				this.stepMoney = 100/(this.startMax-300);
-//				this.isLogin = false;
-//				var headers = ""
-//				this.getParameters("");
-//			}else{
-//				//已登录
-////				console.log("一登录")
-//				this.isLogin = true;
-//				var headers = {
-//					token : this.userInfo.token,
-//					secret : this.userInfo.secret
-//				}
-////				console.log("headers==="+JSON.stringify(headers))
-//				this.getParameters(headers);
-//				this.GetActivity(headers);
-//			}
-//			var screenPhone=screen.width;
-//			if(screenPhone == 320){
-//				$(".bkg").css("top","0.83rem").css("height","0.34rem");
-////				$(".mt-range-content").css("margin-right","0.5rem");
-//				$(".bkg1").css("top","0.83rem").css("height","0.34rem");
-//			}else if(screenPhone==375){
-//				$(".bkg").css("top","0.79rem").css("height","0.33rem");
-//				$(".bkg1").css("top","0.79rem").css("height","0.33rem");
-//			}
 		},
 		activated: function(){
-			console.log("222222222222")
 			//获取平台账户登录信息
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 			this.financing = this.rangeValue;
@@ -326,21 +313,14 @@
 				//未登录
 //				console.log("未登录");
 				this.startMax = 1000;
-				this.stepMoney = 100/(this.startMax-300);
 				this.isLogin = false;
-				var headers = ""
-				this.getParameters("");
+				this.getParameters();
 			}else{
 				//已登录
 //				console.log("一登录")
 				this.isLogin = true;
-				var headers = {
-					token : this.userInfo.token,
-					secret : this.userInfo.secret
-				}
-//				console.log("headers==="+JSON.stringify(headers))
-				this.GetActivity(headers);
-				this.getParameters(headers);
+				this.GetActivity();
+				this.getParameters1();
 			}
 			var screenPhone=screen.width;
 			if(screenPhone == 320){
