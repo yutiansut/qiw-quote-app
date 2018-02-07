@@ -128,7 +128,7 @@
     		}
     		p{
     			line-height: 0.26rem;
-    			color: $white;
+    			color: $fontBlueTitle;
     			padding: 0.08rem 0.3rem;
     		}
     	}
