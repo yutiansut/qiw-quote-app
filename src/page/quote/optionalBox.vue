@@ -203,6 +203,7 @@
 				&.name{
 					color: $white;
 					margin-top: 0.25rem;
+					font-size: $fs30;
 				}
 				&:last-child{
 					font-size: 0.2rem;
