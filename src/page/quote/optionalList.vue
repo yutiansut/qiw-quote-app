@@ -37,8 +37,9 @@
 		</div>
 		<div class="btn_box">
 			<!--<i class="icon icon_rotate" @tap="rotateEvent"></i>-->
-			<i class="icon icon_box" @tap="switchBox"></i>
-			<i class="icon icon_btn" @tap="btnEvent"></i>
+			<i class="icon icon_list" @tap="switchList"></i>
+			<i class="icon icon_packup" v-show="!btnShow" @tap="packupEvent"></i>
+			<i class="icon icon_btn" v-show="btnShow" @tap="btnEvent"></i>
 		</div>
 	</div>
 </template>
@@ -63,6 +64,7 @@
 				metalList: [],  //金属
 				bondList: [],   //债券期货
 				etfList: [],   //ETF
+				btnShow: true,
 			}
 		},
 		computed: {
@@ -168,22 +170,21 @@
 			rotateEvent: function(){
 				
 			},
-			switchBox: function(){
-				this.$parent.currentView = 'optionalBox';
-			},
 			optionalEvent: function(){
 				this.$router.push({path: '/optionalManage'});
 			},
+			packupEvent: function(){
+				this.btnShow = true;
+				$(".icon_list").css({bottom: 1.5 + 'rem', opacity: 0});
+			},
+			switchList: function(){
+				this.$parent.currentView = 'optionalBox';
+			},
 			btnEvent: function(e){
-				if(!$(e.currentTarget).hasClass('current')){
-					$(e.currentTarget).addClass('current');
-					$(".icon_box").css({bottom: 2.3 + 'rem', opacity: 1});
-					$(".icon_rotate").css({bottom: 3.1 + 'rem', opacity: 1});
-				}else{
-					$(e.currentTarget).removeClass('current');
-					$(".icon_box").css({bottom: 1.5 + 'rem', opacity: 0});
-					$(".icon_rotate").css({bottom: 1.5 + 'rem', opacity: 0});
-				}
+				this.btnShow = false;
+				$(e.currentTarget).addClass('current');
+				$(".icon_list").css({bottom: 2.3 + 'rem', opacity: 1});
+				$(".icon_rotate").css({bottom: 3.1 + 'rem', opacity: 1});
 			},
 			operateData: function(){
 				if(this.userInfo == undefined) return;
@@ -390,7 +391,16 @@
 			}
 			&.icon_btn{
 				opacity: 1;
-				background: url(../../assets/images/optional.png) no-repeat center center;
+				background: url(../../assets/images/list.png) no-repeat center center;
+				background-size: 100% 100%;
+			}
+			&.icon_packup{
+				opacity: 1;
+				background: url(../../assets/images/packup.png) no-repeat center center;
+				background-size: 100% 100%;
+			}
+			&.icon_list{
+				background: url(../../assets/images/optionalList.png) no-repeat center center;
 				background-size: 100% 100%;
 			}
 		}

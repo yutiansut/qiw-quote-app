@@ -24,7 +24,11 @@
 					<span>添加自选</span>
 				</div>
 			</div>
-			<div class="icon icon_list" @tap="switchList"></div>
+			<div class="btn_box">
+				<i class="icon icon_box" @tap="switchList"></i>
+				<i class="icon icon_packup" v-show="!btnShow" @tap="packupEvent"></i>
+				<i class="icon icon_btn" v-show="btnShow" @tap="btnEvent"></i>
+			</div>
 		</div>
 	</div>
 </template>
@@ -39,6 +43,7 @@
 			return{
 				_typeList: [],
 				typeList: [],
+				btnShow: true,
 			}
 		},
 		computed: {
@@ -91,6 +96,16 @@
 			},
 			switchList: function(){
 				this.$parent.currentView = 'optionalList';
+			},
+			packupEvent: function(){
+				this.btnShow = true;
+				$(".icon_box").css({bottom: 1.5 + 'rem', opacity: 0});
+			},
+			btnEvent: function(e){
+				this.btnShow = false;
+				$(e.currentTarget).addClass('current');
+				$(".icon_box").css({bottom: 2.3 + 'rem', opacity: 1});
+				$(".icon_rotate").css({bottom: 3.1 + 'rem', opacity: 1});
 			},
 			switchEvent: function(status, name){
 				if(status == 1){
@@ -254,14 +269,29 @@
 			color: $white;
 		}
 	}
-	.icon_list{
-		width: 0.64rem;
-		height: 0.64rem;
-		background: url(../../assets/images/list.png) no-repeat center center;
-		background-size: 100% 100%;
-		position: fixed;
-		bottom: 1.5rem;
-		right: 0.3rem;
+	.btn_box{
+		.icon{
+			width: 0.64rem;
+			height: 0.64rem;
+			position: fixed;
+			bottom: 1.5rem;
+			right: 0.3rem;
+			opacity: 0;
+			transition: all .3s;
+			&.icon_box{
+				background: url(../../assets/images/box.png) no-repeat center center;
+				background-size: 100% 100%;
+			}
+			&.icon_btn{
+				opacity: 1;
+				background: url(../../assets/images/list.png) no-repeat center center;
+				background-size: 100% 100%;
+			}
+			&.icon_packup{
+				opacity: 1;
+				background: url(../../assets/images/packup.png) no-repeat center center;
+				background-size: 100% 100%;
+			}
+		}
 	}
-	
 </style>
