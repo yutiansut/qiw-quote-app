@@ -83,22 +83,6 @@
 				return num.toFixed(dotsize);
 			}
 		},
-		watch: {
-//			len: function(n, o){
-//				if(n && n > 0){
-//					let num = 0;
-//					console.log(this.parameters);
-//					this.parameters.forEach((o, i) => {
-//						console.log(typeof o.isRecommend);
-//						if(o.isRecommend == '1'){
-//							
-//							num++;
-//						}
-//					});
-//					if(num == 0) this.recommendShow = false;
-//				}
-//			}
-		},
 		methods: {
 			toQuoteDetails: function(commodityNo, mainContract, exchangeNo, contrast){
 				this.$router.push({path: '/quoteDetails', query: {'commodityNo': commodityNo, 'mainContract': mainContract, 'exchangeNo': exchangeNo, 'contrast': contrast}});
@@ -114,6 +98,7 @@
 			},
 			clickEvent: function(index){
 				this.currentNum = index;
+				this.parameters = [];
 				this.$store.state.market.Parameters = [];
 				this.$store.state.market.commodityOrder = [];
 				switch(index){
