@@ -362,7 +362,14 @@
 				if(this.currentNo){
 					var p = this.currentNo.toString().toLowerCase();
 				}
-				this.$router.push({path: '/' + p});
+				let arr = ['cl','cn','es','fdax','fdxm','gc','hg','hhi','hsi','mch','mhi','ng','nk','nq','qm','si','ym'];
+				arr.forEach((o, i) => {
+					if(o != p){
+						Toast({message: '此合约暂无交易规则', position: 'bottom', duration: 2000});
+					}else{
+						this.$router.push({path: '/' + p});
+					}
+				});
 			},
 			addRemind: function(){
 				this.chartsShow = false;
