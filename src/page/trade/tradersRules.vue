@@ -199,21 +199,19 @@
 	.page_cont{
 			margin-top: 1rem;
     		overflow: hidden;
-    		/*background: @deepblue;*/
     		h3{
     			height: 0.42rem;
     			line-height: 0.42rem;
     			border-bottom: 1px solid $black;
-    			padding: 0 15px;
+    			padding: 0.01rem  0.15rem;
     			color: $yellow;
-    			font-size: 0.16rem;
+    			font-size: 0.32rem;
     		}
     		p{
-    			line-height: 0.26rem;
-    			color: $white;
-    			font-size: 0.14rem;;
-    			padding: 0.08rem 0.3rem;
-    			border-bottom: 0.05 solid $black;
+    			line-height: 0.42rem;
+    			color: $fontBlueTitle;
+    			font-size: 0.30rem;
+    			padding: 0rem 0.3rem;
     			a{
     				color: $yellow;
     			}
@@ -228,8 +226,8 @@
     					height: 0.5rem;
     					text-align: center;
     					border: 1px solid $white;
-    					font-size: 0.14rem;
-    					color: $white;
+    					font-size: 0.30rem;
+    					color: $fontBlueTitle;
     					&:nth-child(1){
     						width: 1.2rem;
     					}
