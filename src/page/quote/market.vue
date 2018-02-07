@@ -232,6 +232,7 @@
 	.recommend{
 		width: 7.5rem;
 		height: 1.6rem;
+		overflow: hidden;
 		border-bottom: 0.01rem solid $black;
 		.col{
 			float: left;
