@@ -100,7 +100,7 @@
 				</div>
 			</div>
 			<div class="btn_box">
-				<btn name="完成" className="bluelg" @click.native="saveEvent"></btn>
+				<btn name="完成" className="bluelg" @tap.native="saveEvent"></btn>
 			</div>
 		</div>
 		</div>
@@ -605,6 +605,7 @@
 		.row{
 			height: 0.96rem;
 			overflow: hidden;
+			background: $bg;
 			border-bottom: 0.01rem solid $black;
 			padding: 0 0.3rem;
 			span{
@@ -655,10 +656,12 @@
 				margin-left: 0.05rem;
 			}
 			.icon_arrow{
-				width: 0.22rem;
-				height: 0.96rem;
-				background: url(../../assets/images/arrow.png) no-repeat right 0.38rem;
-				background-size: 0.12rem 0.2rem;
+				float: left;
+				width: 0.15rem;
+				height: 0.24rem;
+				background: url(../../assets/images/arrow.png) no-repeat center center;
+				background-size: 0.15rem 0.24rem;
+				margin: 0.36rem 0 0.36rem 0.2rem;
 			}
 			.switch{
 				float: right;
