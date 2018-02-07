@@ -45,7 +45,7 @@
 
 <script>
 	import pro from '../../assets/js/common.js'
-	import { Toast } from 'mint-ui';
+	import { Toast, Indicator } from 'mint-ui';
 	export default {
 		name: 'market',
 		components: {},
@@ -83,6 +83,11 @@
 				return num.toFixed(dotsize);
 			}
 		},
+		watch: {
+			len: function(n, o){
+				if(n && n > 0) Indicator.close();
+			}
+		},
 		methods: {
 			toQuoteDetails: function(commodityNo, mainContract, exchangeNo, contrast){
 				this.$router.push({path: '/quoteDetails', query: {'commodityNo': commodityNo, 'mainContract': mainContract, 'exchangeNo': exchangeNo, 'contrast': contrast}});
@@ -97,8 +102,8 @@
 				}
 			},
 			clickEvent: function(index){
+				Indicator.open({spinnerType: 'fading-circle'});
 				this.currentNum = index;
-				this.parameters = [];
 				this.$store.state.market.Parameters = [];
 				this.$store.state.market.commodityOrder = [];
 				switch(index){
