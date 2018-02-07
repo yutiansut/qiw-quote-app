@@ -49,7 +49,8 @@
 				moneyUsd:'',
 				cnyToSimulationRate:'',
 				addReg:/^\d+$/,
-				realmoney:""
+				realmoney:"",
+				addbondMinMoney:""
 			}
 		},
 		methods:{
@@ -62,14 +63,14 @@
 			add:function(){
 				if(this.addMoney == ''){
 					this.$toast({message:"请输入追加保证金金额",duration: 1000});
-				}else if(this.addMoney<500){
-					this.$toast({message:"充值金额必须大于500元",duration: 1000});
+				}else if(this.addMoney<Number(this.addbondMinMoney)){
+					this.$toast({message:"充值金额必须大于"+this.addbondMinMoney+"元",duration: 1000});
 				}else if(this.addReg.test(this.addMoney)==false){
 					this.$toast({message:"输入金额格式错误",duration: 1000});
 				}else{
 					var data = {
 						id:this.id,
-						money:this.realmoney
+						money:this.addMoney
 					}
 					var headers = {
 						token : this.userInfo.token,
@@ -78,7 +79,7 @@
 					pro.fetch("post","/ futureManage/addMargin",data,headers).then((res)=>{
 						if(res.code == 1 && res.success == true){
 							this.$toast({message:"追加成功",duration: 1000});
-//							this.$router.push({path:"/"})
+							this.$router.push({path:"/myFinance"});
 						}
 					}).catch((err)=>{
 						var data = err.data;
@@ -125,11 +126,12 @@
 			//获取汇率
 			getCnyToUsdRate:function(){
 				pro.fetch("post","/others/getSysparam","","").then((res)=>{
-					console.log("res==="+JSON.stringify(res));
+//					console.log("res==="+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						this.cnyToUsdRate = 1/res.data.cnyToUsdRate;
 						this.cnyToSimulationRate = res.data.cnyToSimulationRate;
-						console.log("this.cnyToUsdRate==="+this.cnyToUsdRate)
+						this.addbondMinMoney = res.data.addbondMinMoney;
+//						console.log("this.cnyToUsdRate==="+this.cnyToUsdRate)
 					}
 				}).catch((err)=>{
 					var data = err.data;
@@ -163,7 +165,7 @@
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 			this.id = this.$route.query.id;
 			if(this.userInfo == ''){
-				console.log("1111")
+//				console.log("1111")
 			}else{
 				this.getUserInfo();
 				this.getCnyToUsdRate();
@@ -171,7 +173,7 @@
 		},
 		watch:{
 			addMoney:function(a){
-				this.moneyUsd = Number((a/100)*(1/this.cnyToUsdRate)).toFixed(2);
+				this.moneyUsd = Number(a*(1/this.cnyToUsdRate)).toFixed(2);
 				this.realmoney = a/100;
 			}
 		}
