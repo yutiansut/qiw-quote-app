@@ -125,6 +125,7 @@ pro.toweixin=function(){
 		var auths=null;
 		// 扩展API加载完毕，现在可以正常调用扩展API
 		plus.oauth.getServices(function(services){
+//			console.log("11111111111每次");
 			auths = services;
 			authLogin();
 		},function(e){
@@ -133,6 +134,7 @@ pro.toweixin=function(){
 		// 登录操作
 //		authLogin();
 		function authLogin(){
+//			console.log("22222222222每次");
 			var s = auths[3];
 			if (!s.authResult){
 				s.login( function(e){
@@ -147,19 +149,33 @@ pro.toweixin=function(){
 		}
 		// 获取登录用户信息操作
 		function authUserInfo(){
+//			console.log("333每次");
 			var s = auths[3];
 			if ( !s.authResult ) {
 				mui.toast("未登录授权！");
 			} else {
 				s.getUserInfo( function(e){
 //					console.log( "获取用户信息成功："+JSON.stringify(s.userInfo) );
-					localStorage.setItem("weixinUser",JSON.stringify(s.userInfo));
+					localStorage.weixinUser=JSON.stringify(s.userInfo);
+					authLogout();
 				}, function(e){
 					mui.toast( "获取用户信息失败，请检查微信是否在线");
 				} );
 			}
 		}
-		
+		// 注销所有登录授权认证服务
+		function authLogout(){
+			for ( var i in auths ) {
+				var s = auths[i];
+				if ( s.authResult ) {
+					s.logout(function(e){
+//						console.log( "注销登录认证成功！" );
+					}, function(e){
+//						console.log( "注销登录认证失败！" );
+					});
+				}
+			}
+		}
 	})
 }
 pro.getClentId = function(){
