@@ -561,12 +561,12 @@
 		padding: 0 0.3rem;
 		box-sizing: border-box;
 		.icon_back{
-			width: 0.24rem;
+			width: 0.64rem;
 			height: 1rem;
-			background: url(../../assets/images/back_icon.png) no-repeat center 0.34rem;
+			background: url(../../assets/images/back_icon.png) no-repeat 0.3rem 0.34rem;
 			background-size: 0.24rem 0.32rem;
 			position: absolute;
-			left: 0.3rem;
+			left: 0;
 			z-index: 1;
 		}
 		.title{
