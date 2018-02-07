@@ -544,7 +544,8 @@
 			//获取最新价与最低价
 			this.getPriceByKline();
 			//判断就是否开启消息通知
-			pro.isOpenMessage();
+//			pro.isOpenMessage();
+			pro.isOpenMessages();
 		}
 		
 	}

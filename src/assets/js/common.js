@@ -187,7 +187,7 @@ pro.getClentId = function(){
 }
 
 /**
- * 判断是否开启消息推送
+ * 判断是否开启消息推送()
  */
 pro.isOpenMessage = function(){
 	var UIApplication = plus.ios.import("UIApplication");
@@ -205,6 +205,29 @@ pro.isOpenMessage = function(){
 	    mui.alert( "消息推送已关闭，无法接收通知，请在【设置】-【通知中心】-【应用名称】中开启");
 	}
 	plus.ios.deleteObject(app);
+}
+pro.isOpenMessages = function(){
+	var pp = plus.navigator.checkPermission('NOTIFITION');
+	if(pp != 'authorized'){
+		mui.alert( "消息推送已关闭，无法接收通知，请在【设置】-【通知中心】-【应用名称】中开启");
+	}
+//	switch(pp){
+//		case 'authorized':
+//			mui.alert('已开启定位权限');
+//		break;
+//		case 'denied':
+//			mui.alert('已关闭定位权限');
+//		break;
+//		case 'undetermined':
+//			mui.alert('未确定定位权限');
+//		break;
+//		case 'unknown':
+//			mui.alert('无法查询定位权限');
+//		break;
+//		default:
+//			mui.alert('不支持定位权限');
+//		break;
+//	}
 }
 
 export default pro
