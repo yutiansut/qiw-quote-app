@@ -37,6 +37,11 @@
 						<li><mt-button class="btn2" @click.native="addMargin">追加保证金</mt-button></li>
 					</ul>
 					<ul>
+						<li>追加保证金：<span>{{addDepositToTotal}}元</span></li>
+						<li>
+						</li>
+					</ul>
+					<ul>
 						<li>融资金额：<span>{{financMoney}}元</span></li>
 						<li>
 						</li>
@@ -67,6 +72,7 @@
 					<div class="black"></div>
 					<ul >
 						<li>融资保证金：<span>{{tradeDeposit}}元</span></li>
+						<li>追加保证金：<span>{{addDepositToTotal}}元</span></li>
 						<li>融资金额：<span>{{financMoney}}元</span></li>
 						<li>总操盘资金：<span>{{totalTradeFund}}元</span></li>
 						<li>亏损平仓线：<span>{{lossCloseOutLine}}元</span></li>
@@ -152,7 +158,8 @@
 				rate:"结算汇率",
 				tradeNum:'',
 				showDetails:false,
-				endData:""
+				endData:"",
+				addDepositToTotal:""
 			}
 		},
 		methods:{
@@ -261,6 +268,7 @@
 						this.tradeProfitAndLoss=res.data.program.tradeProfitAndLoss,
 						this.state=res.data.program.state,
 						this.rate=res.data.program.rate
+						this.addDepositToTotal = res.data.program.addDepositToTotal;
 						if(res.data.program.state == 1){
 							this.showcp = true;
 							this.showEnd = false;
