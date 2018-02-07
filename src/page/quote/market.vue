@@ -7,36 +7,38 @@
 				</template>
 			</div>
 		</nav>
-		<div class="recommend" v-show="listShow">
-			<template v-for="(v, index) in parameters">
-				<div class="col" v-show="v.isRecommend == '1'" @tap="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo, v.contrast)">
-					<span class="name">{{v.CommodityName}}</span>
-					<span :class="{red: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.LastPrice | fixNum(v.DotSize)}}<i class="icon icon_arrow" :class="{up: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, down: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}"></i></span>
-					<span :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeRate | fixNumTwo}}%&nbsp;&nbsp;<em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeValue | fixNum(v.DotSize)}}</span>
-				</div>
-			</template>
-		</div>
-		<div class="list" v-show="listShow">
-			<ul>
-				<li>
-					<div class="name"><span>名称</span></div>
-					<span>价格</span>
-					<span>成交量</span>
-					<span @tap="switchEvent">{{changeRateName}}<i class="icon icon_switch"></i></span>
-				</li>
+		<div class="main">
+			<div class="recommend" v-if="recommendShow">
 				<template v-for="(v, index) in parameters">
-					<li @tap="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo, v.contrast)">
-						<div class="name">
-							<em>{{v.CommodityName}}</em>
-							<em>{{v.CommodityNo + v.MainContract}}</em>
-						</div>
+					<div class="col" v-show="v.isRecommend == '1'" @tap="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo, v.contrast)">
+						<span class="name">{{v.CommodityName}}</span>
 						<span :class="{red: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.LastPrice | fixNum(v.DotSize)}}<i class="icon icon_arrow" :class="{up: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, down: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}"></i></span>
-						<span>{{v.LastQuotation.TotalVolume}}</span>
-						<span v-show="changeRateShow" class="changeRate" :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeRate | fixNumTwo}}%</span>
-						<span v-show="!changeRateShow" class="changeRate" :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeValue | fixNum(v.DotSize)}}</span>
-					</li>
+						<span :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeRate | fixNumTwo}}%&nbsp;&nbsp;<em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeValue | fixNum(v.DotSize)}}</span>
+					</div>
 				</template>
-			</ul>
+			</div>
+			<div class="list">
+				<ul>
+					<li>
+						<div class="name"><span>名称</span></div>
+						<span>价格</span>
+						<span>成交量</span>
+						<span @tap="switchEvent">{{changeRateName}}<i class="icon icon_switch"></i></span>
+					</li>
+					<template v-for="(v, index) in parameters">
+						<li @tap="toQuoteDetails(v.CommodityNo, v.MainContract, v.ExchangeNo, v.contrast)">
+							<div class="name">
+								<em>{{v.CommodityName}}</em>
+								<em>{{v.CommodityNo + v.MainContract}}</em>
+							</div>
+							<span :class="{red: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, green: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}">{{v.LastQuotation.LastPrice | fixNum(v.DotSize)}}<i class="icon icon_arrow" :class="{up: v.LastQuotation.LastPrice > v.LastQuotation.PreSettlePrice, down: v.LastQuotation.LastPrice < v.LastQuotation.PreSettlePrice}"></i></span>
+							<span>{{v.LastQuotation.TotalVolume}}</span>
+							<span v-show="changeRateShow" class="changeRate" :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeRate | fixNumTwo}}%</span>
+							<span v-show="!changeRateShow" class="changeRate" :class="{green: v.LastQuotation.ChangeRate < 0, red: v.LastQuotation.ChangeRate > 0}"><em v-show="v.LastQuotation.ChangeRate > 0">+</em>{{v.LastQuotation.ChangeValue | fixNum(v.DotSize)}}</span>
+						</li>
+					</template>
+				</ul>
+			</div>
 		</div>
 	</div>
 </template>
@@ -59,7 +61,7 @@
 				etfList: [],   //ETF
 				changeRateShow: true,
 				changeRateName: '涨跌幅',
-				listShow: true,
+				recommendShow: true,
 			}
 		},
 		computed: {
@@ -82,9 +84,20 @@
 			}
 		},
 		watch: {
-			len: function(n, o){
-				if(n && n > 0) this.listShow = true;
-			}
+//			len: function(n, o){
+//				if(n && n > 0){
+//					let num = 0;
+//					console.log(this.parameters);
+//					this.parameters.forEach((o, i) => {
+//						console.log(typeof o.isRecommend);
+//						if(o.isRecommend == '1'){
+//							
+//							num++;
+//						}
+//					});
+//					if(num == 0) this.recommendShow = false;
+//				}
+//			}
 		},
 		methods: {
 			toQuoteDetails: function(commodityNo, mainContract, exchangeNo, contrast){
@@ -100,7 +113,6 @@
 				}
 			},
 			clickEvent: function(index){
-				this.listShow = false;
 				this.currentNum = index;
 				this.$store.state.market.Parameters = [];
 				this.$store.state.market.commodityOrder = [];
@@ -153,8 +165,15 @@
 							});
 						}
 						break;
-					default:
-						break;
+				}
+				let num = 0;
+				this.$store.state.market.commodityOrder.forEach((o, i) => {
+					if(o.isRecommend == '1') num++;
+				});
+				if(num == 0){
+					this.recommendShow = false;
+				}else{
+					this.recommendShow = true;
 				}
 			},
 			operateDate: function(){
@@ -170,6 +189,14 @@
 		mounted: function(){
 			//获取合约类型
 			this.operateDate();
+			//是否显示推荐合约
+			let num = 0;
+			if(this.len > 0){
+				this.parameters.forEach((o, i) => {
+					if(o.isRecommend == '1') num++;
+				});
+				if(num == 0) this.recommendShow = false;
+			}
 		},
 		activated: function(){
 			this.currentNum = 0;
@@ -212,10 +239,12 @@
 			}
 		}
 	}
+	.main{
+		width: 7.5rem;
+		overflow: hidden;
+		margin-top: 1.82rem;
+	}
 	.recommend{
-		position: fixed;
-		top: 1.82rem;
-		left: 0;
 		width: 7.5rem;
 		height: 1.6rem;
 		border-bottom: 0.01rem solid $black;
@@ -266,7 +295,6 @@
 	}
 	.list{
 		width: 7.5rem;
-		margin-top: 3.42rem;
 		li{
 			height: 0.96rem;
 			line-height: 0.96rem;
