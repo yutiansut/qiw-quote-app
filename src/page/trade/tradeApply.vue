@@ -1,7 +1,7 @@
 <template>
 	<div id="tradeApply">
 		<div class="choose">
-			<div class="p_left">选择融资本金(本金越多，可持仓手数越多)</div>
+			<div class="p_left">选择融资保证金(本金越多，可持仓手数越多)</div>
 			<div class="picture">
 				<p><span>{{financing}}</span>元</p>
 				<mt-range v-model="rangeValue" :barHeight="10" :min="this.startMin" :max="this.startMax" id="range" :disabled="disabled" :step="100"></mt-range>
@@ -24,7 +24,7 @@
 			<div class="black"></div>
 			<div class="commodity">
 				<ul>
-					<li>融资金额</li>
+					<li>融资保证金</li>
 					<li>{{financing}}元</li>
 				</ul>
 				<ul>

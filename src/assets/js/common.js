@@ -122,52 +122,44 @@ pro.getMaximin = function(arr,maximin){
  */
 pro.toweixin=function(){
 	mui.plusReady(function(){
-		document.getElementById("wechat").addEventListener("tap",function(){
-			// 需要认证用户身份的请求调用接口
-			weixinLogin(this);
-			function weixinLogin(this1) {
-				app.setState(null);
-				//第三方登录
-				var authBtns = ['qihoo', 'weixin', 'sinaweibo', 'qq']; //配置业务支持的第三方登录
-				var auths = {};
-				plus.oauth.getServices(function(services) {
-					for(var i in services) {
-						var service = services[i];
-						auths[service.id] = service;
-//						if(~authBtns.indexOf(service.id)) {
-//							var isInstalled = app.isInstalled(service.id);
-							//						var btn = document.createElement('div');
-							//如果微信未安装，则为不启用状态
-//													btn.setAttribute('class', 'oauth-btn' + (!isInstalled && service.id === 'weixin' ? (' disabled') : ''));
-//													btn.authId = service.id;
-//													btn.style.backgroundImage = 'url("images/' + service.id + '.png")'
-//													oauthArea.appendChild(btn);
-//						}
-					}
-//					if(this1.classList.contains('disabled')) {
-//						mui.toast('抱歉，您尚未安装微信，请安装后再试！');
-//						return;
-//					}
-					var id = "weixin"
-					var auth = auths[id];
-					auth.login(function() {
-						mui.toast("微信授权成功");
-						auth.getUserInfo(function() {
-//							var userInfo = userweixinLogin(auth);
-//							console.log("--------------------")
-//							console.log(JSON.stringify(auth));
-							localStorage.setItem("weixinUser",JSON.stringify(auth));
-						}, function(e) {
-							mui.toast("获取用户信息失败：1" + e.message);
-						});
-					}, function(e) {
-						mui.toast("登录认证失败：2" + e.message);
-					});
-				}, function(e) {
-					mui.toast("获取登录认证失败：3" + e.message);
+		var auths=null;
+		// 扩展API加载完毕，现在可以正常调用扩展API
+		plus.oauth.getServices(function(services){
+			auths = services;
+			authLogin();
+		},function(e){
+			mui( "微信授权失败");
+		});
+		// 登录操作
+//		authLogin();
+		function authLogin(){
+			var s = auths[3];
+			if (!s.authResult){
+				s.login( function(e){
+					mui.toast("登录认证成功！");
+					authUserInfo();
+				}, function(e){
+					mui.toast("登录认证失败！");
 				});
+			}else{
+				mui.toast("已经登录认证！");
 			}
-		})
+		}
+		// 获取登录用户信息操作
+		function authUserInfo(){
+			var s = auths[3];
+			if ( !s.authResult ) {
+				mui.toast("未登录授权！");
+			} else {
+				s.getUserInfo( function(e){
+//					console.log( "获取用户信息成功："+JSON.stringify(s.userInfo) );
+					localStorage.setItem("weixinUser",JSON.stringify(s.userInfo));
+				}, function(e){
+					mui.toast( "获取用户信息失败，请检查微信是否在线");
+				} );
+			}
+		}
+		
 	})
 }
 pro.getClentId = function(){

@@ -134,10 +134,11 @@
 			},
 			getWechatId:function(){
 				pro.toweixin();
-				var weixinInfo = JSON.parse(localStorage.weixinUser);
+				var weixinInfo = JSON.parse(localStorage.weixinUser) ? JSON.parse(localStorage.weixinUser) : "" ;
+//				console.log("weixinInfo======"+JSON.stringify(weixinInfo));
 				var ClientId = localStorage.clientid ? JSON.parse(localStorage.clientid).id : '';
 				var data ={
-					openId:weixinInfo.authResult.openid,
+					openId:weixinInfo.openid,
 					clientId:ClientId
 //					openId:"oRrdQt-T23iJ8wjd-PaCt_WoMefw"
 				}
@@ -161,7 +162,6 @@
 		},
 		mounted:function(){
 			pro.getClentId();
-			pro.toweixin();
 		}
 }
 </script>

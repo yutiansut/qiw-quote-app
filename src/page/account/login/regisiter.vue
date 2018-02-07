@@ -174,12 +174,16 @@
 						}
 					})
 				}
-				
 			},
 			getWechatId:function(){
 				pro.toweixin();
-				var weixinInfo = JSON.parse(localStorage.weixinUser)
+				var weixinInfo = JSON.parse(localStorage.weixinUser) ? JSON.parse(localStorage.weixinUser) : "" ;
 				var ClientId = localStorage.clientid ? JSON.parse(localStorage.clientid).id : '';
+				var data ={
+					openId:weixinInfo.openid,
+					clientId:ClientId
+//					openId:"oRrdQt-T23iJ8wjd-PaCt_WoMefw"
+				}
 				pro.fetch("post","/loginAndRegister/wxLogin",data,"").then(function(res){
 					if(res.code == 1 && res.success == true){
 						this.$toast({message:"授权登录成功",duration: 1000});
@@ -198,7 +202,6 @@
 		},
 		mounted:function(){
 			pro.getClentId();
-			pro.toweixin();
 		}
 	}
 </script>

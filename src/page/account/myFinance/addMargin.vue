@@ -15,6 +15,7 @@
 					<li>余额：<span>{{balance}}</span>元</li>
 					<li>换算汇率：<span>1美元={{cnyToUsdRate}}人民币</span></li>
 					<li>换算美元：<span>{{moneyUsd}}</span>美元</li>
+					<li>实际支付：<span>{{realmoney}}</span>元</li>
 				</ul>
 			</div>
 			<div class="bt">
@@ -23,7 +24,7 @@
 			<div class="warn">
 				<ul>
 					<li>温馨提示：</li>
-					<li>1.<span>最低追加保证金额为5元。</span></li>
+					<li>1.<span>最低追加保证金额为500元。</span></li>
 					<li>2.<span>系统将在下个交易日前为您的操盘账户追加保证金。</span></li>
 					<li>3.<span>追加成功后，系统将短信通知您。</span></li>
 				</ul>
@@ -47,7 +48,8 @@
 				addMoney:'',
 				moneyUsd:'',
 				cnyToSimulationRate:'',
-				addReg:/^\d+$/
+				addReg:/^\d+$/,
+				realmoney:""
 			}
 		},
 		methods:{
@@ -60,18 +62,18 @@
 			add:function(){
 				if(this.addMoney == ''){
 					this.$toast({message:"请输入追加保证金金额",duration: 1000});
-				}else if(this.addMoney<5){
-					this.$toast({message:"充值金额必须大于元",duration: 1000});
+				}else if(this.addMoney<500){
+					this.$toast({message:"充值金额必须大于500元",duration: 1000});
 				}else if(this.addReg.test(this.addMoney)==false){
 					this.$toast({message:"输入金额格式错误",duration: 1000});
 				}else{
 					var data = {
 						id:this.id,
-						money:this.addMoney*this.cnyToSimulationRate
+						money:this.realmoney
 					}
 					var headers = {
 						token : this.userInfo.token,
-					secret : this.userInfo.secret
+						secret : this.userInfo.secret
 					}
 					pro.fetch("post","/ futureManage/addMargin",data,headers).then((res)=>{
 						if(res.code == 1 && res.success == true){
@@ -169,7 +171,8 @@
 		},
 		watch:{
 			addMoney:function(a){
-				this.moneyUsd = a*(1/this.cnyToUsdRate);
+				this.moneyUsd = Number((a/100)*(1/this.cnyToUsdRate)).toFixed(2);
+				this.realmoney = a/100;
 			}
 		}
 	}
@@ -228,7 +231,7 @@
 			}
 		}
 		.info{
-			height: 2.4rem;
+			height: 3rem;
 			ul{
 				li{
 					&:nth-child(1){
@@ -254,7 +257,7 @@
 			text-align: center;
 			height: 1.5rem;
 			border-bottom: 1px solid #12141a;
-			padding-top: 0.3rem;
+			padding-top: 0.45rem;
 		}
 		.warn{
 			width: 100%;
