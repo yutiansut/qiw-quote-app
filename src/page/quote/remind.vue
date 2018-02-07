@@ -100,7 +100,7 @@
 				</div>
 			</div>
 			<div class="btn_box">
-				<btn name="完成" className="bluelg" @tap.native="saveEvent"></btn>
+				<btn name="完成" className="bluelg" @click.native="saveEvent"></btn>
 			</div>
 		</div>
 		</div>
