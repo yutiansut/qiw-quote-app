@@ -363,13 +363,11 @@
 					var p = this.currentNo.toString().toLowerCase();
 				}
 				let arr = ['cl','cn','es','fdax','fdxm','gc','hg','hhi','hsi','mch','mhi','ng','nk','nq','qm','si','ym'];
-				arr.forEach((o, i) => {
-					if(o != p){
-						Toast({message: '该合约暂无规则', position: 'bottom', duration: 2000});
-					}else{
-						this.$router.push({path: '/' + p});
-					}
-				});
+				if(arr.indexOf(p) != -1){
+					this.$router.push({path: '/' + p});
+				}else{
+					Toast({message: '该合约暂无规则', position: 'bottom', duration: 2000});return
+				}
 			},
 			addRemind: function(){
 				this.chartsShow = false;
