@@ -222,6 +222,7 @@
 				color: $white;
 				margin-top: 0.2rem;
 				border-radius: 0 !important;
+				font-size: $fs32;
 			}
 		}
 		.eye{
@@ -251,6 +252,7 @@
 				color: $white;
 				float: right;
 				margin-top: 0.16rem;
+				margin-right: 0.3rem;
 			}
 		}
 		.btn{

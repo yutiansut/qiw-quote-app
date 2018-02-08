@@ -334,6 +334,7 @@
 			text-indent: 1rem;
 			color: $white;
 			margin-top: 0.2rem;
+			font-size: $fs32;
 		}
 		#code{
 			position: absolute;
