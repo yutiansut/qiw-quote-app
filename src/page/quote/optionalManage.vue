@@ -34,9 +34,7 @@
 								<span>{{v.LastQuotation.LastPrice | fixNum(v.DotSize)}}</span>
 								<span>{{v.LastQuotation.DateTimeStamp | operateTime}}</span>
 							</div>
-							<div class="drag">
-								<i class="icon icon_drag"></i>
-							</div>
+							<i class="icon icon_drag"></i>
 					      </li>
 					    </transition-group>
 					</draggable>
@@ -344,6 +342,9 @@
 					}
 				}
 			}
+			.cont{
+				overflow-y: auto;	
+			}
 			li{
 				height: 0.96rem;
 				border-bottom: 0.01rem solid $black;
@@ -382,16 +383,15 @@
 					&.drag{
 						float: right;
 						width: 1rem;
-						.icon_drag{
-							float: right;
-							width: 0.24rem;
-							height: 0.24rem;
-							background: url(../../assets/images/drag.png) no-repeat center center;
-							background-size: 100% 100%;
-							margin: 0.36rem 0.15rem 0 0;
-						}
 					}
-					
+				}
+				.icon_drag{
+					float: right;
+					width: 1rem;
+					height: 0.95rem;
+					background: url(../../assets/images/drag.png) no-repeat 0.6rem 0.35rem;
+					background-size: 0.24rem 0.24rem;
+					margin: 0 0 0 0;
 				}
 			}
 		}

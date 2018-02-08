@@ -388,15 +388,13 @@
 				}
 				var currentOrderPrice, contrastOrderPrice, scale;
 				this.parameters.forEach((o, i) => {
-					if(o.CommodityNo == this.currentNo){
-						currentOrderPrice = o.LastQuotation.PreSettlePrice;
-					}
+//					if(o.CommodityNo == this.currentNo){
+//						currentOrderPrice = o.LastQuotation.LastPrice;
+//					}
 					if(o.CommodityNo == index){
-						contrastOrderPrice = o.LastQuotation.PreSettlePrice;
-						console.log(currentOrderPrice);
-						console.log(contrastOrderPrice);
-						scale = parseFloat(contrastOrderPrice/currentOrderPrice).toFixed(10);
-						o.scale = scale;
+//						contrastOrderPrice = o.LastQuotation.LastPrice;
+//						scale = parseFloat(contrastOrderPrice/currentOrderPrice).toFixed(10);
+//						o.scale = scale;
 						if(o.check == 0){
 							o.check = 1;
 						}else{
@@ -408,12 +406,19 @@
 				let color = ['#5ca1e6', '#d9b816', '#e66b2e', '#b673e6', '#d99a6c'];
 				let arr = [];
 				this.$store.state.market.scale = [];
+				var time;
 				this.parameters.forEach((o, i) => {
 					if(o.check == 1){
 						let price = [], len = '';
+						time = this.jsonData[o.CommodityNo].Parameters.Data[0][0];
+						contrastOrderPrice = this.jsonData[o.CommodityNo].Parameters.Data[0][1];
 						this.jsonData[this.currentNo].Parameters.Data.forEach((j, h) => {
 							price.push('');
+							if(j[0] == time){
+								currentOrderPrice = j[1];
+							}
 						});
+						o.scale = parseFloat(contrastOrderPrice/currentOrderPrice).toFixed(10);
 						this.jsonData[this.currentNo].Parameters.Data.forEach((j, h) => {
 							this.jsonData[o.CommodityNo].Parameters.Data.forEach((v) => {
 								if(j[0] == v[0]){
