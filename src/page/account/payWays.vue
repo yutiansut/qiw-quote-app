@@ -21,12 +21,12 @@
 			}
 		},
 		computed: {
-			PATH: function(){
-				return this.$store.getters.PATH;
-			},
+//			PATH: function(){
+//				return this.$store.getters.PATH;
+//			},
 			iframe(){
-//				return "http://192.168.0.153:8080/qiw-platform/pay/payInfo?publickey="+this.token+"&secretkey="+this.secret+"&money="+this.$route.query.money;
-				return "http://test.api.zhishutianxia.com/pay/payInfo?publickey="+this.token+"&secretkey="+this.secret+"&money="+this.$route.query.money;
+				return "http://192.168.0.153:8080/qiw-platform/pay/payInfo?publickey="+this.token+"&secretkey="+this.secret+"&money="+this.$route.query.money;
+//				return "http://test.api.zhishutianxia.com/pay/payInfo?publickey="+this.token+"&secretkey="+this.secret+"&money="+this.$route.query.money;
 			}
 		},
 		methods:{
