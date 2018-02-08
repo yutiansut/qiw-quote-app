@@ -301,7 +301,6 @@
 		margin-top: 1rem;
 		display: flex;
 		flex-direction: column;
-		border-top: 1px solid #12141a;
 		text-align: center;
 		#notLogin{
 			padding: 0 0.3rem;
