@@ -75,7 +75,7 @@
 					</mt-swipe>
 				</div>
 				<div class="black"></div>
-				<div class="news" v-for="k in this.infoArr" @click="toImporttantDetails($event,k.id)">
+				<div class="news" v-for="k in this.infoArr" @click="toImporttantDetails($event,k.id,k.title,k.time)">
 					<div class="newsLeft">
 						<i></i>
 						<ul>
@@ -138,8 +138,8 @@
 		    toDetails:function(){
 		    	this.$router.push({path:"/information_details"});
 		    },
-		    toImporttantDetails:function(e,id){
-		    	this.$router.push({path:"/importantDetails",query:{id:id}})
+		    toImporttantDetails:function(e,id,title,time){
+		    	this.$router.push({path:"/importantDetails",query:{id:id,title:title,time:time}})
 		    }
 		}
 	}
