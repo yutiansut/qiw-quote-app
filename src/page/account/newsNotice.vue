@@ -38,7 +38,8 @@
 				exist:true,
 				none:false,
 				newList:"",
-				arr:[]
+				arr:[],
+				newArr:""
 			}
 		},
 		methods:{
@@ -65,6 +66,16 @@
 								}
 							}
 						}
+						for(var b in this.newList){
+							if(this.newList[b].isTop=="1"){
+								this.newArr = this.newList.slice(Number(b),Number(b)+1);
+								this.newList.splice(Number(b),1)
+								break;
+							}
+						}
+						this.newList.push(this.newArr);
+						this.newList.reverse(this.newList);
+//						console.log("this.newList==="+JSON.stringify(this.newList));
 //						console.log("this.newList========"+JSON.stringify(this.newList));
 						if(res.data.list == ''){
 							this.exist = false;
@@ -72,6 +83,7 @@
 						}
 					}
 				}).catch((err)=>{
+					console.log("err+"+JSON.stringify(err));
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
