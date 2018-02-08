@@ -49,7 +49,7 @@
 					pageSize:20
 				}
 				pro.fetch("post","/others/getNoticeList",data,"").then((res)=>{
-//					console.log("res==="+JSON.stringify(res));
+					console.log("res==="+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						this.newList = res.data.list;
 						for(var a of this.newList){
@@ -68,15 +68,15 @@
 						}
 						for(var b in this.newList){
 							if(this.newList[b].isTop=="1"){
-								this.newArr = this.newList.slice(Number(b),Number(b)+1);
-								this.newList.splice(Number(b),1)
+								this.newArr = this.newList[b];
+								this.newList.splice(Number(b),1);
 								break;
 							}
 						}
 						this.newList.push(this.newArr);
-						this.newList.reverse(this.newList);
+						this.newList.reverse();
 //						console.log("this.newList==="+JSON.stringify(this.newList));
-//						console.log("this.newList========"+JSON.stringify(this.newList));
+						console.log("this.newList========"+JSON.stringify(this.newList));
 						if(res.data.list == ''){
 							this.exist = false;
 							this.none = true;
