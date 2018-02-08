@@ -393,7 +393,7 @@
 					&& this.decrease == '' || this.decrease == undefined
 					&& this.isBreakHighestPriceSwitch == '0' 
 					&& this.isBreakLowestPriceSwitch == '0'){
-					this.remindMsg = '提醒不完善，是否添加提醒？';
+					this.remindMsg = '提醒内容已设置完毕，确认添加？';
 					this.remindMsgSuccess = '提醒删除成功';
 				}
 				//是否自选

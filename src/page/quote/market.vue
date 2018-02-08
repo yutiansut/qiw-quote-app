@@ -106,6 +106,18 @@
 				this.currentNum = index;
 				this.$store.state.market.Parameters = [];
 				this.$store.state.market.commodityOrder = [];
+				setTimeout(function(){
+					if(this.parameters.length){
+						if(this.parameters.length <= 0){
+							Indicator.close();
+							Toast({message: '网络不给力，请稍后再试', position: 'bottom', duration: 1000});
+						}
+					}else{
+						Indicator.close();
+						Toast({message: '网络不给力，请稍后再试', position: 'bottom', duration: 1000});
+					}
+					console.log(this.parameters.length);
+				}, 5000);
 				switch(index){
 					case 0:
 						this.$store.state.market.commodityOrder = this.goodsList.list;
