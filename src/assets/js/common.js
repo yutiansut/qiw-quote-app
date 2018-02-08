@@ -230,4 +230,26 @@ pro.isOpenMessages = function(){
 //	}
 }
 
+/**
+ * 判断网络是否已连接
+ * @param {} 
+ * 
+ */
+var network = true;
+pro.netIsconnected = function(fail, success){
+	mui.plusReady(function() {
+		document.addEventListener("netchange",function(){
+			if (plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+//				mui.toast("网络异常，请检查网络设置！");
+				network = false;
+				if(fail) fail();
+			}else{
+				network = true;
+				if(success) success();
+			}
+		},false);
+	});
+	return network;
+}
+
 export default pro

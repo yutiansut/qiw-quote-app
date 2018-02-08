@@ -10,6 +10,8 @@
 			<i class="icon icon_search" @tap="toSearch"></i>
 			<i class="icon icon_set" v-show="setShow" @tap="toOptionalManage"></i>
 		</header>
+		<p class="connect connecting" v-show="isconnecting">网络连接已断开，正在尝试重连…</p>
+		<p class="connect connected" v-show="isconnected">已连接到服务器！</p>
 		<div class="cont" v-if="isInit">
 			<components :is="currentView"></components>
 		</div>
@@ -40,6 +42,8 @@
 				require("../assets/images/information_02.png"),require("../assets/images/mine_02.png")],
 				optionalList: [],
 				marketList: [],
+				isconnecting: false,
+				isconnected: false,
 			}
 		},
 		computed: {
@@ -51,6 +55,20 @@
 			},
 			isLogin(){
 				return this.$store.state.account.isLogin;
+			},
+			quoteStatus(){
+				return sessionStorage.quoteStatus ? JSON.parse(sessionStorage.quoteStatus) : '';
+			}
+		},
+		watch: {
+			quoteStatus: function(n, o){
+				if(n && n == false){
+					this.isconnected = false;
+					this.isconnecting = true;
+				}else{
+					this.isconnected = true;
+					this.isconnecting = false;
+				}
 			}
 		},
 		methods: {
@@ -124,9 +142,41 @@
 				});
 			}
 		},
+		updated: function(){
+			//判断网络
+			pro.netIsconnected(function(){    //手机
+				this.isconnected = false;
+				this.isconnecting = true;
+			}.bind(this), function(){
+				this.isconnected = true;
+				this.isconnecting = false;
+				//刷新页面
+				window.location.reload();
+			}.bind(this));
+			
+			var EventUtil = { 
+				addHandler: function (element, type, handler) { 
+					if (element.addEventListener) { 
+						element.addEventListener(type, handler, false); 
+					}else if(element.attachEvent) { 
+						element.attachEvent("on" + type, handler); 
+					}else{ 
+						element["on" + type] = handler; 
+					} 
+				} 
+			}; 
+			EventUtil.addHandler(window, "online", function () { 
+				window.location.reload();
+			}); 
+			EventUtil.addHandler(window, "offline", function () { 
+				this.isconnecting = true;
+				console.log('网络已断开');
+			}); 
+		},
 		mounted: function(){
 			//获取所有合约
 			this.getCommodityInfo();
+			console.log(typeof this.quoteStatus);
 		},
 		activated: function(){
 			if(this.isLogin == true){
@@ -199,5 +249,23 @@
 	.cont{
 		overflow-y: auto;
 		padding-bottom: 1.3rem;
+	}
+	.connect{
+		position: fixed;
+		bottom: 1.25rem;
+		left: 0;
+		width: 7.5rem;
+		height: 0.48rem;
+		line-height: 0.48rem;
+		text-align: center;
+		overflow: hidden;
+		border-bottom: 0.01rem solid $black;
+		color: $white;
+		&.connecting{
+			background: #e64560;
+		}
+		&.connected{
+			background: #0f996b;
+		}
 	}
 </style>
