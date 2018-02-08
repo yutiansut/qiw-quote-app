@@ -86,6 +86,16 @@
 		watch: {
 			len: function(n, o){
 				if(n && n > 0) Indicator.close();
+			},
+			parameters: function(n, o){
+				if(n && n == 0){
+					setTimeout(function(){
+						if(n == 0){
+							Indicator.close();
+							Toast({message: '网络不给力，请稍后再试', position: 'bottom', duration: 1000});
+						}
+					}, 5000);
+				}
 			}
 		},
 		methods: {
@@ -106,18 +116,6 @@
 				this.currentNum = index;
 				this.$store.state.market.Parameters = [];
 				this.$store.state.market.commodityOrder = [];
-				setTimeout(function(){
-					if(this.parameters.length){
-						if(this.parameters.length <= 0){
-							Indicator.close();
-							Toast({message: '网络不给力，请稍后再试', position: 'bottom', duration: 1000});
-						}
-					}else{
-						Indicator.close();
-						Toast({message: '网络不给力，请稍后再试', position: 'bottom', duration: 1000});
-					}
-					console.log(this.parameters.length);
-				}, 5000);
 				switch(index){
 					case 0:
 						this.$store.state.market.commodityOrder = this.goodsList.list;
@@ -204,9 +202,15 @@
 			this.currentNum = 0;
 			this.$store.state.market.Parameters = [];
 			this.$store.state.market.commodityOrder = [];
-			this.$store.state.market.commodityOrder = this.$parent.marketList[0].list;
-			this.$parent.marketList[0].list.forEach((o, i) => {
-				this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+			pro.fetch('post', '/quoteTrader/getCommodityInfo', '', '').then((res) => {
+				if(res.success == true && res.code == 1){
+					this.$store.state.market.commodityOrder = res.data[0].list;
+					res.data[0].list.forEach((o, i) => {
+						this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
+					});
+				}
+			}).catch((err) => {
+				Toast({message: err.data.message, position: 'bottom', duration: 2000});
 			});
 		}
 	}
