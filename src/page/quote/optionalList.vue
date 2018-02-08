@@ -228,6 +228,8 @@
 		},
 		activated: function(){
 			this.currentNum = 0;
+			this.$store.state.market.Parameters = [];
+			this.$store.state.market.commodityOrder = [];
 			//重新请求自选合约列表
 			if(this.userInfo == undefined) return;
 			var headers = {
@@ -237,8 +239,6 @@
 			pro.fetch('post', '/quoteTrader/userGetCommodityList', '', headers).then((res) => {
 				if(res.success == true && res.code == 1){
 					if(res.data && res.data.length > 0){
-						this.$store.state.market.Parameters = [];
-						this.$store.state.market.commodityOrder = [];
 						this.$store.state.market.commodityOrder = res.data;
 						this.$parent.optionalList = res.data;
 						res.data.forEach((o, i) => {

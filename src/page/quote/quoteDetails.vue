@@ -393,7 +393,9 @@
 					}
 					if(o.CommodityNo == index){
 						contrastOrderPrice = o.LastQuotation.PreSettlePrice;
-						scale = parseFloat(contrastOrderPrice/currentOrderPrice).toFixed(8);
+						console.log(currentOrderPrice);
+						console.log(contrastOrderPrice);
+						scale = parseFloat(contrastOrderPrice/currentOrderPrice).toFixed(10);
 						o.scale = scale;
 						if(o.check == 0){
 							o.check = 1;
@@ -415,7 +417,7 @@
 						this.jsonData[this.currentNo].Parameters.Data.forEach((j, h) => {
 							this.jsonData[o.CommodityNo].Parameters.Data.forEach((v) => {
 								if(j[0] == v[0]){
-									price[h] = parseFloat(v[1]/o.scale).toFixed(this.orderTemplist[this.currentNo].DotSize);
+									price[h] = parseFloat(v[1]/o.scale);
 //									price.push(parseFloat(v[1]/o.scale).toFixed(this.orderTemplist[this.currentNo].DotSize));
 								}
 							});
