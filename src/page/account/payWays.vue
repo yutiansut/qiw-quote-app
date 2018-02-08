@@ -26,8 +26,8 @@
 //			},
 			iframe(){
 //				return "http://192.168.0.153:8080/qiw-platform/pay/payInfo?publickey="+this.token+"&secretkey="+this.secret+"&money="+this.$route.query.money;
-//				return "http://test.api.zhishutianxia.com/pay/payInfo?publickey="+this.token+"&secretkey="+this.secret+"&money="+this.$route.query.money;
-				return "http://192.168.0.153:8088/vs-pay/app/appPayinfo?mobile=18280302936&money=20";
+				return "http://test.api.zhishutianxia.com/pay/payInfo?publickey="+this.token+"&secretkey="+this.secret+"&money="+this.$route.query.money;
+//				return "http://192.168.0.153:8088/vs-pay/app/appPayinfo?mobile=18280302936&money=20";
 
 			}
 		},
