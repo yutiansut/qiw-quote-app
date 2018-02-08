@@ -393,7 +393,7 @@
 					}
 					if(o.CommodityNo == index){
 						contrastOrderPrice = o.LastQuotation.PreSettlePrice;
-						scale = parseFloat(contrastOrderPrice/currentOrderPrice).toFixed(4);
+						scale = parseFloat(contrastOrderPrice/currentOrderPrice).toFixed(8);
 						o.scale = scale;
 						if(o.check == 0){
 							o.check = 1;

@@ -207,9 +207,11 @@ pro.isOpenMessage = function(){
 	plus.ios.deleteObject(app);
 }
 pro.isOpenMessages = function(){
-	var pp = plus.navigator.checkPermission('NOTIFITION');
-	if(pp != 'authorized'){
-		mui.alert( "消息推送已关闭，无法接收通知，请在【设置】-【通知中心】-【应用名称】中开启");
+	if(window.plus){
+		var pp = plus.navigator.checkPermission('NOTIFITION');
+		if(pp != 'authorized'){
+			mui.alert( "消息推送已关闭，无法接收通知，请在【设置】-【通知中心】-【应用名称】中开启");
+		}
 	}
 //	switch(pp){
 //		case 'authorized':
@@ -228,6 +230,12 @@ pro.isOpenMessages = function(){
 //			mui.alert('不支持定位权限');
 //		break;
 //	}
+}
+pro.openMessages = function(){
+	if(window.plus){
+		var pp = plus.navigator.checkPermission('NOTIFITION');
+		return pp;
+	}
 }
 
 /**

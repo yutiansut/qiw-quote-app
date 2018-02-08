@@ -359,6 +359,10 @@
 				}
 			},
 			saveEvent: function(e){
+				let msg = pro.openMessages();
+				if(msg != 'authorized'){
+					mui.alert( "消息推送已关闭，无法接收通知，请在【设置】-【通知中心】-【应用名称】中开启");return;
+				}
 				if(this.risePoint != undefined && this.risePoint != 0 && this.floatReg.test(this.risePoint) == false){
 					Toast({message: '请输入上涨价格', position: 'bottom', duration: 1000});
 					this.risePoint = ''; return;
@@ -428,33 +432,33 @@
 				}
 				MessageBox.confirm(this.remindMsg,"提示").then(action=>{
 					pro.fetch('post', '/quoteTrader/saveRemindInfo', datas, headers).then((res) => {
-					if(res.success == true && res.code == 1){
-						if(this.isOptional == true){
-							Toast({message: '提醒设置成功', position: 'bottom', duration: 1000});
-							setTimeout(() => {
-								this.$router.go(-1);
-							}, 1000);
-						}else{
-							let info = {
-								'exchangeNo': this.orderTemplist[this.currentNo].ExchangeNo,
-								'commodityNo': this.currentNo,
-								'contractNo': this.orderTemplist[this.currentNo].MainContract,
-							}
-							pro.fetch('post', '/quoteTrader/userAddCommodity', info, headers).then((res) => {
-								if(res.success == true && res.code == 1){
-									Toast({message: '提醒设置成功，已将该合约添加到自选', position: 'bottom', duration: 1000});
-									setTimeout(() => {
-										this.$router.go(-1);
-									}, 1000);
+						if(res.success == true && res.code == 1){
+							if(this.isOptional == true){
+								Toast({message: '提醒设置成功', position: 'bottom', duration: 1000});
+								setTimeout(() => {
+									this.$router.go(-1);
+								}, 1000);
+							}else{
+								let info = {
+									'exchangeNo': this.orderTemplist[this.currentNo].ExchangeNo,
+									'commodityNo': this.currentNo,
+									'contractNo': this.orderTemplist[this.currentNo].MainContract,
 								}
-							}).catch((err) => {
-								Toast({message: err.data.message, position: 'bottom', duration: 1000});
-							});
+								pro.fetch('post', '/quoteTrader/userAddCommodity', info, headers).then((res) => {
+									if(res.success == true && res.code == 1){
+										Toast({message: '提醒设置成功，已将该合约添加到自选', position: 'bottom', duration: 1000});
+										setTimeout(() => {
+											this.$router.go(-1);
+										}, 1000);
+									}
+								}).catch((err) => {
+									Toast({message: err.data.message, position: 'bottom', duration: 1000});
+								});
+							}
 						}
-					}
-				}).catch((err) => {
-					Toast({message: err.data.message, position: 'bottom', duration: 2000});
-				});
+					}).catch((err) => {
+						Toast({message: err.data.message, position: 'bottom', duration: 2000});
+					});
 				}).catch(err=>{});
 			},
 			getRemindInfo: function(){
