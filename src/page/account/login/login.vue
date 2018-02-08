@@ -136,12 +136,14 @@
 				pro.toweixin();
 				var weixinInfo = JSON.parse(localStorage.weixinUser) ? JSON.parse(localStorage.weixinUser) : "" ;
 //				console.log("weixinInfo======"+JSON.stringify(weixinInfo));
-				var ClientId = localStorage.clientid ? JSON.parse(localStorage.clientid).id : '';
+				var ClientId = JSON.parse(localStorage.clientid).id ? JSON.parse(localStorage.clientid).id : '';
 				var data ={
 					openId:weixinInfo.openid,
 					clientId:ClientId
 //					openId:"oRrdQt-T23iJ8wjd-PaCt_WoMefw"
 				}
+//				console.log("88888888888888")
+//				this.$router.push({path:"/index"})
 				pro.fetch("post","/loginAndRegister/wxLogin",data,"").then(function(res){
 					if(res.code == 1 && res.success == true){
 						var userData = {'username':res.data.mobile,'token':res.data.token,'secret':res.data.secret};
