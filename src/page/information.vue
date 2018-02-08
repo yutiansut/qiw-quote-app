@@ -1,18 +1,18 @@
 <template>
 	<div id="information">
 		<mt-header title="资讯" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem;border-bottom: 1px solid #12141a;">
-		    <router-link to="/information_search" slot="right">
-		    	<i id="search" v-show="showSearch"></i>
-		    	<i id="chooseday" v-show="showChooseDay"></i>
-		 	</router-link>
+		    <!--<router-link to="/information_search" slot="right">-->
+		    	<!--<i id="search" v-show="showSearch"></i>-->
+		    	<!--<i id="chooseday" v-show="showChooseDay"></i>-->
+		 	<!--</router-link>-->
 		</mt-header>
 		<div id="container">
-			<div class="navlist">
+			<!--<div class="navlist">-->
 				<!--<span class="current" @click="change">7x24</span>
 				<span @click="change">财经日历</span>-->
 				<!--<span @click="change">要闻</span>-->
-				<span class="current">要闻</span>
-			</div>
+				<!--<span class="current">要闻</span>-->
+			<!--</div>-->
 			<!--直播-->
 			<div id="news" v-show="showNews">
 				<div class="time">
@@ -171,7 +171,7 @@
 	#container{
 		width: 100%;
 		margin-top: 1rem;
-		.navlist{
+		/*.navlist{
 			position: fixed;
 			top: 1rem;
 			display: flex;
@@ -185,7 +185,7 @@
 			span{
 				margin-right:0.4rem;
 			}
-		}
+		}*/
 		.current{
 			color: $blue;
 			border-bottom: 0.04rem solid $blue;
@@ -354,7 +354,7 @@
 		}
 		/*要闻*/
 		#importantNews{
-			margin-top: 1.8rem;
+			margin-top: 1rem;
 			width: 100%;
 			.solider{
 				width: 100%;
