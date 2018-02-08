@@ -176,7 +176,6 @@
 		mounted: function(){
 			//获取所有合约
 			this.getCommodityInfo();
-			console.log(typeof this.quoteStatus);
 		},
 		activated: function(){
 			if(this.isLogin == true){

@@ -359,7 +359,6 @@
 				}
 			},
 			saveEvent: function(e){
-				console.log($(e.currentTarget));
 				if(this.risePoint != undefined && this.risePoint != 0 && this.floatReg.test(this.risePoint) == false){
 					Toast({message: '请输入上涨价格', position: 'bottom', duration: 1000});
 					this.risePoint = ''; return;
