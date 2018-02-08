@@ -103,7 +103,8 @@
 				disabled:false,
 				activityType:0,
 				//是否使用过注册奖励申请方案，默认为true
-				isUseAcitivity:true
+				isUseAcitivity:true,
+				able:true
 			}
 		},
 		methods:{
@@ -259,7 +260,12 @@
 	//							console.log("去支付");
 								MessageBox.confirm("确认支付"+this.payMoney+"元，申请一个融资方案?","提示",{confirmButtonText:"确认",}).then(action=>{
 	//								console.log("去支付咯");
-									this.apply(0);
+									if(this.able == true){
+										this.apply(0);
+										this.able = false;
+									}else{
+										this.$toast({message:"请稍后再试，避免重复开户。",duration: 2000});
+									}
 								}).catch(err=>{});
 							}
 						}
@@ -285,10 +291,12 @@
 //					console.log("11111111111111111"+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
 						this.$toast({message:'申请成功',duration: 2000});
+						this.able = true
 						this.$router.push({path:"/applySuccess"});
 					}
 				}).catch((err)=>{
 //					console.log("err111111111111111111=="+JSON.stringify(err))
+					this.able =true;
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:'网络不给力，请稍后再试',duration: 2000});
