@@ -11,8 +11,8 @@
 					<span>交易密码</span>
 					<input type="text" placeholder="请输入交易密码" />
 				</div>
-				<btn name="交易登录" className="bluelg" class="mb30"></btn>
-				<btn name="配资方案申请" className="orangelg" class="mb30"></btn>
+				<btn name="交易登录" className="bluelg" class="mb30" @tap.native="tradeLogin"></btn>
+				<btn name="配资方案申请" className="orangelg" class="mb30" @tap.native="tradeApply"></btn>
 			</div>
 			<h3>交易账号不等于注册登录账号</h3>
 			<p><span>交易账号：</span>申请配资方案后系统会自动发放，用于实盘或者模拟盘交易的账号。可查询交易明细，结算后将会更换。</p>
@@ -23,6 +23,7 @@
 
 <script>
 	import btn from "../../components/btn.vue"
+	import { Toast } from 'mint-ui';
 	export default {
 		name: 'tradeLoginCont',
 		components: {btn},
@@ -34,7 +35,13 @@
 		methods: {
 			switchover:function(index){
 				this.selectNum = index;
-				
+			},
+			tradeLogin: function(){
+				Toast({message: '交易功能正在内测中，敬请期待…', position: 'bottom', duration: 1500});
+			},
+			tradeApply: function(){
+				this.$parent.currentNum = 1;
+				this.$parent.currentView = 'tradeApply'; 
 			}
 		},
 		mounted: function(){
