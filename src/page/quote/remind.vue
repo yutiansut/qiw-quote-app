@@ -92,7 +92,7 @@
 					<span class="type">提醒频率</span>
 					<div class="fr" @tap="setRemindEvent">
 						<span>{{defaultFrequency | operateFrequency}}</span>
-						<i class="icon icon_arrow"></i>
+						<img src="../../assets/images/arrow.png"/>
 					</div>
 				</div>
 				<div class="row">
@@ -106,7 +106,7 @@
 		</div>
 		</template>
 		<div class="select_box">
-			<div class="bg" v-show="shadeShow"></div>
+			<div class="bg" v-show="shadeShow" @tap="hideSelectBox"></div>
 			<div class="select_cont">
 				<ul>
 					<li><span>提醒频率</span></li>
@@ -306,6 +306,10 @@
 				$(".select_cont").css({bottom: -3.5 + 'rem'});
 				this.shadeShow = false;
 				this.defaultFrequency = val;
+			},
+			hideSelectBox: function(){
+				$(".select_cont").css({bottom: -3.5 + 'rem'});
+				this.shadeShow = false;
 			},
 			getPriceByKline: function(){
 				let data = {
@@ -662,12 +666,11 @@
 				line-height: 0.96rem;
 				margin-left: 0.05rem;
 			}
-			.icon_arrow{
+			img{
 				float: left;
+				display: inline-block;
 				width: 0.15rem;
 				height: 0.24rem;
-				background: url(../../assets/images/arrow.png) no-repeat center center;
-				background-size: 0.15rem 0.24rem;
 				margin: 0.36rem 0 0.36rem 0.2rem;
 			}
 			.switch{
