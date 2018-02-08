@@ -347,6 +347,8 @@
 			}
 			li{
 				height: 0.96rem;
+				overflow: hidden;
+				background: $bg;
 				border-bottom: 0.01rem solid $black;
 				.icon{
 					float: left;
