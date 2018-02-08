@@ -166,7 +166,6 @@
 				});
 			},
 			addOptional: function(key,exchangeNo,commodityNo,contractNo,id){
-				console.log(key);
 				let userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 				if(userInfo == undefined){
 					Toast({message: '请先登录平台', position: 'bottom', duration: 1000});

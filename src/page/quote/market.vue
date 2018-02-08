@@ -289,6 +289,7 @@
 		li{
 			height: 0.96rem;
 			line-height: 0.96rem;
+			overflow: hidden;
 			border-bottom: 0.01rem solid $black;
 			padding: 0 0.3rem;
 			&:first-child{
@@ -339,7 +340,7 @@
 					display: block;
 					line-height: 0.36rem;
 					&:first-child{
-						margin-top: 0.1rem;
+						margin-top: 0.18rem;
 						font-size: $fs32;
 						color: $white;
 					}
