@@ -277,7 +277,7 @@
 			color: $white;
 			margin-top: 0.2rem;
 			border-radius: 0 !important;
-			font-size: $fs28;
+			font-size: $fs32;
 		}
 		#code{
 			text-align: center;
