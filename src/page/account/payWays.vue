@@ -26,7 +26,7 @@
 			},
 			iframe(){
 //				return 'http://pay.duokongtai.cn/app/appPayinfo?mobile='+ this.$route.query.phone +'&money='+ this.$route.query.money;
-				return "http://192.168.0.225/pay/payInfo?publickey="+this.token+"&secretkey="+this.secret+"&money="+this.$route.query.money;
+				return "http://test.api.zhishutianxia.com/pay/payInfo?publickey="+this.token+"&secretkey="+this.secret+"&money="+this.$route.query.money;
 			}
 		},
 		methods:{
@@ -69,6 +69,7 @@
 			width: 100%; height: 100%; 
 			position: fixed; 
 			bottom: 0;
+			overflow-y: scroll;
 		}
 	}
 </style>

@@ -254,7 +254,7 @@ export default new Vuex.Store({
 				return '/api'
 			} else if(state.setting == 'build'){
 				if(state.environment == 'test'){
-					return state.account.currentUrlHead + '//192.168.0.225';
+					return state.account.currentUrlHead + '//test.api.zhishutianxia.com';
 				}else{
 					return state.account.currentUrlHead + '//api.dktai.cn';
 				}

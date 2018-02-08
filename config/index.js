@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: {
     	//跨域请求配置
 			'/api': {
-				target: 'http://192.168.0.225',
+				target: 'http://test.api.zhishutianxia.com',
 				changeOrigin: true,
 				pathRewrite: {
 			      '^/api': ''
