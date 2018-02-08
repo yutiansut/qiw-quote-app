@@ -78,7 +78,7 @@
 						<li>亏损平仓线：<span>{{lossCloseOutLine}}元</span></li>
 						<li>方案结算时间：<span>{{endTime}}</span></li>
 						<li>交易盈亏：<span>{{tradeProfitAndLoss}}元</span></li>
-						<li>美元结算汇率：<span>1美元={{rate}}人民币</span></li>
+						<!--<li>美元结算汇率：<span>1美元={{rate}}人民币</span></li>-->
 					</ul>
 					<div class="levle">
 						操盘手数
