@@ -187,7 +187,7 @@
 				pro.fetch("post","/loginAndRegister/wxLogin",data,"").then(function(res){
 					if(res.code == 1 && res.success == true){
 						var userData = {'username':res.data.mobile,'token':res.data.token,'secret':res.data.secret};
-						localStorage.setItem("user", JSON.stringify(userData));
+						localStorage.user=JSON.stringify(userData);
 						this.$toast({message:"授权登录成功",duration: 1000});
 						this.$router.push({path:"/index"})
 					}
