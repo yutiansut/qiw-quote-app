@@ -139,7 +139,7 @@
 	#back{
 		display: inline-block;
 		width: 0.64rem;
-		height: 1rem;
+		height: 0.8rem;
 		background: url(../../../assets/images/back_icon.png) no-repeat 0.15rem 0.34rem;
 		background-size: 0.24rem 0.32rem;
 	}
