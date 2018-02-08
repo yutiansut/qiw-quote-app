@@ -22,9 +22,9 @@
 					</li>
 				</ul>
 				<ul class="cont">
-					<draggable v-model="optionalList">
-					    <transition-group>
-					      <li v-for="v in optionalList" :key="v.CommodityName" :id="v.id" :orderNum="v.orderNum">
+					<draggable v-model="optionalList" :options="{animation: 300,handle:'.icon_drag'}">
+					    <!--<transition-group>-->
+					      <li v-for="v in optionalList" :key.stop="v.CommodityName" :id="v.id" :orderNum="v.orderNum">
 					        <i class="icon" :class="{icon_check: v.check == 0, icon_checked: v.check == 1}" @tap="checkEvent(v.check, v.CommodityNo)"></i>
 							<div class="name">
 								<span>{{v.CommodityName}}</span>
@@ -36,7 +36,7 @@
 							</div>
 							<i class="icon icon_drag"></i>
 					      </li>
-					    </transition-group>
+					    <!--</transition-group>-->
 					</draggable>
 				</ul>
 			</div>
@@ -348,7 +348,6 @@
 			li{
 				height: 0.96rem;
 				border-bottom: 0.01rem solid $black;
-				padding-right: 0.3rem;
 				.icon{
 					float: left;
 					width: 0.84rem;
@@ -383,11 +382,12 @@
 					&.drag{
 						float: right;
 						width: 1rem;
+						margin-right: 0.3rem;
 					}
 				}
 				.icon_drag{
 					float: right;
-					width: 1rem;
+					width: 1.3rem;
 					height: 0.95rem;
 					background: url(../../assets/images/drag.png) no-repeat 0.6rem 0.35rem;
 					background-size: 0.24rem 0.24rem;
