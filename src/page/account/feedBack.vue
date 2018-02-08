@@ -22,7 +22,7 @@
 				反馈内容
 			</div>
 			<div class="content">
-				<textarea  cols="30" rows="10" placeholder="您可要留下您的意见或者建议，谢谢" v-model="suggest"></textarea>
+				<textarea  cols="30" rows="10" placeholder="您可以留下您的意见或者建议，谢谢" v-model="suggest"></textarea>
 				<!--<input type="text" placeholder="您可要留下您的意见或者建议，谢谢" v-model="suggest" />-->
 			</div>
 			<div class="title_lev2">
