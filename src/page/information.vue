@@ -1,14 +1,5 @@
 <template>
 	<div id="information">
-		<!--<mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange">
-		    <ul>
-		        <li v-for="item in list">{{ item.k }}</li>
-		    </ul>
-		    <div slot="top" class="mint-loadmore-top">
-		      	<span v-show="topStatus !== 'loading'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>
-		      	<span v-show="topStatus === 'loading'">Loading...</span>
-		    </div>
-		</mt-loadmore>-->
 		<mt-header title="资讯" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem;border-bottom: 1px solid #12141a;">
 		    <router-link to="/information_search" slot="right">
 		    	<i id="search" v-show="showSearch"></i>
@@ -17,9 +8,10 @@
 		</mt-header>
 		<div id="container">
 			<div class="navlist">
-				<span class="current" @click="change">7x24</span>
-				<span @click="change">财经日历</span>
+				<!--<span class="current" @click="change">7x24</span>
+				<span @click="change">财经日历</span>-->
 				<!--<span @click="change">要闻</span>-->
+				<span class="current">要闻</span>
 			</div>
 			<!--直播-->
 			<div id="news" v-show="showNews">
@@ -74,6 +66,28 @@
 					</div>
 				</div>
 			</div>
+			<div id="importantNews" v-show="showImportantNews">
+				<div class="solider">
+					<mt-swipe :show-indicators="false" :auto="3000">
+						<mt-swipe-item><img src="../assets/images/solider_01.png" alt="" /></mt-swipe-item>
+						<mt-swipe-item><img src="../assets/images/solider_02.png"/></mt-swipe-item>
+						<mt-swipe-item><img src="../assets/images/solider_03.png"/></mt-swipe-item>
+					</mt-swipe>
+				</div>
+				<div class="black"></div>
+				<div class="news" v-for="k in this.infoArr" @click="toImporttantDetails($event,k.id)">
+					<div class="newsLeft">
+						<i></i>
+						<ul>
+							<li>{{k.title}}</li>
+							<li>{{k.time}}</li>
+						</ul>
+					</div>
+					<div class="newsRight">
+						<img v-bind:src="k.imgurl" alt="" />
+					</div>
+				</div>
+			</div>
 		</div>
 		<TabBar :selected="selected" :tabs="tabs" ></TabBar>
 	</div>
@@ -90,8 +104,9 @@
 			return{
 				showSearch:true,
 				showChooseDay:false,
-				showNews:true,
+				showNews:false,
 				showCalendar:false,
+				showImportantNews:true,
 				weekDayList:[
 					{day:16,weekday:"一"},
 					{day:17,weekday:"二"},
@@ -104,19 +119,27 @@
 				current:3,
 				selected:"资讯",
 				tabs:[require("../assets/images/quotation_02.png"),require("../assets/images/mockTrading_02.png"),
-				require("../assets/images/information_01.png"),require("../assets/images/mine_02.png")]
+				require("../assets/images/information_01.png"),require("../assets/images/mine_02.png")],
+				infoArr:[{title:"比特币再现巨大跌幅，自高位跌去七成 这次还能爬起来吗？",time:"2018-02-10",imgurl:require("../assets/images/important_1.jpg"),id:"1"},
+				{title:"美股暴跌的原因猜想：这次可能没法指望美联储了",time:"2018-02-09",imgurl:require("../assets/images/important_2.jpg"),id:"2"},
+				{title:"俄媒数据：中石油2017年海外油气开采量增17.2%",time:"2018-02-08",imgurl:require("../assets/images/important_3.jpg"),id:"3"},
+				{title:"钢材总库存处于低位，沪钢稳居3900元/吨之上",time:"2018-02-05",imgurl:require("../assets/images/important_4.jpg"),id:"4"},
+				{title:"铜业公司业绩喜人，铜市有望进入“长牛”",time:"2018-02-03",imgurl:require("../assets/images/important_5.jpg"),id:"5"}]
 			}
 		},
 		methods:{
-		    change:function(e){
-		    	$(e.target).addClass("current").siblings().removeClass("current");
-		    	this.showNews=!this.showNews;
-		    	this.showCalendar=!this.showCalendar;
-		    	this.showSearch=!this.showSearch;
-		    	this.showChooseDay=!this.showChooseDay
-		    },
+//		    change:function(e){
+//		    	$(e.target).addClass("current").siblings().removeClass("current");
+//		    	this.showNews=!this.showNews;
+//		    	this.showCalendar=!this.showCalendar;
+//		    	this.showSearch=!this.showSearch;
+//		    	this.showChooseDay=!this.showChooseDay
+//		    },
 		    toDetails:function(){
 		    	this.$router.push({path:"/information_details"});
+		    },
+		    toImporttantDetails:function(e,id){
+		    	this.$router.push({path:"/importantDetails",query:{id:id}})
 		    }
 		}
 	}
@@ -323,6 +346,90 @@
 								&:nth-child(3){
 									float: right;
 								}
+							}
+						}
+					}
+				}
+			}
+		}
+		/*要闻*/
+		#importantNews{
+			margin-top: 1.8rem;
+			width: 100%;
+			.solider{
+				width: 100%;
+				height: 2.4rem;
+				background-color: royalblue;
+			}
+			.black{
+				width: 100%;
+				height: 0.2rem;
+				background-color: #1b1f26;
+				border-top: 1px solid #12141a;
+			}
+			.news{
+				&:last-child{
+					margin-bottom: 2rem;
+				}
+				width: 100%;
+				height: 1.8rem;
+				border-top: 1px solid #12141a;
+				border-bottom: 1px solid #12141a;
+				display: flex;
+				justify-content: space-between;
+				.newsLeft{
+					width: 5.3rem;
+					i{
+						width: 0.2rem;
+						height: 0.2rem;
+						background-color: $blue;
+						display: block;
+						margin-top: 0.36rem;
+						float: left;
+					}
+					ul{
+						width: 5.1rem;
+						display: block;
+						float: left;
+						padding-left: 0.1rem;
+						li{
+							&:nth-child(1){
+								padding-top: 0.3rem;
+								color: $white;
+								font-size: $fs28;
+								line-height: 0.42rem;
+							}
+							&:nth-child(2){
+								color: #7a8599;
+								font-size: $fs24;
+							}
+						}
+					}
+				}
+				.newsRight{
+					position: relative;
+					width: 2.2rem;
+					img{
+						width: 1.6rem;
+						height: 1.2rem;
+						margin: -0.6rem 0 0 -0.8rem;
+						top: 50%;
+						left: 50%;
+						position: absolute;
+						border: 1px solid #12141a;
+						border-radius: 0.1rem;
+					}
+				}
+			}
+			.current1{
+				.newsLeft{
+					i{
+						background-color: #16597f;
+					}
+					ul{
+						li{
+							&:nth-child(1){
+								color: #7a8599;
 							}
 						}
 					}

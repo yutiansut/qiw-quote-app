@@ -62,6 +62,7 @@ import newbieTask from "../page/account/newbieTask.vue"
 import userRegistrationProtocol from "../page/account/login/userRegistrationProtocol.vue"
 import agreement from "../page/trade/agreement.vue"
 import tradersRules from "../page/trade/tradersRules.vue"
+import importantDetails from "../page/information/importantDetails.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -254,6 +255,9 @@ export default new Router({
 	},{
 		path:"/tradersRules",
 		component:tradersRules
+	},{
+		path:"/importantDetails",
+		component:importantDetails
 	}
 	]
 })
