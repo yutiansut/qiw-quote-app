@@ -228,7 +228,6 @@
 			this.operateData();
 		},
 		activated: function(){
-			console.log(111);
 			this.currentNum = 0;
 			this.$store.state.market.Parameters = [];
 			this.$store.state.market.commodityOrder = [];
