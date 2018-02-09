@@ -128,7 +128,7 @@
 				pro.fetch("post","/others/getSysparam","","").then((res)=>{
 //					console.log("res==="+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
-						this.cnyToUsdRate = 1/res.data.cnyToUsdRate;
+						this.cnyToUsdRate = Number( 1/res.data.cnyToUsdRate).toFixed(2);
 						this.cnyToSimulationRate = res.data.cnyToSimulationRate;
 						this.addbondMinMoney = res.data.addbondMinMoney;
 //						console.log("this.cnyToUsdRate==="+this.cnyToUsdRate)
