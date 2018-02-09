@@ -108,7 +108,7 @@
 		},
 		mounted: function() {
 			var path = this.$route.path;
-			console.log(path)
+//			console.log(path)
 			switch(path) {
 				case '/index':
 					$('li>p').removeClass('current');
