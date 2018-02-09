@@ -224,7 +224,7 @@
 					token : this.userInfo.token,
 					secret : this.userInfo.secret
 				}
-				console.log(headers)
+//				console.log(headers)
 				pro.fetch("post","/account/getBasicMsg","",headers).then((res)=>{
 //					console.log("res===="+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
@@ -253,7 +253,7 @@
 						this.isRealNameAuth = res.data.isRealNameAuth;
 					}
 				}).catch((err)=>{
-					console.log("err==0"+JSON.stringify(err))
+//					console.log("err==0"+JSON.stringify(err))
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
@@ -273,7 +273,7 @@
 		},
 		activated: function(){
 			//获取平台账户登录信息
-			console.log("localStorage.user"+localStorage.user);
+//			console.log("localStorage.user"+localStorage.user);
 			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 			if(this.userInfo == ''){
 				this.showLoginIn = false;

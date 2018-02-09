@@ -8,7 +8,7 @@
 		<div id="container">
 			<p>{{title}}</p>
 			<span>{{time}}</span>
-			<p>{{content}}</p>
+			<p v-html="this.content"></p>
 		</div>
 	</div>
 </template>
@@ -32,7 +32,7 @@
 				}
 				console.log(JSON.stringify(data));
 				pro.fetch("post","/others/getNotice",data,"").then((res)=>{
-//					console.log("res==="+JSON.stringify(res));
+					console.log("res==="+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						this.title = res.data.title;
 						this.content = res.data.content;
@@ -95,7 +95,7 @@
 				line-height: 0.6rem;
 				font-weight: 600;
 			}
-			&:nth-child(2){
+			&:nth-child(3){
 				color: $fontBlue;
 				font-size: $fs28;
 				line-height: 0.4rem;
