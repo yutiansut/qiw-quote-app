@@ -158,14 +158,14 @@
 			text-align: center;
 			font-size: 0.2rem;
 			p{
-				margin-top: 0.1rem;
+				margin-top: 0.08rem;
 				color: $fontBlue;
 			}
 			img{
 				margin-left: 0.4rem;
 				width: 0.4rem;
 				height: 0.4rem;
-				margin-top: 0.1rem;
+				margin-top: 0.15rem;
 			}
 		}
 		.current{

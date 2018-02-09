@@ -251,7 +251,7 @@
 	}
 	.connect{
 		position: fixed;
-		bottom: 0.98rem;
+		bottom: 1rem;
 		left: 0;
 		width: 7.5rem;
 		height: 0.48rem;
@@ -265,11 +265,6 @@
 		}
 		&.connected{
 			background: #0f996b;
-		}
-	}
-	@media(max-width:370px) {
-		.connect{
-			bottom: 1.3rem;
 		}
 	}
 </style>
