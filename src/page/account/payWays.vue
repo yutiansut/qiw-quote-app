@@ -1,8 +1,8 @@
 <template>
 	<div id="payWays">
 		<mt-header title="充值" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
-		  	<router-link to="/recharge" slot="left">
-		    	<i id="back"></i>
+		  	<router-link to="" slot="left">
+		    	<i id="back" @click="backRouter"></i>
 		  	</router-link>
 		</mt-header>
 		<div id="container">
@@ -17,25 +17,14 @@
 		data(){
 			return{
 				token:"",
-				secret:""
-			}
-		},
-		computed: {
-//			PATH: function(){
-//				return this.$store.getters.PATH;
-//			},
-			iframe(){
-//				return "http://192.168.0.153:8080/qiw-platform/pay/payInfo?publickey="+this.token+"&secretkey="+this.secret+"&money="+this.$route.query.money;
-				return "http://test.api.zhishutianxia.com/pay/payInfo?publickey="+this.token+"&secretkey="+this.secret+"&money="+this.$route.query.money;
-//				return "http://192.168.0.153:8088/vs-pay/app/appPayinfo?mobile=18280302936&money=20";
-
+				secret:"",
+				iframe:""
 			}
 		},
 		methods:{
-			
-		},
-		mounted:function(){
-			
+			backRouter:function(){
+				this.$router.back(-1);
+			}
 		},
 		activated:function(){
 			//获取平台账户登录信息
@@ -46,6 +35,8 @@
 //				console.log("一登录")
 				this.token = this.userInfo.token,
 				this.secret = this.userInfo.secret
+				this.iframe = "http://test.api.zhishutianxia.com/pay/payInfo?publickey="+this.token+"&secretkey="+this.secret+"&money="+this.$route.query.money;
+//				this.iframe = "http://192.168.0.153:8080/qiw-platform/pay/payInfo?publickey="+this.token+"&secretkey="+this.secret+"&money="+this.$route.query.money;
 			}
 		}
 	}
