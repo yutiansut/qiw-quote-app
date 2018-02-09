@@ -55,12 +55,6 @@
 						});
 						break;
 					case '我的':
-						if(!localStorage.user) {
-							this.$router.push({
-								path: '/login'
-							});
-							return;
-						}
 						this.$router.push({
 							path: '/account'
 						});
