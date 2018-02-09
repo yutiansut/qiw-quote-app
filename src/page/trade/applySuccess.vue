@@ -1,8 +1,8 @@
 <template>
 	<div id="applySuccess">
 		<mt-header title="申请成功" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem;border-bottom: 1px solid #12141a;line-height: 1rem;">
-		  	<router-link to="/account" slot="left">
-		    	<i id="back"></i>
+		  	<router-link to="" slot="left">
+		    	<i id="back" @click="toAccount"></i>
 		  	</router-link>
 		    <router-link to="/customerServices" slot="right">
 		    	<mt-button style="font-size: 0.24rem;color: #9ba8c2;">客服</mt-button>
@@ -27,16 +27,23 @@
 		components:{btn},
 		data(){
 			return{
-				
+				isbreak:false
 			}
 		},
 		methods:{
+			toAccount:function(){
+				this.isbreak = true;
+				this.$rouer.push({path:"/account"});
+			},
 			toTradeLogin:function(){
+				this.isbreak = true;
 				this.$router.push({path:"/tradeLogin"});
 			},
 			toFinance:function(){
 				setTimeout(function(){
-					this.$router.push({path:"/myFinance"});
+					if(this.isbreak == false){
+						this.$router.push({path:"/myFinance"});
+					}
 				}.bind(this),5000)
 			}
 		},
