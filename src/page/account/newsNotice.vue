@@ -8,7 +8,7 @@
 		<div id="container">
 			<div class="exist" v-show="exist" >
 				<div class="list" v-for="k in this.newList">
-					<ul @click="toNewDetails(k.id,$event)">
+					<ul @click="toNewDetails(k.id,k.time,k.content,$event)">
 						<li>{{k.time}}</li>
 						<li v-if="k.isread == 'false'" class="current">{{k.title}}</li>
 						<li v-else="k.isread =='true'" >{{k.title}}</li>
@@ -49,7 +49,7 @@
 					pageSize:20
 				}
 				pro.fetch("post","/others/getNoticeList",data,"").then((res)=>{
-					console.log("res==="+JSON.stringify(res));
+//					console.log("res==="+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						this.newList = res.data.list;
 						for(var a of this.newList){
@@ -57,7 +57,7 @@
 								a.isread="false";
 							}else{
 								for(var i of this.arr){
-									if(i.id == a.id){
+									if(i.id == a.id && i.time == a.time && i.content == a.content){
 										a.isread="true";
 										break;
 									}else{
@@ -67,23 +67,24 @@
 							}
 						}
 						for(var b in this.newList){
-							if(this.newList[b].isTop=="1"){
+							if(this.newList[b].isTop == "1"){
 								this.newArr = this.newList[b];
 								this.newList.splice(Number(b),1);
 								break;
 							}
 						}
-						this.newList.push(this.newArr);
-						this.newList.reverse();
+						if(this.newArr != ""){
+							this.newList.push(this.newArr);
+							this.newList.reverse();
+						}
 //						console.log("this.newList==="+JSON.stringify(this.newList));
-						console.log("this.newList========"+JSON.stringify(this.newList));
 						if(res.data.list == ''){
 							this.exist = false;
 							this.none = true;
 						}
 					}
 				}).catch((err)=>{
-					console.log("err+"+JSON.stringify(err));
+//					console.log("err+"+JSON.stringify(err));
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
@@ -98,17 +99,17 @@
 					}
 				})
 			},
-			toNewDetails:function(id1,e){
+			toNewDetails:function(id1,time,content,e){
 //				localStorage.removeItem("NEWSID");
-				var newsId = {id:id1};
+				var newsId = {id:id1,time:time,content:content};
 				this.arr = JSON.parse(localStorage.getItem("NEWSID"));
 				if(this.arr == null){
 					this.arr = [];
 					this.arr.push(newsId);
 				}else{
 					for(var a of this.arr){
-						console.log(JSON.stringify(a.id));
-						if(newsId.id != JSON.stringify(a.id)){
+//						console.log(JSON.stringify(a.id));
+						if(newsId.id != JSON.stringify(a.id) && newsId.time != JSON.stringify(a.time) && newsId.content!= JSON.stringify(a.content)){
 							this.arr.push(newsId);
 							break;
 						}
