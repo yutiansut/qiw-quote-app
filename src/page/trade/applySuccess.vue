@@ -14,7 +14,7 @@
 				<p>融资方案申请成功</p>
 			</div>
 			<div class="bt">
-				<btn className="bluelg" name="立即交易"></btn>
+				<btn className="bluelg" name="立即交易" @click.native="toTradeLogin"></btn>
 			</div>
 		</div>
 	</div>
@@ -31,6 +31,9 @@
 			}
 		},
 		methods:{
+			toTradeLogin:function(){
+				this.$router.push({path:"/tradeLogin"});
+			},
 			toFinance:function(){
 				setTimeout(function(){
 					this.$router.push({path:"/myFinance"});

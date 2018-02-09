@@ -18,7 +18,7 @@
 					<ul>
 						<li>交易账号：<span>{{account}}</span></li>
 						<li>
-							<mt-button class="btn2">立即交易</mt-button>
+							<mt-button class="btn2" @click.native="toTradeLogin">立即交易</mt-button>
 						</li>
 					</ul>
 					<ul>
@@ -163,6 +163,9 @@
 			}
 		},
 		methods:{
+			toTradeLogin:function(){
+				this.$router.push({path:"/tradeLogin"});
+			},
 			end:function(){
 				var headers = {
 					token : this.userInfo.token,

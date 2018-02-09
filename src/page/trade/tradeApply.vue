@@ -136,7 +136,7 @@
 						this.disabled = false;
 //						console.log("333333333333")
 						if(this.balance > 3){
-							this.startMax = Number(this.balance*this.rate).toFixed(2);
+							this.startMax = Number((this.balance*this.rate).toFixed(2));
 							$("#btnnnn").html("立即支付");
 						}else if(this.balance < 3 || this.balance == 3){
 							this.startMax = 10000;
