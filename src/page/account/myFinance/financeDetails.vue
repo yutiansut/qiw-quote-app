@@ -4,7 +4,7 @@
 		  	<router-link to="/myFinance" slot="left">
 		    	<i id="back"></i>
 		  	</router-link>
-		    <router-link to="/account" slot="right">
+		    <router-link to="/tradersRules" slot="right">
 		    	<mt-button style="font-size: 0.24rem;color: #9ba8c2;">规则</mt-button>
 		 	</router-link>
 		</mt-header>
