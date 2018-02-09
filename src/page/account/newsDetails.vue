@@ -30,9 +30,9 @@
 				var data = {
 					id:this.id
 				}
-				console.log(JSON.stringify(data));
+//				console.log(JSON.stringify(data));
 				pro.fetch("post","/others/getNotice",data,"").then((res)=>{
-					console.log("res==="+JSON.stringify(res));
+//					console.log("res==="+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						this.title = res.data.title;
 						this.content = res.data.content;

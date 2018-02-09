@@ -6,14 +6,16 @@
 		  	</router-link>
 		</mt-header>
 		<div id="container">
-			<mt-cell title="客服热线" class="cell" @click.native="call">
-				<span>400-852-8008</span>
-				<img slot="icon" src="../../assets/images/account/phone.png" width="24" height="24">
-			</mt-cell>
-			<mt-cell title="在线客服" class="cell" @click.native="online">
-				<span>随时解疑</span>
-				<img slot="icon" src="../../assets/images/account/online.png" width="24" height="24">
-			</mt-cell>
+			<ul @click="call">
+				<li><img src="../../assets/images/account/phone.png" ></li>
+				<li>客服热线</li>
+				<li>400-852-8008</li>
+			</ul>
+			<ul @click="online">
+				<li><img src="../../assets/images/account/online.png" ></li>
+				<li>在线客服</li>
+				<li>随时解疑</li>
+			</ul>
 		</div>
 		<mt-actionsheet
 		  :actions="arr"
@@ -66,18 +68,25 @@
 		color:$fontBlue ;
 		width: 100%;
 		margin-top: 1rem;
-		.cell{
-			margin-left: 0.1rem;
-			background-color: $bg;
-			color: $fontBlue;
-			border-bottom:1px solid #12141a;
+		display: flex;
+		flex-direction: column;
+		ul{
 			height: 0.9rem;
-			span{
-				color: $fontBlue;
-				margin-right: 0.2rem;
-			}
-			img{
-				margin-right: 0.2rem;
+			border-bottom: 1px solid #12141a;
+			line-height: 0.9rem;
+			padding: 0 0.3rem;
+			li{
+				float: left;
+				&:last-child{
+					float: right;
+				}
+				img{
+					display: block;
+					width: 0.4rem;
+					height: 0.4rem;
+					margin-top: 0.25rem;
+					margin-right: 0.2rem;
+				}
 			}
 		}
 	}
