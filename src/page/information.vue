@@ -89,7 +89,7 @@
 				</div>
 			</div>
 		</div>
-		<TabBar :selected="selected" :tabs="tabs" ></TabBar>
+		<TabBar></TabBar>
 	</div>
 </template>
 
@@ -117,9 +117,6 @@
 					{day:22,weekday:"七"}
 				],
 				current:3,
-				selected:"资讯",
-				tabs:[require("../assets/images/quotation_02.png"),require("../assets/images/mockTrading_02.png"),
-				require("../assets/images/information_01.png"),require("../assets/images/mine_02.png")],
 				infoArr:[{title:"比特币再现巨大跌幅，自高位跌去七成 这次还能爬起来吗？",time:"2018-02-10",imgurl:require("../assets/images/important_1.jpg"),id:"1"},
 				{title:"美股暴跌的原因猜想：这次可能没法指望美联储了",time:"2018-02-09",imgurl:require("../assets/images/important_2.jpg"),id:"2"},
 				{title:"俄媒数据：中石油2017年海外油气开采量增17.2%",time:"2018-02-08",imgurl:require("../assets/images/important_3.jpg"),id:"3"},

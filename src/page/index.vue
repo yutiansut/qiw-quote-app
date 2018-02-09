@@ -1,6 +1,6 @@
 <template>
 	<div id="index">
-		<TabBar :selected="selected" :tabs="tabs"></TabBar>
+		<TabBar></TabBar>
 		<header>
 			<div class="tab">
 				<template v-for="(v, index) in tabList">
@@ -37,9 +37,6 @@
 				currentView: 'market',
 				setShow: false,
 				isInit: false,
-				selected:"行情",
-				tabs:[require("../assets/images/quotation_01.png"),require("../assets/images/mockTrading_02.png"),
-				require("../assets/images/information_02.png"),require("../assets/images/mine_02.png")],
 				optionalList: [],
 				marketList: [],
 				isconnecting: false,

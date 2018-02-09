@@ -1,23 +1,9 @@
 <template>
 	<div id="tabbar">
-		<mt-tabbar v-model="message" fixed style="background-color:#2d3340;" >
-			<mt-tab-item id="行情" style="background-color:#2d3340;" >  
-			    <img slot="icon" v-bind:src="this.atabs[0]">  
-			    <span>行情 </span> 
-			</mt-tab-item> 
-      		<mt-tab-item id="模拟交易" style="background-color:#2d3340;">  
-		        <img slot="icon" v-bind:src="this.atabs[1]" >  
-		        <span>模拟交易 </span>  
-		    </mt-tab-item> 
-      		<mt-tab-item id="资讯" style="background-color:#2d3340;">  
-		        <img slot="icon" v-bind:src="this.atabs[2]">  
-		        <span>资讯 </span> 
-		    </mt-tab-item>
-      		<mt-tab-item id="我的" style="background-color:#2d3340;">  
-		        <img slot="icon" v-bind:src="this.atabs[3]" >  
-		         <span>我的 </span> 
-	      	</mt-tab-item> 
-    	</mt-tabbar> 
+    	<li v-for="k in navList" @click="toPages">
+    		<img :src="k.src" alt="" />
+    		<p>{{k.name}}</p>
+    	</li>
 	</div>
 </template>
 <script>
@@ -25,36 +11,131 @@
 		name:"TabBar",
 		data(){
 			return{
-				message:this.selected,
-				atabs:this.tabs
+				navList: [{
+						name: '行情',
+						src: require('../assets/images/quotation_02.png')
+					},
+					{
+						name: '模拟交易',
+						src: require('../assets/images/mockTrading_02.png')
+					},
+					{
+						name: '资讯',
+						src: require('../assets/images/information_02.png')
+					},
+					{
+						name: '我的',
+						src: require('../assets/images/mine_02.png')
+					}
+				]
 			}
 		},
-		props:['selected','tabs'],
-		activated:function(){
-			this.message=this.selected;
+		computed:{
+			routepath(){
+				return this.$route.path;
+			}
+		},
+		methods:{
+			toPages: function(e) {
+				var tar = e.currentTarget.children[1].innerHTML;
+				switch(tar) {
+					case '行情':
+						this.$router.push({
+							path: '/index'
+						});
+						break;
+					case '模拟交易':
+						this.$router.push({
+							path: '/tradeLogin'
+						});
+						break;
+					case '资讯':
+						this.$router.push({
+							path: '/information'
+						});
+						break;
+					case '我的':
+						if(!localStorage.user) {
+							this.$router.push({
+								path: '/login'
+							});
+							return;
+						}
+						this.$router.push({
+							path: '/account'
+						});
+						break;
+				}
+			}
 		},
 		watch:{
-			 message: function (val,oldVal) {
-	            switch(val){
-	                case '行情':
-	                    this.$router.push({path:'/index'});
-	                break;
-	                case '模拟交易':
-	                	let tradeUser = localStorage.tradeUser ? JSON.parse(localStorage.tradeUser) : '';
-	                	if(tradeUser == ''){
-	                		this.$router.push({path:'/tradeLogin'});
-	                	}else{
-	                		this.$router.push({path:'/trade'});
-	                	}
-	                break;
-	                case '资讯':
-	                    this.$router.push({path:'/information'});
-	                break;
-	                case '我的':
-	                    this.$router.push({path:'/account'});
-	                break;
-	            }
-	        }
+			routepath:function(n,o){
+				switch(n){
+					case '/index':
+						$('li>p').removeClass('current');
+						$('li:first-child>p').addClass('current');
+						this.navList[0].src = require('../assets/images/quotation_01.png');
+						this.navList[1].src = require('../assets/images/mockTrading_02.png');
+						this.navList[2].src = require('../assets/images/information_02.png');
+						this.navList[3].src = require('../assets/images/mine_02.png');
+						break;
+					case '/tradeLogin':
+						$('li>p').removeClass('current');
+						$('li:nth-child(2)>p').addClass('current');
+						this.navList[0].src = require('../assets/images/quotation_02.png');
+						this.navList[1].src = require('../assets/images/mockTrading_01.png');
+						this.navList[2].src = require('../assets/images/information_02.png');
+						this.navList[3].src = require('../assets/images/mine_02.png');
+						break;
+					case '/information':
+						$('li>p').removeClass('current');
+						$('li:nth-child(3)>p').addClass('current');
+						this.navList[0].src = require('../assets/images/quotation_02.png');
+						this.navList[1].src = require('../assets/images/mockTrading_02.png');
+						this.navList[2].src = require('../assets/images/information_01.png');
+						this.navList[3].src = require('../assets/images/mine_02.png');
+						break;
+					case '/account':
+						$('li>p').removeClass('current');
+						$('li:nth-child(4)>p').addClass('current');
+						this.navList[0].src = require('../assets/images/quotation_02.png');
+						this.navList[1].src = require('../assets/images/mockTrading_02.png');
+						this.navList[2].src = require('../assets/images/information_02.png');
+						this.navList[3].src = require('../assets/images/mine_01.png');
+						break;
+				}
+			}
+		},
+		mounted: function() {
+			var path = this.$route.path;
+			console.log(path)
+			switch(path) {
+				case '/index':
+					$('li>p').removeClass('current');
+					$('li:first-child>p').addClass('current');
+					this.navList[0].src = require('../assets/images/quotation_01.png');
+					break;
+				case '/tradeLogin':
+					$('li>p').removeClass('current');
+					$('li:nth-child(2)>p').addClass('current');
+					this.navList[1].src = require('../assets/images/mockTrading_01.png');
+					break;
+				case '/information':
+					$('li>p').removeClass('current');
+					$('li:nth-child(3)>p').addClass('current');
+						this.navList[2].src = require('../assets/images/information_01.png');
+					break;
+				case '/account':
+					$('li>p').removeClass('current');
+					$('li:nth-child(4)>p').addClass('current');
+					this.navList[3].src = require('../assets/images/mine_01.png');
+					break;
+				default:
+					$('li>p').removeClass('current');
+					$('li:first-child>p').addClass('current');
+					this.navList[0].src = require('../assets/images/quotation_01.png');
+					break;
+			}
 		}
 	}
 </script>
@@ -62,12 +143,33 @@
 <style scoped lang="scss">
 	@import "../assets/css/common.scss";
 	#tabbar{
-		width:7.5rem;
-	}
-	.mint-tab-item .mint-tab-item-label span{
-		color:$fontBlueTitle;
-	}
-	.is-selected .mint-tab-item-label span{
-		color: $blue;
+		width: 7.5rem;
+		height: 1rem;
+		position: fixed;
+		bottom: 0;
+		background-color:$titleBlue ;
+		display: flex;
+		justify-content: space-around;
+		border-top: 1px solid #12141a;
+		li{
+			width: 1.2rem;
+			display:flex;
+			flex-direction: column;
+			text-align: center;
+			font-size: 0.2rem;
+			p{
+				margin-top: 0.1rem;
+				color: $fontBlue;
+			}
+			img{
+				margin-left: 0.4rem;
+				width: 0.4rem;
+				height: 0.4rem;
+				margin-top: 0.15rem;
+			}
+		}
+		.current{
+			color: $blue;
+		}
 	}
 </style>

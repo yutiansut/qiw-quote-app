@@ -115,7 +115,7 @@
 				</ul>
 			</div>
 		</div>
-		<TabBar :selected="selected" :tabs="tabs" ></TabBar>
+		<TabBar></TabBar>
 	</div>
 </template>
 
@@ -131,9 +131,6 @@
 			return{
 				showLoginIn:false,
 				showNotLogin:true,
-				selected:"我的",
-				tabs:[require("../assets/images/quotation_02.png"),require("../assets/images/mockTrading_02.png"),
-				require("../assets/images/information_02.png"),require("../assets/images/mine_01.png")],
 				userInfo:"",
 				//手机账户号码
 				mobile:"",

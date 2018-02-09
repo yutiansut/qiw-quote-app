@@ -1,6 +1,6 @@
 <template>
 	<div id="trade">
-		<TabBar :selected="selected" :tabs="tabs"></TabBar>
+		<TabBar></TabBar>
 		<hasLogin ref="hasLogin"></hasLogin>
 		<header>
 			<h1>ID:10081</h1>
@@ -34,9 +34,6 @@
 		components: {TabBar, moneyTotal, tradeCenter, holdOrder, moneyDetails, hasLogin},
 		data(){
 			return{
-				selected: "模拟交易",
-				tabs:[require("../assets/images/quotation_02.png"),require("../assets/images/mockTrading_01.png"),
-				require("../assets/images/information_02.png"),require("../assets/images/mine_02.png")],
 				tabList: ['交易','持仓','资金明细'],
 				currentNum: 0,
 				currentView: 'tradeCenter',

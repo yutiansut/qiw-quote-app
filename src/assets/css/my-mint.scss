@@ -73,14 +73,7 @@
 }
 //客服弹出
  #btmTop .mint-actionsheet-listitem{
-    
     &:nth-child(1){
         border-bottom: none;
     }
-}
-
-//tabbar
-#tabbar .mint-tabbar{
-    border-top: 1px solid #12141a ;
-   height: 1rem;
 }
