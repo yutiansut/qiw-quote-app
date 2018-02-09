@@ -90,7 +90,7 @@
 				</div>
 				<div class="row">
 					<span class="type">提醒频率</span>
-					<div class="fr" @tap="setRemindEvent">
+					<div class="fr" @click="setRemindEvent">
 						<span>{{defaultFrequency | operateFrequency}}</span>
 						<img src="../../assets/images/arrow.png"/>
 					</div>
