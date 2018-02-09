@@ -211,6 +211,7 @@
 			width: 2.5rem;
 			height: 1.6rem;
 			border-right: 0.01rem solid $black;
+			border-bottom: 0.01rem solid $black;
 			span{
 				display: block;
 				text-align: center;
