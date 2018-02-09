@@ -609,7 +609,6 @@
 				width: 100%;
 				height: 1rem;
 				border-top: 1px solid $black;
-				border-bottom: 1px solid $black;
 				background-color: $titleBlue;
 				li{
 					float: left;
