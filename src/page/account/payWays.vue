@@ -1,8 +1,8 @@
 <template>
 	<div id="payWays">
 		<mt-header title="充值" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem; border-bottom: 1px solid #12141a;">
-		  	<router-link to="" slot="left">
-		    	<i id="back" @click="backRouter"></i>
+		  	<router-link to="/recharge" slot="left">
+		    	<i id="back"></i>
 		  	</router-link>
 		</mt-header>
 		<div id="container">
@@ -31,9 +31,9 @@
 			},
 		},
 		methods:{
-			backRouter:function(){
-				this.$router.back(-1);
-			}
+//			backRouter:function(){
+//				this.$router.back(-1);
+//			}
 		},
 		activated:function(){
 			//获取平台账户登录信息
@@ -57,11 +57,12 @@
 		width: 7.5rem;
 	}
 	#back{
-		display: inline-block;
+		display: block;
 		width: 0.64rem;
 		height: 1rem;
 		background: url(../../assets/images/back_icon.png) no-repeat 0.15rem 0.34rem;
 		background-size: 0.24rem 0.32rem;
+		/*float: left;*/
 	}
 	#container{
 		color:$fontBlue ;
