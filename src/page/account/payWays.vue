@@ -21,6 +21,15 @@
 				iframe:""
 			}
 		},
+		computed: {
+			PAY: function(){
+				if(this.$store.state.environment == "test"){
+					return "http://test.api.zhishutianxia.com";
+				}else{
+					return "http://api.zhishutianxia.com";
+				}
+			},
+		},
 		methods:{
 			backRouter:function(){
 				this.$router.back(-1);
@@ -35,7 +44,7 @@
 //				console.log("一登录")
 				this.token = this.userInfo.token,
 				this.secret = this.userInfo.secret
-				this.iframe = "http://test.api.zhishutianxia.com/pay/payInfo?publickey="+this.token+"&secretkey="+this.secret+"&money="+this.$route.query.money;
+				this.iframe = this.PAY + "/pay/payInfo?publickey="+this.token+"&secretkey="+this.secret+"&money="+this.$route.query.money;
 //				this.iframe = "http://192.168.0.153:8080/qiw-platform/pay/payInfo?publickey="+this.token+"&secretkey="+this.secret+"&money="+this.$route.query.money;
 			}
 		}
