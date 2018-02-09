@@ -56,9 +56,6 @@
 			isLogin(){
 				return this.$store.state.account.isLogin;
 			},
-			quoteStatus(){
-				return sessionStorage.quoteStatus ? JSON.parse(sessionStorage.quoteStatus) : '';
-			},
 			warningShow(){
 				return this.$store.state.isshow.warningShow;
 			}
@@ -176,7 +173,7 @@
 			}); 
 			EventUtil.addHandler(window, "offline", function () { 
 				this.isconnecting = true;
-				console.log('网络已断开');
+//				console.log('网络已断开');
 			}); 
 		},
 		mounted: function(){
@@ -257,7 +254,7 @@
 	}
 	.connect{
 		position: fixed;
-		bottom: 1.25rem;
+		bottom: 1.01rem;
 		left: 0;
 		width: 7.5rem;
 		height: 0.48rem;
@@ -271,6 +268,16 @@
 		}
 		&.connected{
 			background: #0f996b;
+		}
+	}
+	@media (min-width: 371px) and (max-width: 410px) {
+		.connect{
+			bottom: 1.1rem;
+		}
+	}
+	@media(max-width:370px) {
+		.connect{
+			bottom: 1.3rem;
 		}
 	}
 </style>
