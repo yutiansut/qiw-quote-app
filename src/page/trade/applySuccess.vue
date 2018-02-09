@@ -49,7 +49,7 @@
 		mounted:function(){
 		},
 		activated:function(){
-//			this.toFinance();
+			this.toFinance();
 		}
 	}
 </script>
