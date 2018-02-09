@@ -58,13 +58,19 @@
 			},
 			quoteStatus(){
 				return sessionStorage.quoteStatus ? JSON.parse(sessionStorage.quoteStatus) : '';
+			},
+			warningShow(){
+				return this.$store.state.isshow.warningShow;
 			}
 		},
 		watch: {
-			quoteStatus: function(n, o){
-				if(n && n == false){
+			warningShow: function(n, o){
+				if(n && n == true){
 					this.isconnected = false;
 					this.isconnecting = true;
+					setTimeout(function(){
+						window.location.reload();
+					}, 5000);
 				}else{
 					this.isconnected = true;
 					this.isconnecting = false;
