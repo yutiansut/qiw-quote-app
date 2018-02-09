@@ -26,7 +26,8 @@
 				if(this.$store.state.environment == "test"){
 					return "http://test.api.zhishutianxia.com";
 				}else{
-					return "http://api.zhishutianxia.com";
+//					return "http://api.zhishutianxia.com";
+					return 'http:139.196.232.17';
 				}
 			},
 		},
