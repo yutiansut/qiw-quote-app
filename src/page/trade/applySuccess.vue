@@ -1,7 +1,7 @@
 <template>
 	<div id="applySuccess">
 		<mt-header title="申请成功" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem;border-bottom: 1px solid #12141a;line-height: 1rem;">
-		  	<router-link to="" slot="left">
+		  	<router-link to="account" slot="left">
 		    	<i id="back" @click="toAccount"></i>
 		  	</router-link>
 		    <router-link to="/customerServices" slot="right">
@@ -33,7 +33,6 @@
 		methods:{
 			toAccount:function(){
 				this.isbreak = true;
-				this.$rouer.push({path:"/account"});
 			},
 			toTradeLogin:function(){
 				this.isbreak = true;
@@ -50,7 +49,7 @@
 		mounted:function(){
 		},
 		activated:function(){
-			this.toFinance();
+//			this.toFinance();
 		}
 	}
 </script>
@@ -61,11 +60,12 @@
 		width: 7.5rem;
 	}
 	#back{
-		background: url(../../assets/images/back_icon.png) no-repeat;
-		display: inline-block;
-		width: 0.24rem;
-		height: 0.32rem;
-		background-size: 100% 100%;
+		float: left;
+		display:block;
+		width: 0.64rem;
+		height: 1rem;
+		background: url(../../assets/images/back_icon.png) no-repeat 0.15rem 0.34rem;
+		background-size: 0.24rem 0.32rem;
 	}
 	#container{
 		width: 100%;
