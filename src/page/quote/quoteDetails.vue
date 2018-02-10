@@ -213,7 +213,7 @@
 		        <img slot="icon" v-show="remindShow" src="../../assets/images/remind_01.png">
 		        <span :class="{current: remindShow == true}">提醒</span>
 		    </mt-tab-item>
-      		<mt-tab-item class="col" @tap.native="addOptional" style="background-color:#2d3340;">  
+      		<mt-tab-item class="col" @click.native="addOptional" style="background-color:#2d3340;">  
 		        <img slot="icon" v-show="!optionalIconShow" src="../../assets/images/add_optional.png">
 		        <img slot="icon" v-show="optionalIconShow" src="../../assets/images/add_optional_01.png">
 		        <span :class="{current: optionalIconShow == true}">{{optionalName}}</span>
@@ -257,6 +257,7 @@
 				optionalIconShow: false,
 				optionalName: '添加自选',
 				optionalList: [],
+				optionalId: '',
 				remindShow: false,
 				shadeShow: false,
 				id: {
@@ -495,22 +496,18 @@
 					secret: this.userInfo.secret
 				}
 				if(this.optionalIconShow == true){   //删除自选
-					return;
-//					var _datas = {id: id};
-//					MessageBox.confirm("确定删除自选？","提示").then(action=>{
-//						pro.fetch('post', '/quoteTrader/userRemoveCommodity', _datas, headers).then((res) => {
-//							if(res.success == true && res.code == 1){
-//								Toast({message: '自选删除成功', position: 'bottom', duration: 1000});
-//								this.resultList.forEach((o, i) => {
-//									if(o.CommodityNo == commodityNo){
-//										o.isOptional = 0;
-//									}
-//								});
-//							}
-//						}).catch((err) => {
-//							Toast({message: err.data.message, position: 'bottom', duration: 1000});
-//						});
-//					}).catch(err=>{});
+					var _datas = {id: this.optionalId};
+					MessageBox.confirm("确定删除自选？","提示").then(action=>{
+						pro.fetch('post', '/quoteTrader/userRemoveCommodity', _datas, headers).then((res) => {
+							if(res.success == true && res.code == 1){
+								Toast({message: '自选删除成功', position: 'bottom', duration: 1000});
+								this.optionalName = '添加自选';
+								this.optionalIconShow = false;
+							}
+						}).catch((err) => {
+							Toast({message: err.data.message, position: 'bottom', duration: 1000});
+						});
+					}).catch(err=>{});
 				}else{   //添加自选
 					var datas = {
 						'exchangeNo': this.orderTemplist[this.currentNo].ExchangeNo,
@@ -543,6 +540,7 @@
 								if(o.commodityNo == this.currentNo){
 									this.optionalName = '已添加自选';
 									this.optionalIconShow = true;
+									this.optionalId = o.id;
 								}
 							});
 						}
