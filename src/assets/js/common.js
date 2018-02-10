@@ -187,28 +187,45 @@ pro.getClentId = function(){
 }
 
 /**
+ * 判断是IOS还是安卓
+ * 
+ */
+pro.isSysterm = function(){
+	var u = navigator.userAgent;
+	var obj = {};
+	obj.isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+	obj.isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+	return obj;
+}
+
+
+/**
  * 判断是否开启消息推送()
  */
 pro.isOpenMessage = function(){
-	var UIApplication = plus.ios.import("UIApplication");
-	var app = UIApplication.sharedApplication();
-	var enabledTypes  = 0;
-	if (app.currentUserNotificationSettings) {
-	    var settings = app.currentUserNotificationSettings();
-	    enabledTypes = settings.plusGetAttribute("types");
-	} else {
-	        //针对低版本ios系统
-	    enabledTypes = app.enabledRemoteNotificationTypes();
+	var obj = pro.isSysterm();
+	if(obj.isiOS == true){
+		var UIApplication = plus.ios.import("UIApplication");
+		var app = UIApplication.sharedApplication();
+		var enabledTypes  = 0;
+		if (app.currentUserNotificationSettings) {
+		    var settings = app.currentUserNotificationSettings();
+		    enabledTypes = settings.plusGetAttribute("types");
+		} else {
+		        //针对低版本ios系统
+		    enabledTypes = app.enabledRemoteNotificationTypes();
+		}
+		//console.log("enabledTypes:"+enabledTypes);
+		if (enabledTypes == 0) {
+		    mui.alert( "消息推送已关闭，无法接收通知，请在【设置】-【通知中心】-【应用名称】中开启");
+		}
+		plus.ios.deleteObject(app);
 	}
-//	console.log("enabledTypes:"+enabledTypes);
-	if (enabledTypes == 0) {
-	    mui.alert( "消息推送已关闭，无法接收通知，请在【设置】-【通知中心】-【应用名称】中开启");
-	}
-	plus.ios.deleteObject(app);
 }
 pro.isOpenMessages = function(){
 	if(window.plus){
 		var pp = plus.navigator.checkPermission('NOTIFITION');
+		console.log(pp);
 		if(pp != 'authorized'){
 			mui.alert( "消息推送已关闭，无法接收通知，请在【设置】-【通知中心】-【应用名称】中开启");
 		}
@@ -232,9 +249,21 @@ pro.isOpenMessages = function(){
 //	}
 }
 pro.openMessages = function(){
-	if(window.plus){
-		var pp = plus.navigator.checkPermission('NOTIFITION');
-		return pp;
+	var obj = pro.isSysterm();
+	if(obj.isiOS == true){
+		var UIApplication = plus.ios.import("UIApplication");
+		var app = UIApplication.sharedApplication();
+		var enabledTypes  = 0;
+		if (app.currentUserNotificationSettings) {
+		    var settings = app.currentUserNotificationSettings();
+		    enabledTypes = settings.plusGetAttribute("types");
+		} else {
+		    //针对低版本ios系统
+		    enabledTypes = app.enabledRemoteNotificationTypes();
+		}
+		return enabledTypes;
+	}else{
+		return '';
 	}
 }
 
