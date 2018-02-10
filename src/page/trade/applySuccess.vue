@@ -38,7 +38,7 @@
 			},
 			toTradeLogin:function(){
 				this.isbreak = true;
-				this.$router.push({path:"/tradeLogin",query:{tradeAccount:this.tradeAccount,password:this.password}});
+				this.$router.push({path:"/tradeLogin",query:{tradeAccount:this.tradeAccount,password:this.password,islogin:"true"}});
 			},
 			toFinance:function(){
 				setTimeout(function(){

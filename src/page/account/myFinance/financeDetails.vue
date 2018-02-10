@@ -166,7 +166,7 @@
 		},
 		methods:{
 			toTradeLogin:function(){
-				this.$router.push({path:"/tradeLogin",query:{tradeAccount:this.tradeAccount,password:this.password}});
+				this.$router.push({path:"/tradeLogin",query:{tradeAccount:this.tradeAccount,password:this.password,islogin:"true"}});
 			},
 			end:function(){
 				var headers = {
