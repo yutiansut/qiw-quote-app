@@ -518,6 +518,7 @@
 						if(res.success == true && res.code == 1){
 							this.optionalIconShow = true;
 							Toast({message: '自选添加成功', position: 'bottom', duration: 2000});
+							this.optionalId = res.data.id;
 						}
 					}).catch((err) => {
 						Toast({message: err.data.message, position: 'bottom', duration: 2000});
