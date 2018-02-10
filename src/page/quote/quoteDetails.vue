@@ -517,6 +517,7 @@
 					pro.fetch('post', '/quoteTrader/userAddCommodity', datas, headers).then((res) => {
 						if(res.success == true && res.code == 1){
 							this.optionalIconShow = true;
+							this.optionalName = '已添加自选';
 							Toast({message: '自选添加成功', position: 'bottom', duration: 2000});
 							this.optionalId = res.data.id;
 						}
