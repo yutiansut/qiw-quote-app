@@ -288,7 +288,7 @@
 				}
 //				console.log("data======"+JSON.stringify(data))
 				pro.fetch("post","/futureManage/openAccount",data,head).then((res)=>{
-					console.log("11111111111111111"+JSON.stringify(res))
+//					console.log("11111111111111111"+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
 						this.$toast({message:'申请成功',duration: 2000});
 						this.able = true;
