@@ -52,36 +52,38 @@
 //					console.log("res==="+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						this.newList = res.data.list;
-						for(var a of this.newList){
-							if(this.arr == ''){
-								a.isread="false";
-							}else{
-								for(var i of this.arr){
-									if(i.id == a.id && i.time == a.time && i.content == a.content){
-										a.isread="true";
-										break;
-									}else{
-										a.isread="false";
+//						console.log()
+						if(this.newList!=undefined){
+							for(var a of this.newList){
+								if(this.arr == ''){
+									a.isread="false";
+								}else{
+									for(var i of this.arr){
+										if(i.id == a.id && i.time == a.time && i.content == a.content){
+											a.isread="true";
+											break;
+										}else{
+											a.isread="false";
+										}
 									}
 								}
 							}
-						}
-						for(var b in this.newList){
-							if(this.newList[b].isTop == "1"){
-								this.newArr = this.newList[b];
-								this.newList.splice(Number(b),1);
-								break;
+							for(var b in this.newList){
+								if(this.newList[b].isTop == "1"){
+									this.newArr = this.newList[b];
+									this.newList.splice(Number(b),1);
+									break;
+								}
 							}
-						}
-						if(this.newArr != ""){
-							this.newList.push(this.newArr);
-							this.newList.reverse();
-						}
-//						console.log("this.newList==="+JSON.stringify(this.newList));
-						if(res.data.list == ''){
+							if(this.newArr != ""){
+								this.newList.push(this.newArr);
+								this.newList.reverse();
+							}
+						}else{
 							this.exist = false;
 							this.none = true;
 						}
+						
 					}
 				}).catch((err)=>{
 //					console.log("err+"+JSON.stringify(err));
@@ -102,8 +104,8 @@
 			toNewDetails:function(id1,time,content,e){
 //				localStorage.removeItem("NEWSID");
 				var newsId = {id:id1,time:time,content:content};
-				this.arr = JSON.parse(localStorage.getItem("NEWSID"));
-				if(this.arr == null){
+				this.arr = JSON.parse(localStorage.getItem("NEWSID")) ? JSON.parse(localStorage.getItem("NEWSID")) : '';
+				if(this.arr == ""){
 					this.arr = [];
 					this.arr.push(newsId);
 				}else{
@@ -125,11 +127,7 @@
 //			this.getNewList();
 		},
 		activated:function(){
-			this.arr = JSON.parse(localStorage.getItem("NEWSID"));
-			if(this.arr == null){
-				this.arr = []
-			}
-//			console.log("this.arr+++++"+JSON.stringify(this.arr)+"000000000");
+			this.arr = JSON.parse(localStorage.getItem("NEWSID")) ? JSON.parse(localStorage.getItem("NEWSID")) : '';
 			this.getNewList();
 		}
 	}

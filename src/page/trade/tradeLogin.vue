@@ -24,7 +24,7 @@
 		data(){
 			return{
 				currentNum: 1,
-				tabList: ['配资交易登录', '配资交易申请'],
+				tabList: ['融资交易登录', '融资交易申请'],
 				currentView: 'tradeApply',
 			}
 		},
