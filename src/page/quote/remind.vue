@@ -364,7 +364,7 @@
 			},
 			saveEvent: function(e){
 				let msg = pro.openMessages();
-				if(msg != 'authorized'){
+				if(msg == 0 && msg != ''){
 					mui.alert( "消息推送已关闭，无法接收通知，请在【设置】-【通知中心】-【应用名称】中开启");return;
 				}
 				if(this.risePoint != undefined && this.risePoint != 0 && this.floatReg.test(this.risePoint) == false){
@@ -551,8 +551,8 @@
 			//获取最新价与最低价
 			this.getPriceByKline();
 			//判断就是否开启消息通知
-//			pro.isOpenMessage();
-			pro.isOpenMessages();
+			pro.isOpenMessage();
+//			pro.isOpenMessages();
 		}
 		
 	}
