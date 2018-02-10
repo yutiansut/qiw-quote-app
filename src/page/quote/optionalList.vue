@@ -291,6 +291,7 @@
 		li{
 			height: 0.96rem;
 			line-height: 0.96rem;
+			overflow: hidden;
 			border-bottom: 0.01rem solid $black;
 			padding: 0 0.3rem;
 			&:first-child{
