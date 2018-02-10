@@ -90,6 +90,10 @@
 					secret : this.userInfo.secret
 				}
 				pro.fetch("post","/futureManage/getProgramList",data,headers).then((res)=>{
+<<<<<<< HEAD
+=======
+//					console.log("res=="+JSON.stringify(res))
+>>>>>>> b0067805f6ca906f5cf254c700d594c109637dc3
 					if(res.code == 1 && res.success == true){
 						this.list = res.data.list;
 //						console.log("this.list=="+this.list)
