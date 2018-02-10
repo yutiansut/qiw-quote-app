@@ -229,7 +229,7 @@
 <script>
 	import { mapMutations,mapActions } from 'vuex'
 	import pro from '../../assets/js/common.js'
-	import { Toast } from 'mint-ui';
+	import { Toast, MessageBox } from 'mint-ui';
 	import fens from './fens.vue'
 	import light from './light.vue'
 	import klineOne from './klineOne.vue'
@@ -486,7 +486,6 @@
 				});
 			},
 			addOptional: function(){
-				if(this.optionalIconShow == true) return;
 				if(this.userInfo == undefined){
 					Toast({message: '请先登录平台', position: 'bottom', duration: 2000});
 					return;
@@ -495,19 +494,38 @@
 					token: this.userInfo.token,
 					secret: this.userInfo.secret
 				}
-				var datas = {
-					'exchangeNo': this.orderTemplist[this.currentNo].ExchangeNo,
-					'commodityNo': this.currentNo,
-					'contractNo': this.orderTemplist[this.currentNo].MainContract,
-				}
-				pro.fetch('post', '/quoteTrader/userAddCommodity', datas, headers).then((res) => {
-					if(res.success == true && res.code == 1){
-						this.optionalIconShow = true;
-						Toast({message: '自选添加成功', position: 'bottom', duration: 2000});
+				if(this.optionalIconShow == true){   //删除自选
+					return;
+//					var _datas = {id: id};
+//					MessageBox.confirm("确定删除自选？","提示").then(action=>{
+//						pro.fetch('post', '/quoteTrader/userRemoveCommodity', _datas, headers).then((res) => {
+//							if(res.success == true && res.code == 1){
+//								Toast({message: '自选删除成功', position: 'bottom', duration: 1000});
+//								this.resultList.forEach((o, i) => {
+//									if(o.CommodityNo == commodityNo){
+//										o.isOptional = 0;
+//									}
+//								});
+//							}
+//						}).catch((err) => {
+//							Toast({message: err.data.message, position: 'bottom', duration: 1000});
+//						});
+//					}).catch(err=>{});
+				}else{   //添加自选
+					var datas = {
+						'exchangeNo': this.orderTemplist[this.currentNo].ExchangeNo,
+						'commodityNo': this.currentNo,
+						'contractNo': this.orderTemplist[this.currentNo].MainContract,
 					}
-				}).catch((err) => {
-					Toast({message: err.data.message, position: 'bottom', duration: 2000});
-				});
+					pro.fetch('post', '/quoteTrader/userAddCommodity', datas, headers).then((res) => {
+						if(res.success == true && res.code == 1){
+							this.optionalIconShow = true;
+							Toast({message: '自选添加成功', position: 'bottom', duration: 2000});
+						}
+					}).catch((err) => {
+						Toast({message: err.data.message, position: 'bottom', duration: 2000});
+					});
+				}
 			},
 			getUserCommodityList: function(){
 				if(this.userInfo == undefined) return;

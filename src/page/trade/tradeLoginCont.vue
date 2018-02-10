@@ -4,12 +4,12 @@
 			<div class="fm">
 				<div class="row">
 					<span>交易账号</span>
-					<input type="text" placeholder="请输入交易账号" />
+					<input type="text" placeholder="请输入交易账号" v-model="user" />
 					<button>切换账号</button>
 				</div>
 				<div class="row">
 					<span>交易密码</span>
-					<input type="text" placeholder="请输入交易密码" />
+					<input type="password" placeholder="请输入交易密码" v-model="pwd" />
 				</div>
 				<btn name="交易登录" className="bluelg" class="mb30" @tap.native="tradeLogin"></btn>
 				<btn name="配资方案申请" className="orangelg" class="mb30" @tap.native="tradeApply"></btn>
@@ -29,7 +29,8 @@
 		components: {btn},
 		data(){
 			return{
-				
+				user: '',
+				pwd: '',
 			}
 		},
 		methods: {
@@ -45,8 +46,9 @@
 			}
 		},
 		mounted: function(){
-			
-		}
+			this.user = this.$parent.user;
+			this.pwd = this.$parent.pwd;
+		},
 	}
 </script>
 

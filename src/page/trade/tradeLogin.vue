@@ -26,6 +26,8 @@
 				currentNum: 1,
 				tabList: ['融资交易登录', '融资交易申请'],
 				currentView: 'tradeApply',
+				user: '',
+				pwd: '',
 			}
 		},
 		methods: {
@@ -38,7 +40,16 @@
 				}
 			}
 		},
-		mounted: function(){}
+		mounted: function(){},
+		activated: function(){
+			var data = this.$route.query;
+			if(data.islogin == 'true'){
+				this.currentNum = 0;
+				this.currentView = 'tradeLoginCont';
+				this.user = data.tradeAccount;
+				this.pwd = data.password;
+			}
+		}
 	}
 </script>
 
