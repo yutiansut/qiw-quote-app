@@ -28,6 +28,7 @@
 				currentView: 'tradeApply',
 				user: '',
 				pwd: '',
+				query: '',
 			}
 		},
 		methods: {
@@ -42,12 +43,12 @@
 		},
 		mounted: function(){},
 		activated: function(){
-			var data = this.$route.query;
-			if(data.islogin == 'true'){
+			this.query = this.$route.query;
+			if(this.query.islogin == 'true'){
 				this.currentNum = 0;
 				this.currentView = 'tradeLoginCont';
-				this.user = data.tradeAccount;
-				this.pwd = data.password;
+				this.user = this.query.tradeAccount;
+				this.pwd = this.query.password;
 			}
 		}
 	}
