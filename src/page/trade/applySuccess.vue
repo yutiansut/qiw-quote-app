@@ -27,7 +27,9 @@
 		components:{btn},
 		data(){
 			return{
-				isbreak:false
+				isbreak:false,
+				tradeAccount:"",
+				password:""
 			}
 		},
 		methods:{
@@ -36,7 +38,7 @@
 			},
 			toTradeLogin:function(){
 				this.isbreak = true;
-				this.$router.push({path:"/tradeLogin"});
+				this.$router.push({path:"/tradeLogin",query:{tradeAccount:this.tradeAccount,password:this.password}});
 			},
 			toFinance:function(){
 				setTimeout(function(){
@@ -49,7 +51,10 @@
 		mounted:function(){
 		},
 		activated:function(){
+			this.tradeAccount = this.$route.query.tradeAccount;
+			this.password = this.$route.query.password;
 			this.toFinance();
+			
 		}
 	}
 </script>

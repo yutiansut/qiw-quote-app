@@ -159,12 +159,14 @@
 				tradeNum:'',
 				showDetails:false,
 				endData:"",
-				addDepositToTotal:""
+				addDepositToTotal:"",
+				tradeAccount:"",
+				password:""
 			}
 		},
 		methods:{
 			toTradeLogin:function(){
-				this.$router.push({path:"/tradeLogin"});
+				this.$router.push({path:"/tradeLogin",query:{tradeAccount:this.tradeAccount,password:this.password}});
 			},
 			end:function(){
 				var headers = {
@@ -257,6 +259,8 @@
 				pro.fetch("post","/futureManage/getProgramDetail",data,headers).then((res)=>{
 //					console.log("res==="+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
+						this.tradeAccount = res.data.program.account;
+						this.password = res.data.program.accountPassword;
 						this.account=res.data.program.account,
 						this.accountPassword=res.data.program.accountPassword,
 						this.applyTime=res.data.program.applyTime,
