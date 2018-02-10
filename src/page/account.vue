@@ -19,7 +19,7 @@
 				</ul>
 				<ul>
 					<li>
-						<mt-button class="btn2" @click.native="toRecharge">充值</mt-button>
+						<!--<mt-button class="btn2" @click.native="toRecharge">充值</mt-button>-->
 					</li>
 				</ul>
 			</div>
@@ -204,9 +204,9 @@
 			toNews:function(){
 				this.$router.push({path:'/newsNotice'});
 			},
-			toRecharge:function(){
-				this.$router.push({path:'/recharge'});
-			},
+//			toRecharge:function(){
+//				this.$router.push({path:'/recharge'});
+//			},
 			toMyFinance:function(){
 				if(this.isLogin==true){
 					this.$router.push({path:'/myFinance'});
