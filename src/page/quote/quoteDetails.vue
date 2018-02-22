@@ -693,16 +693,16 @@
 			}
 			.icon_triangle{
 				float: left;
-				width: 0.5rem;
+				width: 0.3rem;
 				height: 1rem;
-				background: url(../../assets/images/triangle.png) no-repeat 0.17rem 0.46rem;
+				background: url(../../assets/images/triangle.png) no-repeat right 0.46rem;
 				background-size: 0.16rem 0.08rem;
 			}
 		}
 		button{
-			width: 0.7rem;
-			height: 0.4rem;
-			line-height: 0.4rem;
+			width: 0.64rem;
+			height: 0.36rem;
+			line-height: 0.36rem;
 			text-align: center;
 			background: $yellow;
 			font-size: 0.2rem;
@@ -755,6 +755,7 @@
 				}
 				.price{
 					font-size: 0.64rem;
+					font-weight: 500;
 					margin-bottom: 0.05rem;
 					&.red{
 						color: $red;
