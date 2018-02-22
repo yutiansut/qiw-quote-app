@@ -172,6 +172,8 @@
 			var isWXInstalled = localStorage.isWXInstalled ? localStorage.isWXInstalled : '';
 			if(isWXInstalled == 'false'){
 				this.showWhat = false;
+			}else{
+				this.showWhat = true;
 			}
 		}
 }
