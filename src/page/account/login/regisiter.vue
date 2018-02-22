@@ -31,7 +31,7 @@
 			<button class="btn" @tap="regisiter">注册</button>
 			<!--<mt-button class="btn" :class="{current: show == true}" @click.native="regisiter">注册</mt-button>-->
 			<a @click="toLogin">已有账户？立即登录>></a>
-			<div id="wechat">
+			<div id="wechat"  v-show="showWhat">
 				<i @click="getWechatId"></i>
 			</div>
 			<div id="to">
@@ -61,6 +61,7 @@
 				showNo:false,
 				show: false,
 				isClick: false,
+				showWhat:true
 			}
 		},
 		computed: {
@@ -205,6 +206,13 @@
 		},
 		mounted:function(){
 			pro.getClentId();
+		},
+		activated:function(){
+			pro.isWXInstalled();
+			var isWXInstalled = localStorage.isWXInstalled ? localStorage.isWXInstalled : '';
+			if(isWXInstalled == 'false'){
+				this.showWhat = false;
+			}
 		}
 	}
 </script>
