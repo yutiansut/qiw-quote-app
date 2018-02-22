@@ -91,7 +91,6 @@
 				this.$router.push({path: '/quoteDetails', query: {'commodityNo': commodityNo, 'mainContract': mainContract, 'exchangeNo': exchangeNo, 'contrast': contrast}});
 			},
 			tabEvent: function(index){
-				this.operateData();
 				this.currentNum = index;
 				this.$store.state.market.Parameters = [];
 				this.$store.state.market.commodityOrder = [];
@@ -193,6 +192,13 @@
 					token: this.userInfo.token,
 					secret: this.userInfo.secret
 				}
+				this.contList = [];
+				this.goodsList = [];
+				this.stockList = [];
+				this.foreignList = [];
+				this.metalList = [];
+				this.bondList = [];
+				this.etfList = [];
 				pro.fetch('post', '/quoteTrader/userGetCommodityList', '', headers).then((res) => {
 					if(res.success == true && res.code == 1){
 						if(res.data && res.data.length > 0){
@@ -237,11 +243,34 @@
 				token: this.userInfo.token,
 				secret: this.userInfo.secret
 			}
+			this.contList = [];
+			this.goodsList = [];
+			this.stockList = [];
+			this.foreignList = [];
+			this.metalList = [];
+			this.bondList = [];
+			this.etfList = [];
 			pro.fetch('post', '/quoteTrader/userGetCommodityList', '', headers).then((res) => {
 				if(res.success == true && res.code == 1){
 					if(res.data && res.data.length > 0){
 						this.$store.state.market.commodityOrder = res.data;
 						this.$parent.optionalList = res.data;
+						this.contList = res.data;
+						this.contList.forEach((o, i) => {
+							if(o.commodityType == 1){
+								this.goodsList.push(o);
+							}else if(o.commodityType == 2){
+								this.stockList.push(o);
+							}else if(o.commodityType == 3){
+								this.foreignList.push(o);
+							}else if(o.commodityType == 4){
+								this.metalList.push(o);
+							}else if(o.commodityType == 5){
+								this.bondList.push(o);
+							}else if(o.commodityType == 6){
+								this.etfList.push(o);
+							}
+						});
 						res.data.forEach((o, i) => {
 							this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 						});
