@@ -206,6 +206,13 @@
 		},
 		mounted:function(){
 			pro.getClentId();
+			pro.isWXInstalled();
+			var isWXInstalled = localStorage.isWXInstalled ? localStorage.isWXInstalled : '';
+			if(isWXInstalled == 'false'){
+				this.showWhat = false;
+			}else{
+				this.showWhat = true;
+			}
 		},
 		activated:function(){
 			pro.isWXInstalled();
