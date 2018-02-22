@@ -635,6 +635,7 @@
 				margin: 0.16rem 0;
 				padding: 0 0.1rem;
 				color: $white;
+				font-size: $fs28;
 				&.ipt_lg{
 					width: 2rem;
 				}

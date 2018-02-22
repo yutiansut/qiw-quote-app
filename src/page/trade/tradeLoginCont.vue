@@ -33,6 +33,19 @@
 				pwd: '',
 			}
 		},
+		computed: {
+			query(){
+				return this.$parent.query;
+			}
+		},
+		watch: {
+			query: function(n, o){
+				if(n){
+					this.user = n.tradeAccount;
+					this.pwd = n.password;
+				}
+			}
+		},
 		methods: {
 			switchover:function(index){
 				this.selectNum = index;
@@ -48,7 +61,7 @@
 		mounted: function(){
 			this.user = this.$parent.user;
 			this.pwd = this.$parent.pwd;
-		},
+		}
 	}
 </script>
 
