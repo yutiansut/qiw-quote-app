@@ -125,7 +125,7 @@ pro.toweixin=function(){
 		var auths=null;
 		// 扩展API加载完毕，现在可以正常调用扩展API
 		plus.oauth.getServices(function(services){
-//			console.log("11111111111每次");
+			console.log("11111111111每次");
 			auths = services;
 			authLogin();
 		},function(e){
@@ -177,6 +177,17 @@ pro.toweixin=function(){
 			}
 		}
 	})
+}
+pro.isWXInstalled=function(){
+	mui.plusReady(function(){
+		var auths=null;
+		plus.oauth.getServices(function(services){
+			var WXApi = plus.ios.import("WXApi");
+			var isWXInstalled = WXApi.isWXAppInstalled();
+			localStorage.setItem("isWXInstalled",JSON.stringify(isWXInstalled));
+		},function(e){
+		});
+	});
 }
 pro.getClentId = function(){
 	mui.plusReady(function(){
