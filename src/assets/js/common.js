@@ -125,17 +125,22 @@ pro.toweixin=function(){
 		var auths=null;
 		// 扩展API加载完毕，现在可以正常调用扩展API
 		plus.oauth.getServices(function(services){
-			console.log("11111111111每次");
+//			console.log("11111111111每次");
 			auths = services;
 			authLogin();
 		},function(e){
 			mui( "微信授权失败");
 		});
 		// 登录操作
-//		authLogin();
 		function authLogin(){
-//			console.log("22222222222每次");
-			var s = auths[3];
+			var s = "";
+			var choosename = "weixin";
+			for(var i in auths){
+				if(auths[i].id == choosename){
+					s = auths[i];
+					break;
+				}
+			}
 			if (!s.authResult){
 				s.login( function(e){
 					mui.toast("登录认证成功！");
@@ -149,8 +154,14 @@ pro.toweixin=function(){
 		}
 		// 获取登录用户信息操作
 		function authUserInfo(){
-//			console.log("333每次");
-			var s = auths[3];
+			var s = "";
+			var choosename = "weixin";
+			for(var i in auths){
+				if(auths[i].id == choosename){
+					s = auths[i];
+					break;
+				}
+			}
 			if ( !s.authResult ) {
 				mui.toast("未登录授权！");
 			} else {
