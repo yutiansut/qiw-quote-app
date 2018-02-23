@@ -23,6 +23,7 @@
 
 <script>
 	import btn from "../../components/btn.vue"
+	import { mapMutations,mapActions } from 'vuex'
 	import { Toast } from 'mint-ui';
 	export default {
 		name: 'tradeLoginCont',
@@ -36,7 +37,10 @@
 		computed: {
 			query(){
 				return this.$parent.query;
-			}
+			},
+			tradeConfig(){
+				return this.$store.state.market.tradeConfig;
+			},
 		},
 		watch: {
 			query: function(n, o){
@@ -47,11 +51,27 @@
 			}
 		},
 		methods: {
+			...mapActions([
+				'initTrade'
+			]),
 			switchover:function(index){
 				this.selectNum = index;
 			},
 			tradeLogin: function(){
-				Toast({message: '交易功能正在内测中，敬请期待…', position: 'bottom', duration: 1500});
+//				Toast({message: '交易功能正在内测中，敬请期待…', position: 'bottom', duration: 1500});
+				if(this.user == ''){
+					Toast({message: '请输入您的账号名', position: 'bottom', duration: 1500});
+				}else if(this.pwd == ''){
+					Toast({message: '请输入您的密码', position: 'bottom', duration: 1500});
+				}else{
+					console.log(this.tradeConfig.url_real);
+					if(this.tradeConfig.url_real == '' || this.tradeConfig.url_real == undefined) return;		
+					this.$store.state.market.tradeConfig.username = this.user;
+					this.$store.state.market.tradeConfig.password = Base64.encode(this.pwd);
+					var userData = {'username': this.user, 'password': Base64.encode(this.pwd)};  
+					localStorage.tradeUser = JSON.stringify(userData);
+					this.initTrade();
+				}
 			},
 			tradeApply: function(){
 				this.$parent.currentNum = 1;

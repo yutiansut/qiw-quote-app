@@ -41,13 +41,14 @@ var account = {
 var market = {
 	state: {
 		quoteConfig:{
+			version: '5.1.2',    //版本
 			url_real: "ws://192.168.0.232:9002",  //测试地址
 //			url_real: "ws://quote.vs.com:9002",   //正式地址
 			userName: "13677622344",
 			passWord: "a123456"
 		},
 		tradeConfig:{
-			version: "3.3",	// 版本
+			version: "5.1.4",	//版本
 			url_real: '',
 //			url_real: "ws://192.168.0.232:6102",   //测试地址
 //			url_real: "ws://139.196.176.60:6101",  //正式地址
@@ -954,7 +955,7 @@ export default new Vuex.Store({
 					}
 					//回复
 					if(parameters.Code == 0){
-						layer.msg('交易服务器连接成功',{time: 1000});
+						Toast({message: '交易服务器连接成功', position: 'bottom', duration: 2000});
 						sessionStorage.tradeStatus = true;
 						context.state.account.loginStatus = true;
 						context.state.account.exitStatus = false;
@@ -963,21 +964,21 @@ export default new Vuex.Store({
 						//初始资金
 						context.state.market.initBalance = parameters.InitBalance;
 						//查询持仓合计 
-						context.state.tradeSocket.send('{"Method":"QryHoldTotal","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
+//						context.state.tradeSocket.send('{"Method":"QryHoldTotal","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
 						//查询订单 
-						context.state.tradeSocket.send('{"Method":"QryOrder","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
+//						context.state.tradeSocket.send('{"Method":"QryOrder","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
 						//查询成交记录
-						context.state.tradeSocket.send('{"Method":"QryTrade","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
+//						context.state.tradeSocket.send('{"Method":"QryTrade","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
 						//查询账户信息 
 						context.state.tradeSocket.send('{"Method":"QryAccount","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
 						//查询止损单
-						context.state.tradeSocket.send('{"Method":"QryStopLoss","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
+//						context.state.tradeSocket.send('{"Method":"QryStopLoss","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
 						//查询条件单
-						context.state.tradeSocket.send('{"Method":"QryCondition","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
+//						context.state.tradeSocket.send('{"Method":"QryCondition","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
 						//查询历史成交
-						context.dispatch('qryHisTrade');
+//						context.dispatch('qryHisTrade');
 						//启动交易心跳定时检查
-						context.dispatch('HeartBeatTimingCheck');
+//						context.dispatch('HeartBeatTimingCheck');
 					}else{
 						layer.msg(parameters.Message,{time: 1000});
 						context.state.account.loginStatus = false;
@@ -2064,10 +2065,10 @@ export default new Vuex.Store({
 						});
 					});
 					context.state.market.quoteInitStep = true;
-					if(context.state.market.subscribeIndex == 1){
-						//初始化交易
+//					if(context.state.market.subscribeIndex == 1){
+//						//初始化交易
 //						context.dispatch('initTrade');
-					}
+//					}
 					context.state.market.subscribeIndex++;
 				} else if(context.state.wsjsondata.Method == "OnRtnQuote") { // 最新行情
 					var val = JSON.parse(evt.data).Parameters;

@@ -140,6 +140,20 @@
 				}).catch((err) => {
 					Toast({message: err.data.message, position: 'bottom', duration: 2000});
 				});
+			},
+			getTradeWsUrl: function(){   //获取交易ws地址
+				var data = {
+					quoteVersion: this.$store.state.market.quoteConfig.version,
+					tradeVersion: this.$store.state.market.tradeConfig.version
+				};
+				pro.fetch('post', '/others/getSocket', data, '').then((res) => {
+					if(res.success == true && res.code == 1){
+						this.$store.state.market.tradeConfig.url_real = res.data.tradeUrl;
+					}
+				}).catch((err) => {
+					var data = err.data;
+					if(data) Toast({message: data.message, position: 'bottom', duration: 2000});
+				});
 			}
 		},
 		updated: function(){
@@ -191,6 +205,8 @@
 //					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.contractNo +'"}}');
 //				});
 			}
+			//获取交易ws地址
+			this.getTradeWsUrl();
 		}
 	}
 </script>

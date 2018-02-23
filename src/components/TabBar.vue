@@ -7,6 +7,7 @@
 	</div>
 </template>
 <script>
+	import { mapActions } from 'vuex'
 	export default {
 		name:"TabBar",
 		data(){
@@ -37,6 +38,9 @@
 			}
 		},
 		methods:{
+			...mapActions([
+				'initTrade'
+			]),
 			toPages: function(e) {
 				var tar = e.currentTarget.children[1].innerHTML;
 				switch(tar) {
@@ -49,6 +53,7 @@
 						this.tradeUser = localStorage.tradeUser ? JSON.parse(localStorage.tradeUser) : ''; 
 						if(this.tradeUser != ''){
 							this.$router.push({path: '/trade'});
+							this.initTrade();
 						}else{
 							this.$router.push({path: '/tradeLogin'});
 						}
@@ -78,6 +83,14 @@
 						this.navList[3].src = require('../assets/images/mine_02.png');
 						break;
 					case '/tradeLogin':
+						$('li>p').removeClass('current');
+						$('li:nth-child(2)>p').addClass('current');
+						this.navList[0].src = require('../assets/images/quotation_02.png');
+						this.navList[1].src = require('../assets/images/mockTrading_01.png');
+						this.navList[2].src = require('../assets/images/information_02.png');
+						this.navList[3].src = require('../assets/images/mine_02.png');
+						break;
+					case '/trade':
 						$('li>p').removeClass('current');
 						$('li:nth-child(2)>p').addClass('current');
 						this.navList[0].src = require('../assets/images/quotation_02.png');
