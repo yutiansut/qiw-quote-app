@@ -1,9 +1,9 @@
 <template>
 	<div id="trade">
 		<TabBar></TabBar>
-		<hasLogin ref="hasLogin"></hasLogin>
+		<hasLogin ref="hasLogin" :name="tradeUser"></hasLogin>
 		<header>
-			<h1>ID:10081</h1>
+			<h1>ID:{{tradeUser}}</h1>
 			<i class="icon icon_menu" @tap="menuEvent"></i>
 		</header>
 		<div class="nav">
@@ -37,6 +37,11 @@
 				tabList: ['交易','持仓','资金明细'],
 				currentNum: 0,
 				currentView: 'tradeCenter',
+			}
+		},
+		computed: {
+			tradeUser(){
+				return localStorage.tradeUser ? JSON.parse(localStorage.tradeUser).username : '';
 			}
 		},
 		methods: {

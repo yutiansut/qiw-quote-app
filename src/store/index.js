@@ -955,7 +955,7 @@ export default new Vuex.Store({
 					}
 					//回复
 					if(parameters.Code == 0){
-						Toast({message: '交易服务器连接成功', position: 'bottom', duration: 2000});
+						Toast({message: '交易服务器连接成功', position: 'bottom', duration: 1500});
 						sessionStorage.tradeStatus = true;
 						context.state.account.loginStatus = true;
 						context.state.account.exitStatus = false;
@@ -990,11 +990,11 @@ export default new Vuex.Store({
 				case 'OnRspLogout': //登出回复
 					if(parameters.Code == 0){
 //						console.log('登出成功');
-						layer.msg('退出成功', {time: 1000});
+						Toast({message: '退出成功', position: 'bottom', duration: 1000});
 						context.state.account.exitStatus = true;
 					}else{
 						console.log('登出失败');
-						layer.msg(parameters.Message, {time: 1000});
+						Toast({message: parameters.Message, position: 'bottom', duration: 1000});
 						context.state.account.loginStatus = false;
 						setTimeout(function(){
 							context.state.account.isBack = true;

@@ -2,7 +2,7 @@
 	<div id="hasLogin">
 		<div class="bg" @tap="hideEvent"></div>
 		<div class="cont">
-			<h1>交易账号：15182736808</h1>
+			<h1>交易账号：{{name}}</h1>
 			<ul>
 				<li>
 					<i class="icon icon_one"></i>
@@ -24,6 +24,7 @@
 <script>
 	export default {
 		name: 'hasLogin',
+		props: ['name'],
 		components: {
 		},
 		data(){

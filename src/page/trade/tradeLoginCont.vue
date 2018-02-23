@@ -9,7 +9,7 @@
 				</div>
 				<div class="row">
 					<span>交易密码</span>
-					<input type="password" placeholder="请输入交易密码" v-model="pwd" />
+					<input type="password" placeholder="请输入交易密码" v-model="pwd" @keyup.enter="tradeLogin" />
 				</div>
 				<btn name="交易登录" className="bluelg" class="mb30" @tap.native="tradeLogin"></btn>
 				<btn name="配资方案申请" className="orangelg" class="mb30" @tap.native="tradeApply"></btn>
