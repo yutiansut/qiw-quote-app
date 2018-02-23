@@ -91,6 +91,7 @@
 						this.navList[3].src = require('../assets/images/mine_02.png');
 						break;
 					case '/trade':
+						console.log(111);
 						$('li>p').removeClass('current');
 						$('li:nth-child(2)>p').addClass('current');
 						this.navList[0].src = require('../assets/images/quotation_02.png');

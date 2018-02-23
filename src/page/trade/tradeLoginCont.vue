@@ -41,6 +41,9 @@
 			tradeConfig(){
 				return this.$store.state.market.tradeConfig;
 			},
+			loginStatus(){
+				return this.$store.state.account.loginStatus;
+			}
 		},
 		watch: {
 			query: function(n, o){
@@ -48,6 +51,9 @@
 					this.user = n.tradeAccount;
 					this.pwd = n.password;
 				}
+			},
+			loginStatus: function(n, o){
+				if(n && n == true) this.$router.push({path: '/trade'});
 			}
 		},
 		methods: {
@@ -64,7 +70,6 @@
 				}else if(this.pwd == ''){
 					Toast({message: '请输入您的密码', position: 'bottom', duration: 1500});
 				}else{
-					console.log(this.tradeConfig.url_real);
 					if(this.tradeConfig.url_real == '' || this.tradeConfig.url_real == undefined) return;		
 					this.$store.state.market.tradeConfig.username = this.user;
 					this.$store.state.market.tradeConfig.password = Base64.encode(this.pwd);
