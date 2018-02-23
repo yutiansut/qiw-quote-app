@@ -27,7 +27,8 @@
 						name: '我的',
 						src: require('../assets/images/mine_02.png')
 					}
-				]
+				],
+				tradeUser: '',
 			}
 		},
 		computed:{
@@ -45,9 +46,12 @@
 						});
 						break;
 					case '模拟交易':
-						this.$router.push({
-							path: '/tradeLogin'
-						});
+						this.tradeUser = localStorage.tradeUser ? JSON.parse(localStorage.tradeUser) : ''; 
+						if(this.tradeUser != ''){
+							this.$router.push({path: '/trade'});
+						}else{
+							this.$router.push({path: '/tradeLogin'});
+						}
 						break;
 					case '资讯':
 						this.$router.push({
