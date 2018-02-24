@@ -169,6 +169,7 @@
 		height: 1rem;
 		position: fixed;
 		bottom: 0;
+		z-index: 1;
 		background-color:$titleBlue ;
 		display: flex;
 		justify-content: space-around;
