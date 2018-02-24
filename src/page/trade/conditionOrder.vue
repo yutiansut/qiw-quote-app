@@ -2,8 +2,8 @@
 	<div id="condetionOrder" class="fm">
 		<div class="row">
 			<b>合约代码</b>
-			<div class="slt fl">
-				<input type="text" class="ipt_lg" value="美黄金 GC1702" readonly="readonly" />
+			<div class="slt fl" @tap="openSelectOrder">
+				<input type="text" class="ipt_lg" :value="currentOrder" readonly="readonly" />
 				<i class="icon icon_select"></i>
 			</div>
 		</div>
@@ -18,8 +18,8 @@
 			<b>触发条件</b>
 			<input type="text" class="ipt_150" />
 			<b class="ml">价格附加</b>
-			<div class="slt fl">
-				<input type="text" class="ipt_sm" value="<=" readonly="readonly" />
+			<div class="slt fl" @tap="openSelectPrice">
+				<input type="text" class="ipt_sm" :value="conditionType" readonly="readonly" />
 				<i class="icon icon_select"></i>
 			</div>
 			<input type="text" class="ipt_sm ml10" />
@@ -34,9 +34,9 @@
 		<div class="row">
 			<b>委托数量</b>
 			<div class="num_box">
-				<span class="add">+</span>
-				<input type="text" class="ipt_md" />
-				<span class="reduce">-</span>
+				<span class="add" @tap="addNum">+</span>
+				<input type="text" class="ipt_md" v-model="orderNum" />
+				<span class="reduce" @tap="reduceNum">-</span>
 			</div>
 		</div>
 		<div class="row">
@@ -47,21 +47,64 @@
 			<btn name="买入/市价" className="redmd"></btn>
 			<btn name="卖出/市价" className="greenmd"></btn>
 		</div>
+		<selectBox ref="selectBox" :obj="obj" :type="type"></selectBox>
 	</div>
 </template>
 
 <script>
 	import btn from "../../components/btn.vue"
+	import selectBox from "../../components/selectBox.vue"
 	export default {
 		name: 'condetionOrder',
-		components: {
-			btn
-		},
+		components: {btn, selectBox},
 		data(){
 			return{
-				
+				currentOrder: '',
+				obj: [],
+				type: '',
+				orderNum: 1,
+				conditionType: '>',
 			}
 		},
+		computed: {
+			orderTemplist(){
+				return this.$store.state.market.orderTemplist;
+			},
+			commodityAll(){
+				return this.$store.state.account.commodityAll;
+			},
+		},
+		watch: {
+			orderNum: function(n, o){
+				if(n && n <= 0){
+					this.orderNum = 0;
+				}
+			}
+		},
+		methods: {
+			addNum: function(){
+				return this.orderNum++;
+			},
+			reduceNum: function(){
+				return this.orderNum--;
+			},
+			openSelectOrder: function(){
+				this.obj = this.commodityAll;
+				this.type = 'order';
+				$(".select_cont").css({bottom: 0});
+				this.$refs.selectBox.shadeShow = true;
+			},
+			openSelectPrice: function(){
+				this.obj = ['>', '>=', '<', '<='];
+				this.type = 'condition';
+				$(".select_cont").css({bottom: -1.78 + 'rem'});
+				this.$refs.selectBox.shadeShow = true;
+			}
+		},
+		mounted: function(){
+			//初始当前合约
+			this.currentOrder = this.commodityAll[0].commodityName + " " + this.commodityAll[0].commodityNo + this.orderTemplist[this.commodityAll[0].commodityNo].MainContract;
+		}
 	}
 </script>
 

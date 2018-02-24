@@ -9,6 +9,9 @@
 				<li v-if="type == 'price'" v-for="(v, index) in obj" @tap="selectEvent(v)">
 					<span>{{v}}</span>
 				</li>
+				<li v-if="type == 'condition'" v-for="(v, index) in obj" @tap="selectEvent(v)">
+					<span>{{v}}</span>
+				</li>
 			</ul>
 		</div>
 	</div>
@@ -38,6 +41,8 @@
 					this.$parent.currentOrder = this.orderTemplist[str].CommodityName + " " + str + this.orderTemplist[str].MainContract;
 				}else if(this.type == 'price'){
 					this.$parent.priceType = str;
+				}else if(this.type == 'condition'){
+					this.$parent.conditionType = str;
 				}
 				this.shadeShow = false;
 				$(".select_cont").css({bottom: -5.3 + 'rem'});
