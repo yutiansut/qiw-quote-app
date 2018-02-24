@@ -30,7 +30,9 @@
 		</div>
 		<div class="row" v-show="!conditionShow">
 			<b>触发条件</b>
-			<input type="text" class="ipt_150" />
+			<input type="text" class="ipt_150" readonly="readonly" v-model="time" />
+			<input type="text" class="ipt_150 none" readonly="readonly" @click="selectTime" />
+			<mt-datetime-picker ref="timePicker" type="time" @confirm="handleConfirm"></mt-datetime-picker>
 			<b class="ml">价格附加</b>
 			<div class="slt fl" @tap="openConditionType">
 				<input type="text" class="ipt_sm" :value="additionalConditionType" readonly="readonly" />
@@ -69,6 +71,7 @@
 <script>
 	import btn from "../../components/btn.vue"
 	import selectBox from "../../components/selectBox.vue"
+	import pro from "../../assets/js/common.js"
 	export default {
 		name: 'condetionOrder',
 		components: {btn, selectBox},
@@ -85,6 +88,7 @@
 				conditionShow: true,
 				conditionType: '>',
 				additionalConditionType: '附加',
+				time: '',
 			}
 		},
 		computed: {
@@ -137,11 +141,25 @@
 			},
 			selectPrice: function(index){
 				this.currentPriceNum = index;
+			},
+			selectTime: function(){
+				this.$refs.timePicker.open();
+			},
+			handleConfirm: function(e){
+				this.time = e;
 			}
 		},
 		mounted: function(){
 			//初始当前合约
 			this.currentOrder = this.commodityAll[0].commodityName + " " + this.commodityAll[0].commodityNo + this.orderTemplist[this.commodityAll[0].commodityNo].MainContract;
+			//取当前时间
+			let time = new Date();
+			this.time = pro.getDate("h:i:s", time);
+		},
+		activated: function(){
+			//取当前时间
+			let time = new Date();
+			this.time = pro.getDate("h:i:s", time);
 		}
 	}
 </script>
@@ -156,6 +174,7 @@
 		.row{
 			height: 0.88rem;
 			margin-bottom: 0.3rem;
+			position: relative;
 			b{
 				float: left;
 				display: inline-block;
@@ -196,7 +215,7 @@
 				text-align: center;
 				font-size: $fs24;
 				&.ipt_lg{
-					width: 5.58rem;
+					width: 5.57rem;
 				}
 				&.ipt_sm{
 					width: 1.2rem;
@@ -206,6 +225,12 @@
 				}
 				&.ipt_150{
 					width: 1.5rem;
+				}
+				&.none{
+					position: absolute;
+					top: 0;
+					left: 1.3rem;
+					opacity: 0;
 				}
 			}
 			.ml{
