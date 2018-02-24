@@ -146,7 +146,9 @@
 				this.$refs.timePicker.open();
 			},
 			handleConfirm: function(e){
-				this.time = e;
+				let time = new Date();
+				this.time = pro.getDate("h:i:s", time);
+				this.time = e + ':' + this.time.split(':')[2];
 			}
 		},
 		mounted: function(){
