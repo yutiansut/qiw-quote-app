@@ -3,11 +3,12 @@
 		<div class="bg" v-show="shadeShow" @tap="closeSelectEvent"></div>
 		<div class="select_cont">
 			<ul>
-				<template v-for="(v, index) in obj">
-					<li @tap="selectEvent(v.commodityNo)">
-						<span>{{v.commodityName}}&nbsp;&nbsp;{{v.commodityNo + v.contractNo}}</span>
-					</li>
-				</template>
+				<li v-if="type == 'order'" v-for="(v, index) in obj" @tap="selectEvent(v.commodityNo)">
+					<span>{{v.commodityName}}&nbsp;&nbsp;{{v.commodityNo + v.contractNo}}</span>
+				</li>
+				<li v-if="type == 'price'" v-for="(v, index) in obj" @tap="selectEvent(v)">
+					<span>{{v}}</span>
+				</li>
 			</ul>
 		</div>
 	</div>
@@ -32,9 +33,11 @@
 				this.shadeShow = false;
 				$(".select_cont").css({bottom: -5.3 + 'rem'});
 			},
-			selectEvent: function(num){
+			selectEvent: function(str){
 				if(this.type == 'order'){
-					this.$parent.currentOrder = this.orderTemplist[num].CommodityName + " " + num + this.orderTemplist[num].MainContract;
+					this.$parent.currentOrder = this.orderTemplist[str].CommodityName + " " + str + this.orderTemplist[str].MainContract;
+				}else if(this.type == 'price'){
+					this.$parent.priceType = str;
 				}
 				this.shadeShow = false;
 				$(".select_cont").css({bottom: -5.3 + 'rem'});

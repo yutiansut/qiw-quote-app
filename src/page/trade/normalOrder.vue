@@ -2,32 +2,32 @@
 	<div id="normalOrder" class="fm">
 		<div class="row">
 			<b>合约代码</b>
-			<div class="slt fl" @tap="openSelectBox">
+			<div class="slt fl" @tap="openSelectOrder">
 				<input type="text" class="ipt_lg" :value="currentOrder" readonly="readonly" />
 				<i class="icon icon_select"></i>
 			</div>
 		</div>
 		<div class="row">
 			<b>订单类型</b>
-			<div class="slt slt_dm fl">
-				<input type="text" class="ipt_sm" value="市价" readonly="readonly" />
+			<div class="slt slt_dm fl" @tap="openSelectPrice">
+				<input type="text" class="ipt_sm" :value="priceType" readonly="readonly" />
 				<i class="icon icon_select"></i>
 			</div>
-			<input type="text" class="ipt_md ml" value="市价" readonly />
+			<input type="text" class="ipt_md ml" v-model="orderPrice" readonly />
 		</div>
 		<div class="row">
 			<b>委托数量</b>
 			<div class="num_box">
-				<span class="add">+</span>
-				<input type="number" />
-				<span class="reduce">-</span>
+				<span class="add" @tap="addNum">+</span>
+				<input type="number" class="ipt_order_num" v-model="orderNum" />
+				<span class="reduce" @tap="reduceNum">-</span>
 			</div>
 		</div>
 		<div class="btn_box">
 			<btn name="买入/市价" className="redmd"></btn>
 			<btn name="卖出/市价" className="greenmd"></btn>
 		</div>
-		<selectBox ref="selectBox" :obj="commodityAll" type="order"></selectBox>
+		<selectBox ref="selectBox" :obj="obj" :type="type"></selectBox>
 	</div>
 </template>
 
@@ -40,6 +40,11 @@
 		data(){
 			return{
 				currentOrder: '',
+				obj: [],
+				type: '',
+				priceType: '市价',
+				orderPrice: '市价',
+				orderNum: 1,
 			}
 		},
 		computed: {
@@ -49,16 +54,40 @@
 			commodityAll(){
 				return this.$store.state.account.commodityAll;
 			},
-//			currentOrder(){
-//				return this.commodityAll[0].commodityName + " " + this.commodityAll[0].commodityNo + this.orderTemplist[this.commodityAll[0].commodityNo].MainContract;
-//			},
 			currentNo(){
 				return this.commodityAll[0].commodityNo;
 			}
 		},
+		watch: {
+			priceType: function(n, o){
+				if(n && n == '限价'){
+					this.orderPrice = 0;
+					$('.ipt_md').attr('readonly', false);
+				}
+			},
+			orderNum: function(n, o){
+				if(n && n <= 0){
+					this.orderNum = 0;
+				}
+			}
+		},
 		methods: {
-			openSelectBox: function(){
+			addNum: function(){
+				return this.orderNum++;
+			},
+			reduceNum: function(){
+				return this.orderNum--;
+			},
+			openSelectOrder: function(){
+				this.obj = this.commodityAll;
+				this.type = 'order';
 				$(".select_cont").css({bottom: 0});
+				this.$refs.selectBox.shadeShow = true;
+			},
+			openSelectPrice: function(){
+				this.obj = ['市价', '限价'];
+				this.type = 'price';
+				$(".select_cont").css({bottom: -3.55 + 'rem'});
 				this.$refs.selectBox.shadeShow = true;
 			}
 		},
@@ -67,7 +96,7 @@
 			this.currentOrder = this.commodityAll[0].commodityName + " " + this.commodityAll[0].commodityNo + this.orderTemplist[this.commodityAll[0].commodityNo].MainContract;
 		},
 		activated: function(){
-//			this.objCont = this.commodityAll;
+			
 		}
 	}
 </script>
@@ -165,7 +194,7 @@
 				}
 				input{
 					border: none;
-					width: 3rem;
+					width: 3.96rem;
 					height: 0.6rem;
 					line-height: 0.6rem;
 					margin: 0.14rem 0;
