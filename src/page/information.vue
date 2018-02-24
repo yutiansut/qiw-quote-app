@@ -187,22 +187,27 @@
 		    change:function(e){
 		    	$(e.target).addClass("current").siblings().removeClass("current");
 		    	var index = $(e.target).index();
-		    	console.log(index)
 		    	switch (index){
 		    		case 0:
 		    			this.showNews = true;
 		    			this.showCalendar = false;
 		    			this.showImportantNews = false;
+		    			this.showSearch=true;
+						this.showChooseDay=false
 		    			break;
 		    		case 1:
 		    			this.showNews = false;
 		    			this.showCalendar = true;
 		    			this.showImportantNews = false;
+		    			this.showSearch=false;
+						this.showChooseDay=true
 		    			break;	
 		    		case 2:
 		    			this.showNews = false;
 		    			this.showCalendar = false;
 		    			this.showImportantNews = true;
+		    			this.showSearch=false;
+						this.showChooseDay=false
 		    			break;
 		    		default:
 		    			break;
