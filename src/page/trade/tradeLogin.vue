@@ -43,6 +43,10 @@
 		},
 		mounted: function(){},
 		activated: function(){
+			//默认进交易申请
+			this.currentNum = 1;
+			this.currentView = 'tradeApply';
+			//是否显示交易登录
 			this.query = this.$route.query;
 			if(this.query.islogin == 'true'){
 				this.currentNum = 0;

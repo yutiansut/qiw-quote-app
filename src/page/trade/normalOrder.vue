@@ -1,9 +1,9 @@
-<template>
+1<template>
 	<div id="normalOrder" class="fm">
 		<div class="row">
 			<b>合约代码</b>
-			<div class="slt fl">
-				<input type="text" class="ipt_lg" value="美黄金 GC1702" readonly="readonly" />
+			<div class="slt fl" @tap="openSelectBox">
+				<input type="text" class="ipt_lg" :value="currentOrder" readonly="readonly" />
 				<i class="icon icon_select"></i>
 			</div>
 		</div>
@@ -27,21 +27,48 @@
 			<btn name="买入/市价" className="redmd"></btn>
 			<btn name="卖出/市价" className="greenmd"></btn>
 		</div>
+		<selectBox ref="selectBox" :obj="commodityAll" type="order"></selectBox>
 	</div>
 </template>
 
 <script>
 	import btn from "../../components/btn.vue"
+	import selectBox from "../../components/selectBox.vue"
 	export default {
 		name: 'normalOrder',
-		components: {
-			btn
-		},
+		components: {btn, selectBox},
 		data(){
 			return{
-				
+				currentOrder: '',
 			}
 		},
+		computed: {
+			orderTemplist(){
+				return this.$store.state.market.orderTemplist;
+			},
+			commodityAll(){
+				return this.$store.state.account.commodityAll;
+			},
+//			currentOrder(){
+//				return this.commodityAll[0].commodityName + " " + this.commodityAll[0].commodityNo + this.orderTemplist[this.commodityAll[0].commodityNo].MainContract;
+//			},
+			currentNo(){
+				return this.commodityAll[0].commodityNo;
+			}
+		},
+		methods: {
+			openSelectBox: function(){
+				$(".select_cont").css({bottom: 0});
+				this.$refs.selectBox.shadeShow = true;
+			}
+		},
+		mounted: function(){
+			//初始当前合约
+			this.currentOrder = this.commodityAll[0].commodityName + " " + this.commodityAll[0].commodityNo + this.orderTemplist[this.commodityAll[0].commodityNo].MainContract;
+		},
+		activated: function(){
+//			this.objCont = this.commodityAll;
+		}
 	}
 </script>
 

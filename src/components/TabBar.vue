@@ -8,6 +8,7 @@
 </template>
 <script>
 	import { mapActions } from 'vuex'
+	import pro from '../assets/js/common.js'
 	export default {
 		name:"TabBar",
 		data(){
@@ -116,6 +117,16 @@
 						break;
 				}
 			}
+		},
+		beforeMount: function(){
+			//获取所有市场合约
+			pro.fetch('post', '/quoteTrader/getCommodityInfoNoType', '', '').then((res) => {
+				if(res.success == true && res.code == 1){
+					this.$store.state.account.commodityAll = res.data; 
+				}
+			}).catch((err) => {
+				Toast({message: err.data.message, position: 'bottom', duration: 2000});
+			});
 		},
 		mounted: function() {
 			var path = this.$route.path;

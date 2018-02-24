@@ -42,7 +42,10 @@
 		computed: {
 			tradeUser(){
 				return localStorage.tradeUser ? JSON.parse(localStorage.tradeUser).username : '';
-			}
+			},
+			parameters(){
+				return this.$store.state.market.Parameters;
+			},
 		},
 		methods: {
 			tabEvent: function(index){
@@ -60,7 +63,7 @@
 			}
 		},
 		mounted: function(){
-			
+//			console.log(this.parameters);
 		}
 	}
 </script>

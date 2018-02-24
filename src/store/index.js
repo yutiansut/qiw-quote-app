@@ -33,7 +33,8 @@ var account = {
 		currentNav: 0,  //当前导航索引
 		currentUrlHead: 'http:', //http or https
 		phone:"",
-		username:""
+		username:"",
+		commodityAll: [],
 	}
 }
 
@@ -964,11 +965,11 @@ export default new Vuex.Store({
 						//初始资金
 						context.state.market.initBalance = parameters.InitBalance;
 						//查询持仓合计 
-//						context.state.tradeSocket.send('{"Method":"QryHoldTotal","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
+						context.state.tradeSocket.send('{"Method":"QryHoldTotal","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
 						//查询订单 
-//						context.state.tradeSocket.send('{"Method":"QryOrder","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
+						context.state.tradeSocket.send('{"Method":"QryOrder","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
 						//查询成交记录
-//						context.state.tradeSocket.send('{"Method":"QryTrade","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
+						context.state.tradeSocket.send('{"Method":"QryTrade","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
 						//查询账户信息 
 						context.state.tradeSocket.send('{"Method":"QryAccount","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
 						//查询止损单
@@ -978,7 +979,7 @@ export default new Vuex.Store({
 						//查询历史成交
 //						context.dispatch('qryHisTrade');
 						//启动交易心跳定时检查
-//						context.dispatch('HeartBeatTimingCheck');
+						context.dispatch('HeartBeatTimingCheck');
 					}else{
 						layer.msg(parameters.Message,{time: 1000});
 						context.state.account.loginStatus = false;

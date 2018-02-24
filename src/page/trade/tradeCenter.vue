@@ -2,8 +2,8 @@
 	<div id="tradeCenter">
 		<div class="tips">
 			<span class="red">1276.1</span>
-			<span class="red">1276.1</span>
-			<span class="red">1276.1</span>
+			<span class="red">+2.1</span>
+			<span class="red">+0.29%</span>
 			<p>成交量：<em>100123</em></p>
 		</div>
 		<div class="fens_title">

@@ -253,7 +253,6 @@
 				chartsHight: 5.4,
 				isTradeLogin: false,
 				chartsShow: false,
-				commodityAll: [],
 				optionalIconShow: false,
 				optionalName: '添加自选',
 				optionalList: [],
@@ -290,6 +289,9 @@
 			},
 			jsonData(){
 				return this.$store.state.market.jsonData;
+			},
+			commodityAll(){
+				return this.$store.state.account.commodityAll;
 			}
 		},
 		filters:{
@@ -389,13 +391,7 @@
 				}
 				var currentOrderPrice, contrastOrderPrice, scale;
 				this.parameters.forEach((o, i) => {
-//					if(o.CommodityNo == this.currentNo){
-//						currentOrderPrice = o.LastQuotation.LastPrice;
-//					}
 					if(o.CommodityNo == index){
-//						contrastOrderPrice = o.LastQuotation.LastPrice;
-//						scale = parseFloat(contrastOrderPrice/currentOrderPrice).toFixed(10);
-//						o.scale = scale;
 						if(o.check == 0){
 							o.check = 1;
 						}else{
@@ -625,16 +621,6 @@
 					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + o.exchangeNo + '","CommodityNo":"' + o.commodityNo + '","ContractNo":"' + o.mainContract +'"}}');
 				});
 			}
-		},
-		beforeMount: function(){
-			//获取所有市场合约
-			pro.fetch('post', '/quoteTrader/getCommodityInfoNoType', '', '').then((res) => {
-				if(res.success == true && res.code == 1){
-					this.commodityAll = res.data;
-				}
-			}).catch((err) => {
-				Toast({message: err.data.message, position: 'bottom', duration: 2000});
-			});
 		},
 		mounted: function(){
 			//判断交易是否登录

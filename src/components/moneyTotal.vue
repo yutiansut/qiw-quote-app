@@ -21,9 +21,16 @@
 	export default{
 		name: 'moneyTotal',
 		props: [],
-		computed: {},
+		computed: {
+			jCacheTotalAccount(){
+				return this.$store.state.market.CacheAccount.jCacheTotalAccount;
+			},
+		},
 		methods: {
 			
+		},
+		mounted: function(){
+//			console.log(this.jCacheTotalAccount);
 		}
 	}	
 </script>

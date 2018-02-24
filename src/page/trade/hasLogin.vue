@@ -4,15 +4,15 @@
 		<div class="cont">
 			<h1>交易账号：{{name}}</h1>
 			<ul>
-				<li>
+				<li @touchstart="touchstartEvent" @touchend="touchendEvent" @tap="totradeLogin">
 					<i class="icon icon_one"></i>
 					<span>切换交易账号</span>
 				</li>
-				<li>
+				<li @touchstart="touchstartEvent" @touchend="touchendEvent" @tap="exitEvent">
 					<i class="icon icon_two"></i>
 					<span>退出交易账号</span>
 				</li>
-				<li>
+				<li @touchstart="touchstartEvent" @touchend="touchendEvent" @tap="toTradeApply">
 					<i class="icon icon_three"></i>
 					<span>融资交易申请</span>
 				</li>
@@ -32,16 +32,71 @@
 				show: false,
 			}
 		},
+		computed: {
+			tradeSocket(){
+				return this.$store.state.tradeSocket;
+			},
+			exitStatus(){
+				return this.$store.state.account.exitStatus;
+			},
+		},
 		watch: {
 			show: function(n, o){
 				if(n && n == true){
 					$(".bg").css({'opacity': 0.5, 'z-index': 99});
 					$(".cont").css({'right': 0});
 				}
-			}
+			},
+			exitStatus: function(n, o){
+				if(n && n == true){
+					localStorage.removeItem('tradeUser');
+					this.$store.state.market.tradeConfig.username = '';
+					this.$store.state.market.tradeConfig.password = '';
+					this.$store.state.account.loginStatus = false;
+					this.$router.push({path: '/index'});
+					
+					this.$store.state.market.qryHoldTotalArr = [];
+					this.$store.state.market.positionListCont = [];
+					this.$store.state.market.OnRspOrderInsertEntrustCont = [];
+					this.$store.state.market.OnRspOrderInsertOrderListCont = [];
+					this.$store.state.market.orderListCont = [];
+					this.$store.state.market.OnRspQryTradeDealListCont = [];
+					this.$store.state.market.queryHisList = [];
+					this.$store.state.market.CacheAccount.moneyDetail = [];
+					this.$store.state.market.stopLossList = [];
+					this.$store.state.market.stopLossTriggeredList = [];
+					this.$store.state.market.conditionList = [];
+					this.$store.state.market.triggerConditionList = [];
+					this.$store.state.market.CacheHoldFloatingProfit.jHoldFloatingProfit = {};
+				}
+			},
 		},
 		methods: {
+			touchstartEvent: function(e){
+				$(e.currentTarget).addClass("current");
+			},
+			touchendEvent: function(e){
+				$(e.currentTarget).removeClass("current");
+			},
 			hideEvent: function(){
+				this.show = false;
+				$(".bg").css({'opacity': 0, 'z-index': -1});
+				$(".cont").css({'right': -6.2 + 'rem'});
+			},
+			exitEvent: function(){
+				this.show = false;
+				$(".bg").css({'opacity': 0, 'z-index': -1});
+				$(".cont").css({'right': -6.2 + 'rem'});
+				this.tradeSocket.send('{"Method":"Logout","Parameters":{"ClientNo":"'+ JSON.parse(localStorage.tradeUser).username +'"}}');
+			},
+			totradeLogin: function(){
+				this.$router.push({path: '/tradeLogin', query: {islogin: 'true'}});
+				this.show = false;
+				$(".bg").css({'opacity': 0, 'z-index': -1});
+				$(".cont").css({'right': -6.2 + 'rem'});
+			},
+			toTradeApply: function(){
+				this.$router.push({path: '/tradeLogin'});
 				this.show = false;
 				$(".bg").css({'opacity': 0, 'z-index': -1});
 				$(".cont").css({'right': -6.2 + 'rem'});
@@ -85,9 +140,11 @@
 			border-bottom: 0.01rem solid $black;
 		}
 		li{
+			width: 6.2rem;
 			height: 0.88rem;
 			border-bottom: 0.01rem solid $black;
 			padding: 0 0.3rem;
+			background: $bg;
 			span{
 				float: left;
 				line-height: 0.88rem;
@@ -109,6 +166,26 @@
 				&.icon_three{
 					background: url(../../assets/images/num_03.png) no-repeat center center;
 					background-size: 100% 100%;
+				}
+			}
+			&.current{
+				background: $lightBlue;
+				span{
+					color: $blue;
+				}
+				.icon{
+					&.icon_one{
+						background: url(../../assets/images/num_11.png) no-repeat center center;
+						background-size: 100% 100%;
+					}
+					&.icon_two{
+						background: url(../../assets/images/num_22.png) no-repeat center center;
+						background-size: 100% 100%;
+					}
+					&.icon_three{
+						background: url(../../assets/images/num_33.png) no-repeat center center;
+						background-size: 100% 100%;
+					}
 				}
 			}
 		}
