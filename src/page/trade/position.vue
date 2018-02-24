@@ -10,7 +10,7 @@
 					<span class="status">浮动盈亏</span>
 				</div>
 			</li>
-			<li class="current">
+			<li class="current" @tap="listClickEvent">
 				<div class="list_cont">
 					<div class="name">
 						<em>日经225</em>
@@ -25,30 +25,6 @@
 					<btn name="平仓" className="orangesm"></btn>
 					<btn name="反手" className="bluesm" @tap.native="backTrade"></btn>
 					<btn name="止损止盈" className="greensm" @tap.native="stopMoney"></btn>
-				</div>
-			</li>
-			<li>
-				<div class="list_cont">
-					<div class="name">
-						<em>日经225</em>
-						<em>CNQ16</em>
-					</div>
-					<span class="num">1</span>
-					<span class="type">买</span>
-					<span class="price red">51.03</span>
-					<span class="status green">51.03</span>
-				</div>
-			</li>
-			<li>
-				<div class="list_cont">
-					<div class="name">
-						<em>日经225</em>
-						<em>CNQ16</em>
-					</div>
-					<span class="num">1</span>
-					<span class="type">买</span>
-					<span class="price red">51.03</span>
-					<span class="status green">51.03</span>
 				</div>
 			</li>
 		</ul>
@@ -152,11 +128,12 @@
 				}
 			}
 			.tools{
+				/*display: none;*/
 				height: 0.96rem;
 				border-bottom: 0.01rem solid $black;
-				display: flex;
-				justify-content: center;
+				padding-left: 2.9rem;
 				#btn{
+					float: left;
 					margin: 0.16rem 0.1rem;
 				}
 			}

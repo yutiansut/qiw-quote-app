@@ -122,11 +122,12 @@
 				}
 			}
 			.tools{
+				/*display: none;*/
 				height: 0.96rem;
 				border-bottom: 0.01rem solid $black;
-				display: flex;
-				justify-content: center;
+				padding-left: 2.9rem;
 				#btn{
+					float: left;
 					margin: 0.16rem 0.1rem;
 				}
 			}
