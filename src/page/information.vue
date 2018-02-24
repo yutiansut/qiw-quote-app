@@ -1,72 +1,95 @@
 <template>
 	<div id="information">
 		<mt-header title="资讯" fixed style="background-color:#242933;font-size: 0.32rem;height: 1rem;border-bottom: 1px solid #12141a;">
-		    <router-link to="/information_search" slot="right">
-		    	<i id="search" v-show="showSearch"></i>
-		    	<i id="chooseday" v-show="showChooseDay"></i>
-		 	</router-link>
 		</mt-header>
 		<div id="container">
+			<div id="topRight">
+		    	<i id="search" v-show="showSearch" @click="toImformationSearch"></i>
+		    	<i id="chooseday" v-show="showChooseDay" @click="toChooseDay('picker1')"></i>
+		 	</div>
 			<div class="navlist">
 				<span class="current" @click="change">7x24</span>
 				<span @click="change">财经日历</span>
-				<!--<span @click="change">要闻</span>-->
+				<span @click="change">要闻</span>
 				<!--<span class="current">要闻</span>-->
 			</div>
 			<!--直播-->
 			<div id="news" v-show="showNews">
-				<div class="time">
-					<span>2017-12-28</span>
-					<span>星期三</span>
-				</div>
-				<div class="list">
-					<p class="color_red">16:44</p>
-					<p class="color_red">【不利因素渐显 现货煤价止涨】“CCTD秦皇岛动力煤价格”终止上行；“CCTD广州港进口煤价格”所采集相关煤种价格涨幅显著扩大；“CCTD唐山炼焦煤价格”和“CCTD徐州无烟煤价格”所采集相关煤种的价格走势保持平稳。环渤海地区三种现货动力煤价格终止上涨，一是主要发电企业的电煤采购压力难以舒缓；二是进口煤炭对市场资源的补充尚需时日；三是支持环渤海地区的动力煤价格上涨的动力减弱；四是主要煤炭生产企业主动下调动力煤销售价格。（中国煤炭市场网）</p>
-					<p><span>展开</span></p>
-				</div>
-				<div class="list" v-for="n in 5">
-					<p>16:44</p>
-					<p @click="toDetails">【不利因素渐显 现货煤价止涨】“CCTD秦皇岛动力煤价格”终止上行；“CCTD广州港进口煤价格”所采集相关煤种价格涨幅显著扩大；“CCTD唐山炼焦煤价格”和“CCTD徐州无烟煤价格”所采集相关煤种的价格走势保持平稳。环渤海地区三种现货动力煤价格终止上涨，一是主要发电企业的电煤采购压力难以舒缓；二是进口煤炭对市场资源的补充尚需时日；三是支持环渤海地区的动力煤价格上涨的动力减弱；四是主要煤炭生产企业主动下调动力煤销售价格。（中国煤炭市场网）</p>
-					<p><span>展开</span></p>
-				</div>
+				<mt-loadmore :bottom-method="loadBottom"  :auto-fill="false" :top-method="loadTop">
+					<div class="time">
+						<span>{{nowDay | changDay}}</span>
+						<span>{{nowWeek}}</span>
+					</div>
+					<div class="list" v-for="k in this.newsInfo">
+						<p>{{k.createdAt | changTime }}</p>
+						<!--<p>{{k.liveTitle}}</p>-->
+						<p v-if="k.liveTitle.length > 120" class="textHeight">{{k.liveTitle}}</p>
+						<p v-if="k.liveTitle.length < 120">{{k.liveTitle}}</p>
+						<p v-if="k.liveTitle.length > 120" @click="showAll"><span>展开</span></p>
+						<p v-if="k.liveTitle.length < 120" ></p>
+					</div>
+					<div class="empty"></div>
+				</mt-loadmore>
+				
 			</div>
 			<!--日历-->
 			<div id="calendar" v-show="showCalendar">
 				<div class="time1">
-					2017年10月
+					{{show_day}}
 				</div>
 				<div class="date">
 					<ul>
-						<li v-for="(k,index) in weekDayList">
+						<li v-for="(k,index) in weekDayList" @click="chooseDay">
 							<span >{{k.weekday}}</span></br>
-							<span :class="{span_white:current == index}">{{k.day}}</span>
+							<span :class="{span_white:current == index}">{{k.day | showToday}}</span>
 						</li>
 					</ul>
 				</div>
-				<div v-for="n in 5">
+				<div v-for="n in list">
 					<div class="black"></div>
 					<div class="details">
 						<ul>
 							<li>
 								<span></span>
-								<span>06:30</span>
-								<span>guoqi</span>
-								<span>中国</span>
-								<span></span>
+								<span>{{n.timestamp | changTime}}</span>
+								<span><img :src="n.flagUrl" /></span>
+								<span>{{n.country}}</span>
+								<span v-if="n.stars == '4'">
+									<i  v-for="t in 4"></i>
+								</span>
+								<span v-if="n.stars != '4'">
+									<i  v-for="t in (n.stars)"></i>
+									<!--<i v-for="t in (4-n.stars)"></i>-->
+								</span>
 							</li>
 							<li>
-								12月制造业产出环比
+								{{n.title}}
 							</li>
 							<li>
-								<span>今值&nbsp;&nbsp;---</span>
-								<span>预期&nbsp;&nbsp;0.02%</span>
-								<span>前值&nbsp;&nbsp;0.05%</span>
+								<span v-if="n.actual == ''">今值&nbsp;&nbsp;---</span>
+								<span v-else-if="n.actual != ''">今值&nbsp;&nbsp;{{n.actual}}</span>
+								<span v-if="n.forecast == ''">预期&nbsp;&nbsp;---</span>
+								<span v-else-if="n.forecast != ''">预期&nbsp;&nbsp;{{n.forecast}}</span>
+								<span v-if="n.previous == ''">前值&nbsp;&nbsp;---</span>
+								<span v-else-if="n.previous != ''">前值&nbsp;&nbsp;{{n.previous}}</span>
 							</li>
 						</ul>
 					</div>
 				</div>
+				<div class="empty"></div>
+				<mt-datetime-picker
+				    ref="picker1"
+				    type="date"
+				    v-model="value1"
+				    year-format="{value} 年"
+				    month-format="{value} 月"
+				    date-format="{value} 日"
+				    :startDate="startDate"
+				    :endDate="endDate"
+				    @confirm="handleChange">
+			    </mt-datetime-picker>
 			</div>
-			<!--<div id="importantNews" v-show="showImportantNews">
+			<div id="importantNews" v-show="showImportantNews">
 				<div class="solider">
 					<mt-swipe :show-indicators="false" :auto="3000">
 						<mt-swipe-item><img src="../assets/images/solider_01.png" alt="" /></mt-swipe-item>
@@ -87,7 +110,7 @@
 						<img v-bind:src="k.imgurl" alt="" />
 					</div>
 				</div>
-			</div>-->
+			</div>
 		</div>
 		<TabBar></TabBar>
 	</div>
@@ -107,32 +130,83 @@
 				showChooseDay:false,
 				showNews:true,
 				showCalendar:false,
-//				showImportantNews:true,
-				weekDayList:[
-					{day:16,weekday:"一"},
-					{day:17,weekday:"二"},
-					{day:18,weekday:"三"},
-					{day:19,weekday:"四"},
-					{day:20,weekday:"五"},
-					{day:21,weekday:"六"},
-					{day:22,weekday:"七"}
-				],
+				showImportantNews:false,
+				weekDayList:[],
 				current:3,
-				newsInfo:""
-//				infoArr:[{title:"比特币再现巨大跌幅，自高位跌去七成 这次还能爬起来吗？",time:"2018-02-10",imgurl:require("../assets/images/important_1.jpg"),id:"1"},
-//				{title:"美股暴跌的原因猜想：这次可能没法指望美联储了",time:"2018-02-09",imgurl:require("../assets/images/important_2.jpg"),id:"2"},
-//				{title:"俄媒数据：中石油2017年海外油气开采量增17.2%",time:"2018-02-08",imgurl:require("../assets/images/important_3.jpg"),id:"3"},
-//				{title:"钢材总库存处于低位，沪钢稳居3900元/吨之上",time:"2018-02-05",imgurl:require("../assets/images/important_4.jpg"),id:"4"},
-//				{title:"铜业公司业绩喜人，铜市有望进入“长牛”",time:"2018-02-03",imgurl:require("../assets/images/important_5.jpg"),id:"5"}]
+				newsInfo:"",
+				nowDay:"",
+				nowWeek:'',
+				times:0,
+				startTime:'',
+				endTime:'',
+				list:5,
+				value: null,
+		      	value1: null,
+		      	startDate: new Date('2014-1-1'),
+		      	endDate: new Date('2020-12-31'),
+		      	show_day:"",
+				infoArr:[{title:"比特币再现巨大跌幅，自高位跌去七成 这次还能爬起来吗？",time:"2018-02-10",imgurl:require("../assets/images/important_1.jpg"),id:"1"},
+				{title:"美股暴跌的原因猜想：这次可能没法指望美联储了",time:"2018-02-09",imgurl:require("../assets/images/important_2.jpg"),id:"2"},
+				{title:"俄媒数据：中石油2017年海外油气开采量增17.2%",time:"2018-02-08",imgurl:require("../assets/images/important_3.jpg"),id:"3"},
+				{title:"钢材总库存处于低位，沪钢稳居3900元/吨之上",time:"2018-02-05",imgurl:require("../assets/images/important_4.jpg"),id:"4"},
+				{title:"铜业公司业绩喜人，铜市有望进入“长牛”",time:"2018-02-03",imgurl:require("../assets/images/important_5.jpg"),id:"5"}]
 			}
 		},
 		methods:{
+			//下拉刷新
+			loadTop:function(){
+				this.getNewsInfo(0);
+			},
+			//加载更多
+			loadBottom:function(){
+				this.times++;
+				var data = {
+					pageSize:20,
+		    		pageNo:this.times
+				}
+				pro.fetch("post","/news/get7_24Live",data,"").then((res)=>{
+					if(res.code == 1 && res.success == true){
+						var b = res.data.data.data;
+						this.newsInfo=this.newsInfo.concat(b);
+					}
+				}).catch((err)=>{
+					
+				})
+			},
+			showAll:function(e){
+				var aa = $(e.target).parent().siblings().eq(1).hasClass("textHeight");
+				if(aa == true){
+					e.target.innerHTML = "收起"
+					$(e.target).parent().siblings().eq(1).removeClass("textHeight");
+				}else{
+					e.target.innerHTML = "展开"
+					$(e.target).parent().siblings().eq(1).addClass("textHeight");
+				}
+				
+			},
 		    change:function(e){
 		    	$(e.target).addClass("current").siblings().removeClass("current");
-		    	this.showNews=!this.showNews;
-		    	this.showCalendar=!this.showCalendar;
-		    	this.showSearch=!this.showSearch;
-		    	this.showChooseDay=!this.showChooseDay
+		    	var index = $(e.target).index();
+		    	console.log(index)
+		    	switch (index){
+		    		case 0:
+		    			this.showNews = true;
+		    			this.showCalendar = false;
+		    			this.showImportantNews = false;
+		    			break;
+		    		case 1:
+		    			this.showNews = false;
+		    			this.showCalendar = true;
+		    			this.showImportantNews = false;
+		    			break;	
+		    		case 2:
+		    			this.showNews = false;
+		    			this.showCalendar = false;
+		    			this.showImportantNews = true;
+		    			break;
+		    		default:
+		    			break;
+		    	}
 		    },
 		    toDetails:function(){
 		    	this.$router.push({path:"/information_details"});
@@ -140,24 +214,147 @@
 		    toImporttantDetails:function(e,id,title,time){
 		    	this.$router.push({path:"/importantDetails",query:{id:id,title:title,time:time}})
 		    },
-		    getNewsInfo:function(){
+		    getNewsInfo:function(a){
 		    	var data = {
 		    		pageSize:20,
-		    		pageNo:1
+		    		pageNo:a
 		    	}
 		    	pro.fetch("post","/news/get7_24Live",data,"").then((res)=>{
 //		    		console.log("res==="+JSON.stringify(res));
 		    		if(res.code == 1 && res.success == true){
 		    			this.newsInfo = res.data.data.data;
-		    			console.log("this.newsInfo======="+JSON.stringify(this.newsInfo)+"22222222222")
 		    		}
 		    	}).catch((err)=>{
-		    		console.log("err==="+err)
+//		    		console.log("err==="+err)
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
+					}else{
+						if(data.code == -9999){
+							this.$toast({message:"认证失败，请重新登录",duration: 1000});
+							this.$router.push({path:"/login"});
+						}
+						else{
+							this.$toast({message:data.message,duration: 1000});
+						}
+					}
 		    	})
-		    }
+		    },
+		    //以上为7*24小时部分
+		    getDayList:function(e){
+			    var timec = Date.parse(e)/1000;
+			    var today = pro.getDate("y-m-d",timec*1000);
+			    //1-3天前
+			    var todayBefore3 = pro.getDate("y-m-d",(timec-3*24*60*60)*1000);
+			    var todayBefore2 = pro.getDate("y-m-d",(timec-2*24*60*60)*1000);
+			    var todayBefore1 = pro.getDate("y-m-d",(timec-24*60*60)*1000);
+			    //1-3天后
+			    var todayAfter3 = pro.getDate("y-m-d",(timec+3*24*60*60)*1000);
+			    var todayAfter2 = pro.getDate("y-m-d",(timec+2*24*60*60)*1000);
+			    var todayAfter1 = pro.getDate("y-m-d",(timec+24*60*60)*1000);
+			    var arr = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+			    var time = new Date(timec*1000);
+			    var week = arr[time.getDay()];
+			    var weekBefore3 = arr[new Date(timec*1000-3*24*60*60*1000).getDay()];
+			    var weekBefore2 = arr[new Date(timec*1000-2*24*60*60*1000).getDay()];
+			    var weekBefore1 = arr[new Date(timec*1000-24*60*60*1000).getDay()];
+			    var weekAfter3 = arr[new Date(timec*1000+3*24*60*60*1000).getDay()];
+			    var weekAfter2 = arr[new Date(timec*1000+2*24*60*60*1000).getDay()];
+			    var weekAfter1 = arr[new Date(timec*1000+24*60*60*1000).getDay()];
+			    var todayObj1 = {};todayObj1.day = todayBefore3;todayObj1.weekday = weekBefore3;
+			    var todayObj2 = {};todayObj2.day = todayBefore2;todayObj2.weekday = weekBefore2;
+			   	var todayObj3 = {};todayObj3.day = todayBefore1;todayObj3.weekday = weekBefore1;
+			   	var todayObj4 = {};todayObj4.day = today;todayObj4.weekday = week;
+			   	var todayObj5 = {};todayObj5.day = todayAfter1;todayObj5.weekday = weekAfter1;
+			   	var todayObj6 = {};todayObj6.day = todayAfter2;todayObj6.weekday = weekAfter2;
+			   	var todayObj7 = {};todayObj7.day = todayAfter3;todayObj7.weekday = weekAfter3;
+			   	var aaa = []
+			   	for(var i = 0;i<7;i++){
+			   		aaa[i]=eval("todayObj"+(i+1));
+			   	}
+			   	this.weekDayList = aaa;
+			},
+			chooseDay:function(e){
+				var index = $(e.currentTarget).index();
+				this.startTime = this.weekDayList[index].day;
+				this.endTime = pro.getDate("y-m-d",(Date.parse(this.startTime)/1000+24*60*60)*1000);
+				this.getInfoList(this.startTime,this.endTime);
+				this.show_day = pro.getDate("yy-mm-dd",Date.parse(this.weekDayList[index].day));
+				this.getDayList(this.startTime);
+			},
+			getInfoList:function(startTime,endTime){
+				var data = {
+					startTime:startTime,
+					endTime:endTime
+				}
+				pro.fetch("post","/news/getCalendar",data,"").then((res)=>{
+//					console.log("res======"+JSON.stringify(res));
+					if(res.success == true && res.code == 1){
+						this.list = res.data.data.data
+//						console.log("list======"+JSON.stringify(this.list));
+					}
+				}).catch((err)=>{
+//					console.log("err======="+JSON.stringify(err));
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
+					}else{
+						if(data.code == -9999){
+							this.$toast({message:"认证失败，请重新登录",duration: 1000});
+							this.$router.push({path:"/login"});
+						}
+						else{
+							this.$toast({message:data.message,duration: 1000});
+						}
+					}
+				})
+			},
+			toImformationSearch:function(){
+				this.$router.push({path:"/information_search"});
+			},
+			toChooseDay:function(picker){
+				this.$refs[picker].open();
+			},
+			handleChange:function(value){
+				this.startTime = pro.getDate("y-m-d", Date.parse(value));
+				this.endTime = pro.getDate("y-m-d",(Date.parse(this.startTime)/1000+24*60*60)*1000);
+				this.getInfoList(this.startTime,this.endTime);
+				this.getDayList(this.startTime);
+				this.show_day = pro.getDate("yy-mm-dd", Date.parse(value));
+			}
+		},
+		mounted:function(){
+			this.startTime = pro.getDate("y-m-d",Date.parse(new Date()));
+			this.endTime = pro.getDate("y-m-d",(Date.parse(new Date())/1000+24*60*60)*1000);
+			this.getDayList(this.startTime);
+			this.getInfoList(this.startTime,this.endTime);
 		},
 		activated:function(){
-			this.getNewsInfo();
+			this.times = 0;
+			this.getNewsInfo(this.times);
+			this.nowDay =  Date.parse(new Date()); 
+			this.show_day = pro.getDate("yy-mm-dd",Date.parse(new Date()));
+			var dayNames = new Array("星期日","星期一","星期二","星期三","星期四","星期五","星期六");
+			this.nowWeek = dayNames[new Date().getDay()]; 
+		},
+		filters:{
+			changTime:function(e){
+				var a = pro.getDate("h:m",e*1000);
+				return a;
+			},
+			changDay:function(e){
+				var b = pro.getDate("y-m-d",e);
+				return b;
+			},
+			changDay1:function(e){
+				var c = pro.getDate("yy-mm-dd",e);
+				return c;
+			},
+			showToday:function(e){
+				var a = Date.parse(e)/1000;
+				a = pro.getDate("d",a*1000);
+				return a;
+			}
 		}
 	}
 </script>
@@ -168,19 +365,31 @@
 	#test{
 		display: none;
 	}
-	#search{
-		background: url(../assets/images/search.png) no-repeat;
-		display: inline-block;
-		width: 0.4rem;
-		height: 0.4rem;
-		background-size: 100% 100%;
-	}
-	#chooseday{
-		background: url(../assets/images/choose_day.png) no-repeat;
-		display: inline-block;
-		width: 0.4rem;
-		height: 0.4rem;
-		background-size: 100% 100%;
+	#topRight{
+		width: 0.6rem;
+		height: 1rem;
+		position: fixed;
+		top: 0;
+		right: 0.3rem;
+		z-index: 1000;
+		#search{
+			background: url(../assets/images/search.png) no-repeat;
+			display: inline-block;
+			width: 0.4rem;
+			height: 0.4rem;
+			background-size: 100% 100%;
+			margin-top: 0.3rem;
+			float: right;
+		}
+		#chooseday{
+			background: url(../assets/images/choose_day.png) no-repeat;
+			display: inline-block;
+			width: 0.4rem;
+			height: 0.4rem;
+			background-size: 100% 100%;
+			margin-top: 0.3rem;
+			float: right;
+		}
 	}
 	#information{
 		width: 7.5rem;
@@ -189,6 +398,7 @@
 		width: 100%;
 		margin-top: 1.8rem;
 		.navlist{
+			background-color: $bg;
 			position: fixed;
 			top: 1rem;
 			display: flex;
@@ -224,7 +434,7 @@
 			}
 			.list{
 				width: 100%;
-				height: 3.2rem;
+				/*height: 3.2rem;*/
 				border-bottom: 1px solid #12141a;
 				p{
 					overflow:hidden;
@@ -234,9 +444,10 @@
 						padding-left: 0.3rem;
 					}
 					&:nth-child(2){
-						height: 1.8rem;
+						/*height: 1.8rem;*/
 						line-height: 0.45rem;
 						padding:0 0.3rem;
+						color: $white;
 					}
 					&:nth-child(3){
 						height: 0.7rem;
@@ -244,21 +455,28 @@
 						text-align: right;
 						span{
 							margin-right: 0.1rem;
-							width: 0.6rem;
-							height: 0.3rem;
-							line-height: 0.3rem;
+							/*width: 0.6rem;*/
+							/*height: 0.3rem;*/
+							line-height: 0.4rem;
 							background-color: $fontBlueTitle;
 							color: #242933;
 							display: inline-block;
 							text-align: center;
+							padding: 0.01rem 0.05rem;
 						}
 					}
+				}
+				.textHeight{
+					height: 1.8rem;
 				}
 			}
 			.color_red{
 				color: #ff5533;
 			}
 		}
+		.empty{
+				height: 1rem;
+			}
 		/*日历*/
 		#calendar{
 			margin-top: 1.8rem;
@@ -269,6 +487,7 @@
 				text-align: center;
 				background-color: $titleBlue;
 				border-bottom: 1px solid #12141a;
+				color: $white;
 			}
 			.date{
 				ul{
@@ -279,11 +498,8 @@
 					height: 1.1rem;
 					border-bottom: 1px solid #12141a;
 					li{
-						color::$white; 
-						&:nth-child(1){
-							color: $fontBlue;
-						}&:nth-child(7){
-							color: $fontBlue;
+						&:nth-child(4){
+							color::$white;
 						}
 						span{
 							&:nth-child(1){
@@ -308,14 +524,15 @@
 				background-color: #1B1F26;
 			}
 			.details{
-				height: 2.4rem;
+				/*height: 2.4rem;*/
 				background-color: $bg;
 				padding: 0 0.3rem;
 				ul{
 					li{
-						height: 0.8rem;
+						/*height: 0.8rem;*/
 						line-height: 0.8rem;
 						&:nth-child(1){
+							height: 0.8rem;
 							span{
 								float: left;
 								&:nth-child(1){
@@ -339,13 +556,19 @@
 								}
 								&:nth-child(5){
 									float: right;
-									background: url(../assets/images/start_1.png);
-									display: inline-block;
-									background-size: 100% 100%;
-									height: 0.2rem;
-									width: 0.22rem;
-									margin-top: 0.3rem;
+									i{
+										background: url(../assets/images/start_1.png);
+										display: inline-block;
+										background-size: 100% 100%;
+										height: 0.2rem;
+										width: 0.22rem;
+										margin-top: 0.3rem;
+									}
 								}
+							}
+							img{
+								width: 0.45rem;
+								height: 0.3rem;
 							}
 						}
 						&:nth-child(2){
@@ -353,6 +576,7 @@
 							font-weight: 600;
 						}
 						&:nth-child(3){
+							height: 0.8rem;
 							span{
 								&:nth-child(1){
 									float: left;
