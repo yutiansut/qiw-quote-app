@@ -12,6 +12,9 @@
 				<li v-if="type == 'condition'" v-for="(v, index) in obj" @tap="selectEvent(v)">
 					<span>{{v}}</span>
 				</li>
+				<li v-if="type == 'additionalCondition'" v-for="(v, index) in obj" @tap="selectEvent(v)">
+					<span>{{v}}</span>
+				</li>
 			</ul>
 		</div>
 	</div>
@@ -43,13 +46,15 @@
 					this.$parent.priceType = str;
 				}else if(this.type == 'condition'){
 					this.$parent.conditionType = str;
+				}else if(this.type == 'additionalCondition'){
+					this.$parent.additionalConditionType = str;
 				}
 				this.shadeShow = false;
 				$(".select_cont").css({bottom: -5.3 + 'rem'});
 			}
 		},
 		mounted: function(){
-			console.log(this.obj);
+//			console.log(this.obj);
 		}
 	}
 </script>

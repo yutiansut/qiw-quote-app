@@ -10,16 +10,30 @@
 		<div class="row">
 			<b>条件类型</b>
 			<div class="type_box">
-				<span>价格条件</span>
-				<span class="current">时间条件</span>
+				<template v-for="(v, index) in conditionTab">
+					<span :class="{current: currentConditionNum == index}" @tap="selectCondition(index)">{{v}}</span>
+				</template>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row" v-show="conditionShow">
+			<b>触发条件</b>
+			<div class="slt fl" @tap="openSelectPrice">
+				<input type="text" class="ipt_sm" :value="conditionType" readonly="readonly" />
+				<i class="icon icon_select"></i>
+			</div>
+			<input type="text" class="ipt_sm ml10 mr20" />
+			<div class="slt fl" @tap="openConditionType">
+				<input type="text" class="ipt_sm" :value="additionalConditionType" readonly="readonly" />
+				<i class="icon icon_select"></i>
+			</div>
+			<input type="text" class="ipt_sm ml10" />
+		</div>
+		<div class="row" v-show="!conditionShow">
 			<b>触发条件</b>
 			<input type="text" class="ipt_150" />
 			<b class="ml">价格附加</b>
-			<div class="slt fl" @tap="openSelectPrice">
-				<input type="text" class="ipt_sm" :value="conditionType" readonly="readonly" />
+			<div class="slt fl" @tap="openConditionType">
+				<input type="text" class="ipt_sm" :value="additionalConditionType" readonly="readonly" />
 				<i class="icon icon_select"></i>
 			</div>
 			<input type="text" class="ipt_sm ml10" />
@@ -27,8 +41,9 @@
 		<div class="row">
 			<b>委托价格</b>
 			<div class="type_box">
-				<span>市价</span>
-				<span class="current">对手价</span>
+				<template v-for="(v, index) in priceTab">
+					<span :class="{current: currentPriceNum == index}" @tap="selectPrice(index)">{{v}}</span>
+				</template>
 			</div>
 		</div>
 		<div class="row">
@@ -59,11 +74,17 @@
 		components: {btn, selectBox},
 		data(){
 			return{
+				conditionTab: ['价格条件','时间条件'],
+				currentConditionNum: 0,
+				priceTab: ['市价','对手价'],
+				currentPriceNum: 0,
 				currentOrder: '',
 				obj: [],
 				type: '',
 				orderNum: 1,
+				conditionShow: true,
 				conditionType: '>',
+				additionalConditionType: '附加',
 			}
 		},
 		computed: {
@@ -99,6 +120,23 @@
 				this.type = 'condition';
 				$(".select_cont").css({bottom: -1.78 + 'rem'});
 				this.$refs.selectBox.shadeShow = true;
+			},
+			openConditionType: function(){
+				this.obj = ['>', '>=', '<', '<='];
+				this.type = 'additionalCondition';
+				$(".select_cont").css({bottom: -1.78 + 'rem'});
+				this.$refs.selectBox.shadeShow = true;
+			},
+			selectCondition: function(index){
+				this.currentConditionNum = index;
+				if(index == 0){
+					this.conditionShow = true;
+				}else{
+					this.conditionShow = false;
+				}
+			},
+			selectPrice: function(index){
+				this.currentPriceNum = index;
 			}
 		},
 		mounted: function(){
@@ -175,6 +213,9 @@
 			}
 			.ml10{
 				margin-left: 0.1rem;
+			}
+			.mr20{
+				margin-right: 0.5rem;
 			}
 			.type_box{
 				float: left;
