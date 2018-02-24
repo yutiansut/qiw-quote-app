@@ -10,7 +10,7 @@
 					<span class="status">浮动盈亏</span>
 				</div>
 			</li>
-			<li class="current" @tap="listClickEvent">
+			<li class="current">
 				<div class="list_cont">
 					<div class="name">
 						<em>日经225</em>

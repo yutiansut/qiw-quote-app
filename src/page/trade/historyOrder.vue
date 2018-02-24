@@ -3,12 +3,12 @@
 		<div class="search">
 			<div class="col">
 				<i class="icon icon_time"></i>
-				<input type="text" placeholder="开始时间" />
+				<input type="text" placeholder="开始时间" readonly="readonly" v-model="startTime" @click="selectStartDate" />
 			</div>
 			<span class="fl">-</span>
 			<div class="col">
 				<i class="icon icon_time"></i>
-				<input type="text" placeholder="结束时间" />
+				<input type="text" placeholder="结束时间" readonly="readonly" v-model="endTime" @click="selectEndDate" />
 			</div>
 			<button>查询</button>
 		</div>
@@ -42,23 +42,46 @@
 				</li>
 			</ul>
 		</div>
+		<mt-datetime-picker ref="startTimePicker" type="date" :startDate="startDate" :endDate="endDate" @confirm="startTimeConfirm"></mt-datetime-picker>
+		<mt-datetime-picker ref="endTimePicker" type="date" :startDate="startDate" :endDate="endDate" @confirm="endTimeConfirm"></mt-datetime-picker>
 	</div>
 </template>
 
 <script>
 	import btn from "../../components/btn.vue"
+	import pro from "../../assets/js/common.js"
 	export default{
 		name: "historyOrder",
 		components: {btn},
 		data(){
 			return{
+				startTime: '',
+				endTime: '',
+				startDate: new Date('2017-1-1'),
+		      	endDate: new Date('2020-12-31'),
 			}
 		},
 		methods: {
-			
+			selectStartDate: function(){
+				this.$refs.startTimePicker.open();
+			},
+			selectEndDate: function(){
+				this.$refs.endTimePicker.open();
+			},
+			startTimeConfirm: function(e){
+				let time = new Date(e);
+				this.startTime = pro.getDate("y-m-d", time);
+			},
+			endTimeConfirm: function(e){
+				let time = new Date(e);
+				this.endTime = pro.getDate("y-m-d", time);
+			}
 		},
 		mounted: function(){
-			
+			//取当前时间
+			let time = new Date();
+			this.startTime = pro.getDate("y-m-d", time);
+			this.endTime = pro.getDate("y-m-d", time);
 		}
 	}
 </script>
@@ -93,6 +116,7 @@
 				width: 1.55rem;
 				height: 0.64rem;
 				padding: 0.1rem;
+				color: $white;
 			}
 		}
 		span{
