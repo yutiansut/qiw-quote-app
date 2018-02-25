@@ -47,7 +47,6 @@
 				tradePrices: '市价',
 				defaultNum: 1,
 				priceShow: true,
-				isWatch: false,
 			}
 		},
 		computed: {
@@ -69,14 +68,21 @@
 			currentdetail(){
 				return this.$store.state.market.currentdetail;
 			},
+			parameters(){
+				return this.$store.state.market.Parameters;
+			},
+			length(){
+				return this.$store.state.market.Parameters.length;
+			},
 		},
 		watch: {
-			currentOrder: function(n, o){
-				if(n && n != undefined && o != ''){
+			currentNo: function(n, o){
+				if(n == this.commodityAll[0].commodityNo) return;
+				if(n && n != undefined){
 					//初始化当前合约
 					this.$store.state.market.Parameters = [];
 					this.$store.state.market.commodityOrder = [];
-					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + this.orderTemplist[this.currentNo].exchangeNo + '","CommodityNo":"' + this.currentNo + '","ContractNo":"' + this.orderTemplist[this.currentNo].MainContract +'"}}');
+					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + this.orderTemplist[this.currentNo].ExchangeNo + '","CommodityNo":"' + this.currentNo + '","ContractNo":"' + this.orderTemplist[this.currentNo].MainContract +'"}}');
 				}
 			},
 			priceType: function(n, o){
@@ -224,18 +230,16 @@
 				}).catch(err=>{});
 			},
 		},
-		beforeMount: function(){
-			//初始当前合约
-			this.currentOrder = this.commodityAll[0].commodityName + " " + this.currentNo + this.orderTemplist[this.currentNo].MainContract;
-		},
 		mounted: function(){
 			
 		},
 		activated: function(){
-			//初始化当前合约
+			//初始当前合约
+			this.$store.state.market.currentNo = this.commodityAll[0].commodityNo;
+			this.currentOrder = this.orderTemplist[this.currentNo].CommodityName + " " + this.currentNo + this.orderTemplist[this.currentNo].MainContract;	
 			this.$store.state.market.Parameters = [];
 			this.$store.state.market.commodityOrder = [];
-			this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + this.orderTemplist[this.currentNo].exchangeNo + '","CommodityNo":"' + this.currentNo + '","ContractNo":"' + this.orderTemplist[this.currentNo].MainContract +'"}}');
+			this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + this.orderTemplist[this.currentNo].ExchangeNo + '","CommodityNo":"' + this.currentNo + '","ContractNo":"' + this.orderTemplist[this.currentNo].MainContract +'"}}');
 		}
 	}
 </script>
