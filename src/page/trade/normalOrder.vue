@@ -70,6 +70,14 @@
 			},
 		},
 		watch: {
+			currentOrder: function(n, o){
+				if(n && n != undefined){
+					//初始化当前合约
+					this.$store.state.market.Parameters = [];
+					this.$store.state.market.commodityOrder = [];
+					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + this.orderTemplist[this.currentNo].exchangeNo + '","CommodityNo":"' + this.currentNo + '","ContractNo":"' + this.orderTemplist[this.currentNo].MainContract +'"}}');
+				}
+			},
 			priceType: function(n, o){
 				if(n && n == '限价'){
 					this.tradePrices = 0;

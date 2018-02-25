@@ -42,6 +42,7 @@
 			selectEvent: function(str){
 				if(this.type == 'order'){
 					this.$parent.currentOrder = this.orderTemplist[str].CommodityName + " " + str + this.orderTemplist[str].MainContract;
+					this.$store.state.market.currentNo = str;
 				}else if(this.type == 'price'){
 					this.$parent.priceType = str;
 				}else if(this.type == 'condition'){

@@ -79,6 +79,7 @@
 		position: fixed;
 		top: 0;
 		left: 0;
+		z-index: 1;
 		h1{
 			height: 1rem;
 			line-height: 1rem;
@@ -104,6 +105,7 @@
 		position: fixed;
 		top: 1.01rem;
 		left: 0;
+		z-index: 1;
 		li{
 			float: left;
 			width: 2.5rem;
