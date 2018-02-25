@@ -109,3 +109,6 @@ input,textarea {
     padding: 0px;
     outline: none;
 }
+*:not(input):not(textarea) {
+  -webkit-user-select: none
+}
