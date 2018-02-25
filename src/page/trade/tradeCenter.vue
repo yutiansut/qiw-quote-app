@@ -132,7 +132,7 @@
 			}
 		},
 		mounted: function(){
-			console.log(this.parameters);
+			
 		}
 	}
 </script>

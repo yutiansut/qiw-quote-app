@@ -981,7 +981,7 @@ export default new Vuex.Store({
 						//启动交易心跳定时检查
 						context.dispatch('HeartBeatTimingCheck');
 					}else{
-						layer.msg(parameters.Message,{time: 1000});
+						Toast({message: parameters.Message, position: 'bottom', duration: 1500});
 						context.state.account.loginStatus = false;
 						context.state.tradeSocket.close();
 						context.state.tradeSocket = null;
@@ -1099,9 +1099,9 @@ export default new Vuex.Store({
 					break;
 				case "OnRspInsertCondition":
 					if(parameters.Status == 0){
-						layer.msg('设置条件单成功', {time: 1000});
+						Toast({message: '设置条件单成功', position: 'bottom', duration: 1500});
 					}else{
-						layer.msg('设置条件单失败，原因:【'+parameters.StatusMsg+'】', {time: 1000});
+						Toast({message: '设置条件单失败，原因:【'+parameters.StatusMsg+'】', position: 'bottom', duration: 1500});
 					}
 					setTimeout(function(){
 						context.state.market.conditionStatus = false;
@@ -1110,17 +1110,17 @@ export default new Vuex.Store({
 					break;
 				case 'OnRtnConditionState':
 					if(parameters.Status == 0){
-						layer.msg('【'+parameters.CommodityNo+parameters.ContractNo+'】条件单【'+ parameters.ConditionNo+'】,改单后已运行', {time: 1000});
+						Toast({message: '【'+parameters.CommodityNo+parameters.ContractNo+'】条件单【'+ parameters.ConditionNo+'】,改单后已运行', position: 'bottom', duration: 1500});
 					}else if(parameters.Status == 1){
-						layer.msg('【'+parameters.CommodityNo+parameters.ContractNo+'】条件单【'+ parameters.ConditionNo+'】,已暂停', {time: 1000});
+						Toast({message: '【'+parameters.CommodityNo+parameters.ContractNo+'】条件单【'+ parameters.ConditionNo+'】,已暂停', position: 'bottom', duration: 1500});
 					}else if(parameters.Status == 2){
-						layer.msg('【'+parameters.CommodityNo+parameters.ContractNo+'】条件单【'+ parameters.ConditionNo+'】,已触发', {time: 1000});
+						Toast({message: '【'+parameters.CommodityNo+parameters.ContractNo+'】条件单【'+ parameters.ConditionNo+'】,已触发', position: 'bottom', duration: 1500});
 					}else if(parameters.Status == 3){
-						layer.msg('【'+parameters.CommodityNo+parameters.ContractNo+'】条件单【'+ parameters.ConditionNo+'】,已取消', {time: 1000});
+						Toast({message: '【'+parameters.CommodityNo+parameters.ContractNo+'】条件单【'+ parameters.ConditionNo+'】,已取消', position: 'bottom', duration: 1500});
 					}else if(parameters.Status == 4){
-						layer.msg('【'+parameters.CommodityNo+parameters.ContractNo+'】条件单【'+ parameters.ConditionNo+'】,插入失败', {time: 1000});
+						Toast({message: '【'+parameters.CommodityNo+parameters.ContractNo+'】条件单【'+ parameters.ConditionNo+'】,插入失败', position: 'bottom', duration: 1500});
 					}else if(parameters.Status == 5){
-						layer.msg('【'+parameters.CommodityNo+parameters.ContractNo+'】条件单【'+ parameters.ConditionNo+'】,触发失败', {time: 1000});
+						Toast({message: '【'+parameters.CommodityNo+parameters.ContractNo+'】条件单【'+ parameters.ConditionNo+'】,触发失败', position: 'bottom', duration: 1500});
 					}
 					setTimeout(function(){
 						context.state.market.conditionStatus = false;
@@ -1129,7 +1129,7 @@ export default new Vuex.Store({
 					break;	
 				case 'OnError':
 					if(parameters!=null){
-						layer.msg(parameters.Message,{time: 1000});
+						Toast({message: parameters.Message, position: 'bottom', duration: 1500});
 						setTimeout(function(){
 							context.state.market.cancelStatus = false;
 						}, 1000);
@@ -1477,7 +1477,7 @@ export default new Vuex.Store({
 			}
 		},
 		updateStopLoss:function(context,parameters){
-			layer.msg('单号【'+ parameters.StopLossNo +'】,更新成功', {time: 1000});
+			Toast({message: '单号【'+ parameters.StopLossNo +'】,更新成功', position: 'bottom', duration: 1500});
 			if(parameters.Status>2){
 				context.state.market.stopLossTriggeredList.push(parameters);
 				context.state.market.stopLossList.forEach(function(o, i){
@@ -1514,9 +1514,9 @@ export default new Vuex.Store({
 		},
 		layerOnRspInsertStopLoss:function(context,parameters){
 			if(parameters.Status == 0){
-				layer.msg('提交成功,单号【'+ parameters.StopLossNo +'】', {time: 2000});
+				Toast({message: '提交成功,单号【'+ parameters.StopLossNo +'】', position: 'bottom', duration: 1500});
 			}else{
-				layer.msg('提交失败,原因:【'+parameters.StatusMsg+'】', {time: 2000});
+				Toast({message: '提交失败,原因:【'+parameters.StatusMsg+'】', position: 'bottom', duration: 1500});
 			}
 			setTimeout(function(){
 				context.state.market.stopStatus = false;
@@ -1552,13 +1552,13 @@ export default new Vuex.Store({
 				var TradeNum = parameters.TradeNum;
 				var TradeNo = parameters.TradeNo;
 				var TradePrice = parseFloat(parameters.TradePrice).toFixed(context.state.market.orderTemplist[parameters.CommodityNo].DotSize);
-				layer.msg("成交（"+CommodityName+",价格:"+TradePrice+","+DirectionStr+TradeNum+"手）", {time: 1000});
+				Toast({message: "成交（"+CommodityName+",价格:"+TradePrice+","+DirectionStr+TradeNum+"手）", position: 'bottom', duration: 1500});
 			}
 		},
 		layerMessage:function(context,parameters){
 			if(parameters!=null){
 				if(parameters.OrderStatus == 5){
-					layer.msg(parameters.StatusMsg, {time: 1000});
+					Toast({message: parameters.StatusMsg, position: 'bottom', duration: 1500});
 					setTimeout(function(){
 						context.state.market.buyStatus = false;
 					}, 1000);
@@ -1583,9 +1583,9 @@ export default new Vuex.Store({
 				var OrderID = parameters.OrderID;
 				
 				if(parameters.OrderStatus < 4){
-					layer.msg('委托成功（'+CommodityName+','+price+','+DirectionStr+OrderNum+'手,委托号:'+OrderID+'）', {time: 1000});
+					Toast({message: '委托成功（'+CommodityName+','+price+','+DirectionStr+OrderNum+'手,委托号:'+OrderID+'）', position: 'bottom', duration: 1500});
 				}else{
-					layer.msg('委托失败（'+CommodityName+','+price+','+DirectionStr+OrderNum+'手,失败原因:'+parameters.StatusMsg+'）', {time: 1000});
+					Toast({message: '委托失败（'+CommodityName+','+price+','+DirectionStr+OrderNum+'手,失败原因:'+parameters.StatusMsg+'）', position: 'bottom', duration: 1500});
 				}
 				setTimeout(function(){
 					context.state.market.buyStatus = false;
@@ -1617,7 +1617,7 @@ export default new Vuex.Store({
 						= parameters.OrderPrice;
 					context.state.market.OnRspOrderInsertOrderListCont[context.state.market.OnRspOrderInsertOrderListCont.length-index-1].OrderNum
 						= parameters.OrderNum;
-					layer.msg(parameters.StatusMsg + ':合约【'+ parameters.ContractCode +'】,订单号:【'+ parameters.OrderID +'】', {time: 1000});
+					Toast({message: parameters.StatusMsg + ':合约【'+ parameters.ContractCode +'】,订单号:【'+ parameters.OrderID +'】', position: 'bottom', duration: 1500});
 					setTimeout(function(){
 						context.state.market.cancelStatus = false;
 					}, 1000);
@@ -1628,7 +1628,7 @@ export default new Vuex.Store({
 //				if(isExist==true){
 					context.state.market.orderListCont.splice(index,1);
 					context.state.market.OnRspOrderInsertOrderListCont.splice(context.state.market.OnRspOrderInsertOrderListCont.length-index-1,1);
-					layer.msg(parameters.StatusMsg + ':合约【'+ parameters.ContractCode +'】,订单号:【'+ parameters.OrderID +'】', {time: 1000});
+					Toast({message: parameters.StatusMsg + ':合约【'+ parameters.ContractCode +'】,订单号:【'+ parameters.OrderID +'】', position: 'bottom', duration: 1500});
 					setTimeout(function(){
 						context.state.market.cancelStatus = false;
 					}, 1000);
@@ -1980,7 +1980,7 @@ export default new Vuex.Store({
 						sessionStorage.tradeStatus = false;
 					}else{
 						if(sessionStorage.tradeStatus == 'false'){
-							layer.msg('交易连接失败', {time: 1500});
+							Toast({message: '交易连接失败', position: 'bottom', duration: 1500});
 							localStorage.removeItem('tradeUser');
 							context.state.market.tradeConfig.username = '';
 							context.state.market.tradeConfig.password = '';

@@ -34,6 +34,7 @@
 <script>
 	import btn from "../../components/btn.vue"
 	import selectBox from "../../components/selectBox.vue"
+	import { Toast, MessageBox } from 'mint-ui';
 	export default {
 		name: 'normalOrder',
 		components: {btn, selectBox},
@@ -62,9 +63,11 @@
 				return this.$store.state.account.commodityAll;
 			},
 			currentNo(){
-				this.$store.state.market.currentNo = this.commodityAll[0].commodityNo;
-				return this.commodityAll[0].commodityNo;
-			}
+				return this.$store.state.market.currentNo;
+			},
+			currentdetail(){
+				return this.$store.state.market.currentdetail;
+			},
 		},
 		watch: {
 			priceType: function(n, o){
@@ -151,14 +154,21 @@
 				var drection;
 				b.Parameters.Drection == 0 ? drection = '买' : drection = '卖';
 				this.confirmText = '确认提交订单:【'+contract+'】,价格【'+LimitPrice +'】,手数【'+orderNum+'】,方向【'+drection+'】？';
-				layer.confirm(this.confirmText, {
-					btn: ['确定','取消']
-				}, function(index){
+				MessageBox.confirm(this.confirmText,"提示").then(action=>{
 					if(this.buyStatus == true) return;
 					this.$store.state.market.buyStatus = true;
 					this.tradeSocket.send(JSON.stringify(b));
-					layer.close(index);
-				}.bind(this));
+				}).catch(err=>{});
+				
+				
+//				layer.confirm(this.confirmText, {
+//					btn: ['确定','取消']
+//				}, function(index){
+//					if(this.buyStatus == true) return;
+//					this.$store.state.market.buyStatus = true;
+//					this.tradeSocket.send(JSON.stringify(b));
+//					layer.close(index);
+//				}.bind(this));
 			},
 			sell: function(){
 				var buildIndex = 0, b;
