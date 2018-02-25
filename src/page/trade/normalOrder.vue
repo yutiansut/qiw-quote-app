@@ -47,6 +47,7 @@
 				tradePrices: '市价',
 				defaultNum: 1,
 				priceShow: true,
+				isWatch: false,
 			}
 		},
 		computed: {
@@ -71,7 +72,7 @@
 		},
 		watch: {
 			currentOrder: function(n, o){
-				if(n && n != undefined){
+				if(n && n != undefined && o != ''){
 					//初始化当前合约
 					this.$store.state.market.Parameters = [];
 					this.$store.state.market.commodityOrder = [];
@@ -230,7 +231,12 @@
 		mounted: function(){
 			
 		},
-		activated: function(){}
+		activated: function(){
+			//初始化当前合约
+			this.$store.state.market.Parameters = [];
+			this.$store.state.market.commodityOrder = [];
+			this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + this.orderTemplist[this.currentNo].exchangeNo + '","CommodityNo":"' + this.currentNo + '","ContractNo":"' + this.orderTemplist[this.currentNo].MainContract +'"}}');
+		}
 	}
 </script>
 

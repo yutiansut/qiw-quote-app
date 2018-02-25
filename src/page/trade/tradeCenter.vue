@@ -51,14 +51,12 @@
 				currentOrderType: 0,
 				orderList: ['普通单','条件单'],
 				currentOrderView: 'normalOrder',
+				fensShow: false,
 			}
 		},
 		computed: {
 			quoteSocket(){
 				return this.$store.state.quoteSocket;
-			},
-			parameters(){
-				return this.$store.state.market.Parameters;
 			},
 			currentNo(){
 				return this.$store.state.market.currentNo;
@@ -103,8 +101,8 @@
 				}
 			},
 			showFens: function(){
-				if(!$(".fens_box").hasClass('current')){
-					$(".fens_box").addClass('current');
+				if(this.fensShow == false){
+					this.fensShow = true;
 					$(".fens_box").css({'height': 4 + 'rem'});
 					$(".icon_triangle").css({'transform': 'rotate(-180deg)'});
 					//画分时图
@@ -125,7 +123,7 @@
 						this.quoteSocket.send(JSON.stringify(data));
 					}
 				}else{
-					$(".fens_box").removeClass('current');
+					this.fensShow = false;
 					$(".fens_box").css({'height': 0 + 'rem'});
 					$(".icon_triangle").css({'transform': 'rotate(-360deg)'});
 				}

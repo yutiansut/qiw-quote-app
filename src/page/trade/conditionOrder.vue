@@ -92,14 +92,31 @@
 			}
 		},
 		computed: {
+			quoteSocket(){
+				return this.$store.state.quoteSocket;
+			},
+			tradeSocket(){
+				return this.$store.state.tradeSocket;
+			},
 			orderTemplist(){
 				return this.$store.state.market.orderTemplist;
 			},
 			commodityAll(){
 				return this.$store.state.account.commodityAll;
 			},
+			currentNo(){
+				return this.$store.state.market.currentNo;
+			},
 		},
 		watch: {
+			currentOrder: function(n, o){
+				if(n && n != undefined){
+					//初始化当前合约
+					this.$store.state.market.Parameters = [];
+					this.$store.state.market.commodityOrder = [];
+					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + this.orderTemplist[this.currentNo].exchangeNo + '","CommodityNo":"' + this.currentNo + '","ContractNo":"' + this.orderTemplist[this.currentNo].MainContract +'"}}');
+				}
+			},
 			orderNum: function(n, o){
 				if(n && n <= 0){
 					this.orderNum = 0;

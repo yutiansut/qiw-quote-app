@@ -46,6 +46,9 @@
 			commodityAll(){
 				return this.$store.state.account.commodityAll;
 			},
+			loginStatus(){
+				return this.$store.state.account.loginStatus;
+			}
 		},
 		methods:{
 			...mapActions([
@@ -63,12 +66,13 @@
 						this.tradeUser = localStorage.tradeUser ? JSON.parse(localStorage.tradeUser) : ''; 
 						if(this.tradeUser != ''){
 							this.$router.push({path: '/trade'});
+							if(this.loginStatus == true) return;
 							this.initTrade();
 							//初始化当前合约
-							this.$store.state.market.Parameters = [];
-							this.$store.state.market.commodityOrder = [];
-							this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + this.orderTemplist[this.commodityAll[0].commodityNo].exchangeNo + '","CommodityNo":"' + this.commodityAll[0].commodityNo + '","ContractNo":"' + this.orderTemplist[this.commodityAll[0].commodityNo].MainContract +'"}}');
-							this.$store.state.market.currentNo = this.commodityAll[0].commodityNo;
+//							this.$store.state.market.Parameters = [];
+//							this.$store.state.market.commodityOrder = [];
+//							this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + this.orderTemplist[this.commodityAll[0].commodityNo].exchangeNo + '","CommodityNo":"' + this.commodityAll[0].commodityNo + '","ContractNo":"' + this.orderTemplist[this.commodityAll[0].commodityNo].MainContract +'"}}');
+//							this.$store.state.market.currentNo = this.commodityAll[0].commodityNo;
 						}else{
 							this.$router.push({path: '/tradeLogin'});
 						}
@@ -136,7 +140,8 @@
 			//获取所有市场合约
 			pro.fetch('post', '/quoteTrader/getCommodityInfoNoType', '', '').then((res) => {
 				if(res.success == true && res.code == 1){
-					this.$store.state.account.commodityAll = res.data; 
+					this.$store.state.account.commodityAll = res.data;
+					this.$store.state.market.currentNo = res.data[0].commodityNo;
 				}
 			}).catch((err) => {
 				Toast({message: err.data.message, position: 'bottom', duration: 2000});
