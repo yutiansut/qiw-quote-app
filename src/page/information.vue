@@ -55,11 +55,11 @@
 								<span><img :src="n.flagUrl" /></span>
 								<span>{{n.country}}</span>
 								<span v-if="n.stars == '4'">
-									<i  v-for="t in 4"></i>
+									<i  v-for="t in 4" class="start_red"></i>
 								</span>
 								<span v-if="n.stars != '4'">
-									<i  v-for="t in (n.stars)"></i>
-									<!--<i v-for="t in (4-n.stars)"></i>-->
+									<i  v-for="t in Number(n.stars)" class="start_blue"></i>
+									<i v-for="t in (4-Number(n.stars))" class="start_white"></i>
 								</span>
 							</li>
 							<li>
@@ -75,6 +75,9 @@
 							</li>
 						</ul>
 					</div>
+				</div>
+				<div class="noInfo" v-show="showNoInfo">
+					暂无内容
 				</div>
 				<div class="empty"></div>
 				<mt-datetime-picker
@@ -139,12 +142,13 @@
 				times:0,
 				startTime:'',
 				endTime:'',
-				list:5,
+				list:'',
 				value: null,
 		      	value1: null,
 		      	startDate: new Date('2014-1-1'),
 		      	endDate: new Date('2020-12-31'),
 		      	show_day:"",
+		      	showNoInfo:false,
 				infoArr:[{title:"比特币再现巨大跌幅，自高位跌去七成 这次还能爬起来吗？",time:"2018-02-10",imgurl:require("../assets/images/important_1.jpg"),id:"1"},
 				{title:"美股暴跌的原因猜想：这次可能没法指望美联储了",time:"2018-02-09",imgurl:require("../assets/images/important_2.jpg"),id:"2"},
 				{title:"俄媒数据：中石油2017年海外油气开采量增17.2%",time:"2018-02-08",imgurl:require("../assets/images/important_3.jpg"),id:"3"},
@@ -296,6 +300,11 @@
 //					console.log("res======"+JSON.stringify(res));
 					if(res.success == true && res.code == 1){
 						this.list = res.data.data.data
+						if(this.list == ''){
+							this.showNoInfo = true
+						}else{
+							this.showNoInfo = false
+						}
 //						console.log("list======"+JSON.stringify(this.list));
 					}
 				}).catch((err)=>{
@@ -523,6 +532,13 @@
 					}
 				}
 			}
+			.noInfo{
+				color: $fontBlue;
+				text-align: center;
+				font-size: 0.36rem;
+				margin-top: 50%;
+				
+			}
 			.black{
 				height: 0.2rem;
 				border-bottom: 1px solid #12141a;
@@ -561,13 +577,26 @@
 								}
 								&:nth-child(5){
 									float: right;
-									i{
+									.start_red{
 										background: url(../assets/images/start_1.png);
 										display: inline-block;
 										background-size: 100% 100%;
 										height: 0.2rem;
 										width: 0.22rem;
-										margin-top: 0.3rem;
+									}
+									.start_blue{
+										background: url(../assets/images/start_2.png);
+										display: inline-block;
+										background-size: 100% 100%;
+										height: 0.2rem;
+										width: 0.22rem;
+									}
+									.start_white{
+										background: url(../assets/images/start_3.png);
+										display: inline-block;
+										background-size: 100% 100%;
+										height: 0.2rem;
+										width: 0.22rem;
 									}
 								}
 							}
