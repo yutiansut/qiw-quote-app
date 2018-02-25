@@ -36,7 +36,16 @@
 		computed:{
 			routepath(){
 				return this.$route.path;
-			}
+			},
+			quoteSocket(){
+				return this.$store.state.quoteSocket;
+			},
+			orderTemplist(){
+				return this.$store.state.market.orderTemplist;
+			},
+			commodityAll(){
+				return this.$store.state.account.commodityAll;
+			},
 		},
 		methods:{
 			...mapActions([
@@ -55,6 +64,11 @@
 						if(this.tradeUser != ''){
 							this.$router.push({path: '/trade'});
 							this.initTrade();
+							//初始化当前合约
+							this.$store.state.market.Parameters = [];
+							this.$store.state.market.commodityOrder = [];
+							this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + this.orderTemplist[this.commodityAll[0].commodityNo].exchangeNo + '","CommodityNo":"' + this.commodityAll[0].commodityNo + '","ContractNo":"' + this.orderTemplist[this.commodityAll[0].commodityNo].MainContract +'"}}');
+							this.$store.state.market.currentNo = this.commodityAll[0].commodityNo;
 						}else{
 							this.$router.push({path: '/tradeLogin'});
 						}

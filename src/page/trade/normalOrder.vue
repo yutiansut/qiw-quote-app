@@ -19,13 +19,13 @@
 			<b>委托数量</b>
 			<div class="num_box">
 				<span class="add" @tap="addNum">+</span>
-				<input type="number" class="ipt_order_num" v-model="orderNum" />
+				<input type="number" class="ipt_order_num" v-model="defaultNum" />
 				<span class="reduce" @tap="reduceNum">-</span>
 			</div>
 		</div>
 		<div class="btn_box">
-			<btn name="买入/市价" className="redmd"></btn>
-			<btn name="卖出/市价" className="greenmd"></btn>
+			<btn name="买入" className="redmd" @tap.native="buy"></btn>
+			<btn name="卖出" className="greenmd" @tap.native="sell"></btn>
 		</div>
 		<selectBox ref="selectBox" :obj="obj" :type="type"></selectBox>
 	</div>
@@ -44,10 +44,17 @@
 				type: '',
 				priceType: '市价',
 				orderPrice: '市价',
-				orderNum: 1,
+				defaultNum: 1,
+				priceShow: true,
 			}
 		},
 		computed: {
+			quoteSocket(){
+				return this.$store.state.quoteSocket;
+			},
+			tradeSocket(){
+				return this.$store.state.tradeSocket;
+			},
 			orderTemplist(){
 				return this.$store.state.market.orderTemplist;
 			},
@@ -55,6 +62,7 @@
 				return this.$store.state.account.commodityAll;
 			},
 			currentNo(){
+				this.$store.state.market.currentNo = this.commodityAll[0].commodityNo;
 				return this.commodityAll[0].commodityNo;
 			}
 		},
@@ -63,20 +71,25 @@
 				if(n && n == '限价'){
 					this.orderPrice = 0;
 					$('.ipt_md').attr('readonly', false);
+					this.priceShow = false;
+				}else if(n && n == '市价'){
+					this.priceShow = true;
+					this.orderPrice = '市价';
+					$('.ipt_md').attr('readonly', false);
 				}
 			},
-			orderNum: function(n, o){
+			defaultNum: function(n, o){
 				if(n && n <= 0){
-					this.orderNum = 0;
+					this.defaultNum = 0;
 				}
 			}
 		},
 		methods: {
 			addNum: function(){
-				return this.orderNum++;
+				return this.defaultNum++;
 			},
 			reduceNum: function(){
-				return this.orderNum--;
+				return this.defaultNum--;
 			},
 			openSelectOrder: function(){
 				this.obj = this.commodityAll;
@@ -89,15 +102,130 @@
 				this.type = 'price';
 				$(".select_cont").css({bottom: -3.55 + 'rem'});
 				this.$refs.selectBox.shadeShow = true;
-			}
+			},
+			buy: function(){
+				var buildIndex = 0, b;
+				if(buildIndex > 100) buildIndex = 0;
+				if(this.priceShow == true){   //市价下单
+					b = {
+						"Method":'InsertOrder',
+						"Parameters":{
+							"ExchangeNo": this.currentdetail.ExchangeNo,
+							"CommodityNo": this.currentdetail.CommodityNo,
+							"ContractNo": this.currentdetail.LastQuotation.ContractNo,
+							"OrderNum": this.defaultNum,
+							"Drection": 0,
+							"PriceType": 1,
+							"LimitPrice": 0.00,
+							"TriggerPrice": 0,
+							"OrderRef":this.$store.state.market.tradeConfig.client_source+ new Date().getTime()+(buildIndex++)
+						}
+					};
+				}else{
+					if(this.tradePrices == '' || this.tradePrices <= 0 || this.tradePrices == undefined){
+						layer.msg('请输入限价', {time: 1000});
+					}else if(this.defaultNum == 0){
+						layer.msg('请输入手数', {time: 1000});
+					}else{
+						b = {
+							"Method": 'InsertOrder',
+							"Parameters":{
+								"ExchangeNo": this.currentdetail.ExchangeNo,
+								"CommodityNo": this.currentdetail.CommodityNo,
+								"ContractNo": this.currentdetail.LastQuotation.ContractNo,
+								"OrderNum": this.defaultNum,
+								"Drection": 0,
+								"PriceType": 0,
+								"LimitPrice": parseFloat(this.tradePrices),
+								"TriggerPrice": 0,
+								"OrderRef": this.$store.state.market.tradeConfig.client_source+ new Date().getTime()+(buildIndex++)
+							}
+						};
+					}
+				}
+				//确定文案
+				var contract = b.Parameters.CommodityNo + b.Parameters.ContractNo;
+				var LimitPrice;
+				b.Parameters.PriceType == 1 ? LimitPrice = '市价' : LimitPrice = this.tradePrices;
+				var orderNum = b.Parameters.OrderNum;
+				var drection;
+				b.Parameters.Drection == 0 ? drection = '买' : drection = '卖';
+				this.confirmText = '确认提交订单:【'+contract+'】,价格【'+LimitPrice +'】,手数【'+orderNum+'】,方向【'+drection+'】？';
+				layer.confirm(this.confirmText, {
+					btn: ['确定','取消']
+				}, function(index){
+					if(this.buyStatus == true) return;
+					this.$store.state.market.buyStatus = true;
+					this.tradeSocket.send(JSON.stringify(b));
+					layer.close(index);
+				}.bind(this));
+			},
+			sell: function(){
+				var buildIndex = 0, b;
+				if(buildIndex > 100) buildIndex = 0;
+				if(this.priceShow == true){   //市价下单
+					b = {
+						"Method": 'InsertOrder',
+						"Parameters":{
+							"ExchangeNo": this.currentdetail.ExchangeNo,
+							"CommodityNo": this.currentdetail.CommodityNo,
+							"ContractNo": this.currentdetail.LastQuotation.ContractNo,
+							"OrderNum": this.defaultNum,
+							"Drection": 1,
+							"PriceType": 1,
+							"LimitPrice": 0.00,
+							"TriggerPrice": 0,
+							"OrderRef": this.$store.state.market.tradeConfig.client_source+ new Date().getTime()+(buildIndex++)
+						}
+					};
+				}else{
+					if(this.tradePrices == '' || this.tradePrices <= 0 || this.tradePrices == undefined){
+						layer.msg('请输入限价', {time: 1000});
+					}else if(this.defaultNum == 0){
+						layer.msg('请输入手数', {time: 1000});
+					}else{
+						b = {
+							"Method": 'InsertOrder',
+							"Parameters":{
+								"ExchangeNo": this.currentdetail.ExchangeNo,
+								"CommodityNo": this.currentdetail.CommodityNo,
+								"ContractNo": this.currentdetail.LastQuotation.ContractNo,
+								"OrderNum": this.defaultNum,
+								"Drection": 1,
+								"PriceType": 0,
+								"LimitPrice": parseFloat(this.tradePrices),
+								"TriggerPrice": 0,
+								"OrderRef": this.$store.state.market.tradeConfig.client_source+ new Date().getTime()+(buildIndex++)
+							}
+						};
+					}
+				}
+				//确定文案
+				var contract = b.Parameters.CommodityNo + b.Parameters.ContractNo;
+				var LimitPrice;
+				b.Parameters.PriceType == 1 ? LimitPrice = '市价' : LimitPrice = this.tradePrices;
+				var orderNum = b.Parameters.OrderNum;
+				var drection;
+				b.Parameters.Drection == 0 ? drection = '买' : drection = '卖';
+				this.confirmText = '确认提交订单:【'+contract+'】,价格【'+LimitPrice +'】,手数【'+orderNum+'】,方向【'+drection+'】？';
+				layer.confirm(this.confirmText, {
+					btn: ['确定','取消']
+				}, function(index){
+					if(this.buyStatus == true) return;
+					this.$store.state.market.buyStatus = true;
+					this.tradeSocket.send(JSON.stringify(b));
+					layer.close(index);
+				}.bind(this));
+			},
+		},
+		beforeMount: function(){
+			//初始当前合约
+			this.currentOrder = this.commodityAll[0].commodityName + " " + this.currentNo + this.orderTemplist[this.currentNo].MainContract;
 		},
 		mounted: function(){
-			//初始当前合约
-			this.currentOrder = this.commodityAll[0].commodityName + " " + this.commodityAll[0].commodityNo + this.orderTemplist[this.commodityAll[0].commodityNo].MainContract;
-		},
-		activated: function(){
 			
-		}
+		},
+		activated: function(){}
 	}
 </script>
 

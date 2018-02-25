@@ -1,30 +1,32 @@
 <template>
 	<div id="tradeCenter">
-		<div class="tips">
-			<span class="red">1276.1</span>
-			<span class="red">+2.1</span>
-			<span class="red">+0.29%</span>
-			<p>成交量：<em>100123</em></p>
-		</div>
-		<div class="fens_title">
-			<span @tap="showFens">分时图</span>
-			<i class="icon icon_triangle" @tap="showFens"></i>
-			<button>规则</button>
-		</div>
-		<div class="fens_box">
-			<div id="fens"></div>
-			<div id="volume"></div>
-		</div>
-		<div class="buy_one">
-			<div class="col">
-				<em>卖一</em>
-				<span>50.12</span>
-				<em>20</em>
+		<div v-if="length == 1">
+			<div class="tips">
+				<span :class="{red: currentdetail.LastQuotation.LastPrice > currentdetail.LastQuotation.PreSettlePrice, green: currentdetail.LastQuotation.LastPrice < currentdetail.LastQuotation.PreSettlePrice}">{{currentdetail.LastQuotation.LastPrice | fixNum(currentdetail.DotSize)}}</span>
+				<span :class="{green: currentdetail.LastQuotation.ChangeRate < 0, red: currentdetail.LastQuotation.ChangeRate > 0}"><em v-show="currentdetail.LastQuotation.ChangeRate > 0">+</em>{{currentdetail.LastQuotation.ChangeValue | fixNum(currentdetail.DotSize)}}</span>
+				<span :class="{green: currentdetail.LastQuotation.ChangeRate < 0, red: currentdetail.LastQuotation.ChangeRate > 0}"><em v-show="currentdetail.LastQuotation.ChangeRate > 0">+</em>{{currentdetail.LastQuotation.ChangeRate | fixNumTwo}}%</span>
+				<p>成交量：<em>{{currentdetail.LastQuotation.TotalVolume}}</em></p>
 			</div>
-			<div class="col">
-				<em>买一</em>
-				<span>50.12</span>
-				<em>20</em>
+			<div class="fens_title">
+				<span @tap="showFens">分时图</span>
+				<i class="icon icon_triangle" @tap="showFens"></i>
+				<button>规则</button>
+			</div>
+			<div class="fens_box">
+				<div id="fens"></div>
+				<div id="volume"></div>
+			</div>
+			<div class="buy_one">
+				<div class="col">
+					<em>卖一</em>
+					<span :class="{red: currentdetail.LastQuotation.AskPrice1 > currentdetail.LastQuotation.PreSettlePrice, green: currentdetail.LastQuotation.AskPrice1 < currentdetail.LastQuotation.PreSettlePrice}">{{currentdetail.LastQuotation.AskPrice1 | fixNum(currentdetail.DotSize)}}</span>
+					<em>{{currentdetail.LastQuotation.AskQty1}}</em>
+				</div>
+				<div class="col">
+					<em>买一</em>
+					<span :class="{red: currentdetail.LastQuotation.BidPrice1 > currentdetail.LastQuotation.PreSettlePrice, green: currentdetail.LastQuotation.BidPrice1 < currentdetail.LastQuotation.PreSettlePrice}">{{currentdetail.LastQuotation.BidPrice1 | fixNum(currentdetail.DotSize)}}</span>
+					<em>{{currentdetail.LastQuotation.BidQty1}}</em>
+				</div>
 			</div>
 		</div>
 		<div class="order_type">
@@ -51,6 +53,46 @@
 				currentOrderView: 'normalOrder',
 			}
 		},
+		computed: {
+			quoteSocket(){
+				return this.$store.state.quoteSocket;
+			},
+			parameters(){
+				return this.$store.state.market.Parameters;
+			},
+			currentNo(){
+				return this.$store.state.market.currentNo;
+			},
+			currentdetail(){
+				return this.$store.state.market.currentdetail;
+			},
+			parameters(){
+				return this.$store.state.market.Parameters;
+			},
+			length(){
+				return this.$store.state.market.Parameters.length;
+			},
+		},
+		filters:{
+			fixNumTwo: function(num){
+				return num.toFixed(2);
+			},
+			fixNum: function(num, dotsize){
+				return num.toFixed(dotsize);
+			}
+		},
+		watch: {
+			length: function(n, o){
+				if(n && n == 1){
+					this.parameters.forEach((o, i) => {
+						if(o.CommodityNo == this.currentNo){
+							this.$store.state.market.currentdetail = o;
+							return;
+						}
+					});
+				}
+			},
+		},
 		methods: {
 			orderTypeSwitch: function(index){
 				this.currentOrderType = index;
@@ -63,18 +105,34 @@
 			showFens: function(){
 				if(!$(".fens_box").hasClass('current')){
 					$(".fens_box").addClass('current');
-					$(".fens_box").css({'height': 3.6 + 'rem'});
+					$(".fens_box").css({'height': 4 + 'rem'});
 					$(".icon_triangle").css({'transform': 'rotate(-180deg)'});
+					//画分时图
+					if(this.currentdetail){
+						this.$store.state.isshow.isfens = true;
+						let data = {
+							Method: "QryHistory",
+							Parameters:{
+								ExchangeNo: this.currentdetail.ExchangeNo,
+								CommodityNo: this.currentdetail.CommodityNo,
+								ContractNo: this.currentdetail.MainContract,
+								HisQuoteType: 0,
+								BeginTime: "",
+								EndTime: "",
+								Count: 0
+							}
+						};
+						this.quoteSocket.send(JSON.stringify(data));
+					}
 				}else{
 					$(".fens_box").removeClass('current');
 					$(".fens_box").css({'height': 0 + 'rem'});
 					$(".icon_triangle").css({'transform': 'rotate(-360deg)'});
 				}
-				
 			}
 		},
 		mounted: function(){
-			
+			console.log(this.parameters);
 		}
 	}
 </script>
@@ -142,12 +200,13 @@
 		width: 7.5rem;
 		height: 0;
 		overflow: hidden;
+		margin-bottom: 0.2rem;
 		transition: all .3s;
 		#fens{
 			height: 2.4rem;
 		}
 		#volume{
-			height: 1.2rem;
+			height: 1.6rem;
 		}
 	}
 	#fens, #volume{
