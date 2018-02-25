@@ -1,6 +1,6 @@
 <template>
 	<div id="btn">
-		<button class="btn" :class="colors" @touchstart="lontap" @touchend='levtap'>{{name}}</button>
+		<button class="btn" :class="colors" @touchstart="lontap" @touchend="levtap">{{name}}</button>
 	</div>
 </template>
 
@@ -43,11 +43,11 @@
 			}
 		},
 		methods: {
-			lontap:function(){
-				$(this.$el).addClass("current");
+			lontap:function(e){
+				$(e.currentTarget).addClass("current");
 			},
-			levtap:function(){
-				$(this.$el).removeClass("current");
+			levtap:function(e){
+				$(e.currentTarget).removeClass("current");
 			}
 		}
 	}	
@@ -103,7 +103,7 @@
     		width: 3.3rem;
     		background: $green;
     		&.current{
-    			background: #35b373;
+    			background: #3dcc85;
     		}
     	}
     	&.orangesm{
