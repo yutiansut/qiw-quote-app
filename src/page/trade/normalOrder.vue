@@ -13,7 +13,7 @@
 				<input type="text" class="ipt_sm" :value="priceType" readonly="readonly" />
 				<i class="icon icon_select"></i>
 			</div>
-			<input type="text" class="ipt_md ml" v-model="orderPrice" readonly />
+			<input type="text" class="ipt_md ml" v-model="tradePrices" readonly />
 		</div>
 		<div class="row">
 			<b>委托数量</b>
@@ -24,8 +24,8 @@
 			</div>
 		</div>
 		<div class="btn_box">
-			<btn name="买入" className="redmd" @tap.native="buy"></btn>
-			<btn name="卖出" className="greenmd" @tap.native="sell"></btn>
+			<btn name="买入" className="redmd" @click.native="buy"></btn>
+			<btn name="卖出" className="greenmd" @click.native="sell"></btn>
 		</div>
 		<selectBox ref="selectBox" :obj="obj" :type="type"></selectBox>
 	</div>
@@ -44,7 +44,7 @@
 				obj: [],
 				type: '',
 				priceType: '市价',
-				orderPrice: '市价',
+				tradePrices: '市价',
 				defaultNum: 1,
 				priceShow: true,
 			}
@@ -72,12 +72,12 @@
 		watch: {
 			priceType: function(n, o){
 				if(n && n == '限价'){
-					this.orderPrice = 0;
+					this.tradePrices = 0;
 					$('.ipt_md').attr('readonly', false);
 					this.priceShow = false;
 				}else if(n && n == '市价'){
 					this.priceShow = true;
-					this.orderPrice = '市价';
+					this.tradePrices = '市价';
 					$('.ipt_md').attr('readonly', false);
 				}
 			},
@@ -126,9 +126,9 @@
 					};
 				}else{
 					if(this.tradePrices == '' || this.tradePrices <= 0 || this.tradePrices == undefined){
-						layer.msg('请输入限价', {time: 1000});
+						Toast({message: '请输入限价', position: 'bottom', duration: 1500}); return;
 					}else if(this.defaultNum == 0){
-						layer.msg('请输入手数', {time: 1000});
+						Toast({message: '请输入手数', position: 'bottom', duration: 1500}); return;
 					}else{
 						b = {
 							"Method": 'InsertOrder',
@@ -159,16 +159,6 @@
 					this.$store.state.market.buyStatus = true;
 					this.tradeSocket.send(JSON.stringify(b));
 				}).catch(err=>{});
-				
-				
-//				layer.confirm(this.confirmText, {
-//					btn: ['确定','取消']
-//				}, function(index){
-//					if(this.buyStatus == true) return;
-//					this.$store.state.market.buyStatus = true;
-//					this.tradeSocket.send(JSON.stringify(b));
-//					layer.close(index);
-//				}.bind(this));
 			},
 			sell: function(){
 				var buildIndex = 0, b;
