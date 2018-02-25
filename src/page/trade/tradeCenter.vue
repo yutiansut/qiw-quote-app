@@ -7,9 +7,13 @@
 			<p>成交量：<em>100123</em></p>
 		</div>
 		<div class="fens_title">
-			<span>分时图</span>
-			<i class="icon icon_triangle"></i>
+			<span @tap="showFens">分时图</span>
+			<i class="icon icon_triangle" @tap="showFens"></i>
 			<button>规则</button>
+		</div>
+		<div class="fens_box">
+			<div id="fens"></div>
+			<div id="volume"></div>
 		</div>
 		<div class="buy_one">
 			<div class="col">
@@ -55,6 +59,18 @@
 				}else{
 					this.currentOrderView = 'conditionOrder';
 				}
+			},
+			showFens: function(){
+				if(!$(".fens_box").hasClass('current')){
+					$(".fens_box").addClass('current');
+					$(".fens_box").css({'height': 3.6 + 'rem'});
+					$(".icon_triangle").css({'transform': 'rotate(-180deg)'});
+				}else{
+					$(".fens_box").removeClass('current');
+					$(".fens_box").css({'height': 0 + 'rem'});
+					$(".icon_triangle").css({'transform': 'rotate(-360deg)'});
+				}
+				
 			}
 		},
 		mounted: function(){
@@ -108,6 +124,7 @@
 			background: url(../../assets/images/triangle.png) no-repeat center 0.2rem;
 			background-size: 0.16rem 0.08rem;
 			margin: 0 0.2rem 0 0.06rem;
+			transition: all .3s;
 		}
 		button{
 			float: left;
@@ -120,6 +137,22 @@
 			font-size: 0.2rem;
 			padding: 0;
 		}
+	}
+	.fens_box{
+		width: 7.5rem;
+		height: 0;
+		overflow: hidden;
+		transition: all .3s;
+		#fens{
+			height: 2.4rem;
+		}
+		#volume{
+			height: 1.2rem;
+		}
+	}
+	#fens, #volume{
+		width: 100%;
+		margin: 0 auto;
 	}
 	.buy_one{
 		width: 7.5rem;
