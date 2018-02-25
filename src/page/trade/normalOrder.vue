@@ -180,9 +180,9 @@
 					};
 				}else{
 					if(this.tradePrices == '' || this.tradePrices <= 0 || this.tradePrices == undefined){
-						layer.msg('请输入限价', {time: 1000});
+						Toast({message: '请输入限价', position: 'bottom', duration: 1500}); return;
 					}else if(this.defaultNum == 0){
-						layer.msg('请输入手数', {time: 1000});
+						Toast({message: '请输入手数', position: 'bottom', duration: 1500}); return;
 					}else{
 						b = {
 							"Method": 'InsertOrder',
@@ -208,14 +208,11 @@
 				var drection;
 				b.Parameters.Drection == 0 ? drection = '买' : drection = '卖';
 				this.confirmText = '确认提交订单:【'+contract+'】,价格【'+LimitPrice +'】,手数【'+orderNum+'】,方向【'+drection+'】？';
-				layer.confirm(this.confirmText, {
-					btn: ['确定','取消']
-				}, function(index){
+				MessageBox.confirm(this.confirmText,"提示").then(action=>{
 					if(this.buyStatus == true) return;
 					this.$store.state.market.buyStatus = true;
 					this.tradeSocket.send(JSON.stringify(b));
-					layer.close(index);
-				}.bind(this));
+				}).catch(err=>{});
 			},
 		},
 		beforeMount: function(){
