@@ -8,7 +8,7 @@
 		<div class="showInfo">
 			<div class="title">
 				<span class="current">7x24</span>
-				<span>要闻</span>
+				<!--<span>要闻</span>-->
 			</div>
 			<div class="exist" v-for="n in infoList" v-show="showExist">
 				<ul>
