@@ -50,7 +50,12 @@
 					<div class="details">
 						<ul>
 							<li>
-								<span></span>
+								<span v-if="n.status == '0' " @click="subscription(n.calendarId,n.previous,n.actual,n.forecast,n.title,n.timestamp)">
+									<i  class="subscription"></i>
+								</span>
+								<span v-if="n.status == '1' " @click="subscription(n.calendarId,n.previous,n.actual,n.forecast,n.title,n.timestamp)">
+									<i class="subscriptioned"></i>
+								</span>
 								<span>{{n.timestamp | changTime}}</span>
 								<span><img :src="n.flagUrl" /></span>
 								<span>{{n.country}}</span>
@@ -129,6 +134,7 @@
 		},
 		data(){
 			return{
+				userInfo:"",
 				showSearch:true,
 				showChooseDay:false,
 				showNews:true,
@@ -287,28 +293,64 @@
 				var index = $(e.currentTarget).index();
 				this.startTime = this.weekDayList[index].day;
 				this.endTime = pro.getDate("y-m-d",(Date.parse(this.startTime)/1000+24*60*60)*1000);
-				this.getInfoList(this.startTime,this.endTime);
 				this.show_day = pro.getDate("yy-mm-dd",Date.parse(this.weekDayList[index].day));
 				this.getDayList(this.startTime);
+				if(this.userInfo == ''){
+					this.getInfoListNokoken(this.startTime,this.endTime)
+				}else{
+					this.getInfoList(this.startTime,this.endTime);
+				}
 			},
 			getInfoList:function(startTime,endTime){
 				var data = {
 					startTime:startTime,
 					endTime:endTime
 				}
-				pro.fetch("post","/news/getCalendar",data,"").then((res)=>{
+				var headers = {
+					token : this.userInfo.token,
+					secret : this.userInfo.secret
+				}
+				pro.fetch("post","/news/getCalendar",data,headers).then((res)=>{
 //					console.log("res======"+JSON.stringify(res));
 					if(res.success == true && res.code == 1){
-						this.list = res.data.data.data
+						this.list = res.data;
 						if(this.list == ''){
 							this.showNoInfo = true
 						}else{
 							this.showNoInfo = false
 						}
-//						console.log("list======"+JSON.stringify(this.list));
 					}
 				}).catch((err)=>{
 //					console.log("err======="+JSON.stringify(err));
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
+					}else{
+						if(data.code == -9999){
+							this.$toast({message:"认证失败，请重新登录",duration: 1000});
+							this.$router.push({path:"/login"});
+						}
+						else{
+							this.$toast({message:data.message,duration: 1000});
+						}
+					}
+				})
+			},
+			getInfoListNokoken:function(startTime,endTime){
+				var data = {
+					startTime:startTime,
+					endTime:endTime
+				}
+				pro.fetch("post","/news/getCalendarNoToken",data,"").then((res)=>{
+					if(res.success == true && res.code == 1){
+						this.list = res.data;
+						if(this.list == ''){
+							this.showNoInfo = true
+						}else{
+							this.showNoInfo = false
+						}
+					}
+				}).catch((err)=>{
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
@@ -335,21 +377,76 @@
 				this.getInfoList(this.startTime,this.endTime);
 				this.getDayList(this.startTime);
 				this.show_day = pro.getDate("yy-mm-dd", Date.parse(value));
+			},
+			subscription:function(calendarId,previous,actual,forecast,title,timestamp){
+				var timestampNow = Date.parse(new Date())/1000;
+				if(this.UserInfo == ''){
+					this.$toast({message:"您还未登录，请先登录，方可订阅",duration: 2000});
+					this.$router.push({path:"/login"});
+				}else{
+					if(timestampNow-timestamp > 0){
+//						console.log("当前时间比订阅时间晚")
+						this.$toast({message:"该事件已经发生，不可订阅",duration: 2000});
+					}else{
+//						console.log("当前时间比订阅时间早")
+							var data = {
+							calendarId:calendarId,
+							previous:previous,
+							actual:actual,
+							forecast:forecast,
+							title:title,
+							timestamp:timestamp
+						}
+						var headers = {
+							token : this.userInfo.token,
+							secret : this.userInfo.secret
+						}
+//						console.log("eeeeeeeeeeee++++++"+JSON.stringify(event.target))
+//						pro.fetch("post","/news/subscibeCalendar",data,headers).then((res)=>{
+//							console.log("res======"+JSON.stringify(res));
+//							if(res.success == true && res.code == 1){
+//								this.$toast({message:"订阅成功",duration: 1000});
+//								
+//							}
+//						}).catch((err)=>{
+////							console.log("err======"+JSON.stringify(err));
+//							var data = err.data;
+//							if(data == undefined){
+//								this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
+//							}else{
+//								if(data.code == -9999){
+//									this.$toast({message:"认证失败，请重新登录",duration: 1000});
+//									this.$router.push({path:"/login"});
+//								}
+//								else{
+//									this.$toast({message:data.message,duration: 1000});
+//								}
+//							}
+//						})
+					}
+				}
 			}
 		},
 		mounted:function(){
-			this.startTime = pro.getDate("y-m-d",Date.parse(new Date()));
-			this.endTime = pro.getDate("y-m-d",(Date.parse(new Date())/1000+24*60*60)*1000);
-			this.getDayList(this.startTime);
-			this.getInfoList(this.startTime,this.endTime);
 		},
 		activated:function(){
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
+			this.startTime = pro.getDate("y-m-d",Date.parse(new Date()));
+			this.endTime = pro.getDate("y-m-d",(Date.parse(new Date())/1000+24*60*60)*1000);
+			//判断是否登录
+			if(this.userInfo == ""){
+				this.getInfoListNokoken(this.startTime,this.endTime);
+			}else{
+				this.getInfoList(this.startTime,this.endTime);
+			}
 			this.times = 0;
 			this.getNewsInfo(this.times);
 			this.nowDay =  Date.parse(new Date()); 
 			this.show_day = pro.getDate("yy-mm-dd",Date.parse(new Date()));
 			var dayNames = new Array("星期日","星期一","星期二","星期三","星期四","星期五","星期六");
 			this.nowWeek = dayNames[new Date().getDay()]; 
+			this.getDayList(this.startTime);
+			
 		},
 		filters:{
 			changTime:function(e){
@@ -557,14 +654,26 @@
 							span{
 								float: left;
 								&:nth-child(1){
-									margin-right: 0.16rem;
-									background: url(../assets/images/subscription_01.png);
-									display: inline-block;
-									width: 0.3rem;
-									height: 0.3rem;
-									background-size: 100% 100%;
-									margin-top: 0.2rem;
-									background-color: none;
+									.subscription{
+										width: 0.3rem;
+										height: 0.3rem;
+										margin-right: 0.16rem;
+										display: inline-block;
+										margin-top: 0.2rem;
+										background: url(../assets/images/subscription_01.png);
+										background-size: 100% 100%;
+										background-color: none;
+									}
+									.subscriptioned{
+										margin-right: 0.16rem;
+										background: url(../assets/images/subscription_02.png);
+										display: inline-block;
+										width: 0.3rem;
+										height: 0.3rem;
+										background-size: 100% 100%;
+										margin-top: 0.2rem;
+										background-color: none;
+									}	
 								}
 								&:nth-child(2){
 									margin-right: 0.16rem;
