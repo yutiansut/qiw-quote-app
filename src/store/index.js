@@ -1586,6 +1586,17 @@ export default new Vuex.Store({
 				
 				if(parameters.OrderStatus < 4){
 					Toast({message: '委托成功（'+CommodityName+','+price+','+DirectionStr+OrderNum+'手,委托号:'+OrderID+'）', position: 'bottom', duration: 1000});
+					//存本地
+					let subscribeOrder = localStorage.subscribeOrder ? JSON.parse(localStorage.subscribeOrder) : '';
+					if(subscribeOrder == ''){
+						subscribeOrder = [{name: parameters.CommodityNo}];
+					}else{
+						let _subscribeOrder = {name: parameters.CommodityNo};
+						subscribeOrder.forEach((o, i) => {
+							if(o.name != parameters.CommodityNo) subscribeOrder.push(_subscribeOrder);
+						});
+					}
+					localStorage.subscribeOrder = JSON.stringify(subscribeOrder);
 				}else{
 					Toast({message: '委托失败（'+CommodityName+','+price+','+DirectionStr+OrderNum+'手,失败原因:'+parameters.StatusMsg+'）', position: 'bottom', duration: 1000});
 				}

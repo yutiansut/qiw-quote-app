@@ -104,7 +104,7 @@
 								"Parameters":{
 									"ExchangeNo": this.orderTemplist[Contract].ExchangeNo,
 									"CommodityNo": this.templateList[Contract].CommodityNo,
-									"ContractNo": '1803',
+									"ContractNo": this.templateList[Contract].ContractNo,
 									"OrderNum": o.HoldNum,
 									"Drection": drection,
 									"PriceType": 1,
