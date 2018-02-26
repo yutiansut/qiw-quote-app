@@ -15,7 +15,7 @@
 					<div class="list_cont" @click.stop="clickEvent(index, v.commodityNocontractNo)">
 						<div class="name">
 							<em>{{v.CommodityName}}</em>
-							<em>CNQ16</em>
+							<em>{{v.commodityNocontractNo}}</em>
 						</div>
 						<span class="type" :class="v.type_color">{{v.type}}</span>
 						<span class="num">{{v.HoldNum}}</span>
@@ -200,6 +200,7 @@
 						data.total_color = 'green';
 						data.commodityNocontractNo = this.orderTemplist[o.CommodityNo].CommodityNo + this.orderTemplist[o.CommodityNo].LastQuotation.ContractNo;
 						data.toolShow = false;
+						
 						this.$store.state.market.positionListCont.unshift(data);
 					}.bind(this));
 				}

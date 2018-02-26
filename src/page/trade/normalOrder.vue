@@ -241,6 +241,7 @@
 			
 		},
 		activated: function(){
+			console.log(222);
 			//初始当前合约
 			this.$store.state.market.currentNo = this.commodityAll[0].commodityNo;
 			this.currentOrder = this.orderTemplist[this.currentNo].CommodityName + " " + this.currentNo + this.orderTemplist[this.currentNo].MainContract;	
