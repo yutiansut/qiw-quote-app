@@ -22,12 +22,10 @@
 			<div class="default" v-show="showDefault">
 				<p><span  class="title">大家都在搜索</span></p>
 				<ul>
-					<li>
-						<span>黄金</span>
-						<span>布伦特原油</span>
-						<span>美国原油</span>
+					<li v-for="k in arrList">
+						<span v-for="(val,key) in k" @click="choose(val)">{{val}}</span>
 					</li>
-					<li>
+					<!--<li>
 						<span>美元</span>
 						<span>日元</span>
 						<span>标普500</span>
@@ -36,7 +34,7 @@
 						<span>纳斯达克</span>
 						<span>上证指数</span>
 						<span>深圳指数</span>
-					</li>
+					</li>-->
 				</ul>
 			</div>
 		</div>
@@ -53,7 +51,8 @@
 				showExist:false,
 				showNone:false,
 				searchInfo:'',
-				showDefault:true
+				showDefault:true,
+				arrList:[{"id":"黄金","id1":"布伦特原油","id2":"美国原油"},{"id":"美元","id1":"日元","id2":"标普500"},{"id":"纳斯达克","id1":"上证指数","id2":"深圳指数"}]
 			}
 		},
 		methods:{
@@ -96,6 +95,9 @@
 						}
 					}
 				})
+			},
+			choose:function(val){
+				this.searchInfo = val;
 			}
 		},
 		filters:{
