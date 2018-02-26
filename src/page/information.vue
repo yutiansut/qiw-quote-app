@@ -45,16 +45,16 @@
 						</li>
 					</ul>
 				</div>
-				<div v-for="n in list">
+				<div v-for="(n,index) in list">
 					<div class="black"></div>
 					<div class="details">
 						<ul>
 							<li>
-								<span v-if="n.status == '0' " @click="subscription(n.calendarId,n.previous,n.actual,n.forecast,n.title,n.timestamp)">
-									<i  class="subscription"></i>
+								<span class="subscriptionClick" v-if="n.status == '0' " @click="subscription(index,n.id,n.previous,n.actual,n.forecast,n.title,n.timestamp)">
+									<i  class="subscriptioned"></i>
 								</span>
-								<span v-if="n.status == '1' " @click="subscription(n.calendarId,n.previous,n.actual,n.forecast,n.title,n.timestamp)">
-									<i class="subscriptioned"></i>
+								<span class="subscriptionClick" v-if="n.status == '1' " @click="subscription(index,n.id,n.previous,n.actual,n.forecast,n.title,n.timestamp)">
+									<i class="subscription"></i>
 								</span>
 								<span>{{n.timestamp | changTime}}</span>
 								<span><img :src="n.flagUrl" /></span>
@@ -321,7 +321,7 @@
 						}
 					}
 				}).catch((err)=>{
-//					console.log("err======="+JSON.stringify(err));
+					console.log("err======="+JSON.stringify(err));
 					var data = err.data;
 					if(data == undefined){
 						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
@@ -378,18 +378,16 @@
 				this.getDayList(this.startTime);
 				this.show_day = pro.getDate("yy-mm-dd", Date.parse(value));
 			},
-			subscription:function(calendarId,previous,actual,forecast,title,timestamp){
+			subscription:function(index,calendarId,previous,actual,forecast,title,timestamp){
 				var timestampNow = Date.parse(new Date())/1000;
 				if(this.UserInfo == ''){
 					this.$toast({message:"您还未登录，请先登录，方可订阅",duration: 2000});
 					this.$router.push({path:"/login"});
 				}else{
 					if(timestampNow-timestamp > 0){
-//						console.log("当前时间比订阅时间晚")
 						this.$toast({message:"该事件已经发生，不可订阅",duration: 2000});
 					}else{
-//						console.log("当前时间比订阅时间早")
-							var data = {
+						var data = {
 							calendarId:calendarId,
 							previous:previous,
 							actual:actual,
@@ -397,34 +395,63 @@
 							title:title,
 							timestamp:timestamp
 						}
+						var data1 = {
+							calendarId:calendarId
+						}
 						var headers = {
 							token : this.userInfo.token,
 							secret : this.userInfo.secret
 						}
-//						console.log("eeeeeeeeeeee++++++"+JSON.stringify(event.target))
-//						pro.fetch("post","/news/subscibeCalendar",data,headers).then((res)=>{
-//							console.log("res======"+JSON.stringify(res));
-//							if(res.success == true && res.code == 1){
-//								this.$toast({message:"订阅成功",duration: 1000});
-//								
-//							}
-//						}).catch((err)=>{
-////							console.log("err======"+JSON.stringify(err));
-//							var data = err.data;
-//							if(data == undefined){
-//								this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
-//							}else{
-//								if(data.code == -9999){
-//									this.$toast({message:"认证失败，请重新登录",duration: 1000});
-//									this.$router.push({path:"/login"});
-//								}
-//								else{
-//									this.$toast({message:data.message,duration: 1000});
-//								}
-//							}
-//						})
+						var issubscription = $(".subscriptionClick").eq(index).children().hasClass("subscription");
+						if(issubscription == true){
+							this.delSubscription(data1,headers);
+							$(".subscriptionClick").eq(index).children().removeClass("subscription").addClass("subscriptioned");
+						}else{
+							$(".subscriptionClick").eq(index).children().addClass("subscription").removeClass("subscriptioned");
+							this.addSubscription(data,headers);
+						}
 					}
 				}
+			},
+			addSubscription:function(data,headers){
+				pro.fetch("post","/news/subscibeCalendar",data,headers).then((res)=>{
+					if(res.success == true && res.code == 1){
+						this.$toast({message:"订阅成功",duration: 1000});
+					}
+				}).catch((err)=>{
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
+					}else{
+						if(data.code == -9999){
+							this.$toast({message:"认证失败，请重新登录",duration: 1000});
+							this.$router.push({path:"/login"});
+						}
+						else{
+							this.$toast({message:data.message,duration: 1000});
+						}
+					}
+				})
+			},
+			delSubscription:function(data,headers){
+				pro.fetch("post","/news/removeSubscibeCalendar",data,headers).then((res)=>{
+					if(res.success == true && res.code == 1){
+						this.$toast({message:"删除成功！",duration: 1000});
+					}
+				}).catch((err)=>{
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
+					}else{
+						if(data.code == -9999){
+							this.$toast({message:"认证失败，请重新登录",duration: 1000});
+							this.$router.push({path:"/login"});
+						}
+						else{
+							this.$toast({message:data.message,duration: 1000});
+						}
+					}
+				})
 			}
 		},
 		mounted:function(){
@@ -446,7 +473,6 @@
 			var dayNames = new Array("星期日","星期一","星期二","星期三","星期四","星期五","星期六");
 			this.nowWeek = dayNames[new Date().getDay()]; 
 			this.getDayList(this.startTime);
-			
 		},
 		filters:{
 			changTime:function(e){
