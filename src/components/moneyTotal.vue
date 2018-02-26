@@ -3,15 +3,15 @@
 		<div class="total">
 			<div class="col">
 				<em>总资产</em>
-				<span>30000</span>
+				<span>{{jCacheTotalAccount.TodayBalance | fixNumTwo}}</span>
 			</div>
 			<div class="col">
 				<em>持仓盈亏</em>
-				<span>15540</span>
+				<span :class="{red: jCacheTotalAccount.FloatingProfit > 0, green: jCacheTotalAccount.FloatingProfit < 0}">{{jCacheTotalAccount.FloatingProfit | fixNumTwo}}</span>
 			</div>
 			<div class="col">
-				<em>平仓线：<span>52.70</span></em>
-				<em>风险度：<span>95%</span></em>
+				<em>平仓线：<span>{{forceLine}}</span></em>
+				<em>风险度：<span>{{jCacheTotalAccount.RiskDegree | fixNum(2)}}%</span></em>
 			</div>
 		</div>
 	</div>
@@ -25,10 +25,19 @@
 			jCacheTotalAccount(){
 				return this.$store.state.market.CacheAccount.jCacheTotalAccount;
 			},
+			forceLine(){
+				return this.$store.state.market.forceLine;
+			},
 		},
-		methods: {
-			
+		filters:{
+			fixNumTwo: function(num){
+				return num.toFixed(2);
+			},
+			fixNum: function(num, dotsize){
+				return num.toFixed(dotsize);
+			}
 		},
+		methods: {},
 		mounted: function(){
 //			console.log(this.jCacheTotalAccount);
 		}
