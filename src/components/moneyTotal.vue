@@ -70,6 +70,12 @@
 				text-align: center;
 				color: $white;
 				font-size: $fs28;
+				&.red{
+					color: $red;
+				}
+				&.green{
+					color: $green;
+				}
 			}
 		}
 	}
