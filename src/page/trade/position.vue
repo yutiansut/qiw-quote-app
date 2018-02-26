@@ -12,7 +12,7 @@
 			</li>
 			<template v-for="(v, index) in positionListCont">
 				<li :class="{current: selectedNum == index}">
-					<div class="list_cont">
+					<div class="list_cont" @click.stop="clickEvent(index, v.commodityNocontractNo)">
 						<div class="name">
 							<em>{{v.CommodityName}}</em>
 							<em>CNQ16</em>
@@ -22,8 +22,8 @@
 						<span class="price">{{v.price}}</span>
 						<span class="status" :class="v.total_color">{{v.total}}</span>
 					</div>
-					<div class="tools">
-						<btn name="平仓" className="orangesm"></btn>
+					<div class="tools" v-show="v.toolShow">
+						<btn name="平仓" className="orangesm" @click.native="closePosition"></btn>
 						<btn name="反手" className="bluesm" @tap.native="backTrade"></btn>
 						<btn name="止损止盈" className="greensm" @tap.native="stopMoney"></btn>
 					</div>
@@ -39,6 +39,7 @@
 	import btn from "../../components/btn.vue"
 	import editOrder from "./editOrder.vue"
 	import stopMoneyAlert from "./stopMoneyAlert.vue"
+	import { Toast, MessageBox } from 'mint-ui';
 	export default{
 		name: "position",
 		components: {btn, editOrder, stopMoneyAlert},
@@ -67,8 +68,8 @@
 			buyStatus(){
 				return this.$store.state.market.buyStatus;
 			},
-			parameters(){
-				return this.$store.state.market.Parameters;
+			jCacheTotalAccount(){
+				return this.$store.state.market.CacheAccount.jCacheTotalAccount;
 			},
 		},
 		methods: {
@@ -77,6 +78,101 @@
 			},
 			stopMoney: function(){   //止损止盈
 				this.$refs.stopMoneyAlert.show = true;
+			},
+			clickEvent: function(i, id){
+				this.selectedNum = i;
+				this.currentOrderID = id;
+				this.positionListCont.forEach((o, i) => {
+					o.toolShow = false;
+					if(o.commodityNocontractNo == id){
+						o.toolShow = true;
+					}
+				});
+			},
+			closePosition: function(){
+				var confirmText;
+				if(this.currentOrderID != ''){
+					this.positionListCont.forEach(function(o,i){
+						if(this.currentOrderID == o.commodityNocontractNo){
+							var buildIndex = 0;
+							if(buildIndex > 100) buildIndex = 0;
+							var Contract = o.commodityNocontractNo.substring(0, o.commodityNocontractNo.length-4);
+							var drection;
+							o.type == '多' ? drection = 1 : drection = 0;
+							var b = {
+								"Method": 'InsertOrder',
+								"Parameters":{
+									"ExchangeNo": this.orderTemplist[Contract].ExchangeNo,
+									"CommodityNo": this.templateList[Contract].CommodityNo,
+									"ContractNo": '1803',
+									"OrderNum": o.HoldNum,
+									"Drection": drection,
+									"PriceType": 1,
+									"LimitPrice": 0.00,
+									"TriggerPrice": 0,
+									"OrderRef": this.$store.state.market.tradeConfig.client_source+ new Date().getTime()+(buildIndex++)
+								}
+							};
+							confirmText = '提交订单:【'+ o.commodityNocontractNo +'】,价格【市价】,手数【'+ o.HoldNum +'】？';
+							MessageBox.confirm(confirmText,"提示").then(action=>{
+								if(this.buyStatus == true) return;
+								this.$store.state.market.buyStatus = true;
+								this.tradeSocket.send(JSON.stringify(b));
+								this.currentOrderID = '';
+								this.selectedNum = -1;
+								o.toolShow = false;
+							}).catch(err=>{});
+						}
+					}.bind(this));
+				}else{
+					Toast({message: '请选择一条数据', position: 'bottom', duration: 1000});
+				}
+			},
+			backTrade: function(){
+				var confirmText;
+				if(this.currentOrderID != ''){
+					this.positionListCont.forEach(function(o,i){
+						if(this.currentOrderID == o.commodityNocontractNo){
+							if(o.price > this.jCacheTotalAccount.TodayCanUse){
+								Toast({message: '当前余额不足，反手操作失败', position: 'bottom', duration: 1000});
+								return;
+							}
+							var buildIndex = 0;
+							if(buildIndex > 100) buildIndex = 0;
+							var Contract = o.commodityNocontractNo.substring(0, o.commodityNocontractNo.length-4);
+							var drection, _drection;
+							o.type == '多' ? drection = 1 : drection = 0;
+							var b = {
+								"Method": 'InsertOrder',
+								"Parameters":{
+									"ExchangeNo": this.orderTemplist[Contract].ExchangeNo,
+									"CommodityNo": this.templateList[Contract].CommodityNo,
+									"ContractNo": this.templateList[Contract].ContractNo,
+									"OrderNum": o.HoldNum,
+									"Drection": drection,
+									"PriceType": 1,
+									"LimitPrice": 0.00,
+									"TriggerPrice": 0,
+									"OrderRef": this.$store.state.market.tradeConfig.client_source+ new Date().getTime()+(buildIndex++)
+								}
+							};
+							confirmText = '确定反手:【'+ o.commodityNocontractNo +'】,价格【市价】,手数【'+ o.HoldNum +'】？';
+							MessageBox.confirm(confirmText,"提示").then(action=>{
+								if(this.buyStatus == true) return;
+								this.$store.state.market.buyStatus = true;
+								this.tradeSocket.send(JSON.stringify(b));
+								setTimeout(function(){
+									this.tradeSocket.send(JSON.stringify(b));
+									this.currentOrderID = '';
+									this.selectedNum = -1;
+								}.bind(this), 500);
+								o.toolShow = false;
+							}).catch(err=>{});
+						}
+					}.bind(this));
+				}else{
+					Toast({message: '请选择一条数据', position: 'bottom', duration: 1000});
+				}
 			},
 			operateData: function(obj){
 				this.$store.state.market.positionListCont = [];
@@ -103,6 +199,7 @@
 						}();
 						data.total_color = 'green';
 						data.commodityNocontractNo = this.orderTemplist[o.CommodityNo].CommodityNo + this.orderTemplist[o.CommodityNo].LastQuotation.ContractNo;
+						data.toolShow = false;
 						this.$store.state.market.positionListCont.unshift(data);
 					}.bind(this));
 				}
@@ -110,9 +207,8 @@
 		},
 		mounted: function(){
 			//获取持仓列表数据
-			console.log(this.orderTemplist);
-			console.log(this.qryHoldTotalArr);
 			this.operateData(this.qryHoldTotalArr);
+			console.log(this.positionListCont);
 		}
 	}
 </script>
