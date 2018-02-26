@@ -79,6 +79,10 @@
 			currentNo: function(n, o){
 				if(n == this.commodityAll[0].commodityNo) return;
 				if(n && n != undefined){
+					this.$store.state.isshow.isfensshow = false;
+					this.$store.state.isshow.islightshow = false;
+					this.$store.state.isshow.isklineshow = false;
+					this.$parent.fensShow = false;
 					//初始化当前合约
 					this.$store.state.market.Parameters = [];
 					this.$store.state.market.commodityOrder = [];
