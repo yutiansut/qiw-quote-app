@@ -385,10 +385,10 @@
 					this.$router.push({path:"/login"});
 				}else{
 					if(timestampNow-timestamp > 0){
-						console.log("当前时间比订阅时间晚")
+//						console.log("当前时间比订阅时间晚")
 						this.$toast({message:"该事件已经发生，不可订阅",duration: 2000});
 					}else{
-						console.log("当前时间比订阅时间早")
+//						console.log("当前时间比订阅时间早")
 							var data = {
 							calendarId:calendarId,
 							previous:previous,
@@ -401,26 +401,28 @@
 							token : this.userInfo.token,
 							secret : this.userInfo.secret
 						}
-						pro.fetch("post","/news/subscibeCalendar",data,headers).then((res)=>{
-							console.log("res======"+JSON.stringify(res));
-							if(res.success == true && res.code == 1){
-								this.$toast({message:"订阅成功",duration: 1000});
-							}
-						}).catch((err)=>{
-//							console.log("err======"+JSON.stringify(err));
-							var data = err.data;
-							if(data == undefined){
-								this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
-							}else{
-								if(data.code == -9999){
-									this.$toast({message:"认证失败，请重新登录",duration: 1000});
-									this.$router.push({path:"/login"});
-								}
-								else{
-									this.$toast({message:data.message,duration: 1000});
-								}
-							}
-						})
+//						console.log("eeeeeeeeeeee++++++"+JSON.stringify(event.target))
+//						pro.fetch("post","/news/subscibeCalendar",data,headers).then((res)=>{
+//							console.log("res======"+JSON.stringify(res));
+//							if(res.success == true && res.code == 1){
+//								this.$toast({message:"订阅成功",duration: 1000});
+//								
+//							}
+//						}).catch((err)=>{
+////							console.log("err======"+JSON.stringify(err));
+//							var data = err.data;
+//							if(data == undefined){
+//								this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
+//							}else{
+//								if(data.code == -9999){
+//									this.$toast({message:"认证失败，请重新登录",duration: 1000});
+//									this.$router.push({path:"/login"});
+//								}
+//								else{
+//									this.$toast({message:data.message,duration: 1000});
+//								}
+//							}
+//						})
 					}
 				}
 			}
