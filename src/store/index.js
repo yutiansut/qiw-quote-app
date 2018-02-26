@@ -43,7 +43,7 @@ var market = {
 	state: {
 		quoteConfig:{
 			version: '5.1.2',    //版本
-			url_real: "ws://192.168.0.232:9002",  //测试地址
+			url_real: "ws://192.168.0.232:19002",  //测试地址
 //			url_real: "ws://quote.vs.com:9002",   //正式地址
 			userName: "13677622344",
 			passWord: "a123456"
@@ -2037,7 +2037,6 @@ export default new Vuex.Store({
 					}
 				} else if(context.state.wsjsondata.Method == "OnRspSubscribe") { // 订阅成功信息
 					var key = JSON.parse(evt.data).Parameters.CommodityNo;
-					var aaa = [];
 					context.state.market.templateList[key] = JSON.parse(evt.data).Parameters;
 					var dealDetails = {CommodityNo: '', data: []}, _dealDetails = {};
 					context.state.market.markettemp.forEach(function(e) {

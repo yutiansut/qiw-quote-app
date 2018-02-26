@@ -74,6 +74,9 @@
 			length(){
 				return this.$store.state.market.Parameters.length;
 			},
+			buyStatus(){
+				return this.$store.state.market.buyStatus;
+			},
 		},
 		watch: {
 			currentNo: function(n, o){

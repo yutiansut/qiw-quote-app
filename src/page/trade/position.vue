@@ -4,29 +4,31 @@
 			<li>
 				<div class="list_title">
 					<span class="name">合约名称</span>
-					<span class="num">多空</span>
-					<span class="type">手数</span>
+					<span class="type">多空</span>
+					<span class="num">手数</span>
 					<span class="price">持仓均价</span>
 					<span class="status">浮动盈亏</span>
 				</div>
 			</li>
-			<li class="current">
-				<div class="list_cont">
-					<div class="name">
-						<em>日经225</em>
-						<em>CNQ16</em>
+			<template v-for="(v, index) in positionListCont">
+				<li :class="{current: selectedNum == index}">
+					<div class="list_cont">
+						<div class="name">
+							<em>{{v.CommodityName}}</em>
+							<em>CNQ16</em>
+						</div>
+						<span class="type" :class="v.type_color">{{v.type}}</span>
+						<span class="num">{{v.HoldNum}}</span>
+						<span class="price">{{v.price}}</span>
+						<span class="status" :class="v.total_color">{{v.total}}</span>
 					</div>
-					<span class="num">1</span>
-					<span class="type">买</span>
-					<span class="price red">51.03</span>
-					<span class="status green">51.03</span>
-				</div>
-				<div class="tools">
-					<btn name="平仓" className="orangesm"></btn>
-					<btn name="反手" className="bluesm" @tap.native="backTrade"></btn>
-					<btn name="止损止盈" className="greensm" @tap.native="stopMoney"></btn>
-				</div>
-			</li>
+					<div class="tools">
+						<btn name="平仓" className="orangesm"></btn>
+						<btn name="反手" className="bluesm" @tap.native="backTrade"></btn>
+						<btn name="止损止盈" className="greensm" @tap.native="stopMoney"></btn>
+					</div>
+				</li>
+			</template>
 		</ul>
 		<editOrder ref="editOrder"></editOrder>
 		<stopMoneyAlert ref="stopMoneyAlert"></stopMoneyAlert>
@@ -42,8 +44,32 @@
 		components: {btn, editOrder, stopMoneyAlert},
 		data(){
 			return{
-				
+				selectedNum: -1,
+				currentOrderID: '',
 			}
+		},
+		computed: {
+			orderTemplist(){
+				return this.$store.state.market.orderTemplist;
+			},
+			templateList(){
+				return this.$store.state.market.templateList;
+			},
+			qryHoldTotalArr(){
+				return this.$store.state.market.qryHoldTotalArr;
+			},
+			positionListCont(){
+				return this.$store.state.market.positionListCont;
+			},
+			tradeSocket(){
+				return this.$store.state.tradeSocket;
+			},
+			buyStatus(){
+				return this.$store.state.market.buyStatus;
+			},
+			parameters(){
+				return this.$store.state.market.Parameters;
+			},
 		},
 		methods: {
 			backTrade: function(){   //反手
@@ -51,10 +77,42 @@
 			},
 			stopMoney: function(){   //止损止盈
 				this.$refs.stopMoneyAlert.show = true;
+			},
+			operateData: function(obj){
+				this.$store.state.market.positionListCont = [];
+				if(obj){
+					obj.forEach(function(o, i){
+						var data = {};
+						data.CommodityName = this.orderTemplist[o.CommodityNo].CommodityName;
+						data.type = function(){
+							if(o.Drection == 0){
+								return '多'
+							}else{
+								return '空'
+							}
+						}();
+						data.HoldNum = o.HoldNum;
+						data.price = o.HoldAvgPrice.toFixed(this.orderTemplist[o.CommodityNo].DotSize);
+						data.total = 0;
+						data.type_color = function(){
+							if(o.Drection==0){
+								return 'red'
+							}else{
+								return 'green'
+							}
+						}();
+						data.total_color = 'green';
+						data.commodityNocontractNo = this.orderTemplist[o.CommodityNo].CommodityNo + this.orderTemplist[o.CommodityNo].LastQuotation.ContractNo;
+						this.$store.state.market.positionListCont.unshift(data);
+					}.bind(this));
+				}
 			}
 		},
 		mounted: function(){
-			
+			//获取持仓列表数据
+			console.log(this.orderTemplist);
+			console.log(this.qryHoldTotalArr);
+			this.operateData(this.qryHoldTotalArr);
 		}
 	}
 </script>
