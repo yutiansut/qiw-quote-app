@@ -51,7 +51,6 @@
 		methods: {
 			tabEvent: function(index){
 				this.currentNum = index;
-				console.log(this.$children.tradeCenter);
 				if(index == 0){
 					this.currentView = 'tradeCenter';
 				}else if(index == 1){

@@ -3,7 +3,7 @@
 		<div class="row">
 			<b>合约代码</b>
 			<div class="slt fl" @tap="openSelectOrder">
-				<input type="text" class="ipt_lg" :value="currentOrder" readonly="readonly" />
+				<input type="text" class="ipt_lg" :value="orderTemplist[currentNo].CommodityName + ' ' + currentNo + orderTemplist[currentNo].MainContract" readonly="readonly" />
 				<i class="icon icon_select"></i>
 			</div>
 		</div>
@@ -40,7 +40,6 @@
 		components: {btn, selectBox},
 		data(){
 			return{
-				currentOrder: '',
 				obj: [],
 				type: '',
 				priceType: '市价',
@@ -250,7 +249,6 @@
 		activated: function(){
 			//初始当前合约
 			this.$store.state.market.currentNo = this.commodityAll[0].commodityNo;
-			this.currentOrder = this.orderTemplist[this.currentNo].CommodityName + " " + this.currentNo + this.orderTemplist[this.currentNo].MainContract;	
 			this.$store.state.market.Parameters = [];
 			this.$store.state.market.commodityOrder = [];
 			this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + this.orderTemplist[this.currentNo].ExchangeNo + '","CommodityNo":"' + this.currentNo + '","ContractNo":"' + this.orderTemplist[this.currentNo].MainContract +'"}}');

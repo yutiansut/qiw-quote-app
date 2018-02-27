@@ -200,7 +200,6 @@
 						data.total_color = 'green';
 						data.commodityNocontractNo = this.orderTemplist[o.CommodityNo].CommodityNo + this.orderTemplist[o.CommodityNo].LastQuotation.ContractNo;
 						data.toolShow = false;
-						
 						this.$store.state.market.positionListCont.unshift(data);
 					}.bind(this));
 				}
@@ -209,7 +208,6 @@
 		mounted: function(){
 			//获取持仓列表数据
 			this.operateData(this.qryHoldTotalArr);
-			console.log(this.positionListCont);
 		}
 	}
 </script>
