@@ -1,11 +1,11 @@
 <template>
 	<div id="tradeCenter">
-		<div v-if="length == 1">
+		<div v-if="length > 0">
 			<div class="tips">
-				<span :class="{red: currentdetail.LastQuotation.LastPrice > currentdetail.LastQuotation.PreSettlePrice, green: currentdetail.LastQuotation.LastPrice < currentdetail.LastQuotation.PreSettlePrice}">{{currentdetail.LastQuotation.LastPrice | fixNum(currentdetail.DotSize)}}</span>
-				<span :class="{green: currentdetail.LastQuotation.ChangeRate < 0, red: currentdetail.LastQuotation.ChangeRate > 0}"><em v-show="currentdetail.LastQuotation.ChangeRate > 0">+</em>{{currentdetail.LastQuotation.ChangeValue | fixNum(currentdetail.DotSize)}}</span>
-				<span :class="{green: currentdetail.LastQuotation.ChangeRate < 0, red: currentdetail.LastQuotation.ChangeRate > 0}"><em v-show="currentdetail.LastQuotation.ChangeRate > 0">+</em>{{currentdetail.LastQuotation.ChangeRate | fixNumTwo}}%</span>
-				<p>成交量：<em>{{currentdetail.LastQuotation.TotalVolume}}</em></p>
+				<span :class="{red: parameters[0].LastQuotation.LastPrice > parameters[0].LastQuotation.PreSettlePrice, green: parameters[0].LastQuotation.LastPrice < parameters[0].LastQuotation.PreSettlePrice}">{{parameters[0].LastQuotation.LastPrice | fixNum(parameters[0].DotSize)}}</span>
+				<span :class="{green: parameters[0].LastQuotation.ChangeRate < 0, red: parameters[0].LastQuotation.ChangeRate > 0}"><em v-show="parameters[0].LastQuotation.ChangeRate > 0">+</em>{{parameters[0].LastQuotation.ChangeValue | fixNum(parameters[0].DotSize)}}</span>
+				<span :class="{green: parameters[0].LastQuotation.ChangeRate < 0, red: parameters[0].LastQuotation.ChangeRate > 0}"><em v-show="parameters[0].LastQuotation.ChangeRate > 0">+</em>{{parameters[0].LastQuotation.ChangeRate | fixNumTwo}}%</span>
+				<p>成交量：<em>{{parameters[0].LastQuotation.TotalVolume}}</em></p>
 			</div>
 			<div class="fens_title">
 				<span @tap="showFens">分时图</span>
@@ -19,13 +19,13 @@
 			<div class="buy_one">
 				<div class="col">
 					<em>卖一</em>
-					<span :class="{red: currentdetail.LastQuotation.AskPrice1 > currentdetail.LastQuotation.PreSettlePrice, green: currentdetail.LastQuotation.AskPrice1 < currentdetail.LastQuotation.PreSettlePrice}">{{currentdetail.LastQuotation.AskPrice1 | fixNum(currentdetail.DotSize)}}</span>
-					<em>{{currentdetail.LastQuotation.AskQty1}}</em>
+					<span :class="{red: parameters[0].LastQuotation.AskPrice1 > parameters[0].LastQuotation.PreSettlePrice, green: parameters[0].LastQuotation.AskPrice1 < parameters[0].LastQuotation.PreSettlePrice}">{{parameters[0].LastQuotation.AskPrice1 | fixNum(parameters[0].DotSize)}}</span>
+					<em>{{parameters[0].LastQuotation.AskQty1}}</em>
 				</div>
 				<div class="col">
 					<em>买一</em>
-					<span :class="{red: currentdetail.LastQuotation.BidPrice1 > currentdetail.LastQuotation.PreSettlePrice, green: currentdetail.LastQuotation.BidPrice1 < currentdetail.LastQuotation.PreSettlePrice}">{{currentdetail.LastQuotation.BidPrice1 | fixNum(currentdetail.DotSize)}}</span>
-					<em>{{currentdetail.LastQuotation.BidQty1}}</em>
+					<span :class="{red: parameters[0].LastQuotation.BidPrice1 > parameters[0].LastQuotation.PreSettlePrice, green: parameters[0].LastQuotation.BidPrice1 < parameters[0].LastQuotation.PreSettlePrice}">{{parameters[0].LastQuotation.BidPrice1 | fixNum(parameters[0].DotSize)}}</span>
+					<em>{{parameters[0].LastQuotation.BidQty1}}</em>
 				</div>
 			</div>
 		</div>
@@ -82,12 +82,14 @@
 		watch: {
 			length: function(n, o){
 				if(n && n == 1){
-					this.parameters.forEach((o, i) => {
-						if(o.CommodityNo == this.currentNo){
-							this.$store.state.market.currentdetail = o;
-							return;
-						}
-					});
+					this.$store.state.market.currentdetail = this.parameters[0];
+					this.$parent.totalShow = true;
+//					this.parameters.forEach((o, i) => {
+//						if(o.CommodityNo == this.currentNo && i == 0){
+//							this.$store.state.market.currentdetail = o;
+//							return;
+//						}
+//					});
 				}
 			},
 		},
@@ -130,7 +132,7 @@
 			}
 		},
 		mounted: function(){
-			
+//			console.log(this.parameters);
 		}
 	}
 </script>

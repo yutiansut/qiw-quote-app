@@ -90,6 +90,13 @@
 					this.$store.state.market.Parameters = [];
 					this.$store.state.market.commodityOrder = [];
 					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + this.orderTemplist[this.currentNo].ExchangeNo + '","CommodityNo":"' + this.currentNo + '","ContractNo":"' + this.orderTemplist[this.currentNo].MainContract +'"}}');
+					//初始化持仓合约行情
+					let holdOrder = localStorage.subscribeOrder ?　JSON.parse(localStorage.subscribeOrder)　:　'';
+					if(holdOrder != ''){
+						holdOrder.forEach((o, i) => {
+							this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + this.orderTemplist[o.name].ExchangeNo + '","CommodityNo":"' + o.name + '","ContractNo":"' + this.orderTemplist[o.name].MainContract +'"}}');
+						});
+					}
 				}
 			},
 			priceType: function(n, o){
@@ -137,7 +144,7 @@
 						"Parameters":{
 							"ExchangeNo": this.currentdetail.ExchangeNo,
 							"CommodityNo": this.currentdetail.CommodityNo,
-							"ContractNo": this.currentdetail.LastQuotation.ContractNo,
+							"ContractNo": this.currentdetail.MainContract,
 							"OrderNum": this.defaultNum,
 							"Drection": 0,
 							"PriceType": 1,
@@ -157,7 +164,7 @@
 							"Parameters":{
 								"ExchangeNo": this.currentdetail.ExchangeNo,
 								"CommodityNo": this.currentdetail.CommodityNo,
-								"ContractNo": this.currentdetail.LastQuotation.ContractNo,
+								"ContractNo": this.currentdetail.MainContract,
 								"OrderNum": this.defaultNum,
 								"Drection": 0,
 								"PriceType": 0,
@@ -191,7 +198,7 @@
 						"Parameters":{
 							"ExchangeNo": this.currentdetail.ExchangeNo,
 							"CommodityNo": this.currentdetail.CommodityNo,
-							"ContractNo": this.currentdetail.LastQuotation.ContractNo,
+							"ContractNo": this.currentdetail.MainContract,
 							"OrderNum": this.defaultNum,
 							"Drection": 1,
 							"PriceType": 1,
@@ -211,7 +218,7 @@
 							"Parameters":{
 								"ExchangeNo": this.currentdetail.ExchangeNo,
 								"CommodityNo": this.currentdetail.CommodityNo,
-								"ContractNo": this.currentdetail.LastQuotation.ContractNo,
+								"ContractNo": this.currentdetail.MainContract,
 								"OrderNum": this.defaultNum,
 								"Drection": 1,
 								"PriceType": 0,
@@ -241,13 +248,19 @@
 			
 		},
 		activated: function(){
-			console.log(222);
 			//初始当前合约
 			this.$store.state.market.currentNo = this.commodityAll[0].commodityNo;
 			this.currentOrder = this.orderTemplist[this.currentNo].CommodityName + " " + this.currentNo + this.orderTemplist[this.currentNo].MainContract;	
 			this.$store.state.market.Parameters = [];
 			this.$store.state.market.commodityOrder = [];
 			this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + this.orderTemplist[this.currentNo].ExchangeNo + '","CommodityNo":"' + this.currentNo + '","ContractNo":"' + this.orderTemplist[this.currentNo].MainContract +'"}}');
+			//初始化持仓合约行情
+			let holdOrder = localStorage.subscribeOrder ?　JSON.parse(localStorage.subscribeOrder)　:　'';
+			if(holdOrder != ''){
+				holdOrder.forEach((o, i) => {
+					this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + this.orderTemplist[o.name].ExchangeNo + '","CommodityNo":"' + o.name + '","ContractNo":"' + this.orderTemplist[o.name].MainContract +'"}}');
+				});
+			}
 		}
 	}
 </script>

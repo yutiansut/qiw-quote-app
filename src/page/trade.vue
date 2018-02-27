@@ -15,7 +15,7 @@
 		</div>
 		<div class="main">
 			<div class="cont">
-				<moneyTotal></moneyTotal>
+				<moneyTotal v-if="totalShow"></moneyTotal>
 				<components :is="currentView"></components>
 			</div>
 		</div>
@@ -37,6 +37,7 @@
 				tabList: ['交易','持仓','资金明细'],
 				currentNum: 0,
 				currentView: 'tradeCenter',
+				totalShow: false,
 			}
 		},
 		computed: {
@@ -50,6 +51,7 @@
 		methods: {
 			tabEvent: function(index){
 				this.currentNum = index;
+				console.log(this.$children.tradeCenter);
 				if(index == 0){
 					this.currentView = 'tradeCenter';
 				}else if(index == 1){
