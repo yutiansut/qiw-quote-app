@@ -169,6 +169,7 @@
 		methods:{
 			//下拉刷新
 			loadTop:function(){
+				this.times = 0;
 				this.getNewsInfo(0);
 			},
 			//加载更多
