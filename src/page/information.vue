@@ -23,8 +23,9 @@
 					<div class="list" v-for="k in this.newsInfo">
 						<p>{{k.createdAt | changTime }}</p>
 						<!--<p>{{k.liveTitle}}</p>-->
-						<p v-if="k.liveTitle.length > 120" class="textHeight">{{k.liveTitle}}</p>
-						<p v-if="k.liveTitle.length < 120">{{k.liveTitle}}</p>
+						<p v-if="k.liveTitle.length > 120 && k.importance == '3'" class="textHeight" style="color:#ff5533 ;">{{k.liveTitle}}</p>
+						<p v-else-if="k.liveTitle.length > 120 && k.importance != '3'" class="textHeight">{{k.liveTitle}}</p>
+						<p v-else-if="k.liveTitle.length < 120">{{k.liveTitle}}</p>
 						<p v-if="k.liveTitle.length > 120" @click="showAll"><span>展开</span></p>
 						<p v-if="k.liveTitle.length < 120" ></p>
 					</div>
@@ -59,15 +60,18 @@
 								<span>{{n.timestamp | changTime}}</span>
 								<span><img :src="n.flagUrl" /></span>
 								<span>{{n.country}}</span>
-								<span v-if="n.stars == '4'">
-									<i  v-for="t in 4" class="start_red"></i>
+								<span v-if="n.importance == '3'">
+									<i  v-for="t in 3" class="start_red"></i>
 								</span>
-								<span v-if="n.stars != '4'">
+								<span v-if="n.stars != '3'">
 									<i  v-for="t in Number(n.stars)" class="start_blue"></i>
-									<i v-for="t in (4-Number(n.stars))" class="start_white"></i>
+									<i v-for="t in (3-Number(n.stars))" class="start_white"></i>
 								</span>
 							</li>
-							<li>
+							<li v-if="n.importance == '3'"style="color: #ff5533;">
+								{{n.title}}
+							</li>
+							<li v-if="n.importance != '3'">
 								{{n.title}}
 							</li>
 							<li>
@@ -151,7 +155,7 @@
 				list:'',
 				value: null,
 		      	value1: null,
-		      	startDate: new Date('2014-1-1'),
+		      	startDate: new Date('2014'),
 		      	endDate: new Date('2020-12-31'),
 		      	show_day:"",
 		      	showNoInfo:false,
@@ -535,6 +539,8 @@
 		width: 100%;
 		margin-top: 1.8rem;
 		.navlist{
+			z-index: 100;
+			opacity: 1;
 			background-color: $bg;
 			position: fixed;
 			top: 1rem;
@@ -590,6 +596,7 @@
 						height: 0.7rem;
 						line-height: 0.7rem;
 						text-align: right;
+						padding-right: 0.3rem;
 						span{
 							margin-right: 0.1rem;
 							/*width: 0.6rem;*/
@@ -606,9 +613,6 @@
 				.textHeight{
 					height: 1.8rem;
 				}
-			}
-			.color_red{
-				color: #ff5533;
 			}
 		}
 		.empty{
@@ -741,7 +745,7 @@
 							}
 						}
 						&:nth-child(2){
-							color: $orange;
+							color: $white;
 							font-weight: 600;
 						}
 						&:nth-child(3){
@@ -759,7 +763,9 @@
 								}
 							}
 						}
+						
 					}
+					
 				}
 			}
 		}
