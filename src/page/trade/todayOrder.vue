@@ -10,65 +10,76 @@
 					<span class="status">成交时间</span>
 				</div>
 			</li>
-			<li class="current">
-				<div class="list_cont">
-					<div class="name">
-						<em>日经225</em>
-						<em>CNQ16</em>
+			<template v-for="v in dealList">
+				<li>
+					<div class="list_cont">
+						<div class="name">
+							<em>{{v.commodityName}}</em>
+							<em>{{v.ContractCode}}</em>
+						</div>
+						<span class="num">{{v.buyOrSell}}</span>
+						<span class="type">{{v.tradePrice}}</span>
+						<span class="price">{{v.tradeNum}}</span>
+						<span class="status">{{v.tradeDateTime}}</span>
 					</div>
-					<span class="num">1</span>
-					<span class="type">买</span>
-					<span class="price red">51.03</span>
-					<span class="status green">51.03</span>
-				</div>
-				<div class="tools">
-					<btn name="平仓" className="orangesm"></btn>
-					<btn name="反手" className="bluesm"></btn>
-					<btn name="止损止盈" className="greensm"></btn>
-				</div>
-			</li>
-			<li>
-				<div class="list_cont">
-					<div class="name">
-						<em>日经225</em>
-						<em>CNQ16</em>
-					</div>
-					<span class="num">1</span>
-					<span class="type">买</span>
-					<span class="price red">51.03</span>
-					<span class="status green">51.03</span>
-				</div>
-			</li>
-			<li>
-				<div class="list_cont">
-					<div class="name">
-						<em>日经225</em>
-						<em>CNQ16</em>
-					</div>
-					<span class="num">1</span>
-					<span class="type">买</span>
-					<span class="price red">51.03</span>
-					<span class="status green">51.03</span>
-				</div>
-			</li>
+				</li>
+			</template>
 		</ul>
 	</div>
 </template>
 
 <script>
-	import btn from "../../components/btn.vue"
 	export default{
 		name: "todayOrder",
-		components: {btn},
 		data(){
 			return{
+				dealList: [],
+			}
+		},
+		computed: {
+			orderTemplist(){
+				return this.$store.state.market.orderTemplist;
+			},
+			OnRspQryTradeDealListCont(){
+				return this.$store.state.market.OnRspQryTradeDealListCont;
+			}
+		},
+		watch: {
+			OnRspQryTradeDealListCont: function(n, o){
+				if(n){
+					//获取成交列表数据
+					this.operateData(this.OnRspQryTradeDealListCont);
+				}
 			}
 		},
 		methods: {
-			
+			operateData: function(obj){
+				this.dealList = [];
+				if(obj){
+					this.OnRspQryTradeDealListCont.forEach(function(o, i){
+						var data = {};
+						data.commodityName = this.orderTemplist[o.CommodityNo].CommodityName;
+						data.buyOrSell = function(){
+							if(o.Drection == 0){
+								return '买';
+							}else{
+								return '卖';
+							}
+						}();
+						data.tradePrice = parseFloat(o.TradePrice).toFixed(this.orderTemplist[o.CommodityNo].DotSize);
+						data.tradeNum = o.TradeNum;
+						data.tradeDateTime = o.TradeDateTime;
+						data.ContractCode = o.ContractCode;
+						data.OrderID = o.OrderID;
+						this.dealList.unshift(data);
+					}.bind(this));
+				}
+			}
 		},
 		mounted: function(){
-			
+			//获取成交列表数据
+			this.operateData(this.OnRspQryTradeDealListCont);
+			console.log(this.dealList);
 		}
 	}
 </script>
@@ -78,6 +89,9 @@
 	.list{
 		width: 7.5rem;
 		overflow-x: auto;
+		ul{
+			width: 8.8rem;
+		}
 		li{
 			span{
 				display: inline-block;
@@ -97,7 +111,7 @@
 				width: 1.3rem;
 			}
 			.status{
-				width: 1.6rem;
+				width: 2.8rem;
 			}
 			.price, .status{
 				&.red{
