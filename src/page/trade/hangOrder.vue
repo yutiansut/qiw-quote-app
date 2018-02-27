@@ -13,7 +13,7 @@
 			</li>
 			<template v-for="(v, index) in orderListCont">
 				<li :class="{current: selectedNum == index}">
-					<div class="list_cont" @click.stop="clickEvent(index, v.OrderID)">
+					<div class="list_cont" @click.stop="clickEvent(index, v.OrderID, v.delegatePrice, v.delegateNum)">
 						<div class="name">
 							<em>{{v.commodityName}}</em>
 							<em>{{v.ContractCode}}</em>
@@ -32,15 +32,17 @@
 				</li>
 			</template>
 		</ul>
+		<editOrder ref="editOrder"></editOrder>
 	</div>
 </template>
 
 <script>
 	import btn from "../../components/btn.vue"
+	import editOrder from "./editOrder.vue"
 	import { Toast, MessageBox } from 'mint-ui';
 	export default{
 		name: "hangOrder",
-		components: {btn},
+		components: {btn, editOrder},
 		data(){
 			return{
 				selectedNum: -1,
@@ -82,9 +84,11 @@
 			}
 		},
 		methods: {
-			clickEvent: function(i, id){
+			clickEvent: function(i, id, price, num){
 				this.selectedNum = i;
 				this.currentOrderID = id;
+				this.entrustPrice = price;
+				this.entrustNum = num;
 				this.orderListCont.forEach((o, i) => {
 					o.toolShow = false;
 					if(o.OrderID == id){
@@ -131,7 +135,10 @@
 				}
 			},
 			editOrder: function(){
-				
+				this.$refs.editOrder.show = true;
+				this.$refs.editOrder.id = this.currentOrderID;
+				this.$refs.editOrder.entrustPrice = this.entrustPrice;
+				this.$refs.editOrder.entrustNum = this.entrustNum;
 			},
 			operateData: function(obj){
 				this.$store.state.market.orderListCont = [];
@@ -167,7 +174,6 @@
 		mounted: function(){
 			//获取挂单列表数据
 			this.operateData(this.OnRspOrderInsertOrderListCont);
-			console.log(this.orderListCont);
 		}
 	}
 </script>

@@ -5,11 +5,11 @@
 			<h1>改单</h1>
 			<div class="row">
 				<span>委托价格</span>
-				<input type="text" />
+				<input type="text" v-model="entrustPrice" />
 			</div>
 			<div class="row">
 				<span>委托数量</span>
-				<input type="text" />
+				<input type="text" v-model="entrustNum" />
 			</div>
 			<div class="btn_box">
 				<span @tap="confirmEvent">确认</span>
@@ -20,17 +20,75 @@
 </template>
 
 <script>
+	import { Toast } from 'mint-ui';
 	export default{
 		name: "editOrder",
 		components: {},
 		data(){
 			return{
 				show: false,
+				id: '',
+				entrustPrice: '',
+				entrustNum: '',
 			}
+		},
+//		props: ['price', 'num', 'id'],
+		computed: {
+			cancelStatus(){
+				return this.$store.state.market.cancelStatus;
+			},
+			orderListCont(){
+				return this.$store.state.market.orderListCont;
+			},
+			tradeSocket(){
+				return this.$store.state.tradeSocket;
+			},
+			orderTemplist(){
+				return this.$store.state.market.orderTemplist;
+			},
 		},
 		methods: {
 			confirmEvent: function(){
-				
+				if(this.entrustPrice == '' || this.entrustPrice == 0){
+					Toast({message: '委托价格不能为空或者0', position: 'bottom', duration: 1000});
+				}else if(this.entrustPrice < 0){
+					Toast({message: '委托价格不能为负', position: 'bottom', duration: 1000});
+				}else if(this.entrustNum == '' || this.entrustNum == 0){
+					Toast({message: '委托数量不能为空或者0', position: 'bottom', duration: 1000});
+				}else if(this.entrustNum < 0){
+					Toast({message: '委托数量不能为负', position: 'bottom', duration: 1000});
+				}else{
+					if(this.cancelStatus == true) return;
+					this.$store.state.market.cancelStatus = true;
+					this.orderListCont.forEach(function(o,i){
+						if(this.id == o.OrderID){
+							var Contract = o.ContractCode.substring(0, o.ContractCode.length - 4);
+							var b = {
+								"Method": 'ModifyOrder',
+								"Parameters":{
+									"OrderSysID": '',
+									"OrderID": o.OrderID,
+									"ExchangeNo": this.orderTemplist[Contract].ExchangeNo,
+									"CommodityNo": this.orderTemplist[Contract].CommodityNo,
+									"ContractNo": this.orderTemplist[Contract].MainContract,
+									"OrderNum": parseFloat(this.entrustNum),
+									"Direction": function(){
+													if(o.buyOrSell=='买'){
+														return 0;
+													}else{
+														return 1;
+													}
+												},
+									"OrderPrice": parseFloat(this.entrustPrice),
+									"TriggerPrice":0
+								}
+							};
+							this.tradeSocket.send(JSON.stringify(b));
+							o.toolShow = false;
+						}
+					}.bind(this));
+				}
+				this.show = false;
 			},
 			cancelEvent: function(){
 				this.show = false;

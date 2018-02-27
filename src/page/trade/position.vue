@@ -30,19 +30,17 @@
 				</li>
 			</template>
 		</ul>
-		<editOrder ref="editOrder"></editOrder>
 		<stopMoneyAlert ref="stopMoneyAlert"></stopMoneyAlert>
 	</div>
 </template>
 
 <script>
 	import btn from "../../components/btn.vue"
-	import editOrder from "./editOrder.vue"
 	import stopMoneyAlert from "./stopMoneyAlert.vue"
 	import { Toast, MessageBox } from 'mint-ui';
 	export default{
 		name: "position",
-		components: {btn, editOrder, stopMoneyAlert},
+		components: {btn, stopMoneyAlert},
 		data(){
 			return{
 				selectedNum: -1,
@@ -73,9 +71,6 @@
 			},
 		},
 		methods: {
-			backTrade: function(){   //反手
-				this.$refs.editOrder.show = true;
-			},
 			stopMoney: function(){   //止损止盈
 				this.$refs.stopMoneyAlert.show = true;
 			},
