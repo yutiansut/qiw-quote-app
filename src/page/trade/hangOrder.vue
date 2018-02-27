@@ -13,7 +13,7 @@
 			</li>
 			<template v-for="(v, index) in orderListCont">
 				<li :class="{current: selectedNum == index}">
-					<div class="list_cont" @click.stop="clickEvent(index, v.ContractCode)">
+					<div class="list_cont" @click.stop="clickEvent(index, v.OrderID)">
 						<div class="name">
 							<em>{{v.commodityName}}</em>
 							<em>{{v.ContractCode}}</em>
@@ -25,8 +25,8 @@
 						<span class="status">{{v.InsertDateTime}}</span>
 					</div>
 					<div class="tools" v-show="v.toolShow">
-						<btn name="撤单" className="orangesm"></btn>
-						<btn name="改单" className="bluesm"></btn>
+						<btn name="撤单" className="orangesm" @click.native="cancelOrder"></btn>
+						<btn name="改单" className="bluesm" @click.native="editOrder"></btn>
 						<!--<btn name="全撤" className="greensm"></btn>-->
 					</div>
 				</li>
@@ -37,6 +37,7 @@
 
 <script>
 	import btn from "../../components/btn.vue"
+	import { Toast, MessageBox } from 'mint-ui';
 	export default{
 		name: "hangOrder",
 		components: {btn},
@@ -86,10 +87,51 @@
 				this.currentOrderID = id;
 				this.orderListCont.forEach((o, i) => {
 					o.toolShow = false;
-					if(o.ContractCode == id){
+					if(o.OrderID == id){
 						o.toolShow = true;
 					}
 				});
+			},
+			cancelOrder: function(){
+				var confirmText;
+				if(this.currentOrderID != ''){
+					this.orderListCont.forEach(function(o,i){
+						if(this.currentOrderID == o.OrderID){
+							var Contract = o.ContractCode.substring(0, o.ContractCode.length-4);
+							var b = {
+								"Method": 'CancelOrder',
+								"Parameters":{
+									"OrderSysID": '',
+									"OrderID": o.OrderID,
+									"ExchangeNo": this.orderTemplist[Contract].ExchangeNo,
+									"CommodityNo": this.templateList[Contract].CommodityNo,
+									"ContractNo": this.templateList[Contract].ContractNo,
+									"OrderNum": parseFloat(o.delegateNum),
+									"Direction": function(){
+													if(o.buyOrSell=='买'){
+														return 0;
+													}else{
+														return 1;
+													}
+												},
+									"OrderPrice": parseFloat(o.delegatePrice)
+								}
+							};
+							confirmText = '提交撤单:【'+ o.ContractCode +'】,价格【'+ o.delegatePrice +'】,手数【'+ o.delegateNum +'】,方向【'+ o.buyOrSell +'】？';
+							MessageBox.confirm(confirmText,"提示").then(action=>{
+								if(this.cancelStatus == true) return;
+								this.$store.state.market.cancelStatus = true;
+								this.tradeSocket.send(JSON.stringify(b));
+								o.toolShow = false;
+							}).catch(err=>{});
+						}
+					}.bind(this));
+				}else{
+					Toast({message: '请选择一条数据', position: 'bottom', duration: 1000});
+				}
+			},
+			editOrder: function(){
+				
 			},
 			operateData: function(obj){
 				this.$store.state.market.orderListCont = [];

@@ -25,7 +25,7 @@
 					<div class="tools" v-show="v.toolShow">
 						<btn name="平仓" className="orangesm" @click.native="closePosition"></btn>
 						<btn name="反手" className="bluesm" @tap.native="backTrade"></btn>
-						<btn name="止损止盈" className="greensm" @tap.native="stopMoney"></btn>
+						<btn name="止损止盈" className="greensm" @click.native="stopMoney"></btn>
 					</div>
 				</li>
 			</template>
