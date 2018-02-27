@@ -10,27 +10,28 @@
 					<span class="price">委托量</span>
 					<span class="price">已成交</span>
 					<span class="price">已撤单</span>
-					<span class="price">下单时间</span>
+					<span class="status">下单时间</span>
 					<span class="status">状态说明</span>
 				</div>
 			</li>
-			<li class="current">
-				<div class="list_cont">
-					<div class="name">
-						<em>日经225</em>
-						<em>CNQ16</em>
+			<template v-for="v in entrustList">
+				<li>
+					<div class="list_cont">
+						<div class="name">
+							<em>{{v.commodityName}}</em>
+							<em>{{v.ContractCode}}</em>
+						</div>
+						<span class="num">{{v.commodityStatus}}</span>
+						<span class="type">{{v.buyOrSell}}</span>
+						<span class="price">{{v.delegatePrice}}</span>
+						<span class="price">{{v.delegateNum}}</span>
+						<span class="price">{{v.TradeNum}}</span>
+						<span class="price">{{v.RevokeNum}}</span>
+						<span class="status">{{v.InsertDateTime}}</span>
+						<span class="status">{{v.StatusMsg}}</span>
 					</div>
-					<span class="num">1</span>
-					<span class="type">买</span>
-					<span class="price red">51.03</span>
-					<span class="status green">51.03</span>
-				</div>
-				<div class="tools">
-					<btn name="平仓" className="orangesm"></btn>
-					<btn name="反手" className="bluesm"></btn>
-					<btn name="止损止盈" className="greensm"></btn>
-				</div>
-			</li>
+				</li>
+			</template>
 		</ul>
 	</div>
 </template>
@@ -42,13 +43,74 @@
 		components: {btn},
 		data(){
 			return{
+				entrustList: [],    //渲染委托列表数据
+			}
+		},
+		computed: {
+			orderTemplist(){
+				return this.$store.state.market.orderTemplist;
+			},
+			OrderType(){
+				return this.$store.state.market.OrderType;
+			},
+			OnRspOrderInsertEntrustCont(){
+				return this.$store.state.market.OnRspOrderInsertEntrustCont;
+			},
+		},
+		watch: {
+			OnRspOrderInsertEntrustCont: function(n, o){
+				if(n){
+					//更新委托列表数据
+					this.operateData(n);
+				}
 			}
 		},
 		methods: {
-			
+			operateData: function(obj){
+				this.entrustList = [];
+				if(obj){
+					obj.forEach(function(o, i){
+						var data = {};
+						if(o.CommodityNo != ''){
+							data.commodityName = this.orderTemplist[o.CommodityNo].CommodityName;
+							data.commodityStatus = this.OrderType[o.OrderStatus];
+							data.buyOrSell = function(){
+								if(o.Drection==0){
+									return '买';
+								}else{
+									return '卖';
+								}
+							}();
+							data.delegatePrice = function(){
+								if(o.OrderPriceType==1){
+									return '市价';
+								}else{
+									return parseFloat(o.OrderPrice).toFixed(this.orderTemplist[o.CommodityNo].DotSize);
+								}
+							}.bind(this)();
+							data.delegateNum = o.OrderNum;
+							data.TradeNum = o.TradeNum;
+							data.RevokeNum = function(){
+								if(o.OrderStatus == 4){
+									return o.OrderNum - o.TradeNum;
+								}else{
+									return 0;
+								}
+							}();
+							data.InsertDateTime = o.InsertDateTime;
+							data.ContractCode = o.ContractCode;
+							data.OrderID = o.OrderID;
+							data.StatusMsg = o.StatusMsg;
+							this.entrustList.unshift(data);
+						}
+					}.bind(this));
+				}
+			}
 		},
 		mounted: function(){
-			
+			//获取委托列表数据
+			this.operateData(this.OnRspOrderInsertEntrustCont);
+			console.log(this.entrustList);
 		}
 	}
 </script>
@@ -59,7 +121,7 @@
 		width: 7.5rem;
 		overflow-x: auto;
 		ul{
-			width: 13rem;
+			width: 15.9rem;
 		}
 		li{
 			span{
@@ -80,7 +142,7 @@
 				width: 1.3rem;
 			}
 			.status{
-				width: 1.6rem;
+				width: 3rem;
 			}
 			.price, .status{
 				&.red{
