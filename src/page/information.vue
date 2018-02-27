@@ -23,6 +23,7 @@
 					<div class="list" v-for="k in this.newsInfo">
 						<p>{{k.createdAt | changTime }}</p>
 						<!--<p>{{k.liveTitle}}</p>-->
+						<p v-if="k.liveTitle.length > 120 && k.importance == '3'" class="textHeight" style="color: red;">{{k.liveTitle}}</p>
 						<p v-if="k.liveTitle.length > 120" class="textHeight">{{k.liveTitle}}</p>
 						<p v-if="k.liveTitle.length < 120">{{k.liveTitle}}</p>
 						<p v-if="k.liveTitle.length > 120" @click="showAll"><span>展开</span></p>
@@ -154,7 +155,7 @@
 				list:'',
 				value: null,
 		      	value1: null,
-		      	startDate: new Date('2014-1-1'),
+		      	startDate: new Date('2014'),
 		      	endDate: new Date('2020-12-31'),
 		      	show_day:"",
 		      	showNoInfo:false,
@@ -611,9 +612,6 @@
 				.textHeight{
 					height: 1.8rem;
 				}
-			}
-			.color_red{
-				color: #ff5533;
 			}
 		}
 		.empty{
