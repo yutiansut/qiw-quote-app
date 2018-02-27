@@ -23,8 +23,9 @@
 					<div class="list" v-for="k in this.newsInfo">
 						<p>{{k.createdAt | changTime }}</p>
 						<!--<p>{{k.liveTitle}}</p>-->
-						<p v-if="k.liveTitle.length > 120 && k.importance == '3'" class="textHeight" style="color:#ff5533 ;">{{k.liveTitle}}</p>
-						<p v-else-if="k.liveTitle.length > 120 && k.importance != '3'" class="textHeight">{{k.liveTitle}}</p>
+						<p v-if="k.liveTitle.length > 120 && k.importance != '1'" class="textHeight" style="color:#ff5533 ;">{{k.liveTitle}}</p>
+						<p v-else-if="k.liveTitle.length > 120 && k.importance == '1'" class="textHeight">{{k.liveTitle}}</p>
+						<p v-else-if="k.liveTitle.length < 120 && k.importance != '1'" style="color:#ff5533 ;">{{k.liveTitle}}</p>
 						<p v-else-if="k.liveTitle.length < 120">{{k.liveTitle}}</p>
 						<p v-if="k.liveTitle.length > 120" @click="showAll"><span>展开</span></p>
 						<p v-if="k.liveTitle.length < 120" ></p>
@@ -169,6 +170,7 @@
 		methods:{
 			//下拉刷新
 			loadTop:function(){
+				this.times = 0;
 				this.getNewsInfo(0);
 			},
 			//加载更多
