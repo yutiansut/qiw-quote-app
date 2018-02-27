@@ -128,5 +128,7 @@
 	.main{
 		margin-top: 1.81rem;
 		padding-bottom: 1rem;
+		margin-bottom: 2rem;
+		overflow-y: auto;
 	}
 </style>

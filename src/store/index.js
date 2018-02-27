@@ -977,7 +977,7 @@ export default new Vuex.Store({
 						//查询条件单
 //						context.state.tradeSocket.send('{"Method":"QryCondition","Parameters":{"ClientNo":"'+context.state.market.tradeConfig.username+'"}}');
 						//查询历史成交
-//						context.dispatch('qryHisTrade');
+						context.dispatch('qryHisTrade');
 						//启动交易心跳定时检查
 						context.dispatch('HeartBeatTimingCheck');
 					}else{
@@ -1038,6 +1038,7 @@ export default new Vuex.Store({
 					break;
 				case 'OnRspQryHisTrade'://查询历史成交记录回复
 					if(parameters!=null){
+						console.log(parameters);
 						context.state.market.queryHisList.push(parameters);
 					}
 					break;

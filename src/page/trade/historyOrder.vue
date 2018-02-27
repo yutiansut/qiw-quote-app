@@ -16,30 +16,37 @@
 			<ul>
 				<li>
 					<div class="list_title">
-						<span class="num">序号</span>
+						<span class="type">序号</span>
 						<span class="name">合约代码</span>
 						<span class="num">交易所</span>
-						<span class="num">币种</span>
+						<span class="name">币种</span>
 						<span class="type">买卖</span>
 						<span class="price">成交价</span>
 						<span class="price">成交量</span>
 						<span class="price">手续费</span>
-						<span class="status">平仓盈亏</span>
+						<span class="name">平仓盈亏</span>
 						<span class="status">成交时间</span>
 					</div>
 				</li>
-				<li class="current">
-					<div class="list_cont">
-						<div class="name">
-							<em>日经225</em>
-							<em>CNQ16</em>
+				<template v-for="v in histroyDealList">
+					<li>
+						<div class="list_cont">
+							<span class="type">{{v.index}}</span>
+							<div class="name">
+								<em>日经225</em>
+								<em>{{v.CommodityNoContractNo}}</em>
+							</div>
+							<span class="num">{{v.ExchangeNo}}</span>
+							<span class="name">{{v.CurrencyNo}}</span>
+							<span class="type">{{v.Drection}}</span>
+							<span class="price">{{v.TradePrice}}</span>
+							<span class="price">{{v.TradeNum}}</span>
+							<span class="price">{{v.TradeFee}}</span>
+							<span class="name">{{v.hedgeProfit}}</span>
+							<span class="status">{{v.TradeDateTime}}</span>
 						</div>
-						<span class="num">1</span>
-						<span class="type">买</span>
-						<span class="price red">51.03</span>
-						<span class="status green">51.03</span>
-					</div>
-				</li>
+					</li>
+				</template>
 			</ul>
 		</div>
 		<mt-datetime-picker ref="startTimePicker" type="date" :startDate="startDate" :endDate="endDate" @confirm="startTimeConfirm"></mt-datetime-picker>
@@ -59,7 +66,19 @@
 				endTime: '',
 				startDate: new Date('2017-1-1'),
 		      	endDate: new Date('2020-12-31'),
+		      	histroyDealList: [],
 			}
+		},
+		computed: {
+			queryHisList(){
+				return this.$store.state.market.queryHisList;
+			},
+			orderTemplist(){
+				return	this.$store.state.market.orderTemplist;
+			},
+			tradeSocket(){
+				return this.$store.state.tradeSocket;
+			},
 		},
 		methods: {
 			selectStartDate: function(){
@@ -75,13 +94,38 @@
 			endTimeConfirm: function(e){
 				let time = new Date(e);
 				this.endTime = pro.getDate("y-m-d", time);
-			}
+			},
+			operateData: function(){
+				this.queryHisList.forEach(function(o, i){
+					var data = {};
+					data.index = i;
+					data.CommodityNoContractNo = o.ContractCode;
+					data.ExchangeNo = o.ExchangeNo;
+					data.CurrencyNo = o.CurrencyNo;
+					data.Drection =(function(){
+						if(o.Drection==0){
+							return '买';
+						}else{
+							return '卖';
+						}
+					})();
+					data.TradePrice = parseFloat(o.TradePrice).toFixed(this.orderTemplist[o.CommodityNo].DotSize);
+					data.TradeNum = o.TradeNum;
+					data.TradeFee = o.TradeFee;
+					data.TradeDateTime = o.TradeDateTime;
+					data.hedgeProfit = o.HedgeProfit;
+					this.histroyDealList.push(data);
+				}.bind(this));
+			},
 		},
 		mounted: function(){
 			//取当前时间
 			let time = new Date();
 			this.startTime = pro.getDate("y-m-d", time);
 			this.endTime = pro.getDate("y-m-d", time);
+			//默认取所有数据
+			this.operateData();
+			console.log(this.histroyDealList);
 		}
 	}
 </script>
@@ -138,11 +182,13 @@
 	.list{
 		width: 7.5rem;
 		overflow-x: auto;
+		border-bottom: 0.01rem solid $black;
 		ul{
-			width: 15rem;
+			width: 15.4rem;
 		}
 		li{
 			span{
+				float: left;
 				display: inline-block;
 				font-size: $fs28;
 			}
@@ -160,7 +206,7 @@
 				width: 1.3rem;
 			}
 			.status{
-				width: 1.6rem;
+				width: 2.8rem;
 			}
 			.price, .status{
 				&.red{
