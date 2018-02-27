@@ -59,15 +59,18 @@
 								<span>{{n.timestamp | changTime}}</span>
 								<span><img :src="n.flagUrl" /></span>
 								<span>{{n.country}}</span>
-								<span v-if="n.stars == '4'">
-									<i  v-for="t in 4" class="start_red"></i>
+								<span v-if="n.importance == '3'">
+									<i  v-for="t in 3" class="start_red"></i>
 								</span>
-								<span v-if="n.stars != '4'">
+								<span v-if="n.stars != '3'">
 									<i  v-for="t in Number(n.stars)" class="start_blue"></i>
-									<i v-for="t in (4-Number(n.stars))" class="start_white"></i>
+									<i v-for="t in (3-Number(n.stars))" class="start_white"></i>
 								</span>
 							</li>
-							<li>
+							<li v-if="n.importance == '3'"style="color: #ff5533;">
+								{{n.title}}
+							</li>
+							<li v-if="n.importance != '3'">
 								{{n.title}}
 							</li>
 							<li>
@@ -535,6 +538,7 @@
 		width: 100%;
 		margin-top: 1.8rem;
 		.navlist{
+			opacity: 1;
 			background-color: $bg;
 			position: fixed;
 			top: 1rem;
@@ -742,7 +746,7 @@
 							}
 						}
 						&:nth-child(2){
-							color: $orange;
+							color: $white;
 							font-weight: 600;
 						}
 						&:nth-child(3){
@@ -760,7 +764,9 @@
 								}
 							}
 						}
+						
 					}
+					
 				}
 			}
 		}
