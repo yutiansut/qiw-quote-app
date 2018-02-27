@@ -24,7 +24,6 @@
 						<p>{{k.createdAt | changTime }}</p>
 						<!--<p>{{k.liveTitle}}</p>-->
 						<p v-if="k.liveTitle.length > 120"  class="textHeight">{{k.liveTitle}}</p>
-						<p v-if="k.liveTitle.length > 120" class="textHeight">{{k.liveTitle}}</p>
 						<p v-if="k.liveTitle.length < 120">{{k.liveTitle}}</p>
 						<p v-if="k.liveTitle.length > 120" @click="showAll"><span>展开</span></p>
 						<p v-if="k.liveTitle.length < 120" ></p>
@@ -539,6 +538,7 @@
 		width: 100%;
 		margin-top: 1.8rem;
 		.navlist{
+			z-index: 100;
 			opacity: 1;
 			background-color: $bg;
 			position: fixed;
