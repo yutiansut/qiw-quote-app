@@ -238,7 +238,7 @@
 			.status{
 				width: 1.6rem;
 			}
-			.price, .status{
+			.price, .status, .type{
 				&.red{
 					color: $red;
 				}
