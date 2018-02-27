@@ -590,6 +590,7 @@
 						height: 0.7rem;
 						line-height: 0.7rem;
 						text-align: right;
+						padding-right: 0.3rem;
 						span{
 							margin-right: 0.1rem;
 							/*width: 0.6rem;*/
