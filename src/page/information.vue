@@ -183,8 +183,9 @@
 		    		pageNo:this.times
 				}
 				pro.fetch("post","/news/get7_24Live",data,"").then((res)=>{
+					console.log("res======+++++++++"+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
-						var b = res.data.data.data;
+						var b = res.data;
 						this.newsInfo=this.newsInfo.concat(b);
 					}
 				}).catch((err)=>{
@@ -259,7 +260,7 @@
 		    	pro.fetch("post","/news/get7_24Live",data,"").then((res)=>{
 //		    		console.log("res==="+JSON.stringify(res));
 		    		if(res.code == 1 && res.success == true){
-		    			this.newsInfo = res.data.data.data;
+		    			this.newsInfo = res.data;
 		    		}
 		    	}).catch((err)=>{
 //		    		console.log("err==="+err)

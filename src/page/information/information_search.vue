@@ -80,7 +80,7 @@
 						}else{
 							this.showExist = true;
 							this.showDefault = false;
-							this.infoList = res.data.data.data;
+							this.infoList = res.data;
 						}
 					}
 				}).catch((err)=>{
@@ -111,7 +111,6 @@
 		},
 		watch:{
 			searchInfo:function(e){
-				console.log("eeeeeeeeeeee===="+e)
 				if(e != ""){
 					this.search(e);
 				}else{
