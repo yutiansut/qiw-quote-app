@@ -237,8 +237,10 @@
 			fullHeight (val) {
 		        if(val != this.fullHeight1){
 		        	this.showWhat = false;
+		        	$("#to").hide();
 		        }else{
 		        	this.showWhat =true;
+		        	$("#to").show();
 		        }
 		    }
 		}

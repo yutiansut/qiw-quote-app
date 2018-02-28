@@ -30,9 +30,8 @@
 						<p v-if="k.liveTitle.length > 120" @click="showAll"><span>展开</span></p>
 						<p v-if="k.liveTitle.length < 120" ></p>
 					</div>
-					<div class="empty"></div>
 				</mt-loadmore>
-				
+				<div class="empty"></div>
 			</div>
 			<!--日历-->
 			<div id="calendar" v-show="showCalendar">
