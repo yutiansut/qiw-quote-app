@@ -385,6 +385,9 @@
 				this.totalMoney = this.rangeValue + this.rangeValue*this.rangeValue1;
 				this.lossLine = this.rangeValue*this.lossScale + this.rangeValue*this.rangeValue1;
 //				console.log(this.rangeValue1)
+			},
+			$route:function(to,from){
+				MessageBox.close(false);
 			}
 		},
 		filters:{
