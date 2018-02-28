@@ -47,7 +47,7 @@
 		name:"information_search",
 		data(){
 			return{
-				infoList:"",
+				infoList:[],
 				showExist:false,
 				showNone:false,
 				searchInfo:'',
@@ -73,13 +73,10 @@
 				pro.fetch("post","/news/get7_24Live",data,"").then((res)=>{
 //					console.log("res========="+JSON.stringify(res))
 					if(res.code == 1 && res.success == true){
-						if(res.data.data.data == ''){
-							this.showExist = false;
+						if(res.data == ''){
 							this.showNone = true;
-							this.showDefault = true
+							this.showDefault = true;
 						}else{
-							this.showExist = true;
-							this.showDefault = false;
 							this.infoList = res.data;
 						}
 					}
@@ -112,8 +109,12 @@
 		watch:{
 			searchInfo:function(e){
 				if(e != ""){
+					this.showExist = true;
+					this.showNone = false;
+					this.showDefault = false;
 					this.search(e);
 				}else{
+					this.infoList = []
 					this.showExist=false;
 					this.showNone=false;
 					this.showDefault = true
