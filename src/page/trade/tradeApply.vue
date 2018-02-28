@@ -160,7 +160,7 @@
 							this.getNewActivity(headers);
 						}else{
 //							console.log("未领取555555555555555555");
-							$("#btnnnn").html("领取体验金");
+							$("#btnnnn").html("领取模拟币");
 							this.startMax = 10000;
 							this.disabled = false;
 						}
@@ -232,7 +232,7 @@
 				}else{
 					//未领取过新手礼包
 					if(this.isPresentedgive == false){
-						MessageBox.alert("恭喜小主，您有1w的操盘体验金未领取，赶紧领取吧！","提示",{confirmButtonText:"去领取"}).then(action => {
+						MessageBox.alert("恭喜小主，您有10000模拟币未领取，赶紧领取吧！","提示",{confirmButtonText:"去领取"}).then(action => {
 //							console.log("999999999");
 							this.$router.push({path:"/newbieTask"});
 						});

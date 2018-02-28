@@ -52,6 +52,9 @@
 					<div class="details">
 						<ul>
 							<li>
+								<span class="subscriptionClick" v-if="n.status == undefined " @click="subscription(index,n.id,n.previous,n.actual,n.forecast,n.title,n.timestamp)">
+									<i  class="subscriptioned"></i>
+								</span>
 								<span class="subscriptionClick" v-if="n.status == '0' " @click="subscription(index,n.id,n.previous,n.actual,n.forecast,n.title,n.timestamp)">
 									<i  class="subscriptioned"></i>
 								</span>
@@ -61,12 +64,12 @@
 								<span>{{n.timestamp | changTime}}</span>
 								<span><img :src="n.flagUrl" /></span>
 								<span>{{n.country}}</span>
-								<span v-if="n.importance == '3'">
+								<span  v-if="n.importance == '3'">
 									<i  v-for="t in 3" class="start_red"></i>
 								</span>
-								<span v-if="n.stars != '3'">
-									<i  v-for="t in Number(n.stars)" class="start_blue"></i>
-									<i v-for="t in (3-Number(n.stars))" class="start_white"></i>
+								<span v-if="n.importance != '3'">
+									<i  v-for="t in Number(n.importance)" class="start_blue"></i>
+									<i v-for="t in (3-Number(n.importance))" class="start_white"></i>
 								</span>
 							</li>
 							<li v-if="n.importance == '3'"style="color: #ff5533;">
@@ -386,7 +389,7 @@
 			},
 			subscription:function(index,calendarId,previous,actual,forecast,title,timestamp){
 				var timestampNow = Date.parse(new Date())/1000;
-				if(this.UserInfo == ''){
+				if(this.userInfo == ''){
 					this.$toast({message:"您还未登录，请先登录，方可订阅",duration: 2000});
 					this.$router.push({path:"/login"});
 				}else{
