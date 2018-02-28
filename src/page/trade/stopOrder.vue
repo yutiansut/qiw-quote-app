@@ -1,9 +1,68 @@
 <template>
-	<div id="stopOrder" class="list">
-		<ul>
-			<li>
-				<div class="list_title">
-					<span class="name">合约名称</span>
+	<div id="stopOrder" >
+		<div class="order_type">
+			<template v-for="(v, index) in tabList">
+				<span :class="{current: currentNum == index}" @tap="tabEvent(index)">{{v}}</span>
+			</template>
+		</div>
+		<div class="list">
+			<ul v-if="tabShow">
+				<li>
+					<div class="list_title">
+						<span class="name">合约名称</span>
+						<span class="num">状态</span>
+						<span class="type">多空</span>
+						<span class="name">类型</span>
+						<span class="type">手数</span>
+						<span class="status">触发条件</span>
+						<span class="price">委托价</span>
+						<span class="num">有效日期</span>
+						<span class="status">下单时间</span>
+					</div>
+				</li>
+				<template v-for="(v, index) in notStopLossList">
+					<li :class="{current: selectedNum == index}">
+						<div class="list_cont">
+							<div class="name">
+								<em>{{orderTemplist[v.CommodityNo].CommodityName}}</em>
+								<em>{{v.CommodityNo + v.ContractNo}}</em>
+							</div>
+							<span class="num">{{v.StatusMsg00}}</span>
+							<span class="type">{{v.HoldDrection}}</span>
+							<span class="name">{{v.StopLossType}}</span>
+							<span class="type">{{v.Num}}</span>
+							<span class="status">{{v.triggerCondition}}</span>
+							<span class="price">{{v.entrustPrice}}</span>
+							<span class="num">{{v.validity}}</span>
+							<span class="status">{{v.InsertDateTime}}</span>
+						</div>
+						<div class="tools">
+							<btn name="暂停" className="orangesm"></btn>
+							<btn name="修改" className="bluesm"></btn>
+							<btn name="删除" className="greensm"></btn>
+						</div>
+					</li>
+				</template>
+			</ul>
+			<ul v-if="!tabShow">
+				<li>
+					<div class="list_title">
+						<span class="name">合约名称</span>
+						<span class="num">状态</span>
+						<span class="type">多空</span>
+						<span class="type">类型</span>
+						<span class="type">手数</span>
+						<span class="price">触发条件</span>
+						<span class="price">委托价</span>
+						<span class="status">有效日期</span>
+						<span class="status">下单时间</span>
+					</div>
+				</li>
+				<li class="current">
+					<div class="name">
+						<em>日经225</em>
+						<em>CNQ16</em>
+					</div>
 					<span class="num">状态</span>
 					<span class="type">多空</span>
 					<span class="type">类型</span>
@@ -12,50 +71,9 @@
 					<span class="price">委托价</span>
 					<span class="status">有效日期</span>
 					<span class="status">下单时间</span>
-				</div>
-			</li>
-			<li class="current">
-				<div class="list_cont">
-					<div class="name">
-						<em>日经225</em>
-						<em>CNQ16</em>
-					</div>
-					<span class="num">1</span>
-					<span class="type">买</span>
-					<span class="price red">51.03</span>
-					<span class="status green">51.03</span>
-				</div>
-				<div class="tools">
-					<btn name="平仓" className="orangesm"></btn>
-					<btn name="反手" className="bluesm"></btn>
-					<btn name="止损止盈" className="greensm"></btn>
-				</div>
-			</li>
-			<li>
-				<div class="list_cont">
-					<div class="name">
-						<em>日经225</em>
-						<em>CNQ16</em>
-					</div>
-					<span class="num">1</span>
-					<span class="type">买</span>
-					<span class="price red">51.03</span>
-					<span class="status green">51.03</span>
-				</div>
-			</li>
-			<li>
-				<div class="list_cont">
-					<div class="name">
-						<em>日经225</em>
-						<em>CNQ16</em>
-					</div>
-					<span class="num">1</span>
-					<span class="type">买</span>
-					<span class="price red">51.03</span>
-					<span class="status green">51.03</span>
-				</div>
-			</li>
-		</ul>
+				</li>
+			</ul>
+		</div>
 	</div>
 </template>
 
@@ -66,24 +84,238 @@
 		components: {btn},
 		data(){
 			return{
+				tabList: ['未触发列表','已触发列表'],
+				currentNum: 0,
+				tabShow: true,
+				notStopLossList: [],
+				alreadyStopLossList: [],
+				selectedNum: -1,
 			}
 		},
+		computed: {
+			tradeSocket() {
+				return this.$store.state.tradeSocket;
+			},
+			orderTemplist(){
+				return	this.$store.state.market.orderTemplist;
+			},
+			parameters(){
+				return this.$store.state.market.Parameters;
+			},
+			stopLossList(){
+				return this.$store.state.market.stopLossList;
+			},
+			stopLossTriggeredList(){
+				return this.$store.state.market.stopLossTriggeredList;
+			},
+		},
+		watch: {
+			stopLossList: function(n, o){
+				this.notStopLossListEvent();
+			},
+			stopLossTriggeredList: function(n, o){
+				this.alreadyStopLossListEvent();
+			},
+		},
 		methods: {
-			
+			tabEvent: function(index){
+				this.currentNum = index;
+				if(index == 0){
+					this.tabShow = true;
+				}else{
+					this.tabShow = false;
+					this.alreadyStopLossListEvent();
+				}
+			},
+			notStopLossListEvent: function(){
+				this.notStopLossList = [];
+				this.stopLossList.forEach(function(o, i){
+					let obj = {};
+					obj.ClientNo = o.ClientNo;
+					obj.CommodityNo = o.CommodityNo;
+					obj.ContractNo = o.ContractNo;
+					obj.ExchangeNo = o.ExchangeNo;
+					obj.HoldAvgPrice = o.HoldAvgPrice;
+					obj.HoldDrection = (function(){
+							if(o.HoldDrection == 0){
+								return '多';
+							}else{
+								return '空';
+							}
+						})();
+					obj.InsertDateTime = o.InsertDateTime;
+					obj.Num = o.Num;
+					obj.OrderType = (function(){
+						if(o.OrderType == 1){
+							return '市价';
+						}else{
+							return '限价';
+						}
+					})();
+					obj.OrderType00 = o.OrderType;
+					obj.Status = o.Status;
+					obj.StatusMsg = o.StatusMsg;
+					obj.StatusMsg00 = (function(){
+						if(o.Status == 0)
+							return '运行中';
+						if(o.Status == 1)
+							return '暂停';
+						if(o.Status == 2)
+							return '已触发';
+						if(o.Status == 3)
+							return '已取消';
+						if(o.Status == 4)
+							return '插入失败';
+						if(o.Status == 5)
+							return '触发失败';	
+					})();
+					obj.StopLossDiff = o.StopLossDiff;
+					obj.StopLossNo = o.StopLossNo;
+					obj.StopLossPrice = parseFloat(o.StopLossPrice).toFixed(this.orderTemplist[o.CommodityNo].DotSize);
+					obj.StopLossType = (function(){
+						if(o.StopLossType == 0)
+							return '限价止损';
+						if(o.StopLossType == 1)	
+							return '限价止盈';
+						if(o.StopLossType == 2)
+							return '动态止损';
+					})();
+					obj.StopLossType00 = o.StopLossType;
+					obj.triggerCondition=(function(){
+						if(o.StopLossType == 0 || o.StopLossType == 1)
+							return '触发价:'+parseFloat(o.StopLossPrice).toFixed(this.orderTemplist[o.CommodityNo].DotSize);
+						if(o.StopLossType == 2)
+							return '动态价:'+parseFloat(o.StopLossDiff).toFixed(this.orderTemplist[o.CommodityNo].DotSize);
+					}.bind(this))();
+					obj.entrustPrice = (function(){
+						if(o.OrderType == 1){
+							return '市价';
+						}else{
+							return '对手价';
+						}
+					})();
+					obj.validity = '永久有效';
+					obj.InsertDateTime = o.InsertDateTime;
+					this.notStopLossList.push(obj);
+				}.bind(this));
+			},
+			alreadyStopLossListEvent: function(){
+				this.alreadyStopLossList = [];
+				this.stopLossTriggeredList.forEach(function(o, i){
+					let obj = {};
+					obj.ClientNo = o.ClientNo;
+					obj.CommodityNo = o.CommodityNo;
+					obj.ContractNo = o.ContractNo;
+					obj.ExchangeNo = o.ExchangeNo;
+					obj.HoldAvgPrice = o.HoldAvgPrice;
+					obj.HoldDrection = (function(){
+							if(o.HoldDrection == 0){
+								return '多';
+							}else{
+								return '空';
+							}
+						})();
+					obj.InsertDateTime = o.InsertDateTime;
+					obj.Num = o.Num;
+					obj.OrderType = (function(){
+						if(o.OrderType == 1){
+							return '市价';
+						}else{
+							return '限价';
+						}
+					})();
+					obj.Status = o.Status;
+					obj.StatusMsg = o.StatusMsg;
+					obj.StatusMsg00 = (function(){
+						if(o.Status == 0)
+							return '运行中';
+						if(o.Status == 1)
+							return '暂停';
+						if(o.Status == 2)
+							return '已触发';
+						if(o.Status == 3)
+							return '已取消';
+						if(o.Status == 4)
+							return '插入失败';
+						if(o.Status == 5)
+							return '触发失败';	
+					})();
+					obj.StopLossDiff = o.StopLossDiff;
+					obj.StopLossNo = o.StopLossNo;
+					obj.StopLossPrice = parseFloat(o.StopLossPrice).toFixed(this.orderTemplist[o.CommodityNo].DotSize);
+					obj.StopLossType = (function(){
+						if(o.StopLossType == 0)
+							return '限价止损';
+						if(o.StopLossType == 1)	
+							return '限价止盈';
+						if(o.StopLossType == 2)
+							return '动态止损';
+					})();
+					obj.triggerCondition = (function(){
+						if(o.StopLossType == 0 || o.StopLossType == 1)
+							return '触发价:'+parseFloat(o.StopLossPrice).toFixed(this.orderTemplist[o.CommodityNo].DotSize);
+						if(o.StopLossType == 2)
+							return '动态价:'+parseFloat(o.StopLossDiff).toFixed(this.orderTemplist[o.CommodityNo].DotSize);	
+					}.bind(this))();
+					obj.entrustPrice = (function(){
+						if(o.OrderType == 1){
+							return '市价';
+						}else{
+							return '对手价';
+						}
+					})();
+					obj.validity = '永久有效';
+					obj.InsertDateTime = o.InsertDateTime;
+					this.alreadyStopLossList.push(obj);
+				}.bind(this));
+			}
 		},
 		mounted: function(){
-			
+			//获取渲染页面所需数据
+			this.notStopLossListEvent();
+			console.log(this.notStopLossList);
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
 	@import "../../assets/css/common.scss";
+	.order_type{
+		height: 0.96rem;
+		padding: 0 0.3rem;
+		border-bottom: 0.01rem solid $black;
+		span{
+			display: inline-block;
+			float: left;
+			width: 3.45rem;
+			height: 0.56rem;
+			line-height: 0.56rem;
+			text-align: center;
+			background: $lightBlue;
+			margin: 0.2rem 0;
+			color: $white; 
+			&:first-child{
+				border-top-left-radius: 0.1rem;
+				border-bottom-left-radius: 0.1rem;
+			}
+			&:last-child{
+				border-top-right-radius: 0.1rem;
+				border-bottom-right-radius: 0.1rem;
+			}
+			&.current{
+				background: $blue;
+			}
+		}
+	}
 	.list{
 		width: 7.5rem;
 		overflow-x: auto;
+		ul{
+			width: 15.2rem;
+		}
 		li{
 			span{
+				float: left;
 				display: inline-block;
 				font-size: $fs28;
 			}
@@ -101,7 +333,7 @@
 				width: 1.3rem;
 			}
 			.status{
-				width: 1.6rem;
+				width: 2.8rem;
 			}
 			.price, .status{
 				&.red{
