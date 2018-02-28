@@ -4,8 +4,9 @@
 		<div class="main">
 			<div class="title">
 				<ul>
-					<li class="current"><span>止损</span></li>
-					<li><span>止盈</span></li>
+					<template v-for="(v, index) in tabList">
+						<li :class="{current: currentNum == index}" @click="tabEvent(index)"><span>{{v}}</span></li>
+					</template>
 				</ul>
 			</div>
 			<div class="row">
@@ -14,16 +15,16 @@
 				<span>多空</span>
 				<span class="percent pl">最新：<em>69.65</em></span>
 			</div>
-			<!--<div class="row">
+			<div class="row" v-show="tabShow">
 				<span>方式</span>
-				<div class="order fl">
-					<b>止损价</b>
+				<div class="order fl" @tap="openSelectType">
+					<b>{{priceType}}</b>
 					<i class="icon icon_triangle"></i>
 				</div>
 				<input type="text" class="spe" />
 				<span class="percent">0.00%</span>
-			</div>-->
-			<div class="row">
+			</div>
+			<div class="row" v-show="!tabShow">
 				<span>止盈价</span>
 				<input type="text" />
 				<span class="percent">0.00%</span>
@@ -38,19 +39,39 @@
 				<span @tap="cancelEvent">取消</span>
 			</div>
 		</div>
+		<selectBox ref="selectBox" :obj="obj" :type="type"></selectBox>
 	</div>
 </template>
 
 <script>
+	import selectBox from "../../components/selectBox.vue"
 	export default{
 		name: "stopMoneyAlert",
-		components: {},
+		components: {selectBox},
 		data(){
 			return{
 				show: false,
+				tabList: ['止损','止盈'],
+				currentNum: 0,
+				tabShow: true,
+				obj: ['止损价','动态价'],
+				type: 'price',
+				priceType: '止损价',
 			}
 		},
 		methods: {
+			tabEvent: function(index){
+				this.currentNum = index;
+				if(index == 0){
+					this.tabShow = true;
+				}else{
+					this.tabShow = false;
+				}
+			},
+			openSelectType: function(){
+				$(".select_cont").css({bottom: -3.55 + 'rem'});
+				this.$refs.selectBox.shadeShow = true;
+			},
 			confirmEvent: function(){
 				
 			},
