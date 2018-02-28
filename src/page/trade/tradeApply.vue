@@ -160,7 +160,7 @@
 							this.getNewActivity(headers);
 						}else{
 //							console.log("未领取555555555555555555");
-							$("#btnnnn").html("领取体验金");
+							$("#btnnnn").html("领取模拟币");
 							this.startMax = 10000;
 							this.disabled = false;
 						}
