@@ -5,7 +5,7 @@
 				<div class="list_title">
 					<span class="name">合约名称</span>
 					<span class="type">多空</span>
-					<span class="num">手数</span>
+					<span class="type">手数</span>
 					<span class="price">持仓均价</span>
 					<span class="status">浮动盈亏</span>
 				</div>
@@ -18,7 +18,7 @@
 							<em>{{v.commodityNocontractNo}}</em>
 						</div>
 						<span class="type" :class="v.type_color">{{v.type}}</span>
-						<span class="num">{{v.HoldNum}}</span>
+						<span class="type">{{v.HoldNum}}</span>
 						<span class="price">{{v.price}}</span>
 						<span class="status" :class="v.total_color">{{v.total}}</span>
 					</div>

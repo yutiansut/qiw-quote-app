@@ -1038,7 +1038,6 @@ export default new Vuex.Store({
 					break;
 				case 'OnRspQryHisTrade'://查询历史成交记录回复
 					if(parameters!=null){
-						console.log(parameters);
 						context.state.market.queryHisList.push(parameters);
 					}
 					break;
