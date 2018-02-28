@@ -73,6 +73,19 @@
 		methods: {
 			stopMoney: function(){   //止损止盈
 				this.$refs.stopMoneyAlert.show = true;
+				this.qryHoldTotalArr.forEach(function(o,i){
+					if(this.currentOrderID == o.ContractCode){
+						let dosize = this.orderTemplist[o.CommodityNo].DotSize;
+						this.$refs.stopMoneyAlert.commodityName = o.ContractCode;
+						this.$refs.stopMoneyAlert.commodityNo = o.CommodityNo;
+						this.$refs.stopMoneyAlert.commodityType = o.Drection;
+						this.$refs.stopMoneyAlert.lossPrice = parseFloat(o.OpenAvgPrice).toFixed(dosize);
+						this.$refs.stopMoneyAlert.profitPrice = parseFloat(o.OpenAvgPrice).toFixed(dosize);
+						this.$refs.stopMoneyAlert.openAvgPrice = parseFloat(o.OpenAvgPrice).toFixed(dosize);
+						this.$refs.stopMoneyAlert.holdAvgPrice = parseFloat(o.HoldAvgPrice).toFixed(dosize);
+						this.$refs.stopMoneyAlert.num = o.HoldNum;
+					}
+				}.bind(this));
 			},
 			clickEvent: function(i, id){
 				this.selectedNum = i;

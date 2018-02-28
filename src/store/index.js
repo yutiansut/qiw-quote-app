@@ -1477,7 +1477,9 @@ export default new Vuex.Store({
 			}
 		},
 		updateStopLoss:function(context,parameters){
-			Toast({message: '单号【'+ parameters.StopLossNo +'】,更新成功', position: 'bottom', duration: 1000});
+			setTimeout(() => {
+				Toast({message: '单号【'+ parameters.StopLossNo +'】,更新成功', position: 'bottom', duration: 1000});
+			}, 1000);
 			if(parameters.Status>2){
 				context.state.market.stopLossTriggeredList.push(parameters);
 				context.state.market.stopLossList.forEach(function(o, i){
