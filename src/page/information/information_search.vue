@@ -55,6 +55,9 @@
 				arrList:[{"id":"黄金","id1":"布伦特原油","id2":"美国原油"},{"id":"美元","id1":"日元","id2":"标普500"},{"id":"纳斯达克","id1":"上证指数","id2":"深圳指数"}]
 			}
 		},
+		activated:function(){
+			this.searchInfo = '';
+		},
 		methods:{
 			back:function(){
 				this.$router.push({path:'/information'})
@@ -77,7 +80,7 @@
 						}else{
 							this.showExist = true;
 							this.showDefault = false;
-							this.infoList = res.data.data.data;
+							this.infoList = res.data;
 						}
 					}
 				}).catch((err)=>{
