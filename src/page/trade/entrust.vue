@@ -110,7 +110,6 @@
 		mounted: function(){
 			//获取委托列表数据
 			this.operateData(this.OnRspOrderInsertEntrustCont);
-			console.log(this.entrustList);
 		}
 	}
 </script>

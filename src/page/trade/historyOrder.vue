@@ -10,7 +10,7 @@
 				<i class="icon icon_time"></i>
 				<input type="text" placeholder="结束时间" readonly="readonly" v-model="endTime" @click="selectEndDate" />
 			</div>
-			<button>查询</button>
+			<button @tap="searchEvent">查询</button>
 		</div>
 		<div class="list">
 			<ul>
@@ -31,9 +31,9 @@
 				<template v-for="v in histroyDealList">
 					<li>
 						<div class="list_cont">
-							<span class="type">{{v.index}}</span>
+							<span class="type">{{v.index + 1}}</span>
 							<div class="name">
-								<em>日经225</em>
+								<em>{{orderTemplist[v.CommodityNo].CommodityName}}</em>
 								<em>{{v.CommodityNoContractNo}}</em>
 							</div>
 							<span class="num">{{v.ExchangeNo}}</span>
@@ -57,6 +57,7 @@
 <script>
 	import btn from "../../components/btn.vue"
 	import pro from "../../assets/js/common.js"
+	import { Toast } from 'mint-ui';
 	export default{
 		name: "historyOrder",
 		components: {btn},
@@ -95,10 +96,24 @@
 				let time = new Date(e);
 				this.endTime = pro.getDate("y-m-d", time);
 			},
+			searchEvent: function(){
+				let _beginTime = Date.parse(new Date(this.startTime));
+				let _endTime = Date.parse(new Date(this.endTime));
+				if(_endTime < _beginTime) Toast({message: '查询时间错误', position: 'bottom', duration: 1000});
+				this.histroyDealList = [];
+				let beginTime = this.startTime + ' 00:00:00';
+				let endTime = this.endTime + ' 00:00:00';
+				this.$store.state.market.queryHisList = [];
+				this.tradeSocket.send('{"Method":"QryHisTrade","Parameters":{"ClientNo":"'+JSON.parse(localStorage.tradeUser).username+'","BeginTime":"'+beginTime+'","EndTime":"'+endTime+'"}}');
+				setTimeout(function(){
+					this.operateData();
+				}.bind(this),500);
+			},
 			operateData: function(){
 				this.queryHisList.forEach(function(o, i){
 					var data = {};
 					data.index = i;
+					data.CommodityNo = o.CommodityNo
 					data.CommodityNoContractNo = o.ContractCode;
 					data.ExchangeNo = o.ExchangeNo;
 					data.CurrencyNo = o.CurrencyNo;
@@ -125,7 +140,6 @@
 			this.endTime = pro.getDate("y-m-d", time);
 			//默认取所有数据
 			this.operateData();
-			console.log(this.histroyDealList);
 		}
 	}
 </script>
