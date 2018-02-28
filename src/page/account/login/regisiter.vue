@@ -61,7 +61,9 @@
 				showNo:false,
 				show: false,
 				isClick: false,
-				showWhat:true
+				showWhat:true,
+				fullHeight:document.documentElement.clientHeight,
+				fullHeight1:document.documentElement.clientHeight
 			}
 		},
 		computed: {
@@ -215,6 +217,14 @@
 			}
 		},
 		activated:function(){
+			this.fullHeight1 = document.documentElement.clientHeight;
+			const that = this
+		    window.onresize = () => {
+		        return (() => {
+		          window.fullHeight = document.documentElement.clientHeight
+		          that.fullHeight = window.fullHeight
+		        })()
+		    }
 			pro.isWXInstalled();
 			var isWXInstalled = localStorage.isWXInstalled ? localStorage.isWXInstalled : '';
 			if(isWXInstalled == 'false'){
@@ -222,6 +232,15 @@
 			}else{
 				this.showWhat = true;
 			}
+		},
+		watch:{
+			fullHeight (val) {
+		        if(val != this.fullHeight1){
+		        	this.showWhat = false;
+		        }else{
+		        	this.showWhat =true;
+		        }
+		    }
 		}
 	}
 </script>

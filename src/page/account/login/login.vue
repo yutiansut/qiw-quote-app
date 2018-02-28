@@ -12,11 +12,11 @@
 			<ul>
 				<li>
 					<i></i>
-					<input type="tel" value="" placeholder="请输入手机号" class="input1" v-model="phone" maxlength="11"/>
+					<input type="tel" value="" placeholder="请输入手机号" class="input1" v-model="phone" maxlength="11" />
 				</li>
 				<li>
 					<i></i>
-					<input type="password"  value="" placeholder="请输入密码（至少6位且包含字母）" class="input1 input2" v-model="password"/>
+					<input type="password"  value="" placeholder="请输入密码（至少6位且包含字母）" class="input1 input2" v-model="password" />
 					<div class="eye" @click="eyeEvent" v-show="showEye"></div>
 					<div class="eye1" @click="eyeEvent" v-show="showNo"></div>
 				</li>
@@ -52,7 +52,9 @@
 				secret:"",
 				showEye:true,
 				showNo:false,
-				showWhat:true
+				showWhat:true,
+				fullHeight:document.documentElement.clientHeight,
+				fullHeight1:document.documentElement.clientHeight
 			}
 		},
 		computed : {
@@ -136,7 +138,6 @@
 			getWechatId:function(){
 				pro.toweixin();
 				var weixinInfo = JSON.parse(localStorage.weixinUser) ? JSON.parse(localStorage.weixinUser) : "" ;
-//				console.log("weixinInfo======"+JSON.stringify(weixinInfo));
 				var ClientId = JSON.parse(localStorage.clientid).id ? JSON.parse(localStorage.clientid).id : '';
 				var data ={
 					openId:weixinInfo.openid,
@@ -175,6 +176,14 @@
 			}
 		},
 		activated:function(){
+			this.fullHeight1 = document.documentElement.clientHeight;
+			const that = this
+		    window.onresize = () => {
+		        return (() => {
+		          window.fullHeight = document.documentElement.clientHeight
+		          that.fullHeight = window.fullHeight
+		        })()
+		    }
 			pro.isWXInstalled();
 			var isWXInstalled = localStorage.isWXInstalled ? localStorage.isWXInstalled : '';
 			if(isWXInstalled == 'false'){
@@ -182,6 +191,16 @@
 			}else{
 				this.showWhat = true;
 			}
+		},
+		watch:{
+			fullHeight (val) {
+		        console.log("======"+val)
+		        if(val != this.fullHeight1){
+		        	this.showWhat = false;
+		        }else{
+		        	this.showWhat =true;
+		        }
+		    }
 		}
 }
 </script>

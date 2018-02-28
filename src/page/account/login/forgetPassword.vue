@@ -25,14 +25,15 @@
 			<mt-button class="btn" @click.native="toRetPassword">下一步</mt-button>
 			<p @click="toRegisiter">新用户注册>></p>
 		</div>
-		<div id="wechat">
-			<i></i>
+		<div id="wechat" v-show="showWhat">
+			<i @click="getWechatId"></i>
 		</div>
 		<codeDialog ref="codeDialog"  type="findpwd"></codeDialog>
 	</div>
 </template>
 
 <script>
+	import pro from "../../../assets/js/common.js"
 	import codeDialog from "../../../components/codeDialog.vue"
 	export default{
 		name:"forgetPassword",
@@ -43,6 +44,9 @@
 				code:"",
 				time: 0,
 				info: '获取验证码',
+				showWhat:true,
+				fullHeight:document.documentElement.clientHeight,
+				fullHeight1:document.documentElement.clientHeight,
 				phoneReg:/^(((13[0-9])|(14[5-7])|(15[0-9])|(17[0-9])|(18[0-9]))+\d{8})$/
 			}
 		},
@@ -65,6 +69,33 @@
 			}
 		},
 		methods:{
+			getWechatId:function(){
+				pro.toweixin();
+				var weixinInfo = JSON.parse(localStorage.weixinUser) ? JSON.parse(localStorage.weixinUser) : "" ;
+				var ClientId = JSON.parse(localStorage.clientid).id ? JSON.parse(localStorage.clientid).id : '';
+				var data ={
+					openId:weixinInfo.openid,
+					clientId:ClientId
+//					openId:"oRrdQt-T23iJ8wjd-PaCt_WoMefw"
+				}
+				pro.fetch("post","/loginAndRegister/wxLogin",data,"").then(function(res){
+					if(res.code == 1 && res.success == true){
+						var userData = {'username':res.data.mobile,'token':res.data.token,'secret':res.data.secret};
+						localStorage.user=JSON.stringify(userData);
+						this.$toast({message:"授权登录成功",duration: 1000});
+						this.$router.push({path:"/index"});
+						this.$store.state.account.isLogin = true;
+					}
+				}.bind(this)).catch(function(err){
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:"网络不给力，请稍后再试",duration: 2000});
+					}else{
+						this.$toast({message:"请先绑定手机号",duration: 1000});
+						this.$router.push({path:"/wechatRegisiter",query:{weixinInfo:weixinInfo}})
+					}
+				}.bind(this));
+			},
 			toRegisiter:function(){
 				this.$router.push({path:"/regisiter"});
 			},
@@ -100,7 +131,33 @@
 				this.$router.push({path:"/resetPassword",query:{sendcode:this.code,sendphone:this.phone}});
 			}
 		}
-	}
+	},
+	activated:function(){
+			this.fullHeight1 = document.documentElement.clientHeight;
+			const that = this
+		    window.onresize = () => {
+		        return (() => {
+		          window.fullHeight = document.documentElement.clientHeight
+		          that.fullHeight = window.fullHeight
+		        })()
+		    }
+			pro.isWXInstalled();
+			var isWXInstalled = localStorage.isWXInstalled ? localStorage.isWXInstalled : '';
+			if(isWXInstalled == 'false'){
+				this.showWhat = false;
+			}else{
+				this.showWhat = true;
+			}
+		},
+	watch:{
+			fullHeight (val) {
+		        if(val != this.fullHeight1){
+		        	this.showWhat = false;
+		        }else{
+		        	this.showWhat =true;
+		        }
+		    }
+		}
 }
 </script>
 
