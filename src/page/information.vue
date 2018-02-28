@@ -188,7 +188,18 @@
 						this.newsInfo=this.newsInfo.concat(b);
 					}
 				}).catch((err)=>{
-					
+					var data = err.data;
+					if(data == undefined){
+						this.$toast({message:"网络不给力，请稍后再试",duration: 1000});
+					}else{
+						if(data.code == -9999){
+							this.$toast({message:"认证失败，请重新登录",duration: 1000});
+							this.$router.push({path:"/login"});
+						}
+						else{
+							this.$toast({message:data.message,duration: 1000});
+						}
+					}
 				})
 			},
 			showAll:function(e){
@@ -240,10 +251,13 @@
 		    getNewsInfo:function(a){
 		    	var data = {
 		    		pageSize:20,
-		    		pageNo:a
+		    		pageNo:a,
+		    		minTime:"",
+		    		maxTime:"",
+		    		keyword:""
 		    	}
 		    	pro.fetch("post","/news/get7_24Live",data,"").then((res)=>{
-//		    		console.log("res==="+JSON.stringify(res));
+		    		console.log("res==="+JSON.stringify(res));
 		    		if(res.code == 1 && res.success == true){
 		    			this.newsInfo = res.data.data.data;
 		    		}
