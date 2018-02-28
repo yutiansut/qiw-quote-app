@@ -257,7 +257,7 @@
 		    		keyword:""
 		    	}
 		    	pro.fetch("post","/news/get7_24Live",data,"").then((res)=>{
-		    		console.log("res==="+JSON.stringify(res));
+//		    		console.log("res==="+JSON.stringify(res));
 		    		if(res.code == 1 && res.success == true){
 		    			this.newsInfo = res.data.data.data;
 		    		}
