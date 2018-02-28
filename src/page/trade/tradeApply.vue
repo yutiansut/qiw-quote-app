@@ -180,7 +180,7 @@
 			//获取基础配置信息--未登录
 			getParameters:function(){
 				pro.fetch("post","/futureManage/getApplyData","","").then((res)=>{
-//					console.log("res==="+JSON.stringify(res.data));
+					console.log("res==="+JSON.stringify(res.data));
 					if(res.code == 1 && res.success == true){
 						this.tradableList = res.data.tradableList;
 						this.lossScale = res.data.lossScale;
@@ -201,8 +201,12 @@
 			},
 			//获取基础配置信息---已登录
 			getParameters1:function(){
-				pro.fetch("post","/futureManage/getApplyData","","").then((res)=>{
-//					console.log("res==="+JSON.stringify(res.data));
+				var headers = {
+					token : this.userInfo.token,
+					secret : this.userInfo.secret
+				}
+				pro.fetch("post","/futureManage/getApplyData","",headers).then((res)=>{
+					console.log("res==="+JSON.stringify(res.data));
 					if(res.code == 1 && res.success == true){
 						this.tradableList = res.data.tradableList;
 						this.lossScale = res.data.lossScale;
