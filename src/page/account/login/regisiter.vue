@@ -82,7 +82,10 @@
 			},
 			version: function(){
 				return '1.1';
-			}
+			},
+			packChannel(){
+				return this.$store.state.account.packChannel;
+			},
 		},
 		watch: {
 			phone: function(n, o){
@@ -153,7 +156,7 @@
 						mobile:this.phone,
 						password:this.password,
 						code:this.code,
-						resource:"app"
+						resource:this.packChannel
 					}
 					pro.fetch("post","/loginAndRegister/register",data,"").then((res)=>{
 						console.log("res==="+JSON.stringify(res));
@@ -207,6 +210,7 @@
 			}
 		},
 		mounted:function(){
+			console.log("this.packChannel+"+this.packChannel+"111111")
 			pro.getClentId();
 			pro.isWXInstalled();
 			var isWXInstalled = localStorage.isWXInstalled ? localStorage.isWXInstalled : '';
