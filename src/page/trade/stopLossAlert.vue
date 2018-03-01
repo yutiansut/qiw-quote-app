@@ -79,9 +79,6 @@
 			miniTikeSize(){
 				return this.orderTemplist[this.commodityNo].MiniTikeSize;
 			},
-			stopStatus(){
-				return this.$store.state.market.stopStatus;
-			}
 		},
 		watch: {
 			parameters: function(n, o){
@@ -129,114 +126,55 @@
 //				if (d < 0.000000001 || b-d < 0.0000000001){
 //					alert("yes");
 //				}
-				if(this.currentNum == 0){
-					let a0, b0, d0, confirmText;
-					if(!(this.lossPrice == '' || this.lossPrice == 0 || this.lossPrice == undefined)){
-						 a0 = this.lossPrice;
-						 b0 = this.miniTikeSize;
-						 d0 = a0%b0;
-					}
-					if(this.lossPrice == '' || this.lossPrice <= 0 || this.lossPrice == undefined){
-						Toast({message: '请输入止损价', position: 'bottom', duration: 1000});
-					}else if(!(d0 < 0.000000001 || parseFloat(b0-d0) < 0.0000000001)){
-						Toast({message: '输入价格不符合最小变动价，最小变动价为：' + b0, position: 'bottom', duration: 1000});
-					}else if(this.num == '' || this.num <= 0 || this.num == undefined){
-						Toast({message: '请输入止损手数', position: 'bottom', duration: 1000});
-					}else{
-						if(this.priceType == '止损价'){
-							confirmText = '是否添加限价止损？';
-							if(this.commodityType == 0){
-								if(parseFloat(this.lossPrice) >= parseFloat(this.lastPrice)){	
-									Toast({message: '输入价格应该低于最新价', position: 'bottom', duration: 1000});return;
-								}
-							}
-							if(this.commodityType == 1){
-								if(parseFloat(this.lossPrice) <= parseFloat(this.lastPrice)){
-									Toast({message: '输入价格应该高于最新价', position: 'bottom', duration: 1000});return;
-								}
-							}
-						}else{
-							confirmText = '是否添加动态止损？';
-						}
-						let b = {
-							"Method":'InsertStopLoss',
-							"Parameters":{
-								"ExchangeNo": this.orderTemplist[this.commodityNo].ExchangeNo,
-								"CommodityNo": this.commodityNo,
-								"ContractNo": this.orderTemplist[this.commodityNo].MainContract,
-								"Num": parseInt(this.num),
-								"StopLossType": this.priceType == '止损价' ? 0 : 2,
-								"StopLossPrice": this.priceType == '止损价' ? parseFloat(this.lossPrice) : 0.00,
-								"StopLossDiff": this.priceType == '动态价' ? parseFloat(this.lossPrice) : 0.00,
-								"HoldAvgPrice": parseFloat(this.holdAvgPrice),
-								"HoldDrection": this.commodityType,
-								"OrderType": 1,
-							}
-						};
-						MessageBox.confirm(confirmText,"提示").then(action=>{
-							if(this.stopStatus == true) return;
-							this.$store.state.market.stopStatus = true;
-							this.tradeSocket.send(JSON.stringify(b));
-							this.$parent.currentOrderID = '';
-							this.$parent.selectedNum = -1;
-							this.show = false;
-							this.$parent.positionListCont.forEach((o, i) => {
-								o.toolShow = false;
-							});
-						}).catch(err=>{});
-					}
+				let a0, b0, d0, confirmText;
+				if(!(this.lossPrice == '' || this.lossPrice == 0 || this.lossPrice == undefined)){
+					 a0 = this.lossPrice;
+					 b0 = this.miniTikeSize;
+					 d0 = a0%b0;
+				}
+				if(this.lossPrice == '' || this.lossPrice <= 0 || this.lossPrice == undefined){
+					Toast({message: '请输入止损价', position: 'bottom', duration: 1000});
+				}else if(!(d0 < 0.000000001 || parseFloat(b0-d0) < 0.0000000001)){
+					Toast({message: '输入价格不符合最小变动价，最小变动价为：' + b0, position: 'bottom', duration: 1000});
+				}else if(this.num == '' || this.num <= 0 || this.num == undefined){
+					Toast({message: '请输入止损手数', position: 'bottom', duration: 1000});
 				}else{
-					let a0, b0, d0, confirmText;
-					if(!(this.profitPrice == '' || this.profitPrice == 0 || this.profitPrice == undefined)){
-						 a0 = this.profitPrice;
-						 b0 = this.miniTikeSize;
-						 d0 = a0%b0;
-					}
-					if(this.profitPrice == '' || this.profitPrice <= 0 || this.profitPrice == undefined){
-						Toast({message: '请输入止盈价', position: 'bottom', duration: 1000});
-					}else if(this.num == '' || this.num <= 0 || this.num == undefined){
-						Toast({message: '请输入止盈手数', position: 'bottom', duration: 1000});
-					}else if(d0 >= 0.000000001 && parseFloat(b0-d0) >= 0.0000000001){
-						Toast({message: '输入价格不符合最小变动价，最小变动价为：' + b0, position: 'bottom', duration: 1000});
-					}else{
-						if(this.commodityType == 0){
-							if(parseFloat(this.profitPrice) <= parseFloat(this.lastPrice)){	
-								Toast({message: '输入价格应该高于最新价', position: 'bottom', duration: 1000});return;
-							}
-						}
-						if(this.commodityType == 1){
-							if(parseFloat(this.profitPrice) >= parseFloat(this.lastPrice)){	
+					if(this.priceType == '止损价'){
+						confirmText = '是否添加限价止损？';
+						if(this.commodityType == "多"){
+							if(parseFloat(this.lossPrice) >= parseFloat(this.lastPrice)){	
 								Toast({message: '输入价格应该低于最新价', position: 'bottom', duration: 1000});return;
 							}
 						}
-						confirmText = '是否添加限价止盈？';
-						let b = {
-							"Method":'InsertStopLoss',
-							"Parameters":{
-								"ExchangeNo": this.orderTemplist[this.commodityNo].ExchangeNo,
-								"CommodityNo": this.commodityNo,
-								"ContractNo": this.orderTemplist[this.commodityNo].MainContract,
-								"Num": parseInt(this.num),
-								"StopLossType": 1,
-								"StopLossPrice": parseFloat(this.profitPrice),
-								"StopLossDiff": 0.00,
-								"HoldAvgPrice": parseFloat(this.holdAvgPrice),
-								"HoldDrection": this.commodityType,
-								"OrderType": 1
+						if(this.commodityType == "空"){
+							if(parseFloat(this.lossPrice) <= parseFloat(this.lastPrice)){
+								Toast({message: '输入价格应该高于最新价', position: 'bottom', duration: 1000});return;
 							}
-						};
-						MessageBox.confirm(confirmText,"提示").then(action=>{
-							if(this.stopStatus == true) return;
-							this.$store.state.market.stopStatus = true;
-							this.tradeSocket.send(JSON.stringify(b));
-							this.$parent.currentOrderID = '';
-							this.$parent.selectedNum = -1;
-							this.show = false;
-							this.$parent.positionListCont.forEach((o, i) => {
-								o.toolShow = false;
-							});
-						}).catch(err=>{});
+						}
+					}else{
+						confirmText = '是否添加动态止损？';
 					}
+					let b = {
+						"Method":'ModifyStopLoss',
+						"Parameters":{
+							'StopLossNo': this.$parent.currentId,
+							'ModifyFlag': 0,
+							'Num': parseInt(this.num),
+							'StopLossType': this.priceType == '止损价' ? 0 : 2,
+							'OrderType': 1,
+							"StopLossPrice": this.priceType == '止损价' ? parseFloat(this.lossPrice) : 0.00,
+							"StopLossDiff": this.priceType == '动态价' ? parseFloat(this.lossPrice) : 0.00,
+						}
+					};
+					MessageBox.confirm(confirmText,"提示").then(action=>{
+						this.tradeSocket.send(JSON.stringify(b));
+						this.$parent.currentId = '';
+						this.$parent.selectedNum = -1;
+						this.show = false;
+						this.$parent.notStopLossList.forEach((o, i) => {
+							o.toolShow = false;
+						});
+					}).catch(err=>{});
 				}
 			},
 			cancelEvent: function(){
