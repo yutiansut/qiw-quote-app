@@ -37,7 +37,7 @@
 							<span class="status">{{v.InsertDateTime}}</span>
 						</div>
 						<div class="tools" v-show="v.toolShow">
-							<btn name="暂停" className="orangesm" @click.native="suspendEvent"></btn>
+							<btn :name="statusName" className="orangesm" @click.native="suspendEvent"></btn>
 							<btn name="修改" className="bluesm" @click.native="editEvent"></btn>
 							<btn name="删除" className="greensm" @click.native="deleteEvent"></btn>
 						</div>
@@ -78,15 +78,19 @@
 				</li>
 			</ul>
 		</div>
+		<stopLossAlert ref="stopLossAlert"></stopLossAlert>
+		<stopProfitAlert ref="stopProfitAlert"></stopProfitAlert>
 	</div>
 </template>
 
 <script>
 	import btn from "../../components/btn.vue"
+	import stopLossAlert from "./stopLossAlert.vue"
+	import stopProfitAlert from "./stopProfitAlert.vue"
 	import { Toast, MessageBox } from 'mint-ui';
 	export default{
 		name: "stopOrder",
-		components: {btn},
+		components: {btn, stopLossAlert, stopProfitAlert},
 		data(){
 			return{
 				tabList: ['未触发列表','已触发列表'],
@@ -96,6 +100,9 @@
 				alreadyStopLossList: [],
 				selectedNum: -1,
 				currentId: '',
+				status: '',
+				statusName: '暂停',
+				stopLossType: '',
 			}
 		},
 		computed: {
@@ -136,6 +143,13 @@
 			clickEvent: function(index, id, status, type){
 				this.selectedNum = index;
 				this.currentId = id;
+				this.status = status;
+				this.stopLossType = type;
+				if(this.status == 0){
+					this.statusName = '暂停';
+				}else{
+					this.statusName = '启动';
+				}
 				this.notStopLossList.forEach((o, i) => {
 					o.toolShow = false;
 					if(o.StopLossNo == id){
@@ -186,7 +200,50 @@
 				}.bind(this));
 			},
 			editEvent: function(){
-				
+				if(this.currentId == '' || this.currentId == undefined){
+					Toast({message: '请选择一条数据', position: 'bottom', duration: 1000});
+				}else if(this.status == 0){
+					Toast({message: '运行中的止损单不能修改', position: 'bottom', duration: 1000});
+				}else{
+					if(this.stopLossType == 0){
+						this.$refs.stopLossAlert.show = true;
+						this.notStopLossList.forEach(function(o, i){
+							if(this.currentId == o.StopLossNo){
+								console.log(o);
+								this.$refs.stopLossAlert.commodityName = o.CommodityNo + o.ContractNo;
+								this.$refs.stopLossAlert.commodityNo = o.CommodityNo;
+								this.$refs.stopLossAlert.commodityType = o.HoldDrection;
+								this.$refs.stopLossAlert.priceType = '止损价';
+								this.$refs.stopLossAlert.lossPrice = o.StopLossPrice;
+								this.$refs.stopLossAlert.num = o.Num;
+								this.$refs.stopLossAlert.holdAvgPrice = o.HoldAvgPrice;
+								this.$refs.stopLossAlert.stopLossPrice = o.StopLossPrice;
+							}
+						}.bind(this));
+					}else if(this.stopLossType == 1){
+						this.$refs.stopProfitAlert.show = true;
+					}else{
+						this.$refs.stopLossAlert.show = true;
+						this.notStopLossList.forEach(function(o, i){
+							if(this.currentId == o.StopLossNo){
+								console.log(o);
+								this.$refs.stopLossAlert.commodityName = o.CommodityNo + o.ContractNo;
+								this.$refs.stopLossAlert.commodityNo = o.CommodityNo;
+								this.$refs.stopLossAlert.commodityType = o.HoldDrection;
+								this.$refs.stopLossAlert.priceType = '动态价';
+								this.$refs.stopLossAlert.lossPrice = o.StopLossDiff;
+								this.$refs.stopLossAlert.num = o.Num;
+								this.$refs.stopLossAlert.holdAvgPrice = o.HoldAvgPrice;
+								this.$refs.stopLossAlert.stopLossPrice = o.StopLossPrice;
+								this.$refs.stopLossAlert.stopLossDiff = o.StopLossDiff;
+							}
+							
+						}.bind(this));
+					}
+//					MessageBox.confirm(confirmText,"提示").then(action=>{
+//						
+//					}).catch(err=>{});
+				}
 			},
 			deleteEvent: function(){
 				
@@ -338,7 +395,6 @@
 		mounted: function(){
 			//获取渲染页面所需数据
 			this.notStopLossListEvent();
-			console.log(this.notStopLossList);
 		}
 	}
 </script>
