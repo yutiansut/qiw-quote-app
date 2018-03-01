@@ -223,7 +223,6 @@
 						this.$refs.stopProfitAlert.show = true;
 						this.notStopLossList.forEach(function(o, i){
 							if(this.currentId == o.StopLossNo){
-								console.log(o);
 								this.$refs.stopProfitAlert.commodityName = o.CommodityNo + o.ContractNo;
 								this.$refs.stopProfitAlert.commodityNo = o.CommodityNo;
 								this.$refs.stopProfitAlert.commodityType = o.HoldDrection;
