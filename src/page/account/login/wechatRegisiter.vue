@@ -92,6 +92,9 @@
 			},
 			version: function(){
 				return '1.1';
+			},
+			packChannel(){
+				return this.$store.state.account.packChannel;
 			}
 		},
 		methods:{
@@ -147,7 +150,7 @@
 						mobile:this.phone,
 						password:this.password,
 						code:this.code,
-						resource:"app",
+						resource:this.packChannel,
 						openid:this.openid,
 						nickname:this.nickname,
 						sex:this.sex,
