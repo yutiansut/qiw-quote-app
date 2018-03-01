@@ -16,21 +16,21 @@
 		name:"service",
 		data(){
 			return{
-				
+				userInfo:""
 			}
 		},
 		computed: {
-			userInfo: function(){
-				return this.$store.state.account;
-			},
 			iframe: function() {
-				return  /*this.PATH + */'http://www.vs.com/topic/consistentBeauty/consistentbeauty.html?phone=' + this.$store.state.account.phone + '&userName=' + this.$store.state.account.username;
+				return  /*this.PATH + */'http://www.vs.com/topic/consistentBeauty/qiw_quoteApp_service.html?phone=' + this.userInfo.username
 			}
 		},
 		methods:{
 			backRounter:function(){
 				history.go(-2);
 			}
+		},
+		activated:function(){
+			this.userInfo = localStorage.user ? JSON.parse(localStorage.user) : '';
 		}
 	}
 </script>
