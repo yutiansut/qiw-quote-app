@@ -209,7 +209,6 @@
 						this.$refs.stopLossAlert.show = true;
 						this.notStopLossList.forEach(function(o, i){
 							if(this.currentId == o.StopLossNo){
-								console.log(o);
 								this.$refs.stopLossAlert.commodityName = o.CommodityNo + o.ContractNo;
 								this.$refs.stopLossAlert.commodityNo = o.CommodityNo;
 								this.$refs.stopLossAlert.commodityType = o.HoldDrection;
@@ -222,11 +221,21 @@
 						}.bind(this));
 					}else if(this.stopLossType == 1){
 						this.$refs.stopProfitAlert.show = true;
+						this.notStopLossList.forEach(function(o, i){
+							if(this.currentId == o.StopLossNo){
+								console.log(o);
+								this.$refs.stopProfitAlert.commodityName = o.CommodityNo + o.ContractNo;
+								this.$refs.stopProfitAlert.commodityNo = o.CommodityNo;
+								this.$refs.stopProfitAlert.commodityType = o.HoldDrection;
+								this.$refs.stopProfitAlert.profitPrice = o.StopLossPrice;
+								this.$refs.stopProfitAlert.num = o.Num;
+								this.$refs.stopProfitAlert.holdAvgPrice = o.HoldAvgPrice;
+							}
+						}.bind(this));
 					}else{
 						this.$refs.stopLossAlert.show = true;
 						this.notStopLossList.forEach(function(o, i){
 							if(this.currentId == o.StopLossNo){
-								console.log(o);
 								this.$refs.stopLossAlert.commodityName = o.CommodityNo + o.ContractNo;
 								this.$refs.stopLossAlert.commodityNo = o.CommodityNo;
 								this.$refs.stopLossAlert.commodityType = o.HoldDrection;
@@ -240,13 +249,31 @@
 							
 						}.bind(this));
 					}
-//					MessageBox.confirm(confirmText,"提示").then(action=>{
-//						
-//					}).catch(err=>{});
 				}
 			},
 			deleteEvent: function(){
-				
+				this.notStopLossList.forEach(function(o, i){
+					if(o.StopLossNo == this.currentId){
+						let b = {
+							"Method": 'ModifyStopLoss',
+							"Parameters": {
+								'StopLossNo': o.StopLossNo,
+								'ModifyFlag': 1,
+								'Num': parseInt(o.Num),
+								'StopLossType': parseInt(o.StopLossType00),
+								'OrderType': parseInt(o.OrderType00),
+								'StopLossPrice': parseFloat(o.StopLossPrice),
+								'StopLossDiff': parseFloat(o.StopLossDiff)
+							}
+						};
+						MessageBox.confirm('是否删除止损单？',"提示").then(action=>{
+							this.tradeSocket.send(JSON.stringify(b));
+							this.currentId = '';
+							this.selectedNum = -1;
+							o.toolShow = false;
+						}).catch(err=>{});
+					}
+				}.bind(this));
 			},
 			notStopLossListEvent: function(){
 				this.notStopLossList = [];
