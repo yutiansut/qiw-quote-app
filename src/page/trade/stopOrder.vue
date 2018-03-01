@@ -50,11 +50,11 @@
 						<span class="name">合约名称</span>
 						<span class="num">状态</span>
 						<span class="type">多空</span>
-						<span class="type">类型</span>
+						<span class="name">类型</span>
 						<span class="type">手数</span>
-						<span class="price">触发条件</span>
+						<span class="status">触发条件</span>
 						<span class="price">委托价</span>
-						<span class="status">有效日期</span>
+						<span class="num">有效日期</span>
 						<span class="status">下单时间</span>
 					</div>
 				</li>
@@ -67,11 +67,11 @@
 							</div>
 							<span class="num">{{v.StatusMsg00}}</span>
 							<span class="type">{{v.HoldDrection}}</span>
-							<span class="type">{{v.StopLossType}}</span>
+							<span class="name">{{v.StopLossType}}</span>
 							<span class="type">{{v.Num}}</span>
-							<span class="price">{{v.triggerCondition}}</span>
+							<span class="status">{{v.triggerCondition}}</span>
 							<span class="price">{{v.entrustPrice}}</span>
-							<span class="status">{{v.validity}}</span>
+							<span class="num">{{v.validity}}</span>
 							<span class="status">{{v.InsertDateTime}}</span>
 						</div>
 					</template>
