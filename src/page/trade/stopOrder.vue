@@ -21,7 +21,7 @@
 					</div>
 				</li>
 				<template v-for="(v, index) in notStopLossList">
-					<li :class="{current: selectedNum == index}">
+					<li :class="{current: selectedNum == index}" @click="clickEvent(index, v.StopLossNo, v.Status, v.StopLossType00)">
 						<div class="list_cont">
 							<div class="name">
 								<em>{{orderTemplist[v.CommodityNo].CommodityName}}</em>
@@ -36,10 +36,10 @@
 							<span class="num">{{v.validity}}</span>
 							<span class="status">{{v.InsertDateTime}}</span>
 						</div>
-						<div class="tools">
-							<btn name="暂停" className="orangesm"></btn>
-							<btn name="修改" className="bluesm"></btn>
-							<btn name="删除" className="greensm"></btn>
+						<div class="tools" v-show="v.toolShow">
+							<btn name="暂停" className="orangesm" @click.native="suspendEvent"></btn>
+							<btn name="修改" className="bluesm" @click.native="editEvent"></btn>
+							<btn name="删除" className="greensm" @click.native="deleteEvent"></btn>
 						</div>
 					</li>
 				</template>
@@ -59,18 +59,22 @@
 					</div>
 				</li>
 				<li class="current">
-					<div class="name">
-						<em>日经225</em>
-						<em>CNQ16</em>
-					</div>
-					<span class="num">状态</span>
-					<span class="type">多空</span>
-					<span class="type">类型</span>
-					<span class="type">手数</span>
-					<span class="price">触发条件</span>
-					<span class="price">委托价</span>
-					<span class="status">有效日期</span>
-					<span class="status">下单时间</span>
+					<template v-for="(v, index) in alreadyStopLossList">
+						<div class="list_cont">
+							<div class="name">
+								<em>{{orderTemplist[v.CommodityNo].CommodityName}}</em>
+								<em>{{v.CommodityNo + v.ContractNo}}</em>
+							</div>
+							<span class="num">{{v.StatusMsg00}}</span>
+							<span class="type">{{v.HoldDrection}}</span>
+							<span class="type">{{v.StopLossType}}</span>
+							<span class="type">{{v.Num}}</span>
+							<span class="price">{{v.triggerCondition}}</span>
+							<span class="price">{{v.entrustPrice}}</span>
+							<span class="status">{{v.validity}}</span>
+							<span class="status">{{v.InsertDateTime}}</span>
+						</div>
+					</template>
 				</li>
 			</ul>
 		</div>
@@ -79,6 +83,7 @@
 
 <script>
 	import btn from "../../components/btn.vue"
+	import { Toast, MessageBox } from 'mint-ui';
 	export default{
 		name: "stopOrder",
 		components: {btn},
@@ -90,6 +95,7 @@
 				notStopLossList: [],
 				alreadyStopLossList: [],
 				selectedNum: -1,
+				currentId: '',
 			}
 		},
 		computed: {
@@ -126,6 +132,64 @@
 					this.tabShow = false;
 					this.alreadyStopLossListEvent();
 				}
+			},
+			clickEvent: function(index, id, status, type){
+				this.selectedNum = index;
+				this.currentId = id;
+				this.notStopLossList.forEach((o, i) => {
+					o.toolShow = false;
+					if(o.StopLossNo == id){
+						o.toolShow = true;
+					}
+				});
+			},
+			suspendEvent: function(){
+				var b, confirmText;
+				this.notStopLossList.forEach(function(o, i){
+					if(o.StopLossNo == this.currentId){
+						if(o.Status == 0){ //运行中
+							confirmText = '是否暂停止损单？';
+							b = {
+								"Method": 'ModifyStopLoss',
+								"Parameters":{
+									'StopLossNo': o.StopLossNo,
+									'ModifyFlag': 2,
+									'Num': parseInt(o.Num),
+									'StopLossType': parseInt(o.StopLossType00),
+									'OrderType': parseInt(o.OrderType00),
+									'StopLossPrice': parseFloat(o.StopLossPrice),
+									'StopLossDiff': parseFloat(o.StopLossDiff)
+								}
+							};
+						}else if (o.Status == 1){ //暂停
+							confirmText = '是否启动止损单？';
+							b = {
+								"Method": 'ModifyStopLoss',
+								"Parameters":{
+									'StopLossNo': o.StopLossNo,
+									'ModifyFlag': 3,
+									'Num': parseInt(o.Num),
+									'StopLossType': parseInt(o.StopLossType00),
+									'OrderType': parseInt(o.OrderType00),
+									'StopLossPrice': parseFloat(o.StopLossPrice),
+									'StopLossDiff': parseFloat(o.StopLossDiff)
+								}
+							};
+						}
+						MessageBox.confirm(confirmText,"提示").then(action=>{
+							this.tradeSocket.send(JSON.stringify(b));
+							this.currentId = '';
+							this.selectedNum = -1;
+							o.toolShow = false;
+						}).catch(err=>{});
+					}
+				}.bind(this));
+			},
+			editEvent: function(){
+				
+			},
+			deleteEvent: function(){
+				
 			},
 			notStopLossListEvent: function(){
 				this.notStopLossList = [];
@@ -196,6 +260,7 @@
 					})();
 					obj.validity = '永久有效';
 					obj.InsertDateTime = o.InsertDateTime;
+					obj.toolShow = false;
 					this.notStopLossList.push(obj);
 				}.bind(this));
 			},
