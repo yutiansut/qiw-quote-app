@@ -86,6 +86,10 @@
 		watch: {
 			len: function(n, o){
 				if(n && n > 0) Indicator.close();
+//				if(n == 1){
+//					let currentdetail = this.parameters[0];
+//					sessionStorage.currentdetail = JSON.stringify(currentdetail);
+//				}
 			},
 			parameters: function(n, o){
 				if(n && n == 0){
