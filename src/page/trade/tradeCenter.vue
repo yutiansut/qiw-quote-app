@@ -90,12 +90,6 @@
 				if(n && n == 1){
 					this.$store.state.market.currentdetail = this.parameters[0];
 					this.$parent.totalShow = true;
-//					this.parameters.forEach((o, i) => {
-//						if(o.CommodityNo == this.currentNo && i == 0){
-//							this.$store.state.market.currentdetail = o;
-//							return;
-//						}
-//					});
 				}
 			},
 			currentOrderView: function(n, o){
@@ -108,7 +102,6 @@
 		},
 		methods: {
 			orderTypeSwitch: function(index){
-				console.log(1111);
 				//初始当前合约
 				this.$store.state.market.currentNo = this.commodityAll[0].commodityNo;
 				this.$store.state.market.Parameters = [];
@@ -122,11 +115,6 @@
 					});
 				}
 				this.currentOrderType = index;
-//				if(index == 0){
-//					this.currentOrderView = 'normalOrder';
-//				}else{
-//					this.currentOrderView = 'conditionOrder';
-//				}
 			},
 			showFens: function(){
 				if(this.fensShow == false){
