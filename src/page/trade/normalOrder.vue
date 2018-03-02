@@ -247,6 +247,7 @@
 			
 		},
 		activated: function(){
+			console.log(2222);
 			//初始当前合约
 			this.$store.state.market.currentNo = this.commodityAll[0].commodityNo;
 			this.$store.state.market.Parameters = [];

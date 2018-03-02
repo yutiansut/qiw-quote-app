@@ -64,6 +64,12 @@
 			currentdetail(){
 				return this.$store.state.market.currentdetail;
 			},
+			commodityAll(){
+				return this.$store.state.account.commodityAll;
+			},
+			orderTemplist(){
+				return this.$store.state.market.orderTemplist;
+			},
 			parameters(){
 				return this.$store.state.market.Parameters;
 			},
@@ -92,15 +98,35 @@
 //					});
 				}
 			},
-		},
-		methods: {
-			orderTypeSwitch: function(index){
-				this.currentOrderType = index;
-				if(index == 0){
+			currentOrderView: function(n, o){
+				if(n && n == 0){
 					this.currentOrderView = 'normalOrder';
 				}else{
 					this.currentOrderView = 'conditionOrder';
 				}
+			}
+		},
+		methods: {
+			orderTypeSwitch: function(index){
+				console.log(1111);
+				//初始当前合约
+				this.$store.state.market.currentNo = this.commodityAll[0].commodityNo;
+				this.$store.state.market.Parameters = [];
+				this.$store.state.market.commodityOrder = [];
+				this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + this.orderTemplist[this.currentNo].ExchangeNo + '","CommodityNo":"' + this.currentNo + '","ContractNo":"' + this.orderTemplist[this.currentNo].MainContract +'"}}');
+				//初始化持仓合约行情
+				let holdOrder = localStorage.subscribeOrder ?　JSON.parse(localStorage.subscribeOrder)　:　'';
+				if(holdOrder != ''){
+					holdOrder.forEach((o, i) => {
+						this.quoteSocket.send('{"Method":"Subscribe","Parameters":{"ExchangeNo":"' + this.orderTemplist[o.name].ExchangeNo + '","CommodityNo":"' + o.name + '","ContractNo":"' + this.orderTemplist[o.name].MainContract +'"}}');
+					});
+				}
+				this.currentOrderType = index;
+//				if(index == 0){
+//					this.currentOrderView = 'normalOrder';
+//				}else{
+//					this.currentOrderView = 'conditionOrder';
+//				}
 			},
 			showFens: function(){
 				if(this.fensShow == false){
