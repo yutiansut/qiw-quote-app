@@ -583,11 +583,12 @@
 					if(this.timeAddtionalPrice){
 						var d2 = this.timeAddtionalPrice % miniTikeSize;
 						if(d2 >= 0.000000001 && parseFloat(miniTikeSize-d2) >= 0.0000000001){
-							layer.msg('输入附加价格不符合最小变动价，最小变动价为：' + miniTikeSize, {time: 1000});return;
+							Toast({message: '输入附加价格不符合最小变动价，最小变动价为：' + miniTikeSize, position: 'bottom', duration: 1500});
+							return;
 						}
 					}
 					if(this.defaultNum == '' || this.defaultNum <= 0 || this.defaultNum == undefined){
-						layer.msg('请输入手数', {time: 1000});
+						Toast({message: '请输入手数', position: 'bottom', duration: 1500})
 					}else{
 						confirmText = '是否添加时间条件单？';
 						let b = {
