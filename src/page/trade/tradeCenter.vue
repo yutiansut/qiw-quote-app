@@ -76,28 +76,28 @@
 				<div class="row" v-show="conditionShow">
 					<b>触发条件</b>
 					<div class="slt slt_sm fl" @tap="openSelectPrice">
-						<input type="text" class="ipt_ssm" :value="conditionType | conditionTypeSwitch" readonly="readonly" />
+						<input type="text" class="ipt_ssm" :value="selectType | conditionTypeSwitch" readonly="readonly" />
 						<i class="icon icon_select"></i>
 					</div>
 					<input type="text" class="ipt_sm ml10" v-model="conditionPrice" />
 					<b class="ml15">价格附加</b>
 					<div class="slt slt_sm fl" @tap="openConditionType">
-						<input type="text" class="ipt_ssm" :value="additionalConditionType | conditionTypeSwitch" readonly="readonly" />
+						<input type="text" class="ipt_ssm" :value="selectAdditionalType | conditionTypeSwitch" readonly="readonly" />
 						<i class="icon icon_select"></i>
 					</div>
 					<input type="text" class="ipt_sm ml10" v-model="conditionAdditionalPrice" />
 				</div>
 				<div class="row" v-show="!conditionShow">
 					<b>触发条件</b>
-					<input type="text" class="ipt_150" readonly="readonly" v-model="time" />
+					<input type="text" class="ipt_150" readonly="readonly" v-model="conditionTime" />
 					<input type="text" class="ipt_150 none" readonly="readonly" @click="selectTime" />
-					<mt-datetime-picker ref="timePicker" type="time" @confirm="handleConfirm"></mt-datetime-picker>
+					<mt-datetime-picker ref="timePicker" :value="conditionTime" type="time" @confirm="handleConfirm"></mt-datetime-picker>
 					<b class="ml25">价格附加</b>
 					<div class="slt slt_md fl" @tap="openConditionType">
-						<input type="text" class="ipt_sm" :value="additionalConditionType | conditionTypeSwitch" readonly="readonly" />
+						<input type="text" class="ipt_sm" :value="timeAdditionalType | conditionTypeSwitch" readonly="readonly" />
 						<i class="icon icon_select"></i>
 					</div>
-					<input type="text" class="ipt_sm ml10" v-model="conditionAdditionalPrice" />
+					<input type="text" class="ipt_sm ml10" v-model="timeAddtionalPrice" />
 				</div>
 				<div class="row">
 					<b>委托价格</b>
@@ -164,11 +164,15 @@
 				currentPriceNum: 0,
 				currentTypeNum: 0,
 				conditionShow: true,
-				conditionType: '0',
-				additionalConditionType: '0',
-				time: '',
+				selectType: '0',
+				selectAdditionalType: '0',
+				timeAdditionalType: '0',
+				conditionTime: '',
 				conditionPrice: '',
 				conditionAdditionalPrice: '',   //附加价格
+				timeAddtionalPrice: '',  //附加价格
+				entrustPrice: 1,   //市价or对价
+				direction: 0,   //买入or卖出
 			}
 		},
 		computed: {
@@ -198,6 +202,9 @@
 			},
 			buyStatus(){
 				return this.$store.state.market.buyStatus;
+			},
+			conditionStatus(){
+				return this.$store.state.market.conditionStatus
 			},
 		},
 		filters:{
@@ -448,27 +455,38 @@
 			},
 			selectPrice: function(index){
 				this.currentPriceNum = index;
+				if(index == 0){
+					this.entrustPrice = 1;
+				}else{
+					this.entrustPrice = 2;
+				}
 			},
 			selectOrderType: function(index){
-				this.currentTypeNum = index; 
+				this.currentTypeNum = index;
+				if(this.index == 0){
+					this.direction = 0;
+				}else{
+					this.direction = 1;
+				}
 			},
 			selectTime: function(){
+				console.log(11111);
 				this.$refs.timePicker.open();
 			},
 			handleConfirm: function(e){
 				let time = new Date();
-				this.time = pro.getDate("h:i:s", time);
-				this.time = e + ':' + this.time.split(':')[2];
+				this.conditionTime = pro.getDate("h:i:s", time);
+				this.conditionTime = e + ':' + this.conditionTime.split(':')[2];
 			},
 			conditionConfirm: function(){
 				let miniTikeSize = this.orderTemplist[this.currentNo].MiniTikeSize;
 				let dotSize = this.orderTemplist[this.currentNo].DotSize;
-				let confrimText;
+				let confirmText;
 				if(this.conditionShow == true){
 					if(this.conditionAdditionalPrice){
 						var d1 = this.conditionAdditionalPrice % miniTikeSize;
 						if(d1 >= 0.000000001 && parseFloat(miniTikeSize - d1) >= 0.0000000001){
-							layer.msg('输入附加价格不符合最小变动价，最小变动价为：' + miniTikeSize, {time: 1000});
+							Toast({message: '输入附加价格不符合最小变动价，最小变动价为：' + miniTikeSize, position: 'bottom', duration: 1500});
 							return;
 						}
 						//判断价格与附加价格是否形成区间
@@ -479,41 +497,41 @@
 						switch (this.selectType){
 							case '0':
 								if(this.selectAdditionalType == '0' || this.selectAdditionalType == '2' || this.selectAdditionalType == '1' && conditionAdditionalPrice <= this.conditionPrice){
-									layer.msg('输入的条件不能形成区间', {time: 1000});
+									Toast({message: '输入的条件不能形成区间', position: 'bottom', duration: 1500});
 									return;
 								}
 								if(this.selectAdditionalType == '3' && conditionAdditionalPrice < this.conditionPrice){
-									layer.msg('输入的条件不能形成区间', {time: 1000});
+									Toast({message: '输入的条件不能形成区间', position: 'bottom', duration: 1500});
 									return;
 								}
 								break;
 							case '2':
 								if(this.selectAdditionalType == '0' || this.selectAdditionalType == '2' || this.selectAdditionalType == '1' && conditionAdditionalPrice < this.conditionPrice){
-									layer.msg('输入的条件不能形成区间', {time: 1000});
+									Toast({message: '输入的条件不能形成区间', position: 'bottom', duration: 1500});
 									return;
 								}
 								if(this.selectAdditionalType == '3' && this.conditionAdditionalPrice < this.conditionPrice){
-									layer.msg('输入的条件不能形成区间', {time: 1000});
+									Toast({message: '输入的条件不能形成区间', position: 'bottom', duration: 1500});
 									return;
 								}
 								break;
 							case '1':
 								if(this.selectAdditionalType == '1' || this.selectAdditionalType == '3' || this.selectAdditionalType == '0' && conditionAdditionalPrice00 >= this.conditionPrice){
-									layer.msg('输入的条件不能形成区间', {time: 1000});
+									Toast({message: '输入的条件不能形成区间', position: 'bottom', duration: 1500});
 									return;
 								}
 								if(this.selectAdditionalType == '2' && conditionAdditionalPrice00 > this.conditionPrice){
-									layer.msg('输入的条件不能形成区间', {time: 1000});
+									Toast({message: '输入的条件不能形成区间', position: 'bottom', duration: 1500});
 									return;
 								}
 								break;
 							case '3':
 								if(this.selectAdditionalType == '1' || this.selectAdditionalType == '3' || this.selectAdditionalType == '0' && conditionAdditionalPrice00 > this.conditionPrice){
-									layer.msg('输入的条件不能形成区间', {time: 1000});
+									Toast({message: '输入的条件不能形成区间', position: 'bottom', duration: 1500});
 									return;
 								}
 								if(this.selectAdditionalType == '2' && this.conditionAdditionalPrice > this.conditionPrice){
-									layer.msg('输入的条件不能形成区间', {time: 1000});
+									Toast({message: '输入的条件不能形成区间', position: 'bottom', duration: 1500});
 									return;
 								}
 								break;
@@ -523,13 +541,13 @@
 					}
 					var d0 = this.conditionPrice % miniTikeSize;
 					if(this.conditionPrice == '' || this.conditionPrice == 0 || this.conditionPrice == undefined){
-						layer.msg('请输入价格', {time: 1000});
+						Toast({message: '请输入价格', position: 'bottom', duration: 1500});
 					}else if(d0 >= 0.000000001 && parseFloat(miniTikeSize - d0) >= 0.0000000001){
-						layer.msg('输入价格不符合最小变动价，最小变动价为：' + miniTikeSize, {time: 1000});
+						Toast({message: '输入价格不符合最小变动价，最小变动价为：' + miniTikeSize, position: 'bottom', duration: 1500});
 					}else if(this.defaultNum == '' || this.defaultNum <= 0 || this.defaultNum == undefined){
-						layer.msg('请输入手数', {time: 1000});
+						Toast({message: '请输入手数', position: 'bottom', duration: 1500});
 					}else{
-						confrimText = '是否添加价格条件单？';
+						confirmText = '是否添加价格条件单？';
 						let b = {
 							"Method": 'InsertCondition',
 							"Parameters":{
@@ -553,20 +571,16 @@
 								'AdditionPrice': this.conditionAdditionalPrice == '' ? 0 : parseFloat(this.conditionAdditionalPrice)
 							}
 						};
-						layer.confirm(msg, {
-							btn: ['确定','取消']
-						}, function(index){
+						MessageBox.confirm(confirmText,"提示").then(action=>{
 							if(this.conditionStatus == true) return;
 							this.$store.state.market.conditionStatus = true;
 							this.tradeSocket.send(JSON.stringify(b));
 							this.conditionAdditionalPrice = '';
-							layer.close(index);
-						}.bind(this));
+						}).catch(err=>{});
 					}
 				}else{
-					this.conditionTime = this.getNowFormatDate() + ' ' + $("#condition_time").val();
+					let time = this.getNowFormatDate() + ' ' + this.conditionTime;
 					if(this.timeAddtionalPrice){
-						console.log(this.timeAddtionalPrice);
 						var d2 = this.timeAddtionalPrice % miniTikeSize;
 						if(d2 >= 0.000000001 && parseFloat(miniTikeSize-d2) >= 0.0000000001){
 							layer.msg('输入附加价格不符合最小变动价，最小变动价为：' + miniTikeSize, {time: 1000});return;
@@ -575,7 +589,7 @@
 					if(this.defaultNum == '' || this.defaultNum <= 0 || this.defaultNum == undefined){
 						layer.msg('请输入手数', {time: 1000});
 					}else{
-						confrimText = '是否添加时间条件单？';
+						confirmText = '是否添加时间条件单？';
 						let b = {
 							"Method": 'InsertCondition',
 							"Parameters":{
@@ -586,7 +600,7 @@
 								'ConditionType': 1,
 								'PriceTriggerPonit': 0.0,
 								'CompareType': 5,
-								'TimeTriggerPoint': this.conditionTime,
+								'TimeTriggerPoint': time,
 								'AB_BuyPoint': 0.0,
 								'AB_SellPoint': 0.0,
 								'OrderType': parseInt(this.entrustPrice),
@@ -599,17 +613,28 @@
 								'AdditionPrice': this.timeAddtionalPrice == '' ? 0 : parseFloat(this.timeAddtionalPrice)
 							}
 						};
-						layer.confirm(msg, {
-							btn: ['确定','取消']
-						}, function(index){
+						MessageBox.confirm(confirmText, "提示").then(action=>{
 							if(this.conditionStatus == true) return;
 							this.$store.state.market.conditionStatus = true;
 							this.tradeSocket.send(JSON.stringify(b));
 							this.timeAddtionalPrice = '';
-							layer.close(index);
-						}.bind(this));
+						}).catch(err=>{});
 					}
 				}
+			},
+			getNowFormatDate: function(){
+				let date = new Date();
+			    let seperator1 = "-";
+			    let month = date.getMonth() + 1;
+			    let strDate = date.getDate();
+			    if (month >= 1 && month <= 9) {
+			        month = "0" + month;
+			    }
+			    if (strDate >= 0 && strDate <= 9) {
+			        strDate = "0" + strDate;
+			    }
+			    let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
+			    return currentdate;
 			},
 		},
 		mounted: function(){
@@ -626,13 +651,13 @@
 			}
 			//取当前时间
 			let time = new Date();
-			this.time = pro.getDate("h:i:s", time);
+			this.conditionTime = pro.getDate("h:i:s", time);
 			
 		},
 		activated: function(){
 			//取当前时间
 			let time = new Date();
-			this.time = pro.getDate("h:i:s", time);
+			this.conditionTime = pro.getDate("h:i:s", time);
 		}
 	}
 </script>
@@ -778,6 +803,7 @@
 			height: 0.88rem;
 			overflow: hidden;
 			margin-bottom: 0.3rem;
+			position: relative;
 			b{
 				float: left;
 				display: inline-block;
@@ -845,6 +871,7 @@
 					position: absolute;
 					top: 0;
 					left: 1.3rem;
+					z-index: 1;
 					opacity: 0;
 				}
 			}

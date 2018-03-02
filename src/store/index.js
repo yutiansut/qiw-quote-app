@@ -1100,9 +1100,13 @@ export default new Vuex.Store({
 					break;
 				case "OnRspInsertCondition":
 					if(parameters.Status == 0){
-						Toast({message: '设置条件单成功', position: 'bottom', duration: 1000});
+						setTimeout(function(){
+							Toast({message: '设置条件单成功', position: 'bottom', duration: 1000});
+						}, 1000);
 					}else{
-						Toast({message: '设置条件单失败，原因:【'+parameters.StatusMsg+'】', position: 'bottom', duration: 1000});
+						setTimeout(function(){
+							Toast({message: '设置条件单失败，原因:【'+parameters.StatusMsg+'】', position: 'bottom', duration: 1000});
+						}, 1000);
 					}
 					setTimeout(function(){
 						context.state.market.conditionStatus = false;

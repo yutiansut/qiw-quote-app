@@ -58,9 +58,9 @@
 				}else if(this.type == 'price'){
 					this.$parent.priceType = str;
 				}else if(this.type == 'condition'){
-					this.$parent.conditionType = str;
+					this.$parent.selectType = str;
 				}else if(this.type == 'additionalCondition'){
-					this.$parent.additionalConditionType = str;
+					this.$parent.selectAdditionalType = str;
 				}
 				this.shadeShow = false;
 				$(".select_cont").css({bottom: -5.3 + 'rem'});
