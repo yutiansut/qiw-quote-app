@@ -17,6 +17,9 @@
 					case 'orangelg':
 						return 'orangelg';
 						break;
+					case 'redlg':
+						return 'redlg';
+						break;
 					case 'bluemd':
 						return 'bluemd';
 						break;
@@ -76,6 +79,13 @@
     		background: $orange;
     		&.current{
     			background: #ff6a4c;
+    		}
+    	}
+    	&.redlg{
+    		width: 6.9rem;
+    		background: $red;
+    		&.current{
+    			background: #fc6f6f;
     		}
     	}
     	&.bluemd{

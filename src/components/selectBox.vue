@@ -10,10 +10,10 @@
 					<span>{{v}}</span>
 				</li>
 				<li v-if="type == 'condition'" v-for="(v, index) in obj" @tap="selectEvent(v)">
-					<span>{{v}}</span>
+					<span>{{v | conditionTypeSwitch}}</span>
 				</li>
 				<li v-if="type == 'additionalCondition'" v-for="(v, index) in obj" @tap="selectEvent(v)">
-					<span>{{v}}</span>
+					<span>{{v | conditionTypeSwitch}}</span>
 				</li>
 			</ul>
 		</div>
@@ -33,6 +33,19 @@
 			orderTemplist(){
 				return this.$store.state.market.orderTemplist;
 			},
+		},
+		filters: {
+			conditionTypeSwitch: function(e){
+				if(e == '0'){
+					return '>';
+				}else if(e == '1'){
+					return '<';
+				}else if(e == '2'){
+					return '>=';
+				}else if(e == '3'){
+					return '<=';
+				}
+			}
 		},
 		methods: {
 			closeSelectEvent: function(){
