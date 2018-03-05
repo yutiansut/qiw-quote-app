@@ -22,7 +22,7 @@
 					<li :class="{current: selectedNum == index}" @click="clickEvent(index, v.ConditionNo, v.Status, v.ConditionType)">
 						<div class="list_cont">
 							<div class="name">
-								<em>日经225</em>
+								<em>{{orderTemplist[v.CommodityNo].CommodityName}}</em>
 								<em>{{v.name}}</em>
 							</div>
 							<span class="num">{{v.status00}}</span>
@@ -32,10 +32,39 @@
 							<span class="name">{{v.term}}</span>
 							<span class="status">{{v.time}}</span>
 						</div>
-						<div class="tools">
+						<div class="tools" v-show="v.toolShow">
 							<btn name="暂停" className="orangesm"></btn>
 							<btn name="修改" className="bluesm" @tap.native="editEvent"></btn>
 							<btn name="删除" className="greensm"></btn>
+						</div>
+					</li>
+				</template>
+			</ul>
+			<ul v-if="!tabShow">
+				<li>
+					<div class="list_title">
+						<span class="name">合约名称</span>
+						<span class="num">状态</span>
+						<span class="name">类型</span>
+						<span class="status">条件</span>
+						<span class="status">下单</span>
+						<span class="name">有效日期</span>
+						<span class="status">下单时间</span>
+					</div>
+				</li>
+				<template v-for="v in triggerConditionListCont">
+					<li>
+						<div class="list_cont">
+							<div class="name">
+								<em>{{orderTemplist[v.CommodityNo].CommodityName}}</em>
+								<em>{{v.name}}</em>
+							</div>
+							<span class="num">{{v.status00}}</span>
+							<span class="name">{{v.type}}</span>
+							<span class="status">{{v.conditions}}</span>
+							<span class="status">{{v.order}}</span>
+							<span class="name">{{v.term}}</span>
+							<span class="status">{{v.time}}</span>
 						</div>
 					</li>
 				</template>
@@ -132,12 +161,6 @@
 				}
 			},
 			clickEvent: function(index, id, status, type){
-				if(this.selectedNum == index){
-					this.selectedNum = -1;
-					this.currentId = '';
-					this.currentConditionOrder = '';
-					return;
-				}
 				this.selectedNum = index;
 				this.currentId = id;
 				this.status = status;
@@ -147,13 +170,11 @@
 				}else{
 					this.statusName = '启动';
 				}
-				this.conditionList.forEach(function(o, i){
-					if(this.currentId == o.ConditionNo){
-						this.currentConditionOrder = o;
-						this.conditionNum = o.Num;
-						this.additionPrice = o.AdditionPrice;
-					}
-				}.bind(this));
+				this.conditionListCont.forEach((o, i) => {
+					o.toolShow = false;
+					if(o.ConditionNo == id) o.toolShow = true;
+				});
+				
 			},
 			suspendConditionOrder: function(){
 				if(this.currentId == '' || this.currentId == undefined){
@@ -416,6 +437,7 @@
 							})();
 					obj.term = '永久有效';
 					obj.time = o.InsertDateTime;
+					obj.toolShow = false;
 					this.conditionListCont.push(obj);
 				}.bind(this));
 			},
@@ -570,7 +592,6 @@
 					obj.term = '永久有效';
 					obj.time = o.InsertDateTime;
 					this.triggerConditionListCont.push(obj);
-					console.log(this.triggerConditionListCont);
 				}.bind(this));
 			},
 			getNowFormatDate: function(){
@@ -591,6 +612,8 @@
 		mounted: function(){
 			//重组数据
 			this.regroupConditionList();
+			console.log(this.conditionListCont);
+			
 		}
 	}
 </script>
