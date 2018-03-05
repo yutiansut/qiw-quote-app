@@ -28,7 +28,7 @@
 				<li></li>
 			</ul>
 			<div id="btn">
-				<mt-button class="btn" @click.native="exit">退出登录</mt-button>
+				<mt-button class="btn" @click.native="exit" type="danger">退出登录</mt-button>
 			</div>
 		</div>
 	</div>

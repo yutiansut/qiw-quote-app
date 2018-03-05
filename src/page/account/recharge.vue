@@ -16,7 +16,7 @@
 				余额：<span>{{accountMoney}}</span>元
 			</div>
 			<div id="btn">
-				<mt-button class="btn" @click.native="recharge">立即充值</mt-button>
+				<mt-button class="btn" @click.native="recharge"  type="danger">立即充值</mt-button>
 			</div>
 			<p>充值后余额：<span>{{totalMoney}}</span>元</p>
 		</div>

@@ -20,8 +20,8 @@
 				4、活动结束后领取的模拟币将统一扣除，若结算时金额小于1万则全部扣除，持仓部分将会强制平仓。<br>
 				5、任何利用系统或规则漏洞进行的违规套利行为，平台将有权不予发放奖励。
 			</p>
-			<mt-button class="geted" v-show="notGet" >已领取</mt-button>
-			<mt-button class="btn" @click.native="getPresent" v-show="geted">立即领取</mt-button>
+			<mt-button class="geted" v-show="notGet"  type="danger">已领取</mt-button>
+			<mt-button class="btn" @click.native="getPresent" v-show="geted"  type="danger">立即领取</mt-button>
 			<div class="btm">
 				<label>本活动最终解释权归活动方指数天下所有</label>
 			</div>

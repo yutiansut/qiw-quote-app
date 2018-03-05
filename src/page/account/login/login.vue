@@ -24,7 +24,7 @@
 			<div id="toForgetPassword">
 				<a @click="toForgetPassword">忘记密码？</a>
 			</div>
-			<mt-button class="btn" @click.native="login">登录</mt-button>
+			<mt-button class="btn" @click.native="login" type="danger">登录</mt-button>
 			<p @click="toRegisiter">新用户注册>></p>
 			<div id="wechat" v-show="showWhat">
 				<i @click="getWechatId"></i>

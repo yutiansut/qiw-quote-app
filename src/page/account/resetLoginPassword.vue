@@ -24,7 +24,7 @@
 					<input type="password" class="input1" placeholder="确认新密码(6-16位数字加字母)" v-model="newPassword1"/>
 				</li>
 			</ul>
-			<mt-button class="btn" @click.native="confirm">完成</mt-button>
+			<mt-button class="btn" @click.native="confirm" type="danger">完成</mt-button>
 		</div>
 	</div>
 </template>

@@ -183,7 +183,7 @@
 		    		pageNo:this.times
 				}
 				pro.fetch("post","/news/get7_24Live",data,"").then((res)=>{
-					console.log("res======+++++++++"+JSON.stringify(res));
+//					console.log("res======+++++++++"+JSON.stringify(res));
 					if(res.code == 1 && res.success == true){
 						var b = res.data;
 						this.newsInfo=this.newsInfo.concat(b);

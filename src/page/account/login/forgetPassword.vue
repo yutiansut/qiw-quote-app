@@ -22,7 +22,7 @@
 					</div>
 				</li>
 			</ul>
-			<mt-button class="btn" @click.native="toRetPassword">下一步</mt-button>
+			<mt-button class="btn" @click.native="toRetPassword" type="danger">下一步</mt-button>
 			<p @click="toRegisiter">新用户注册>></p>
 		</div>
 		<div id="wechat" v-show="showWhat">

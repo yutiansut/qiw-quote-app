@@ -19,7 +19,7 @@
 				</ul>
 				<ul>
 					<li>
-						<!--<mt-button class="btn2" @click.native="toRecharge">充值</mt-button>-->
+						<!--<mt-button class="btn2" @click.native="toRecharge" type="danger">充值</mt-button>-->
 					</li>
 				</ul>
 			</div>
@@ -27,8 +27,8 @@
 				<ul>
 					<li><i></i></li>
 					<li>
-						<mt-button class="btn" @click.native="toRegisiter">注册</mt-button>
-						<mt-button class="btn1" @click.native="toLogin">登录</mt-button>
+						<mt-button class="btn" @click.native="toRegisiter" type="danger">注册</mt-button>
+						<mt-button class="btn" @click.native="toLogin" type="danger">登录</mt-button>
 					</li>
 				</ul>
 			</div>
@@ -321,21 +321,23 @@
 					&:nth-child(2){
 						display: flex;
 						justify-content: space-between;
-						button{
+						.btn{
 							width: 1.14rem;
 							height: 0.6rem;
 							color: $white;
 							margin-top: 0.4rem;
 							border: none;
-							outline: none;
+							
 							text-align: center;
 							font-size: 0.24rem;
 							&:nth-child(1){
 								background-color: $blue;
+								outline: none;
 							}
 							&:nth-child(2){
 								background-color: $orange;
 								margin-left: 0.3rem;
+								outline: none;
 							}
 						}
 					}

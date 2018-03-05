@@ -18,7 +18,7 @@
 					<ul>
 						<li>交易账号：<span>{{account}}</span></li>
 						<li>
-							<mt-button class="btn2" @click.native="toTradeLogin">立即交易</mt-button>
+							<mt-button class="btn2" @click.native="toTradeLogin"  type="danger">立即交易</mt-button>
 						</li>
 					</ul>
 					<ul>
@@ -34,7 +34,7 @@
 					</ul>
 					<ul>
 						<li>融资保证金：<span>{{tradeDeposit}}元</span></li>
-						<li><mt-button class="btn2" @click.native="addMargin">追加保证金</mt-button></li>
+						<li><mt-button class="btn2" @click.native="addMargin"  type="danger">追加保证金</mt-button></li>
 					</ul>
 					<ul>
 						<li>追加保证金：<span>{{addDepositToTotal}}元</span></li>

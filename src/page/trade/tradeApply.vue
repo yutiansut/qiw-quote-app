@@ -334,6 +334,8 @@
 				this.getParameters1();
 			}
 			var screenPhone=screen.width;
+			var runway = $(".mt-range").width();
+			console.log("runway======="+runway);
 			if(screenPhone == 320){
 				$(".bkg").css("top","0.83rem").css("height","0.34rem");
 //				$(".mt-range-content").css("margin-right","0.5rem");

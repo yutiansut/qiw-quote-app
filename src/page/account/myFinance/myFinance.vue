@@ -43,7 +43,7 @@
 		</div>
 		<div id="none" v-show="none">
 			<p>暂无融资记录，快去申请吧！</p>
-			<mt-button class="btn" @click="toTradeApply">立即申请</mt-button>
+			<mt-button class="btn" @click="toTradeApply" type="danger">立即申请</mt-button>
 		</div>
 	</div>
 </template>

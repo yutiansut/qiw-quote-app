@@ -30,7 +30,7 @@
 						<i @click="getcode1">{{volid1 ? info : ('倒计时'+time1 + '秒')}}</i>
 					</li>
 				</ul>
-				<mt-button class="btn" @click.native="confirm">确认</mt-button>
+				<mt-button class="btn" @click.native="confirm" type="danger">确认</mt-button>
 			</div>
 		</div>
 	</div>

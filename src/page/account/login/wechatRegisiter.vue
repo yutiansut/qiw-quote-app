@@ -37,7 +37,7 @@
 					<div class="eye1" @click="eyeEvent" v-show="showNo"></div>
 				</li>
 			</ul>
-			<mt-button class="btn" @click.native="confirm">立即绑定并注册</mt-button>
+			<mt-button class="btn" @click.native="confirm" type="danger">立即绑定并注册</mt-button>
 			<a @click="toLogin">已有账户？立即登录>></a>
 		</div>
 		<codeDialog ref="codeDialog" type="register"></codeDialog>
