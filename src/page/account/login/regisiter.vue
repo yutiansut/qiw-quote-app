@@ -18,14 +18,13 @@
 					<i></i>
 					<input type="text"  value="" placeholder="请输入验证码" class="input1" v-model="code"/>
 					<div id="code">
-						<span :class="{current: isClick == false}" @click="getCode">{{volid ? info : (time + '秒')}}</span>
+						<span :class="{current: !isClick}" @click="getCode">{{volid ? info : (time + '秒')}}</span>
 					</div>
 				</li>
 				<li>
 					<i></i>
 					<input type="password"  value="" placeholder="请输入密码（至少6位且包含字母）" class="input1 input2" v-model="password"/>
-					<div class="eye" @click="eyeEvent" v-show="showEye"></div>
-					<div class="eye1" @click="eyeEvent" v-show="showNo"></div>
+					<div class="eye" @click="eyeEvent" :class="{eye1:showEye}"></div>
 				</li>
 			</ul>
 			<button class="btn" @tap="regisiter">注册</button>
@@ -58,7 +57,6 @@
 				info:"获取验证码",
 				time: 0,
 				showEye:true,
-				showNo:false,
 				show: false,
 				isClick: false,
 				showWhat:true,
@@ -113,15 +111,9 @@
 				this.$router.push({path:"/login"});
 			},
 			eyeEvent:function(e){
-				if(this.showEye == true){
-					this.showEye=!this.showEye;
-					this.showNo=!this.showNo;
-					$(e.target).removeClass("current").siblings(".input2").attr("type",'text');
-				}else{
-					this.showEye=!this.showEye;
-					this.showNo=!this.showNo;
-					$(e.target).removeClass("current").siblings(".input2").attr("type",'password');
-				}
+				var text = this.showEye?'text':'password'
+				$(e.target).removeClass("current").siblings(".input2").attr("type",text);
+				this.showEye=!this.showEye;
 			},
 			getCode :function(e){
 				if(this.isClick == false) return;
@@ -135,30 +127,38 @@
 					this.$refs.codeDialog.path= this.PATH+"/loginAndRegister/getImgCode.jpg"+Math.random()*1000+"?mobile=" + this.phone;
 					this.$refs.codeDialog.phone = this.phone;
 					//页面效果
-					$(e.target).addClass('current');
+					this.isClick = !this.isClick;
 					this.time = 60;
 					var timing = setInterval(function(){
 						this.time--;
 						if(this.time <= 0){
 							clearInterval(timing);
-							$(e.target).removeClass('current');
+							this.isClick = !this.isClick;
 						}
 					}.bind(this), 1000);
 				}
 			},
 			regisiter:function(){
 				if(this.show == true) return;
-				if(this.phone == ""){
-					this.$toast({message: '请输入手机号码',duration: 2000});
-				}else if(this.code == ""){
-					this.$toast({message: '请输入短信验证码',duration: 2000});
-				}else if(this.password == ""){
-					this.$toast({message: '请输入登录密码',duration: 2000});
-				}else if(this.phoneReg.test(this.phone) == false){
-					this.$toast({message: '请输入正确手机格式',duration: 2000});
-				}else if(this.pwdReg.test(this.password) == false){
-					this.$toast({message: '请输入6-16位数字加字母的密码',duration: 2000});
-				}else {
+				var msg = function () {
+					if(this.phone == ""){
+					 	return '请输入手机号码'					
+					}else if(this.code == ""){
+						return '请输入短信验证码'						
+					}else if(this.password == ""){
+						return '请输入登录密码'						
+					}else if(this.phoneReg.test(this.phone) == false){
+						return '请输入正确手机格式'						
+					}else if(this.pwdReg.test(this.password) == false){
+						return '请输入6-16位数字加字母的密码'						
+					}else{
+						return ''
+					}
+				}.apply(this);			
+				if(msg!=''){
+					this.$toast({message: msg,duration: 2000});
+				}
+				else {
 					this.show = true;
 //					$(".btn").attr("disabled","disabled"); 
 					var data = {

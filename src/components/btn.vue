@@ -10,38 +10,39 @@
 		props: ['name','className'],
 		computed: {
 			colors: function(){
-				switch(this.className){
-					case 'bluelg':
-						return 'bluelg';
-						break;
-					case 'orangelg':
-						return 'orangelg';
-						break;
-					case 'redlg':
-						return 'redlg';
-						break;
-					case 'bluemd':
-						return 'bluemd';
-						break;
-					case 'orangemd':
-						return 'orangemd';
-						break;
-					case 'redmd':
-						return 'redmd';
-						break;
-					case 'greenmd':
-						return 'greenmd';
-						break;
-					case 'orangesm':
-						return 'orangesm';
-						break;
-					case 'bluesm':
-						return 'bluesm';
-						break;
-					case 'greensm':
-						return 'greensm';
-						break;
-				}
+				return this.className
+				// switch(this.className){
+				// 	case 'bluelg':
+				// 		return 'bluelg';
+				// 		break;
+				// 	case 'orangelg':
+				// 		return 'orangelg';
+				// 		break;
+				// 	case 'redlg':
+				// 		return 'redlg';
+				// 		break;
+				// 	case 'bluemd':
+				// 		return 'bluemd';
+				// 		break;
+				// 	case 'orangemd':
+				// 		return 'orangemd';
+				// 		break;
+				// 	case 'redmd':
+				// 		return 'redmd';
+				// 		break;
+				// 	case 'greenmd':
+				// 		return 'greenmd';
+				// 		break;
+				// 	case 'orangesm':
+				// 		return 'orangesm';
+				// 		break;
+				// 	case 'bluesm':
+				// 		return 'bluesm';
+				// 		break;
+				// 	case 'greensm':
+				// 		return 'greensm';
+				// 		break;
+				// }
 				
 			}
 		},
