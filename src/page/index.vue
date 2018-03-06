@@ -228,7 +228,7 @@
 			height: 0.6rem;
 			margin: 0.2rem auto;
 			span{
-				display: inline-block;
+				display: block;
 				float: left;
 				width: 1rem;
 				height: 0.6rem;

@@ -63,9 +63,9 @@
 				if(this.code == ''){
 					this.$toast({message: '请输入验证码',duration: 2000});
 				}else{
-					if(this.type == 'login'){
-//						请求认证
-						var data = {
+					switch (this.type) {
+						case 'login':
+							var data = {
 							mobile: this.info.loginName,
 							password: this.info.password,
 							imgCode: this.code,
@@ -93,9 +93,9 @@
 								this.path = this.path + '&' + Math.random()*10;
 							}
 						}.bind(this))
-					}else if(this.type == 'register'){
-						//请求发送验证码
-						var data ={
+							break;
+						case 'register':
+							var data ={
 						 	"mobile": this.phone,
 							"type": 1,
 							"imageCode": this.code
@@ -114,12 +114,13 @@
 							}else{
 								this.code = '';
 								this.isshow = false;
+								console.log(data.message)
 								this.$toast({message: data.message,duration: 2000});
 							}
 						}.bind(this));
-					}else if(this.type == 'findpwd'){
-						//请求发送验证码
-						var data={
+							break;
+						case 'findpwd': 
+							var data={
 								mobile: this.phone,
 								type: 2,
 								imageCode: this.code
@@ -140,6 +141,9 @@
 								this.$toast({message:data.message,duration: 2000});
 							}
 						}.bind(this))
+							break;
+						default:
+							break;
 					}
 				}
 			}

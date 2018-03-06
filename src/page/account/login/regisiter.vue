@@ -93,8 +93,10 @@
 					this.isClick = false;
 				}
 			},
+			// 为了解决android端 虚拟键盘弹框改变高度 影响flex的布局
 			fullHeight (val) {
 		        if(val != this.fullHeight1){
+					console.log(1)
 		        	this.showWhat = false;
 		        	$("#to").hide();
 		        }else{
@@ -117,14 +119,13 @@
 			},
 			getCode :function(e){
 				if(this.isClick == false) return;
-				if($(e.target).hasClass('current')) return false;
 				if(this.phone == ''){
 					this.$toast({message: '请输入手机号码',duration: 2000});
 				}else if(this.phoneReg.test(this.phone) == false){
 					this.$toast({message: '手机格式错误',duration: 2000});
 				}else{
 					this.$refs.codeDialog.isshow = true;
-					this.$refs.codeDialog.path= this.PATH+"/loginAndRegister/getImgCode.jpg"+Math.random()*1000+"?mobile=" + this.phone;
+					this.$refs.codeDialog.path= `${this.PATH}/loginAndRegister/getImgCode.jpg${Math.floor(Math.random()*1000)}?mobile=${this.phone}`;
 					this.$refs.codeDialog.phone = this.phone;
 					//页面效果
 					this.isClick = !this.isClick;
@@ -272,40 +273,19 @@
 			height: 1.2rem;
 			/*padding: 0 0.3rem;*/
 			position: relative;
-			&:nth-child(1){
-				i{
-					background: url(../../../assets/images/regisiter_icon.png);
-					background-size: 100% 100%;
-					position: absolute;
-					top: 0.48rem;
-					left: 0.58rem;	
-					display: inline-block;
-					width: 0.42rem;
-					height: 0.42rem;
-				}
-			}
-			&:nth-child(2){
-				i{
-					background: url(../../../assets/images/verification_icon.png);
-					background-size: 100% 100%;
-					position: absolute;
-					top: 0.48rem;
-					left: 0.58rem;	
-					display: inline-block;
-					width: 0.42rem;
-					height: 0.42rem;
-				}
-			}
-			&:nth-child(3){
-				i{
-					background: url(../../../assets/images/password_icon.png);
-					background-size: 100% 100%;
-					position: absolute;
-					top: 0.48rem;
-					left: 0.58rem;	
-					display: inline-block;
-					width: 0.42rem;
-					height: 0.42rem;
+		}
+		@for $i from 1 through 3 {
+			$bg-img: url('../../../assets/images/regisiter_icon.png'),url('../../../assets/images/verification_icon.png'),url('../../../assets/images/password_icon.png');
+			li:nth-child(#{$i}) {
+				i {
+				background: nth($bg-img,$i);
+				background-size: 100% 100%;
+				position: absolute;
+				top: 0.48rem;
+				left: 0.58rem;	
+				display: inline-block;
+				width: 0.42rem;
+				height: 0.42rem;
 				}
 			}
 		}
@@ -344,12 +324,7 @@
 			background: url(../../../assets/images/eye_icon.png);
 			background-size: 100% 100%;
 		}
-		.eye1{
-			position: absolute;
-			width: 0.4rem;
-			height: 0.24rem;
-			top: 0.5rem;
-			right: 0.6rem;
+		.eye1{			
 			background: url(../../../assets/images/eyeopen_icon.png);
 			background-size: 100% 100%;
 		}

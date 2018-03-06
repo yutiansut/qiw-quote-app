@@ -13,7 +13,7 @@
 				</div>
 				<button @tap="toRole">规则</button>
 			</header>
-			<div class="main">
+			<div class="main" :style="paddingc">
 				<div class="details">
 					<div class="cont">
 						<p class="name"><span>{{v.CommodityName}}</span>&nbsp;&nbsp;{{v.CommodityNo + v.MainContract}}</p>
@@ -262,10 +262,23 @@
 				id: {
 					id1: 'fens',
 					id2: 'volume'	
-				}
+				},
+				a: document.documentElement.clientWidth,
+				b: document.documentElement.clientHeight,
+				isabc: true
 			}
 		},
 		computed: {
+			paddingc () {
+				var val = 0;
+				console.log(this.b+':'+this.a);
+				if(this.b/ this.a >= 1.5) {
+					val = '55px'
+				}
+				return {
+					paddingBottom : val
+				}
+			},
 			quoteSocket(){
 				return this.$store.state.quoteSocket;
 			},
